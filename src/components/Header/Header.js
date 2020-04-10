@@ -3,8 +3,8 @@ import './Header.css'
 
 const Header = () => {
   return (
-    <div>
-      header
+    <div className="Header">
+      CMM
     </div>
   )
 }
