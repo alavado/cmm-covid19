@@ -1,3 +1,9 @@
 .Header {
   height: 2em;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  width: 10em;
+  position: fixed;
+  z-index: 2;
 }
