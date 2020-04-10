@@ -1,0 +1,8 @@
+.SelectorFecha {
+  width: 100%;
+  background-color: white;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}

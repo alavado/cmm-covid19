@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import ReactMapGL, { NavigationControl, Source, Layer } from 'react-map-gl'
+import ReactMapGL, { Source, Layer } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
-import regiones from '../data/geojsons/regiones.json'
+import regiones from '../../data/geojsons/regiones.json'
 import './Mapa.css'
 
 const Mapa = () => {
   const [viewport, setViewport] = useState({
     width: '100%',
-    height: 'calc(100vh)',
+    height: 'calc(100vh - 4em)',
     latitude: -38.24,
     longitude: -70.01,
     zoom: 3,
