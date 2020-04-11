@@ -4,7 +4,7 @@ import './Header.css'
 const Header = () => {
   return (
     <div className="Header">
-      CMM COVID-19
+      CMM<br />COVID-19
     </div>
   )
 }

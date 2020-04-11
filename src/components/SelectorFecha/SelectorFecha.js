@@ -27,7 +27,11 @@ const SelectorFecha = () => {
         />
         <div className="SelectorFecha__limite">9-abr</div>
       </div>
-      <div className="SelectorFecha__fecha">{moment(fechaInicial).add(dia, 'days').format('dddd, D [de] MMMM [de] YYYY')}</div>
+      <div className="SelectorFecha__fecha">
+        <button onClick={e => dispatch(fijarDia(dia - 1))}>Anterior</button>
+        {moment(fechaInicial).add(dia, 'days').format('dddd, D [de] MMMM [de] YYYY')}
+        <button onClick={e => dispatch(fijarDia(dia + 1))}>Siguiente</button>
+      </div>
     </div>
   )
 }

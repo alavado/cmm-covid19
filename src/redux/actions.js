@@ -3,7 +3,7 @@ import infectadosPor100000 from '../data/regional/infectados_por_100000.json'
 
 export const fijarDia = dia => ({
   type: CAMBIAR_FECHA,
-  payload: Number(dia)
+  payload: Math.min(Math.max(0, Number(dia)), 33)
 })
 
 export const seleccionarRegion = (nombre, codigo) => ({
