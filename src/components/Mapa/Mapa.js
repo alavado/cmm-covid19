@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import ReactMapGL, { Source, Layer } from 'react-map-gl'
+import React, { useState, useMemo } from 'react'
+import ReactMapGL, { Source, Layer, Popup } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import regiones from '../../data/geojsons/regiones_con_datos.json'
 import './Mapa.css'
 import { useSelector, useDispatch } from 'react-redux'
 import CodigoColor from './CodigoColor'
 import { seleccionarRegion } from '../../redux/actions'
+import data from '../../data/regional/infectados_por_100000.json'
 
 const Mapa = () => {
   const [viewport, setViewport] = useState({
@@ -18,7 +19,15 @@ const Mapa = () => {
     pitch: 45.61,
     altitude: 1.5
   })
+
+  const [popupChico, setPopupChico] = useState({
+    mostrando: false,
+    latitude: 0,
+    longitude: 0,
+    titulo: ''
+  })
   const { dia } = useSelector(state => state.fecha)
+  const { region } = useSelector(state => state.region)
   const dispatch = useDispatch()
 
   const cambioEnElViewport = vp => {
@@ -29,6 +38,17 @@ const Mapa = () => {
     })
   }
 
+  const regiones2 = useMemo(() => ({
+    ...regiones,
+    features: regiones.features.map(r => ({
+      ...r,
+      properties: {
+        ...r.properties,
+        x: Number(r.properties.codregion) !== Number(region.codigo) ? 0 : 1
+      }
+    }))
+  }), [region])
+
   const mostrarPopup = e => {
     const feats = e.features
     if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
@@ -38,32 +58,62 @@ const Mapa = () => {
     dispatch(seleccionarRegion(nombre, codigo))
   }
 
+  const actualizarPopupChico = e => {
+    const feats = e.features
+    if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
+      setPopupChico({
+        ...popupChico,
+        mostrando: false
+      })
+      return
+    }
+    setPopupChico({
+      mostrando: true,
+      latitude: e.lngLat[1],
+      longitude: e.lngLat[0],
+      titulo: feats[0].properties.Region,
+      valor: data.find(r => r.codigo === feats[0].properties.codregion).datos[dia]
+    })
+  }
+
   return (
     <div className="Mapa">
       <ReactMapGL
         {...viewport}
         mapStyle={mapStyle}
-        getCursor={() => 'default'}
+        getCursor={() => 'pointer'}
         onClick={mostrarPopup}
         onViewportChange={cambioEnElViewport}
+        onHover={actualizarPopupChico}
+        onMouseLeave={() => setPopupChico({...popupChico, mostrando: false})}
       >
         <CodigoColor />
-        <Source id="capa-datos-regiones" type="geojson" data={regiones}>
+        {popupChico.mostrando &&
+          <Popup
+            latitude={popupChico.latitude}
+            longitude={popupChico.longitude}
+            closeButton={false}
+            className="PopupChico"
+          >
+            <h1 className="PopupChico__titulo">{popupChico.titulo}</h1>
+            <p className="PopupChico__titulo">{Math.round(popupChico.valor * 100) / 100.0} nuevos casos</p>
+          </Popup>
+        }
+        <Source id="capa-datos-regiones" type="geojson" data={regiones2}>
           <Layer
-            id="data"
+            id="data2"
             type="fill"
             paint={{
               'fill-color': {
                 property: `v${dia}`,
                 stops: [
                   [0, '#abdda4'],
-                  [.5, '#abdda4'],
-                  [1, '#e6f598'],
-                  [2, '#ffffbf'],
-                  [4, '#fee08b'],
-                  [5, '#fdae61'],
-                  [7.5, '#f46d43'],
-                  [10, '#d53e4f']
+                  [4, '#e6f598'],
+                  [8, '#ffffbf'],
+                  [12, '#fee08b'],
+                  [16, '#fdae61'],
+                  [20, '#f46d43'],
+                  [24, '#d53e4f']
                 ]
               },
               'fill-opacity': .7,
@@ -71,7 +121,22 @@ const Mapa = () => {
                 'duration': 300,
                 'delay': 0
               }
-            }}/>
+            }}
+          />
+          <Layer
+            id="data"
+            type="line"
+            paint={{
+              'line-color': {
+                property: `x`,
+                stops: [
+                  [0, 'rgba(0, 0, 0, 0)'],
+                  [1, '#2497E3']
+                ]
+              },
+              'line-width': 1
+            }}
+          />
         </Source>
       </ReactMapGL>
     </div>

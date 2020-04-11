@@ -18,7 +18,7 @@ const ContenedorGrafico = () => {
         display: true,
         scaleLabel: {
           display: true,
-          labelString: 'Casos por 100.000 habitantes',
+          labelString: 'Nuevos casos por 100.000 hab.',
         },
         gridLines: {
           display: false
@@ -36,8 +36,7 @@ const ContenedorGrafico = () => {
             const fecha = moment(fechaInicial).add(Number(val), 'days')
             return fecha.weekday() === 0 ? fecha.format('D MMM') : (dia === Number(val) ? '' : null)
           },
-        },
-        fontFamily: 'Source Sans Pro'
+        }
       }]
     },
     legend: {
@@ -52,7 +51,7 @@ const ContenedorGrafico = () => {
         },
         title: (tooltipItem, data) => {
           return moment(fechaInicial)
-            .add(Number(tooltipItem[0].label) - 3, 'days')
+            .add(Number(tooltipItem[0].label), 'days')
             .format('dddd, D [de] MMMM [de] YYYY')
         }
       }
@@ -64,7 +63,7 @@ const ContenedorGrafico = () => {
       labels: region.datos.map((d, i) => i),
       datasets: [
         {
-          label: 'Casos por 100.000 habitantes',
+          label: 'Nuevos casos por 100.000 habitantes',
           fillColor: 'rgba(220,220,220,0.2)',
           strokeColor: 'rgba(220,220,220,1)',
           pointColor: 'rgba(220,220,220,1)',
@@ -102,16 +101,10 @@ const ContenedorGrafico = () => {
     return data
   }, [region])
 
-  if (!region) {
-    return null
-  }
-
-  console.log({region})
-
   return (
     <div className="ContenedorGrafico">
       <div className="ContenedorGrafico__titulo">
-        {region.nombre}
+        <p>{!region || region.codigo === 0 ? 'Selecciona una region' : region.nombre}</p>
         <Line
           id="GraficoComuna"
           data={chartData}
