@@ -1,15 +1,17 @@
 const XLSX = require('xlsx')
+const fs = require('fs')
+const regionesChile = require('../data/geojsons/regiones.json')
 
 const obtenerSiguienteColumna = columna => {
   const letras = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
     'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
-    'X', 'Y', 'Z'
+    'W', 'X', 'Y', 'Z'
   ]
-  const prefijo = columna.length > 1
-  if (columna === letras.slice(-1)[0]) {
+  if (columna === 'Z') {
     return 'AA'
   }
+  const prefijo = columna.length > 1
   return (prefijo ? columna[0] : '') + letras[letras.findIndex(l => {
     return l === (prefijo ? columna[1] : columna)
   }) + 1]
@@ -76,7 +78,30 @@ const leerDatosRegionales = (hoja, filaInicio) => {
     }
     datos = [...datos, { codigo, datos: datosRegion }]
   }
+  fs.writeFile('./src/data/regional/infectados_por_100000.json', JSON.stringify(datos), err => console.log(err))
   return datos
 }
 
-console.log(leerDatosRegionales('estadisticas por hab', 24))
+const generarGeoJSONRegional = () => {
+  const datosRegionales = leerDatosRegionales('estadisticas por hab', 24)
+  const geoJSONconDatos = JSON.stringify({
+    ...regionesChile,
+    features: regionesChile.features.map(prov => {
+      const id = prov.properties.codregion
+      const { datos: datosRegion } = datosRegionales.find(r => Number(r.codigo) === Number(id))
+      if (!datosRegion) {
+        return {}
+      }
+      return {
+        ...prov,
+        properties: {
+          ...prov.properties,
+          ...datosRegion.reduce((prev, d, i) => ({...prev, [`v${i}`]: d }), {})
+        }
+      }
+    })
+  })
+  fs.writeFile('./src/data/geojsons/regiones_con_datos.json', geoJSONconDatos, err => console.log(err))
+}
+
+generarGeoJSONRegional()

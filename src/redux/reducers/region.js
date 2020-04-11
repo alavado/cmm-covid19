@@ -1,15 +1,15 @@
-import { CAMBIAR_FECHA } from '../actionTypes'
+import { SELECCIONAR_REGION } from '../actionTypes'
 
 const initialState = {
-  dia: 0
+  region: null
 }
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case CAMBIAR_FECHA: {
+    case SELECCIONAR_REGION: {
       return {
         ...state,
-        dia: action.payload
+        region: action.payload
       }
     }
     default:

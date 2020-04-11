@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import ReactMapGL, { Source, Layer } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
-import regiones from '../../data/geojsons/regiones.json'
+import regiones from '../../data/geojsons/regiones_con_datos.json'
 import './Mapa.css'
+import { useSelector, useDispatch } from 'react-redux'
+import CodigoColor from './CodigoColor'
+import { seleccionarRegion } from '../../redux/actions'
 
 const Mapa = () => {
   const [viewport, setViewport] = useState({
@@ -15,6 +18,25 @@ const Mapa = () => {
     pitch: 45.61,
     altitude: 1.5
   })
+  const { dia } = useSelector(state => state.fecha)
+  const dispatch = useDispatch()
+
+  const cambioEnElViewport = vp => {
+    setViewport({
+      ...vp,
+      width: '100%',
+      height: 'calc(100vh - 4em)',
+    })
+  }
+
+  const mostrarPopup = e => {
+    const feats = e.features
+    if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
+      return
+    }
+    const { Region: nombre, codregion: codigo } = feats[0].properties
+    dispatch(seleccionarRegion(nombre, codigo))
+  }
 
   return (
     <div className="Mapa">
@@ -22,26 +44,29 @@ const Mapa = () => {
         {...viewport}
         mapStyle={mapStyle}
         getCursor={() => 'default'}
-        onViewportChange={setViewport}
+        onClick={mostrarPopup}
+        onViewportChange={cambioEnElViewport}
       >
-        <Source id="capa-datos-movilidad" type="geojson" data={regiones}>
+        <CodigoColor />
+        <Source id="capa-datos-regiones" type="geojson" data={regiones}>
           <Layer
             id="data"
             type="fill"
             paint={{
               'fill-color': {
+                property: `v${dia}`,
                 stops: [
-                  [0, '#B0BEC5'],
-                  [.01, '#abdda4'],
-                  [.3, '#e6f598'],
-                  [.45, '#ffffbf'],
-                  [.6, '#fee08b'],
-                  [.75, '#fdae61'],
-                  [.9, '#f46d43'],
-                  [1.05, '#d53e4f']
+                  [0, '#abdda4'],
+                  [.5, '#abdda4'],
+                  [1, '#e6f598'],
+                  [2, '#ffffbf'],
+                  [4, '#fee08b'],
+                  [5, '#fdae61'],
+                  [7.5, '#f46d43'],
+                  [10, '#d53e4f']
                 ]
               },
-              'fill-opacity': .5,
+              'fill-opacity': .7,
               'fill-color-transition': {
                 'duration': 300,
                 'delay': 0

@@ -1,0 +1,6 @@
+.ContenedorGrafico {
+  position: absolute;
+left: 2em;
+  opacity: .5;
+  z-index: 2;
+}
