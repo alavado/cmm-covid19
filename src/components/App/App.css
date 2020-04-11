@@ -5,6 +5,12 @@
   overflow: hidden;
 }
 
+.App_contenedor_header {
+  display: flex;
+  height: 2em;
+  overflow: hidden;
+}
+
 .App__contenedor {
   display: flex;
   flex-direction: row;

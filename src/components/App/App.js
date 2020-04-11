@@ -7,8 +7,10 @@ import SelectorFecha from '../SelectorFecha'
 const App = () => {
   return (
     <div className="App">
-      <Header />
-      <SelectorFecha />
+      <section className="App_contenedor_header">
+        <Header />
+        <SelectorFecha />
+      </section>
       <main className="App__contenedor">
         <Mapa />
       </main>
