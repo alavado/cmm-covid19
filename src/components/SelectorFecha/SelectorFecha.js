@@ -4,9 +4,8 @@ import './range.css'
 import './SelectorFecha.css'
 import { fijarDia } from '../../redux/actions'
 import moment from 'moment/min/moment-with-locales'
+import fechaInicial from '../../config/fechaInicial'
 moment.locale('es')
-
-const fechaInicial = '2020-03-07'
 
 const SelectorFecha = () => {
 

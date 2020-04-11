@@ -1,7 +1,11 @@
 import { SELECCIONAR_REGION } from '../actionTypes'
 
 const initialState = {
-  region: null
+  region: {
+    nombre: 'Chile',
+    codigo: 0,
+    datos: []
+  }
 }
 
 export default function(state = initialState, action) {

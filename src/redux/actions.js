@@ -11,6 +11,6 @@ export const seleccionarRegion = (nombre, codigo) => ({
   payload: {
     nombre,
     codigo,
-    datos: infectadosPor100000.find(r => r.codigo === codigo).datos
+    datos: infectadosPor100000.find(r => Number(r.codigo) === Number(codigo)).datos
   }
 })
