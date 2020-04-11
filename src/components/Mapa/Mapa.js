@@ -7,7 +7,7 @@ import './Mapa.css'
 const Mapa = () => {
   const [viewport, setViewport] = useState({
     width: '100%',
-    height: 'calc(100vh - 2em)',
+    height: 'calc(100vh - 4em)',
     latitude: -44.24,
     longitude: -70.01,
     zoom: 4,

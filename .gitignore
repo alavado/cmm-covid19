@@ -11,6 +11,9 @@
 # production
 /build
 
+# excels
+/src/scripts/excel
+
 # misc
 .DS_Store
 .env.local

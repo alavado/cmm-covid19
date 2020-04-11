@@ -1,8 +1,15 @@
 .SelectorFecha {
   width: 100%;
   background-color: white;
-  height: 2em;
+  height: 4em;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  flex-direction: column;
+}
+
+.SelectorFecha__contenedor_rango {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
