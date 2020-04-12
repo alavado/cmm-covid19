@@ -11,7 +11,7 @@ import data from '../../data/regional/infectados_por_100000.json'
 const Mapa = () => {
   const [viewport, setViewport] = useState({
     width: '100%',
-    height: 'calc(100vh - 4em)',
+    height: 'calc(100vh)',
     latitude: -44.24,
     longitude: -70.01,
     zoom: 4,
@@ -34,7 +34,7 @@ const Mapa = () => {
     setViewport({
       ...vp,
       width: '100%',
-      height: 'calc(100vh - 4em)',
+      height: 'calc(100vh)',
     })
   }
 

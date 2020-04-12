@@ -2,9 +2,9 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import './range.css'
 import './SelectorFecha.css'
-import { fijarDia } from '../../redux/actions'
+import { fijarDia } from '../../../redux/actions'
 import moment from 'moment/min/moment-with-locales'
-import fechaInicial from '../../config/fechaInicial'
+import fechaInicial from '../../../config/fechaInicial'
 moment.locale('es')
 
 const SelectorFecha = () => {
@@ -28,9 +28,13 @@ const SelectorFecha = () => {
         <div className="SelectorFecha__limite">9-abr</div>
       </div>
       <div className="SelectorFecha__fecha">
-        <button onClick={e => dispatch(fijarDia(dia - 1))}>Anterior</button>
+        <button onClick={e => dispatch(fijarDia(dia - 1))}>
+          
+        </button>
         {moment(fechaInicial).add(dia, 'days').format('dddd, D [de] MMMM [de] YYYY')}
-        <button onClick={e => dispatch(fijarDia(dia + 1))}>Siguiente</button>
+        <button onClick={e => dispatch(fijarDia(dia + 1))}>
+
+        </button>
       </div>
     </div>
   )

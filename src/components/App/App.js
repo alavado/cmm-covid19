@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../Header'
 import './App.css'
 import Mapa from '../Mapa'
-import SelectorFecha from '../SelectorFecha'
+import SelectorFecha from '../Header/SelectorFecha'
 import ContenedorGrafico from '../ContenedorGrafico'
 
 const App = () => {
@@ -10,7 +10,6 @@ const App = () => {
     <div className="App">
       <section className="App_contenedor_header">
         <Header />
-        <SelectorFecha />
       </section>
       <main className="App__contenedor">
         <ContenedorGrafico />

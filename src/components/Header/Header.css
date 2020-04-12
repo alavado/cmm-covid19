@@ -1,7 +1,19 @@
 .Header {
   display: flex;
-  align-items: center;
-  background: white;
-  justify-content: center;
+  width: 100%;
+  background-color: transparent;
+  color: white;
+  font-family: 'Raleway', sans-serif;
+  z-index: 2;
+  position: fixed;
+}
+
+.Header__titulo {
   width: 6em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #212121;
+  padding: .5em;
+  border-bottom-right-radius: .5em;
 }

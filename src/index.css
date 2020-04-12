@@ -51,3 +51,27 @@ table {
   outline: none;
   box-sizing: border-box;
 }
+
+@font-face {
+	font-family: 'Raleway';
+	src: url('./assets/fonts/Raleway/Raleway-Regular.ttf');
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: 'Raleway';
+	src: url('./assets/fonts/Raleway/Raleway-Bold.ttf');
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	src: url('./assets/fonts/Open_Sans/OpenSans-Regular.ttf');
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	src: url('./assets/fonts/Open_Sans/OpenSans-Bold.ttf');
+	font-weight: bold;
+}

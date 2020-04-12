@@ -1,15 +1,16 @@
 .CodigoColor {
   position: absolute;
   right: 1.5em;
-  top: 1.5em;
+  bottom: 2.5em;
   width: 25em;
   color: rgba(0, 0, 0, .9);
   opacity: .8;
-  font-size: .8em;
+  font-size: .7em;
   display: grid;
   grid-template-rows: auto auto auto;
   align-items: center;
   gap: .3em;
+  font-weight: bold;
   text-transform: uppercase;
 }
 
