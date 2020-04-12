@@ -11,12 +11,12 @@ import data from '../../data/regional/infectados_por_100000.json'
 const Mapa = () => {
   const [viewport, setViewport] = useState({
     width: '100%',
-    height: 'calc(100vh)',
-    latitude: -44.24,
-    longitude: -70.01,
+    height: 'calc(60vh)',
+    latitude: -39.204954641160536,
+    longitude: -69.26430872363804,
     zoom: 4,
-    bearing: 57.09,
-    pitch: 45.61,
+    bearing: 98.49519730510106,
+    pitch: 0,
     altitude: 1.5
   })
 
@@ -31,10 +31,11 @@ const Mapa = () => {
   const dispatch = useDispatch()
 
   const cambioEnElViewport = vp => {
+    console.log({vp})
     setViewport({
       ...vp,
       width: '100%',
-      height: 'calc(100vh)',
+      height: 'calc(60vh)',
     })
   }
 
@@ -131,7 +132,7 @@ const Mapa = () => {
                 property: `x`,
                 stops: [
                   [0, 'rgba(0, 0, 0, 0)'],
-                  [1, '#2497E3']
+                  [1, '#0288D1']
                 ]
               },
               'line-width': 1

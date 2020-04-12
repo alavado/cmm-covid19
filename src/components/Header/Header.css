@@ -6,14 +6,16 @@
   font-family: 'Raleway', sans-serif;
   z-index: 2;
   position: fixed;
+  pointer-events: none;
 }
 
 .Header__titulo {
-  width: 6em;
+  width: 10em;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #212121;
   padding: .5em;
+  padding-left: 1em;
   border-bottom-right-radius: .5em;
 }

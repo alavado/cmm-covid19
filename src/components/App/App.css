@@ -14,6 +14,6 @@
 
 .App__contenedor {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex: 1;
 }

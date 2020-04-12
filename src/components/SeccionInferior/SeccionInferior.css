@@ -1,0 +1,10 @@
+.SeccionInferior {
+  height: 40vh;
+  background-color: #212121;
+  padding: 1em;
+  color: rgba(255, 255, 255, .9);
+}
+
+.SeccionInferior__titulo {
+  text-align: center;
+}

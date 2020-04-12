@@ -2,8 +2,7 @@ import React from 'react'
 import Header from '../Header'
 import './App.css'
 import Mapa from '../Mapa'
-import SelectorFecha from '../Header/SelectorFecha'
-import ContenedorGrafico from '../ContenedorGrafico'
+import SeccionInferior from '../SeccionInferior'
 
 const App = () => {
   return (
@@ -12,8 +11,9 @@ const App = () => {
         <Header />
       </section>
       <main className="App__contenedor">
-        <ContenedorGrafico />
+        {/* <ContenedorGrafico /> */}
         <Mapa />
+        <SeccionInferior />
       </main>
     </div>
   )

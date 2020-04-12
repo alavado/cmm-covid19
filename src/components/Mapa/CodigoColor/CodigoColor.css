@@ -1,17 +1,17 @@
 .CodigoColor {
   position: absolute;
-  right: 1.5em;
-  bottom: 2.5em;
+  left: 1.5em;
+  top: 8.5em;
   width: 25em;
-  color: rgba(0, 0, 0, .9);
+  color: rgba(255, 255, 255, .9);
   opacity: .8;
-  font-size: .7em;
+  font-size: .6em;
   display: grid;
   grid-template-rows: auto auto auto;
   align-items: center;
   gap: .3em;
-  font-weight: bold;
   text-transform: uppercase;
+  pointer-events: none;
 }
 
 .CodigoColor__espectro {
