@@ -20,7 +20,8 @@ const SeccionInferior = () => {
         scaleLabel: {
           display: true,
           labelString: 'Nuevos casos por 100.000 hab.',
-          fontColor: 'rgba(255, 255, 255, 0.75)'
+          fontColor: 'rgba(255, 255, 255, 0.75)',
+          fontSize: 10
         },
         gridLines: {
           display: false
@@ -44,7 +45,7 @@ const SeccionInferior = () => {
           fontColor: 'rgba(255, 255, 255, 0.75)'
         },
         gridLines: {
-          color: 'rgba(255, 255, 255, .15)'
+          color: 'rgba(255, 255, 255, .15)',
         },
       }]
     },
@@ -79,7 +80,8 @@ const SeccionInferior = () => {
           pointStrokeColor: '#fff',
           pointHighlightFill: '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data: region.datos
+          data: region.datos,
+          lineTension: .2,
         }
       ]
     }

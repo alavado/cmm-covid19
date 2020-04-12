@@ -15,17 +15,17 @@ const SelectorFecha = () => {
   return (
     <div className="SelectorFecha">
       <div className="SelectorFecha__contenedor_rango">
-        <div className="SelectorFecha__limite">7-mar</div>
+        <div className="SelectorFecha__limite">{moment(fechaInicial).format(`DD/MM`)}</div>
         <input
           type="range"
           className="SelectorFecha__selector"
           min={0}
-          max={33}
+          max={moment().diff(fechaInicial, 'days')}
           step={1}
           onChange={e => dispatch(fijarDia(e.target.value))}
           value={dia}
         />
-        <div className="SelectorFecha__limite">9-abr</div>
+        <div className="SelectorFecha__limite">{moment().format(`DD/MM`)}</div>
       </div>
       <div className="SelectorFecha__fecha">
         <button className="SelectorFecha__fecha_boton" onClick={e => dispatch(fijarDia(dia - 1))}>

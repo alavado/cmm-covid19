@@ -1,11 +1,12 @@
 {
-  "name": "cmm-covid19",
+  "name": "covid19-chile",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.19.2",
     "chart.js": "^2.9.3",
     "moment": "^2.24.0",
     "react": "^16.13.1",
@@ -23,7 +24,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "xlsx": "node src/scripts/procesar.js"
+    "xlsx": "node src/scripts/procesar.js",
+    "perez": "node src/scripts/procesar_csv_regiones_perez.js"
   },
   "eslintConfig": {
     "extends": "react-app"

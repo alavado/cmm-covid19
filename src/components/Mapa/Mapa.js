@@ -29,9 +29,9 @@ const Mapa = () => {
   const { dia } = useSelector(state => state.fecha)
   const { region } = useSelector(state => state.region)
   const dispatch = useDispatch()
+  console.log(dia)
 
   const cambioEnElViewport = vp => {
-    console.log({vp})
     setViewport({
       ...vp,
       width: '100%',

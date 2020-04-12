@@ -1,0 +1,82 @@
+[
+  {
+    "codigo": 15,
+    "nombre": "Arica y Parinacota",
+    "habitantes": 252110
+  },
+  {
+    "codigo": 1,
+    "nombre": "Tarapacá",
+    "habitantes": 382773
+  },
+  {
+    "codigo": 2,
+    "nombre": "Antofagasta",
+    "habitantes": 691854
+  },
+  {
+    "codigo": 3,
+    "nombre": "Atacama",
+    "habitantes": 314709
+  },
+  {
+    "codigo": 4,
+    "nombre": "Coquimbo",
+    "habitantes": 836096
+  },
+  {
+    "codigo": 5,
+    "nombre": "Valparaíso",
+    "habitantes": 1960170
+  },
+  {
+    "codigo": 13,
+    "nombre": "Santiago",
+    "habitantes": 8125072
+  },
+  {
+    "codigo": 6,
+    "nombre": "O’Higgins",
+    "habitantes": 991063
+  },
+  {
+    "codigo": 7,
+    "nombre": "Maule",
+    "habitantes": 1131939
+  },
+  {
+    "codigo": 16,
+    "nombre": "Ñuble",
+    "habitantes": 511551
+  },
+  {
+    "codigo": 8,
+    "nombre": "Biobío",
+    "habitantes": 1663696
+  },
+  {
+    "codigo": 9,
+    "nombre": "Araucanía",
+    "habitantes": 1014343
+  },
+  {
+    "codigo": 14,
+    "nombre": "Los Ríos",
+    "habitantes": 405835
+  },
+  {
+    "codigo": 10,
+    "nombre": "Los Lagos",
+    "habitantes": 891440
+  },
+  {
+    "codigo": 11,
+    "nombre": "Aysén",
+    "habitantes": 107297
+  },
+  {
+    "codigo": 12,
+    "nombre": "Magallanes",
+    "habitantes": 178362
+  }
+]
