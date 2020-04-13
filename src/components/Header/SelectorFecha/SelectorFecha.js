@@ -11,6 +11,8 @@ const SelectorFecha = () => {
 
   const { dia } = useSelector(state => state.fecha)
   const { region } = useSelector(state => state.region)
+  const fecha = moment(region.fechaInicial).add(dia, 'days')
+  const diferencia = fecha.diff(moment(), 'days')
   const rangoDias = region.datos.length - 1
   const dispatch = useDispatch()
 
@@ -43,7 +45,7 @@ const SelectorFecha = () => {
             <FaCaretLeft />
           </button>
           <div className="SelectorFecha__texto_fecha">
-            {moment(region.fechaInicial).add(dia, 'days').format('dddd D [de] MMMM')}
+            {diferencia === 0 ? 'Hoy, ' : (diferencia === -1 ? 'Ayer, ' : '')} {fecha.format('dddd D [de] MMMM')}
           </div>
           <button className="SelectorFecha__fecha_boton" onClick={e => dispatch(fijarDia(dia + 1, region))}>
             <FaCaretRight />
