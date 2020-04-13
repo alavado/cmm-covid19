@@ -52,7 +52,7 @@ axios.get(urlPerez)
         ...prev,
         datos: prev.datos.map((v, i) => v + datos[i])
       }))
-      .datos.map(v => 100_000 * v / poblacion)
+      .datos.map(v => (100000.0 * v) / poblacion)
     datosPor100000Habitantes = [...datosPor100000Habitantes, {
       codigo: 0,
       nombre: 'Chile',

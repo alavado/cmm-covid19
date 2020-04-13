@@ -19,7 +19,7 @@ const CodigoColor = () => {
       <div className="CodigoColor__espectro" />
       <div className="CodigoColor__limites">
         <div>0</div>
-        <div>Más de 25</div>
+        <div>Más de 20</div>
       </div>
     </div>
   )

@@ -1,14 +1,15 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import { Chart, Line } from 'react-chartjs-2'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import './SeccionInferior.css'
-import { fijarDia } from '../../redux/actions'
+import { fijarDia, seleccionarChile } from '../../redux/actions'
 
 const SeccionInferior = () => {
 
   const { region } = useSelector(state => state.region)
   const { dia } = useSelector(state => state.fecha)
+  console.log({region})
   const dispatch = useDispatch()
   Chart.defaults.global.defaultFontColor = 'white'
 
@@ -29,7 +30,7 @@ const SeccionInferior = () => {
         ticks: {
           maxTicksLimit: 6,
           suggestedMin: 0,
-          suggestedMax: 25,
+          suggestedMax: 20,
           fontColor: 'rgba(255, 255, 255, 0.75)'
         }
       }],
@@ -58,7 +59,7 @@ const SeccionInferior = () => {
         label: function(tooltipItem, data) {
           const etiqueta = data.datasets[tooltipItem.datasetIndex].label
           const valor = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
-          return `${etiqueta}: ${valor.toLocaleString('de-DE', { maximumFractionDigits: 1 })}`
+          return `${etiqueta}: ${valor.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`
         },
         title: (tooltipItem, data) => {
           return moment(region.fechaInicial)
@@ -88,10 +89,20 @@ const SeccionInferior = () => {
     }
     const canvas = document.getElementById('SeccionInferior__grafico')
     if (canvas) {
-      const ctx = canvas.getContext('2d');
-      const gradientStroke = ctx.createLinearGradient(0, 100, 0, 0);
-      gradientStroke.addColorStop(0.1, '#abdda4');
-      gradientStroke.addColorStop(1, '#d53e4f');
+      const ctx = canvas.getContext('2d')
+      const gradientStroke = ctx.createLinearGradient(0, 100, 0, 0)
+      const maximo = region.datos.findIndex(d => d >= 20)
+      let x = .9
+      if (maximo >= 0) {
+        x = maximo / region.datos.length
+      }
+      gradientStroke.addColorStop(0, '#abdda4')
+      gradientStroke.addColorStop(x / 6, '#e6f598')
+      gradientStroke.addColorStop(x / 3, '#ffffbf')
+      gradientStroke.addColorStop(x / 2, '#fee08b')
+      gradientStroke.addColorStop(2 * x / 3, '#fdae61')
+      gradientStroke.addColorStop(5 * x / 6, '#f46d43')
+      gradientStroke.addColorStop(x, '#d53e4f')
       data = {
         ...data,
         datasets: [
@@ -112,6 +123,8 @@ const SeccionInferior = () => {
     }
     return data
   }, [region])
+
+  useEffect(() => dispatch(seleccionarChile()), [])
 
   return (
     <div className="SeccionInferior">
