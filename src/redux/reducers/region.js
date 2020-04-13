@@ -1,7 +1,7 @@
 import { SELECCIONAR_REGION, SELECCIONAR_CHILE } from '../actionTypes'
 import infectados_por_100000 from '../../data/regional/infectados_por_100000.json'
 
-const datosChile = {
+export const datosChile = {
   nombre: 'Chile',
   codigo: 0,
   datos: infectados_por_100000.find(r => r.codigo === 0).datos,

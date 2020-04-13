@@ -9,7 +9,6 @@ const SeccionInferior = () => {
 
   const { region } = useSelector(state => state.region)
   const { dia } = useSelector(state => state.fecha)
-  console.log({region})
   const dispatch = useDispatch()
   Chart.defaults.global.defaultFontColor = 'white'
 
@@ -91,18 +90,20 @@ const SeccionInferior = () => {
     if (canvas) {
       const ctx = canvas.getContext('2d')
       const gradientStroke = ctx.createLinearGradient(0, 100, 0, 0)
-      const maximo = region.datos.findIndex(d => d >= 20)
-      let x = .9
-      if (maximo >= 0) {
-        x = maximo / region.datos.length
+      const maximo = region.datos.reduce((prev, v) => Math.max(prev, v))
+      let limiteEspectro = 1
+      if (maximo >= 20) {
+        limiteEspectro = 20.0 / (5 * (Math.floor((maximo + 5) / 5)))
       }
+      limiteEspectro *= .6
       gradientStroke.addColorStop(0, '#abdda4')
-      gradientStroke.addColorStop(x / 6, '#e6f598')
-      gradientStroke.addColorStop(x / 3, '#ffffbf')
-      gradientStroke.addColorStop(x / 2, '#fee08b')
-      gradientStroke.addColorStop(2 * x / 3, '#fdae61')
-      gradientStroke.addColorStop(5 * x / 6, '#f46d43')
-      gradientStroke.addColorStop(x, '#d53e4f')
+      gradientStroke.addColorStop(limiteEspectro / 6, '#e6f598')
+      gradientStroke.addColorStop(limiteEspectro / 3, '#ffffbf')
+      gradientStroke.addColorStop(limiteEspectro / 2, '#fee08b')
+      gradientStroke.addColorStop(2 * limiteEspectro / 3, '#fdae61')
+      gradientStroke.addColorStop(5 * limiteEspectro / 6, '#f46d43')
+      gradientStroke.addColorStop(limiteEspectro, '#d53e4f')
+      gradientStroke.addColorStop(1, '#d53e4f')
       data = {
         ...data,
         datasets: [
@@ -124,7 +125,9 @@ const SeccionInferior = () => {
     return data
   }, [region])
 
-  useEffect(() => dispatch(seleccionarChile()), [])
+  useEffect(() => {
+    dispatch(seleccionarChile())
+  }, [])
 
   return (
     <div className="SeccionInferior">
