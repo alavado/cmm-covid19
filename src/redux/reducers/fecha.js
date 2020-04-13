@@ -1,9 +1,8 @@
 import { CAMBIAR_FECHA } from '../actionTypes'
-import fechaInicial from '../../config/fechaInicial'
 import moment from 'moment'
 
 const initialState = {
-  dia: moment().diff(fechaInicial, 'days')
+  dia: 0
 }
 
 export default function(state = initialState, action) {

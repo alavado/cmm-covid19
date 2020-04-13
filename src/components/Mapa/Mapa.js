@@ -97,7 +97,7 @@ const Mapa = () => {
           >
             <h1 className="PopupChico__titulo">{popupChico.titulo}</h1>
             <p className="PopupChico__titulo">
-              {popupChico.valor.toLocaleString('de-DE', { maximumFractionDigits: 1 })} nuevos casos por 100.000 habitantes
+              {popupChico.valor.toLocaleString('de-DE', { maximumFractionDigits: 1 })} contagios por 100.000 habitantes
             </p>
           </Popup>
         }

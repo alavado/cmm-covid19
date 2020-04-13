@@ -1,12 +1,14 @@
 import { CAMBIAR_FECHA, SELECCIONAR_REGION } from './actionTypes'
 import infectadosPor100000 from '../data/regional/infectados_por_100000.json'
 import moment from 'moment'
-import fechaInicial from '../config/fechaInicial'
 
-export const fijarDia = dia => ({
-  type: CAMBIAR_FECHA,
-  payload: Math.min(Math.max(0, Number(dia)), moment().diff(fechaInicial, 'days'))
-})
+export const fijarDia = (dia, region) => {
+  const dias = region.datos.length
+  return {
+    type: CAMBIAR_FECHA,
+    payload: Math.min(Math.max(0, Number(dia)), dias - 1)
+  }
+}
 
 export const seleccionarRegion = (nombre, codigo) => ({
   type: SELECCIONAR_REGION,

@@ -4,7 +4,8 @@ import infectados_por_100000 from '../../data/regional/infectados_por_100000.jso
 const datosChile = {
   nombre: 'Chile',
   codigo: 0,
-  datos: infectados_por_100000.find(r => r.codigo).datos
+  datos: infectados_por_100000.find(r => r.codigo).datos,
+  fechaInicial: '2020-03-07'
 }
 
 const initialState = {
@@ -16,7 +17,10 @@ export default function(state = initialState, action) {
     case SELECCIONAR_REGION: {
       return {
         ...state,
-        region: action.payload
+        region: {
+          ...state.region,
+          ...action.payload
+        }
       }
     }
     default:

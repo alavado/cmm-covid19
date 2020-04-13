@@ -1,8 +1,7 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { Chart, Line } from 'react-chartjs-2'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
-import fechaInicial from '../../config/fechaInicial'
 import './SeccionInferior.css'
 import { fijarDia } from '../../redux/actions'
 
@@ -20,7 +19,7 @@ const SeccionInferior = () => {
         display: true,
         scaleLabel: {
           display: true,
-          labelString: 'Nuevos casos por 100.000 hab.',
+          labelString: 'Contagios por 100.000 hab.',
           fontColor: 'rgba(255, 255, 255, 0.75)',
           fontSize: 10
         },
@@ -40,8 +39,8 @@ const SeccionInferior = () => {
           maxRotation: 0,
           minRotation: 0,
           callback: (val, i) => {
-            const fecha = moment(fechaInicial).add(Number(val), 'days')
-            const visible = fecha.weekday() === 0 || fecha.diff(moment(), 'days') === 0
+            const fecha = moment(region.fechaInicial).add(Number(val), 'days')
+            const visible = fecha.weekday() === 0 || i === region.datos.length - 1
             return visible ? fecha.format('D MMM') : (dia === Number(val) ? '' : null)
           },
           fontColor: 'rgba(255, 255, 255, 0.75)'
@@ -62,20 +61,20 @@ const SeccionInferior = () => {
           return `${etiqueta}: ${valor.toLocaleString('de-DE', { maximumFractionDigits: 1 })}`
         },
         title: (tooltipItem, data) => {
-          return moment(fechaInicial)
+          return moment(region.fechaInicial)
             .add(Number(tooltipItem[0].label), 'days')
             .format('dddd D [de] MMMM')
         }
       }
     }
-  }), [dia])
+  }), [dia, region])
   
   const chartData = useMemo(() => {
     let data = {
       labels: region.datos.map((d, i) => i),
       datasets: [
         {
-          label: 'Nuevos casos por 100.000 habitantes',
+          label: 'Contagios por 100.000 habitantes',
           fillColor: 'rgba(220,220,220,0.2)',
           strokeColor: 'rgba(220,220,220,1)',
           pointColor: 'rgba(220,220,220,1)',
@@ -126,7 +125,7 @@ const SeccionInferior = () => {
           id="SeccionInferior__grafico"
           data={chartData}
           options={options}
-          onElementsClick={e => dispatch(fijarDia(e[0]._index))}
+          onElementsClick={e => dispatch(fijarDia(e[0]._index, region))}
         />
       </div>
     </div>
