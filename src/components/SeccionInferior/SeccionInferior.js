@@ -1,14 +1,16 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { Chart, Line } from 'react-chartjs-2'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import fechaInicial from '../../config/fechaInicial'
 import './SeccionInferior.css'
+import { fijarDia } from '../../redux/actions'
 
 const SeccionInferior = () => {
 
   const { region } = useSelector(state => state.region)
   const { dia } = useSelector(state => state.fecha)
+  const dispatch = useDispatch()
   Chart.defaults.global.defaultFontColor = 'white'
 
   const options = useMemo(() => ({
@@ -57,7 +59,7 @@ const SeccionInferior = () => {
         label: function(tooltipItem, data) {
           const etiqueta = data.datasets[tooltipItem.datasetIndex].label
           const valor = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
-          return `${etiqueta}: ${Math.round(valor * 100) / 100.0}`
+          return `${etiqueta}: ${valor.toLocaleString('de-DE', { maximumFractionDigits: 1 })}`
         },
         title: (tooltipItem, data) => {
           return moment(fechaInicial)
@@ -116,7 +118,7 @@ const SeccionInferior = () => {
     <div className="SeccionInferior">
       <div className="SeccionInferior__contenedor_region">
         <div className="SeccionInferior__region">
-          Registro histórigo para {region.nombre}
+          {region.nombre}
         </div>
       </div>
       <div className="SeccionInferior__grafico">
@@ -124,6 +126,7 @@ const SeccionInferior = () => {
           id="SeccionInferior__grafico"
           data={chartData}
           options={options}
+          onElementsClick={e => dispatch(fijarDia(e[0]._index))}
         />
       </div>
     </div>

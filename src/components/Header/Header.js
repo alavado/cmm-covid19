@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <div className="Header">
       <div className="Header__titulo">
-        COVID-19 en Chile
+        COVID-19<br />en Chile
       </div>
       <SelectorFecha />
     </div>
