@@ -5,6 +5,7 @@
   align-items: flex-start;
   flex-direction: column;
   background-color: transparent;
+  overflow: hidden;
 }
 
 .SelectorFecha__contenedor_rango {
@@ -14,35 +15,53 @@
   width: 100%;
   height: 2em;
   background-color: #212121;
-  color: white;
   padding: .5em .2em;
   pointer-events: all;
 }
 
 .SelectorFecha__limite {
-  width: 4em;
+  font-family: 'Open Sans';
+  width: 5em;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: .8em;
+  font-size: .7em;
+  letter-spacing: 1px;
 }
 
 .SelectorFecha__fecha {
-  font-size: 1em;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: black;
-  width: 100%;
   flex: 1;
-  font-weight: bold;
-  color: rgba(255, 255, 255, .9);
+  width: 100%;
+  background-color: rgba(255, 255, 255, .9);
+  padding: .25em 0;
+  border-radius: 1em;
+  margin-top: -4px;
+  box-shadow: 0 .15em .5em rgba(0, 0, 0, .15);
+  pointer-events: all;
+  cursor: default;
+  user-select: none;
+  text-transform: uppercase;
 }
 
 .SelectorFecha__fecha_boton {
   pointer-events: all;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
 }
 
-.SelectorFecha__fecha::first-letter {
+.SelectorFecha__texto_fecha {
+  font-family: 'Open Sans', sans-serif;
+  font-size: .7em;
+  text-align: center;
+  font-weight: bold;
+  width: 14em;
+  color: rgba(0, 0, 0, .9);
+}
+
+.SelectorFecha__texto_fecha::first-letter {
   text-transform: uppercase;
 }

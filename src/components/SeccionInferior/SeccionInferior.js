@@ -9,8 +9,7 @@ const SeccionInferior = () => {
 
   const { region } = useSelector(state => state.region)
   const { dia } = useSelector(state => state.fecha)
-  
-  Chart.defaults.global.defaultFontColor = '#263238'
+  Chart.defaults.global.defaultFontColor = 'white'
 
   const options = useMemo(() => ({
     maintainAspectRatio: false,
@@ -40,7 +39,8 @@ const SeccionInferior = () => {
           minRotation: 0,
           callback: (val, i) => {
             const fecha = moment(fechaInicial).add(Number(val), 'days')
-            return fecha.weekday() === 0 ? fecha.format('D MMM') : (dia === Number(val) ? '' : null)
+            const visible = fecha.weekday() === 0 || fecha.diff(moment(), 'days') === 0
+            return visible ? fecha.format('D MMM') : (dia === Number(val) ? '' : null)
           },
           fontColor: 'rgba(255, 255, 255, 0.75)'
         },
@@ -62,7 +62,7 @@ const SeccionInferior = () => {
         title: (tooltipItem, data) => {
           return moment(fechaInicial)
             .add(Number(tooltipItem[0].label), 'days')
-            .format('dddd, D [de] MMMM [de] YYYY')
+            .format('dddd D [de] MMMM')
         }
       }
     }
@@ -85,9 +85,9 @@ const SeccionInferior = () => {
         }
       ]
     }
-    const canvas = document.getElementById('GraficoComuna')
+    const canvas = document.getElementById('SeccionInferior__grafico')
     if (canvas) {
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext('2d');
       const gradientStroke = ctx.createLinearGradient(0, 100, 0, 0);
       gradientStroke.addColorStop(0.1, '#abdda4');
       gradientStroke.addColorStop(1, '#d53e4f');
@@ -114,12 +114,15 @@ const SeccionInferior = () => {
 
   return (
     <div className="SeccionInferior">
-      <div className="SeccionInferior__titulo">
-        <p>{!region || region.codigo === 0 ? 'Selecciona una region' : region.nombre}</p>
+      <div className="SeccionInferior__contenedor_region">
+        <div className="SeccionInferior__region">
+          Registro histórigo para {region.nombre}
+        </div>
+      </div>
+      <div className="SeccionInferior__grafico">
         <Line
-          id="GraficoComuna"
+          id="SeccionInferior__grafico"
           data={chartData}
-          className="GraficoComuna"
           options={options}
         />
       </div>

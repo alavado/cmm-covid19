@@ -11,7 +11,6 @@ const App = () => {
         <Header />
       </section>
       <main className="App__contenedor">
-        {/* <ContenedorGrafico /> */}
         <Mapa />
         <SeccionInferior />
       </main>

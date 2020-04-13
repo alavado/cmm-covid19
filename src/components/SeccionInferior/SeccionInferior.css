@@ -1,10 +1,33 @@
 .SeccionInferior {
   height: 40vh;
   background-color: #212121;
-  padding: 1em;
+  padding-right: 2.8em;
   color: rgba(255, 255, 255, .9);
+  display: flex;
+  width: 100%;
 }
 
-.SeccionInferior__titulo {
+.SeccionInferior__contenedor_region {
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10em;
+}
+
+.SeccionInferior__region {
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .9em;
+  padding: 1.5em;
+}
+
+.SeccionInferior__grafico {
+  flex: 1;
+  padding: 1em 0;
 }

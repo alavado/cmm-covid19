@@ -1,11 +1,14 @@
 import { SELECCIONAR_REGION } from '../actionTypes'
+import infectados_por_100000 from '../../data/regional/infectados_por_100000.json'
+
+const datosChile = {
+  nombre: 'Chile',
+  codigo: 0,
+  datos: infectados_por_100000.find(r => r.codigo).datos
+}
 
 const initialState = {
-  region: {
-    nombre: 'Chile',
-    codigo: 0,
-    datos: []
-  }
+  region: datosChile
 }
 
 export default function(state = initialState, action) {

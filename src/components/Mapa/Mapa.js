@@ -11,7 +11,7 @@ import data from '../../data/regional/infectados_por_100000.json'
 const Mapa = () => {
   const [viewport, setViewport] = useState({
     width: '100%',
-    height: 'calc(60vh)',
+    height: 'calc(61vh)',
     latitude: -39.204954641160536,
     longitude: -69.26430872363804,
     zoom: 4,
@@ -29,13 +29,12 @@ const Mapa = () => {
   const { dia } = useSelector(state => state.fecha)
   const { region } = useSelector(state => state.region)
   const dispatch = useDispatch()
-  console.log(dia)
 
   const cambioEnElViewport = vp => {
     setViewport({
       ...vp,
       width: '100%',
-      height: 'calc(60vh)',
+      height: 'calc(61vh)',
     })
   }
 
@@ -97,7 +96,9 @@ const Mapa = () => {
             className="PopupChico"
           >
             <h1 className="PopupChico__titulo">{popupChico.titulo}</h1>
-            <p className="PopupChico__titulo">{Math.round(popupChico.valor * 100) / 100.0} nuevos casos</p>
+            <p className="PopupChico__titulo">
+              {popupChico.valor.toLocaleString('de-DE', { maximumFractionDigits: 1 })} nuevos casos por 100.000 habitantes
+            </p>
           </Popup>
         }
         <Source id="capa-datos-regiones" type="geojson" data={regiones2}>
