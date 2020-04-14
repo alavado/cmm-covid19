@@ -31,3 +31,13 @@
   flex: 1;
   padding: 0 0 1em 0;
 }
+
+.SeccionInferior__breadcrumb {
+  display: flex;
+  align-items: center;
+}
+
+.SeccionInferior__breadcrumb_separador {
+  margin: 0 .3em;
+}
+

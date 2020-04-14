@@ -19,7 +19,9 @@ const vpInicial = {
   zoom: 4,
   bearing: 98.49519730510106,
   pitch: 0,
-  altitude: 1.5
+  altitude: 1.5,
+  transitionDuration: 'auto',
+  transitionInterpolator: new FlyToInterpolator({ speed: 1 }),
 }
 
 const Mapa = () => {
@@ -38,7 +40,6 @@ const Mapa = () => {
   const params = useParams()
 
   const cambioEnElViewport = vp => {
-    console.log({vp})
     setViewport({
       ...vp,
       width: '100%',
@@ -57,6 +58,18 @@ const Mapa = () => {
     }))
   }), [region])
 
+  useEffect(() => {
+    const codigoRegion = params.codigo
+    if (codigoRegion) {
+      const vpRegion = viewportRegiones.find(({ codigo }) => codigo === Number(codigoRegion)).vp
+      setViewport(v => ({ ...v, ...vpRegion }))
+    }
+    else {
+      dispatch(seleccionarChile())
+      setViewport(v => ({ ...v, ...vpInicial }))
+    }
+  }, [params])
+
   const clickEnRegion = e => {
     const feats = e.features
     if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
@@ -66,22 +79,6 @@ const Mapa = () => {
     dispatch(seleccionarRegion(nombre, codregion))
     history.push(`/region/${codregion}`)
   }
-
-  useEffect(() => {
-    const codigoRegion = params.codigo
-    if (codigoRegion) {
-      setViewport(v => ({
-        ...v,
-        ...viewportRegiones.find(({codigo}) => codigo === Number(codigoRegion)).vp,
-        transitionInterpolator: new FlyToInterpolator({ speed: 1 }),
-        transitionDuration: 'auto'
-      }))
-    }
-    else {
-      setViewport(v => ({ ...v, ...vpInicial }))
-      dispatch(seleccionarChile())
-    }
-  }, [params])
 
   const actualizarPopupChico = e => {
     const feats = e.features
@@ -101,12 +98,19 @@ const Mapa = () => {
     })
   }
 
+  const obtenerCursor = e => {
+    return 'pointer'
+  }
+
   return (
-    <div className="Mapa" onMouseLeave={() => setPopupRegion({...popupRegion, mostrando: false})}>
+    <div
+      className="Mapa"
+      onMouseLeave={() => setPopupRegion({...popupRegion, mostrando: false})}
+    >
       <ReactMapGL
         {...viewport}
         mapStyle={mapStyle}
-        getCursor={() => 'pointer'}
+        getCursor={obtenerCursor}
         onClick={clickEnRegion}
         onViewportChange={cambioEnElViewport}
         onHover={actualizarPopupChico}        

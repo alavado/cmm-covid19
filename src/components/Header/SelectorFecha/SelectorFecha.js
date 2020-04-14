@@ -17,6 +17,7 @@ const SelectorFecha = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    console.log('recalc')
     const fecha = document.getElementsByClassName('SelectorFecha__contenedor_fecha')[0]
     const limite = document.getElementsByClassName('SelectorFecha__limite')[0]
     const slider = document.getElementsByClassName('SelectorFecha__selector')[0]

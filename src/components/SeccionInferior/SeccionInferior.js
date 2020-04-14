@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import './SeccionInferior.css'
 import { fijarDia, seleccionarChile } from '../../redux/actions'
+import { FaCaretRight } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 const SeccionInferior = () => {
 
@@ -133,7 +135,14 @@ const SeccionInferior = () => {
     <div className="SeccionInferior">
       <div className="SeccionInferior__contenedor_region">
         <div className="SeccionInferior__region">
-          {region.nombre}
+          {region.nombre !== 'Chile' ?
+            <div className="SeccionInferior__breadcrumb">
+              <Link to="/">Chile</Link>
+              <FaCaretRight className="SeccionInferior__breadcrumb_separador" />
+              {region.nombre}
+            </div> :
+            <>{region.nombre}</>
+          }
         </div>
       </div>
       <div className="SeccionInferior__grafico">

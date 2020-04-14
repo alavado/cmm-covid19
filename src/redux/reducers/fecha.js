@@ -2,7 +2,7 @@ import { CAMBIAR_FECHA, SELECCIONAR_CHILE } from '../actionTypes'
 import { datosChile } from './region'
 
 const initialState = {
-  dia: 0
+  dia: -1
 }
 
 export default function(state = initialState, action) {
@@ -16,7 +16,7 @@ export default function(state = initialState, action) {
     case SELECCIONAR_CHILE: {
       return {
         ...state,
-        dia: datosChile.datos.length - 1
+        dia: state.dia < 0 ? datosChile.datos.length - 1 : state.dia
       }
     }
     default:
