@@ -42,13 +42,21 @@ const SeccionInferior = () => {
           minRotation: 0,
           callback: (val, i) => {
             const fecha = moment(region.fechaInicial).add(Number(val), 'days')
-            const visible = fecha.weekday() === 0 || i === region.datos.length - 1
-            return visible ? fecha.format('D MMM') : (dia === Number(val) ? '' : null)
+            if (i === region.datos.length - 1) {
+              return 'Hoy'
+            }
+            else if (fecha.weekday() === 0) {
+              return fecha.format('D MMM')
+            }
+            else if (dia === Number(val)) {
+              return ''
+            }
+            return null
           },
-          fontColor: 'rgba(255, 255, 255, 0.75)'
+          fontColor: 'rgba(255, 255, 255, 0.85)'
         },
         gridLines: {
-          color: 'rgba(255, 255, 255, .15)',
+          color: 'rgba(255, 255, 255, .25)',
         },
       }]
     },
