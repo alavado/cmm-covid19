@@ -1,10 +1,11 @@
 .SeccionInferior {
-  height: 40vh;
+  height: 15em;
   background-color: #212121;
   padding-right: 2.8em;
   color: rgba(255, 255, 255, .9);
   display: flex;
   width: 100%;
+  bottom: 0;
 }
 
 .SeccionInferior__contenedor_region {

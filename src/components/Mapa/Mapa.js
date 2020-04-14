@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import ReactMapGL, { Source, Layer, Popup } from 'react-map-gl'
+import ReactMapGL, { Source, Layer } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import regiones from '../../data/geojsons/regiones_con_datos.json'
 import './Mapa.css'
@@ -7,11 +7,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import CodigoColor from './CodigoColor'
 import { seleccionarRegion } from '../../redux/actions'
 import data from '../../data/regional/infectados_por_100000.json'
+import PopupRegion from './PopupRegion'
 
 const Mapa = () => {
   const [viewport, setViewport] = useState({
     width: '100%',
-    height: 'calc(61vh)',
+    height: 'calc(100vh - 15em)',
     latitude: -39.204954641160536,
     longitude: -69.26430872363804,
     zoom: 4,
@@ -20,7 +21,7 @@ const Mapa = () => {
     altitude: 1.5
   })
 
-  const [popupChico, setPopupChico] = useState({
+  const [popupRegion, setPopupRegion] = useState({
     mostrando: false,
     latitude: 0,
     longitude: 0,
@@ -34,7 +35,7 @@ const Mapa = () => {
     setViewport({
       ...vp,
       width: '100%',
-      height: 'calc(61vh)',
+      height: 'calc(100vh - 15em)',
     })
   }
 
@@ -61,13 +62,13 @@ const Mapa = () => {
   const actualizarPopupChico = e => {
     const feats = e.features
     if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
-      setPopupChico({
-        ...popupChico,
+      setPopupRegion({
+        ...popupRegion,
         mostrando: false
       })
       return
     }
-    setPopupChico({
+    setPopupRegion({
       mostrando: true,
       latitude: e.lngLat[1],
       longitude: e.lngLat[0],
@@ -85,22 +86,10 @@ const Mapa = () => {
         onClick={mostrarPopup}
         onViewportChange={cambioEnElViewport}
         onHover={actualizarPopupChico}
-        onMouseLeave={() => setPopupChico({...popupChico, mostrando: false})}
+        onMouseLeave={() => setPopupRegion({...popupRegion, mostrando: false})}
       >
         <CodigoColor />
-        {popupChico.mostrando &&
-          <Popup
-            latitude={popupChico.latitude}
-            longitude={popupChico.longitude}
-            closeButton={false}
-            className="PopupChico"
-          >
-            <h1 className="PopupChico__titulo">{popupChico.titulo}</h1>
-            <p className="PopupChico__titulo">
-              {popupChico.valor.toLocaleString('de-DE', { maximumFractionDigits: 1 })} contagios por 100.000 habitantes
-            </p>
-          </Popup>
-        }
+        {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
         <Source id="capa-datos-regiones" type="geojson" data={regiones2}>
           <Layer
             id="data2"

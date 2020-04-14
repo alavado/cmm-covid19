@@ -1,6 +1,5 @@
 import { CAMBIAR_FECHA, SELECCIONAR_REGION, SELECCIONAR_CHILE } from './actionTypes'
 import infectadosPor100000 from '../data/regional/infectados_por_100000.json'
-import moment from 'moment'
 
 export const fijarDia = (dia, region) => {
   const dias = region.datos.length

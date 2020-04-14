@@ -141,7 +141,11 @@ const SeccionInferior = () => {
           id="SeccionInferior__grafico"
           data={chartData}
           options={options}
-          onElementsClick={e => dispatch(fijarDia(e[0]._index, region))}
+          onElementsClick={e => {
+            if (e[0]) {
+              dispatch(fijarDia(e[0]._index, region))
+            }
+          }}
         />
       </div>
     </div>
