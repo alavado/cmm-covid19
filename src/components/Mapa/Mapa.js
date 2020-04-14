@@ -1,26 +1,29 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import ReactMapGL, { Source, Layer, FlyToInterpolator } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import regiones from '../../data/geojsons/regiones_con_datos.json'
 import './Mapa.css'
 import { useSelector, useDispatch } from 'react-redux'
 import CodigoColor from './CodigoColor'
-import { seleccionarRegion } from '../../redux/actions'
+import { seleccionarRegion, seleccionarChile } from '../../redux/actions'
 import data from '../../data/regional/infectados_por_100000.json'
 import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
+import { useHistory, useParams } from 'react-router-dom'
+
+const vpInicial = {
+  width: '100%',
+  height: 'calc(100vh - 15em)',
+  latitude: -39.204954641160536,
+  longitude: -69.26430872363804,
+  zoom: 4,
+  bearing: 98.49519730510106,
+  pitch: 0,
+  altitude: 1.5
+}
 
 const Mapa = () => {
-  const [viewport, setViewport] = useState({
-    width: '100%',
-    height: 'calc(100vh - 15em)',
-    latitude: -39.204954641160536,
-    longitude: -69.26430872363804,
-    zoom: 4,
-    bearing: 98.49519730510106,
-    pitch: 0,
-    altitude: 1.5
-  })
+  const [viewport, setViewport] = useState(vpInicial)
 
   const [popupRegion, setPopupRegion] = useState({
     mostrando: false,
@@ -31,6 +34,8 @@ const Mapa = () => {
   const { dia } = useSelector(state => state.fecha)
   const { region } = useSelector(state => state.region)
   const dispatch = useDispatch()
+  const history = useHistory()
+  const params = useParams()
 
   const cambioEnElViewport = vp => {
     console.log({vp})
@@ -59,13 +64,24 @@ const Mapa = () => {
     }
     const { Region: nombre, codregion } = feats[0].properties
     dispatch(seleccionarRegion(nombre, codregion))
-    setViewport(v => ({
-      ...v,
-      ...viewportRegiones.find(({codigo}) => codigo === codregion).vp,
-      transitionInterpolator: new FlyToInterpolator({ speed: 1 }),
-      transitionDuration: 'auto'
-    }))
+    history.push(`/region/${codregion}`)
   }
+
+  useEffect(() => {
+    const codigoRegion = params.codigo
+    if (codigoRegion) {
+      setViewport(v => ({
+        ...v,
+        ...viewportRegiones.find(({codigo}) => codigo === Number(codigoRegion)).vp,
+        transitionInterpolator: new FlyToInterpolator({ speed: 1 }),
+        transitionDuration: 'auto'
+      }))
+    }
+    else {
+      setViewport(v => ({ ...v, ...vpInicial }))
+      dispatch(seleccionarChile())
+    }
+  }, [params])
 
   const actualizarPopupChico = e => {
     const feats = e.features
@@ -121,7 +137,7 @@ const Mapa = () => {
               }
             }}
           />
-          <Layer
+          {/* <Layer
             id="data"
             type="line"
             paint={{
@@ -134,7 +150,7 @@ const Mapa = () => {
               },
               'line-width': 1
             }}
-          />
+          /> */}
         </Source>
       </ReactMapGL>
     </div>

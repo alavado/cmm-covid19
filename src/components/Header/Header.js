@@ -1,12 +1,13 @@
 import React from 'react'
 import './Header.css'
 import SelectorFecha from './SelectorFecha'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
     <div className="Header">
       <div className="Header__titulo">
-        COVID-19<br />en Chile
+        <Link to="/">COVID-19<br />en Chile</Link>
       </div>
       <SelectorFecha />
     </div>

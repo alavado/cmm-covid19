@@ -3,6 +3,7 @@ import Header from '../Header'
 import './App.css'
 import Mapa from '../Mapa'
 import SeccionInferior from '../SeccionInferior'
+import { Switch, Route } from 'react-router-dom'
 
 const App = () => {
   return (
@@ -11,7 +12,10 @@ const App = () => {
         <Header />
       </section>
       <main className="App__contenedor">
-        <Mapa />
+        <Switch>
+          <Route path="/" exact component={Mapa} />
+          <Route path="/region/:codigo" component={Mapa} />
+        </Switch>
         <SeccionInferior />
       </main>
     </div>
