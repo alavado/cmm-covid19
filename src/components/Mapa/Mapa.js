@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import ReactMapGL, { Source, Layer } from 'react-map-gl'
+import ReactMapGL, { Source, Layer, FlyToInterpolator } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import regiones from '../../data/geojsons/regiones_con_datos.json'
 import './Mapa.css'
@@ -8,6 +8,7 @@ import CodigoColor from './CodigoColor'
 import { seleccionarRegion } from '../../redux/actions'
 import data from '../../data/regional/infectados_por_100000.json'
 import PopupRegion from './PopupRegion'
+import viewportRegiones from './viewportsRegiones'
 
 const Mapa = () => {
   const [viewport, setViewport] = useState({
@@ -32,6 +33,7 @@ const Mapa = () => {
   const dispatch = useDispatch()
 
   const cambioEnElViewport = vp => {
+    console.log({vp})
     setViewport({
       ...vp,
       width: '100%',
@@ -50,13 +52,19 @@ const Mapa = () => {
     }))
   }), [region])
 
-  const mostrarPopup = e => {
+  const clickEnRegion = e => {
     const feats = e.features
     if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
       return
     }
-    const { Region: nombre, codregion: codigo } = feats[0].properties
-    dispatch(seleccionarRegion(nombre, codigo))
+    const { Region: nombre, codregion } = feats[0].properties
+    dispatch(seleccionarRegion(nombre, codregion))
+    setViewport(v => ({
+      ...v,
+      ...viewportRegiones.find(({codigo}) => codigo === codregion).vp,
+      transitionInterpolator: new FlyToInterpolator({ speed: 1 }),
+      transitionDuration: 'auto'
+    }))
   }
 
   const actualizarPopupChico = e => {
@@ -78,15 +86,14 @@ const Mapa = () => {
   }
 
   return (
-    <div className="Mapa">
+    <div className="Mapa" onMouseLeave={() => setPopupRegion({...popupRegion, mostrando: false})}>
       <ReactMapGL
         {...viewport}
         mapStyle={mapStyle}
         getCursor={() => 'pointer'}
-        onClick={mostrarPopup}
+        onClick={clickEnRegion}
         onViewportChange={cambioEnElViewport}
-        onHover={actualizarPopupChico}
-        onMouseLeave={() => setPopupRegion({...popupRegion, mostrando: false})}
+        onHover={actualizarPopupChico}        
       >
         <CodigoColor />
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}

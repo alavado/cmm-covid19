@@ -4,18 +4,21 @@ import './PopupRegion.css'
 
 const PopupRegion = props => {
 
+  const { latitude, longitude, titulo, valor } = props.config
+  const valorFormateado = valor.toLocaleString('de-DE', { maximumFractionDigits: 1 })
+
   return (
     <Popup
-      latitude={props.config.latitude}
-      longitude={props.config.longitude}
+      latitude={latitude}
+      longitude={longitude}
       closeButton={false}
     >
       <div className="PopupRegion">
-        <h1 className="PopupRegion__titulo">{props.config.titulo}</h1>
-        <div className="PopupRegion__contenido">
-          {props.config.valor.toLocaleString('de-DE', { maximumFractionDigits: 1 })}
-        </div>
-        <h2 className="PopupRegion__subtitulo"> contagios por 100.000 habitantes</h2>
+        <h1 className="PopupRegion__titulo">{titulo}</h1>
+        <div className="PopupRegion__contenido">{valorFormateado}</div>
+        <h2 className="PopupRegion__subtitulo">
+          {`contagio${valorFormateado !== '1' ? 's' : ''} por 100.000 habitantes`}
+        </h2>
       </div>
     </Popup>
   )
