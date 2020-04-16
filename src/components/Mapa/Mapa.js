@@ -2,11 +2,12 @@ import React, { useState, useMemo, useEffect } from 'react'
 import ReactMapGL, { Source, Layer, FlyToInterpolator } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import regiones from '../../data/geojsons/regiones_con_datos.json'
+import comunas from '../../data/geojsons/comunas_con_datos.json'
 import './Mapa.css'
 import { useSelector, useDispatch } from 'react-redux'
 import CodigoColor from './CodigoColor'
 import { seleccionarRegion, seleccionarChile } from '../../redux/actions'
-import data from '../../data/regional/infectados_por_100000.json'
+import data from '../../data/comunal/infectados_por_100000.json'
 import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
@@ -47,17 +48,6 @@ const Mapa = () => {
     })
   }
 
-  const regiones2 = useMemo(() => ({
-    ...regiones,
-    features: regiones.features.map(r => ({
-      ...r,
-      properties: {
-        ...r.properties,
-        x: Number(r.properties.codregion) !== Number(region.codigo) ? 0 : 1
-      }
-    }))
-  }), [region])
-
   useEffect(() => {
     const codigoRegion = params.codigo
     if (codigoRegion) {
@@ -89,12 +79,13 @@ const Mapa = () => {
       })
       return
     }
+    console.log(feats)
     setPopupRegion({
       mostrando: true,
       latitude: e.lngLat[1],
       longitude: e.lngLat[0],
-      titulo: feats[0].properties.Region,
-      valor: data.find(r => r.codigo === feats[0].properties.codregion).datos[dia]
+      titulo: feats[0].properties.NOM_COM,
+      valor: data.find(r => r.codigo === Number(feats[0].properties.COD_COMUNA)).datos[dia]
     })
   }
 
@@ -117,7 +108,7 @@ const Mapa = () => {
       >
         <CodigoColor />
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
-        <Source id="capa-datos-regiones" type="geojson" data={regiones2}>
+        <Source id="capa-datos-regiones" type="geojson" data={comunas}>
           <Layer
             id="data2"
             type="fill"
@@ -125,7 +116,8 @@ const Mapa = () => {
               'fill-color': {
                 property: `v${dia}`,
                 stops: [
-                  [0, '#abdda4'],
+                  [0, '#efefef'],
+                  [0.1, '#abdda4'],
                   [3.5, '#e6f598'],
                   [7, '#ffffbf'],
                   [10.5, '#fee08b'],
@@ -134,11 +126,7 @@ const Mapa = () => {
                   [20, '#d53e4f']
                 ]
               },
-              'fill-opacity': .7,
-              'fill-color-transition': {
-                'duration': 300,
-                'delay': 0
-              }
+              'fill-opacity': .7
             }}
           />
           {/* <Layer

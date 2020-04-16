@@ -5,7 +5,7 @@ import './PopupRegion.css'
 const PopupRegion = props => {
 
   const { latitude, longitude, titulo, valor } = props.config
-  const valorFormateado = valor.toLocaleString('de-DE', { maximumFractionDigits: 1 })
+  const valorFormateado = valor ? valor.toLocaleString('de-DE', { maximumFractionDigits: 1 }) : ''
 
   return (
     <Popup
