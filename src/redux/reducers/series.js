@@ -1,4 +1,4 @@
-import { ACTUALIZAR_SERIE } from '../actionTypes'
+import { ACTUALIZAR_SERIE, AVANZAR_EN_SERIE, RETROCEDER_EN_SERIE, FIJAR_POSICION_SERIE } from '../actionTypes'
 
 export const CONTAGIOS_REGIONALES_POR_100000_HABITANTES =  'CONTAGIOS_REGIONALES_POR_100000_HABITANTES'
 
@@ -10,7 +10,8 @@ const initialState = {
       geoJSON: null
     }
   ],
-  serieSeleccionada: CONTAGIOS_REGIONALES_POR_100000_HABITANTES
+  serieSeleccionada: CONTAGIOS_REGIONALES_POR_100000_HABITANTES,
+  posicion: 0
 }
 
 export default function(state = initialState, action) {
@@ -30,6 +31,25 @@ export default function(state = initialState, action) {
             [propiedad]: valor
           }
         ]
+      }
+    }
+    case RETROCEDER_EN_SERIE: {
+      return {
+        ...state,
+        posicion: Math.max(state.posicion - 1, 0)
+      }
+    }
+    case AVANZAR_EN_SERIE: {
+      const serie = state.series.find(s => s.id === state.serieSeleccionada)
+      return {
+        ...state,
+        posicion: Math.min(state.posicion + 1, serie.datos.length - 1)
+      }
+    }
+    case FIJAR_POSICION_SERIE: {
+      return {
+        ...state,
+        posicion: action.payload
       }
     }
     default:

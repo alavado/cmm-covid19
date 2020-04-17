@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import './range.css'
 import './SelectorFecha.css'
-import { fijarDia } from '../../../redux/actions'
+import { avanzarEnSerie, retrocederEnSerie, fijarPosicionSerie } from '../../../redux/actions'
 import moment from 'moment/min/moment-with-locales'
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 moment.locale('es')
@@ -11,9 +11,10 @@ const SelectorFecha = () => {
 
   const { dia } = useSelector(state => state.fecha)
   const { region } = useSelector(state => state.region)
+  const { posicion } = useSelector(state => state.series)
   const fecha = moment(region.fechaInicial).add(dia, 'days')
   const diferencia = fecha.diff(moment(), 'days')
-  const rangoDias = region.datos.length - 1
+  const rangoDias = 10
   const dispatch = useDispatch()
   const [ancho, setAncho] = useState(window.innerWidth)
 
@@ -37,8 +38,8 @@ const SelectorFecha = () => {
           min={0}
           max={rangoDias}
           step={1}
-          onChange={e => dispatch(fijarDia(e.target.value, region))}
-          value={dia}
+          onChange={e => dispatch(fijarPosicionSerie(e.target.value))}
+          value={posicion}
         />
         <div className="SelectorFecha__limite">{moment(region.fechaInicial).add('days', rangoDias).format(`DD/MM`)}</div>
       </div>
@@ -46,7 +47,7 @@ const SelectorFecha = () => {
         <div className="SelectorFecha__fecha">
           <button
             className="SelectorFecha__fecha_boton"
-            onClick={e => dispatch(fijarDia(dia - 1, region))}
+            onClick={e => dispatch(retrocederEnSerie())}
             title="Ir a día anterior"
             aria-label={'Ir a día anterior'}
           >
@@ -57,7 +58,7 @@ const SelectorFecha = () => {
           </div>
           <button 
             className="SelectorFecha__fecha_boton"
-            onClick={e => dispatch(fijarDia(dia + 1, region))}
+            onClick={e => dispatch(avanzarEnSerie())}
             title="Ir a día siguiente"
             aria-label={'Ir a día siguiente'}
           >

@@ -1,5 +1,4 @@
-import { CAMBIAR_FECHA, SELECCIONAR_CHILE } from '../actionTypes'
-import { datosChile } from './region'
+import { CAMBIAR_FECHA } from '../actionTypes'
 
 const initialState = {
   dia: -1
@@ -11,12 +10,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         dia: action.payload
-      }
-    }
-    case SELECCIONAR_CHILE: {
-      return {
-        ...state,
-        dia: state.dia < 0 ? datosChile.datos.length - 1 : state.dia
       }
     }
     default:

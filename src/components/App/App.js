@@ -11,18 +11,21 @@ import { actualizarSerie } from '../../redux/actions'
 import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
 
 const urlRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'
+const urlGeoJSONRegiones = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/geojsons/regiones.json'
 
 const App = () => {
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    axios.get(urlRegiones)
-      .then(({ data }) => {
-        const [casosPor100000Habitantes, geoJSONRegiones] = procesarRegiones(data)
-        dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'datos', casosPor100000Habitantes))
-        dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'geoJSON', geoJSONRegiones))
-      })
+    async function inicializarDatos() {
+      const { data: geoJSON } = await axios.get(urlGeoJSONRegiones)
+      const { data: datosCSV } = await axios.get(urlRegiones)
+      const [casosPor100000Habitantes, geoJSONConDatos] = procesarRegiones(datosCSV, geoJSON)
+      dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'geoJSON', geoJSONConDatos))
+      dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'datos', casosPor100000Habitantes))
+    }
+    inicializarDatos()
   }, [])
 
   return (

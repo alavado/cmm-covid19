@@ -1,5 +1,4 @@
-import { CAMBIAR_FECHA, SELECCIONAR_REGION, SELECCIONAR_CHILE, ACTUALIZAR_SERIE } from './actionTypes'
-import infectadosPor100000 from '../data/regional/infectados_por_100000.json'
+import { CAMBIAR_FECHA, SELECCIONAR_REGION, SELECCIONAR_CHILE, ACTUALIZAR_SERIE, AVANZAR_EN_SERIE, RETROCEDER_EN_SERIE, FIJAR_POSICION_SERIE } from './actionTypes'
 
 export const fijarDia = (dia, region) => {
   const dias = region.datos.length
@@ -13,8 +12,7 @@ export const seleccionarRegion = (nombre, codigo) => ({
   type: SELECCIONAR_REGION,
   payload: {
     nombre,
-    codigo,
-    datos: infectadosPor100000.find(r => Number(r.codigo) === Number(codigo)).datos
+    codigo
   }
 })
 
@@ -25,4 +23,17 @@ export const seleccionarChile = () => ({
 export const actualizarSerie = (id, propiedad, valor) => ({
   type: ACTUALIZAR_SERIE,
   payload: { id, propiedad, valor }
+})
+
+export const avanzarEnSerie = () => ({
+  type: AVANZAR_EN_SERIE
+})
+
+export const retrocederEnSerie = () => ({
+  type: RETROCEDER_EN_SERIE
+})
+
+export const fijarPosicionSerie = pos => ({
+  type: FIJAR_POSICION_SERIE,
+  payload: pos
 })

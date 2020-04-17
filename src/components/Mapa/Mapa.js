@@ -1,13 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import ReactMapGL, { Source, Layer, FlyToInterpolator } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
-import regiones from '../../data/geojsons/regiones_con_datos.json'
-import comunas from '../../data/geojsons/comunas_con_datos.json'
 import './Mapa.css'
 import { useSelector, useDispatch } from 'react-redux'
 import CodigoColor from './CodigoColor'
 import { seleccionarRegion, seleccionarChile } from '../../redux/actions'
-import data from '../../data/comunal/infectados_por_100000.json'
 import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
@@ -36,7 +33,7 @@ const Mapa = () => {
   })
   const { dia } = useSelector(state => state.fecha)
   const { region } = useSelector(state => state.region)
-  const { series, serieSeleccionada } = useSelector(state => state.series)
+  const { series, serieSeleccionada, posicion } = useSelector(state => state.series)
   const serie = useMemo(() => series.find(({ id }) => id === serieSeleccionada), [series, serieSeleccionada])
   const dispatch = useDispatch()
   const history = useHistory()
@@ -53,6 +50,8 @@ const Mapa = () => {
       setViewport(v => ({ ...v, ...vpInicial }))
     }
   }, [params])
+
+  console.log(serie)
 
   const cambioEnElViewport = vp => {
     setViewport({

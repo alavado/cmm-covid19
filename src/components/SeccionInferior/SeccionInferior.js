@@ -11,6 +11,8 @@ const SeccionInferior = () => {
 
   const { region } = useSelector(state => state.region)
   const { dia } = useSelector(state => state.fecha)
+  const { series, serieSeleccionada } = useSelector(state => state.series)
+  const serie = series.find(s => s.id === serieSeleccionada).datos
   const dispatch = useDispatch()
   Chart.defaults.global.defaultFontColor = 'white'
 
@@ -81,7 +83,7 @@ const SeccionInferior = () => {
   
   const chartData = useMemo(() => {
     let data = {
-      labels: region.datos.map((d, i) => i),
+      labels: serie.map((d, i) => i),
       datasets: [
         {
           label: 'Contagios por 100.000 habitantes',
@@ -97,10 +99,10 @@ const SeccionInferior = () => {
       ]
     }
     const canvas = document.getElementById('SeccionInferior__grafico')
-    if (canvas) {
+    if (serie.length > 0 && canvas) {
       const ctx = canvas.getContext('2d')
       const gradientStroke = ctx.createLinearGradient(0, 100, 0, 0)
-      const maximo = region.datos.reduce((prev, v) => Math.max(prev, v))
+      const maximo = serie.reduce((prev, v) => Math.max(prev, v))
       let limiteEspectro = 1
       if (maximo >= 20) {
         limiteEspectro = 20.0 / (5 * (Math.floor((maximo + 5) / 5)))
@@ -145,7 +147,7 @@ const SeccionInferior = () => {
         <div className="SeccionInferior__region">
           {region.nombre !== 'Chile' ?
             <div className="SeccionInferior__breadcrumb">
-              <Link to="/">Chile</Link>
+              <Link to="/" className="SeccionInferior__breadcrumb_link">Chile</Link>
               <FaCaretRight className="SeccionInferior__breadcrumb_separador" />
               {region.nombre}
             </div> :
