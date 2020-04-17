@@ -36,17 +36,11 @@ const Mapa = () => {
   })
   const { dia } = useSelector(state => state.fecha)
   const { region } = useSelector(state => state.region)
+  const { series, serieSeleccionada } = useSelector(state => state.series)
+  const serie = useMemo(() => series.find(({ id }) => id === serieSeleccionada), [series, serieSeleccionada])
   const dispatch = useDispatch()
   const history = useHistory()
   const params = useParams()
-
-  const cambioEnElViewport = vp => {
-    setViewport({
-      ...vp,
-      width: '100%',
-      height: 'calc(100vh - 15em)',
-    })
-  }
 
   useEffect(() => {
     const codigoRegion = params.codigo
@@ -59,6 +53,14 @@ const Mapa = () => {
       setViewport(v => ({ ...v, ...vpInicial }))
     }
   }, [params])
+
+  const cambioEnElViewport = vp => {
+    setViewport({
+      ...vp,
+      width: '100%',
+      height: 'calc(100vh - 15em)',
+    })
+  }
 
   const clickEnRegion = e => {
     const feats = e.features
@@ -107,7 +109,7 @@ const Mapa = () => {
       >
         <CodigoColor />
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
-        <Source id="capa-datos-regiones" type="geojson" data={comunas}>
+        <Source id="capa-datos-regiones" type="geojson" data={serie.geoJSON}>
           <Layer
             id="data2"
             type="fill"

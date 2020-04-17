@@ -41,7 +41,7 @@ export const procesarRegiones = data => {
     nombre: 'Chile',
     datos: datosChile
   }]
-  const geoJSONconDatos = JSON.stringify({
+  const geoJSONConDatos = {
     ...geoJSONRegiones,
     features: geoJSONRegiones.features.map(region => {
       const id = Number(region.properties.codregion)
@@ -57,6 +57,6 @@ export const procesarRegiones = data => {
         }
       }
     })
-  })
-  return [casosPor100000Habitantes, geoJSONRegiones]
+  }
+  return [casosPor100000Habitantes, geoJSONConDatos]
 }

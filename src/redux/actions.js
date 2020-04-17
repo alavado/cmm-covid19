@@ -1,4 +1,4 @@
-import { CAMBIAR_FECHA, SELECCIONAR_REGION, SELECCIONAR_CHILE } from './actionTypes'
+import { CAMBIAR_FECHA, SELECCIONAR_REGION, SELECCIONAR_CHILE, ACTUALIZAR_SERIE } from './actionTypes'
 import infectadosPor100000 from '../data/regional/infectados_por_100000.json'
 
 export const fijarDia = (dia, region) => {
@@ -20,4 +20,9 @@ export const seleccionarRegion = (nombre, codigo) => ({
 
 export const seleccionarChile = () => ({
   type: SELECCIONAR_CHILE
+})
+
+export const actualizarSerie = (id, propiedad, valor) => ({
+  type: ACTUALIZAR_SERIE,
+  payload: { id, propiedad, valor }
 })

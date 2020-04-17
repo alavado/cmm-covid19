@@ -6,16 +6,21 @@ import SeccionInferior from '../SeccionInferior'
 import { Switch, Route } from 'react-router-dom'
 import axios from 'axios'
 import { procesarRegiones } from '../../helpers/perez'
+import { useDispatch } from 'react-redux'
+import { actualizarSerie } from '../../redux/actions'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
 
 const urlRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'
 
 const App = () => {
 
+  const dispatch = useDispatch()
+
   useEffect(() => {
     axios.get(urlRegiones)
       .then(({ data }) => {
         const [casosPor100000Habitantes, geoJSONRegiones] = procesarRegiones(data)
-        console.log(geoJSONRegiones)
+        dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'geoJSON', geoJSONRegiones))
       })
   }, [])
 
