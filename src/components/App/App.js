@@ -1,11 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../Header'
 import './App.css'
 import Mapa from '../Mapa'
 import SeccionInferior from '../SeccionInferior'
 import { Switch, Route } from 'react-router-dom'
+import axios from 'axios'
+import { procesarRegiones } from '../../helpers/perez'
+
+const urlRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'
 
 const App = () => {
+
+  useEffect(() => {
+    axios.get(urlRegiones)
+      .then(({ data }) => {
+        const [casosPor100000Habitantes, geoJSONRegiones] = procesarRegiones(data)
+        console.log(geoJSONRegiones)
+      })
+  }, [])
+
   return (
     <div className="App">
       <section className="App_contenedor_header">

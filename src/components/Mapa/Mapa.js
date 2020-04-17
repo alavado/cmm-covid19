@@ -79,7 +79,6 @@ const Mapa = () => {
       })
       return
     }
-    console.log(feats)
     setPopupRegion({
       mostrando: true,
       latitude: e.lngLat[1],

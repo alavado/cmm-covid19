@@ -1,0 +1,82 @@
+[
+  {
+    "codigo": 15,
+    "nombre": "Arica y Parinacota",
+    "poblacion": 252110
+  },
+  {
+    "codigo": 1,
+    "nombre": "Tarapacá",
+    "poblacion": 382773
+  },
+  {
+    "codigo": 2,
+    "nombre": "Antofagasta",
+    "poblacion": 691854
+  },
+  {
+    "codigo": 3,
+    "nombre": "Atacama",
+    "poblacion": 314709
+  },
+  {
+    "codigo": 4,
+    "nombre": "Coquimbo",
+    "poblacion": 836096
+  },
+  {
+    "codigo": 5,
+    "nombre": "Valparaíso",
+    "poblacion": 1960170
+  },
+  {
+    "codigo": 13,
+    "nombre": "Santiago",
+    "poblacion": 8125072
+  },
+  {
+    "codigo": 6,
+    "nombre": "O’Higgins",
+    "poblacion": 991063
+  },
+  {
+    "codigo": 7,
+    "nombre": "Maule",
+    "poblacion": 1131939
+  },
+  {
+    "codigo": 16,
+    "nombre": "Ñuble",
+    "poblacion": 511551
+  },
+  {
+    "codigo": 8,
+    "nombre": "Biobío",
+    "poblacion": 1663696
+  },
+  {
+    "codigo": 9,
+    "nombre": "Araucanía",
+    "poblacion": 1014343
+  },
+  {
+    "codigo": 14,
+    "nombre": "Los Ríos",
+    "poblacion": 405835
+  },
+  {
+    "codigo": 10,
+    "nombre": "Los Lagos",
+    "poblacion": 891440
+  },
+  {
+    "codigo": 11,
+    "nombre": "Aysén",
+    "poblacion": 107297
+  },
+  {
+    "codigo": 12,
+    "nombre": "Magallanes",
+    "poblacion": 178362
+  }
+]
