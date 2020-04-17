@@ -4,10 +4,11 @@ import mapStyle from './mapStyle.json'
 import './Mapa.css'
 import { useSelector, useDispatch } from 'react-redux'
 import CodigoColor from './CodigoColor'
-import { seleccionarRegion, seleccionarChile } from '../../redux/actions'
 import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
+import { seleccionarSubserie } from '../../redux/actions'
+import { CODIGO_CHILE } from '../../redux/reducers/series'
 
 const vpInicial = {
   width: '100%',
@@ -31,10 +32,7 @@ const Mapa = () => {
     longitude: 0,
     titulo: ''
   })
-  const { dia } = useSelector(state => state.fecha)
-  const { region } = useSelector(state => state.region)
-  const { series, serieSeleccionada, posicion } = useSelector(state => state.series)
-  const serie = useMemo(() => series.find(({ id }) => id === serieSeleccionada), [series, serieSeleccionada])
+  const { serieSeleccionada: serie, posicion } = useSelector(state => state.series)
   const dispatch = useDispatch()
   const history = useHistory()
   const params = useParams()
@@ -46,12 +44,10 @@ const Mapa = () => {
       setViewport(v => ({ ...v, ...vpRegion }))
     }
     else {
-      dispatch(seleccionarChile())
+      dispatch(seleccionarSubserie(CODIGO_CHILE))
       setViewport(v => ({ ...v, ...vpInicial }))
     }
   }, [params])
-
-  console.log(serie)
 
   const cambioEnElViewport = vp => {
     setViewport({
@@ -67,7 +63,7 @@ const Mapa = () => {
       return
     }
     const { nombre, codregion } = feats[0].properties
-    dispatch(seleccionarRegion(nombre, codregion))
+    dispatch(seleccionarSubserie(codregion))
     history.push(`/region/${codregion}`)
   }
 
@@ -85,13 +81,15 @@ const Mapa = () => {
       latitude: e.lngLat[1],
       longitude: e.lngLat[0],
       titulo: feats[0].properties.nombre,
-      valor: serie.datos.find(r => r.codigo === Number(feats[0].properties.codigo)).datos[dia]
+      valor: serie.find(r => r.codigo === Number(feats[0].properties.codigo)).datos[posicion]
     })
   }
 
   const obtenerCursor = e => {
     return 'pointer'
   }
+
+  console.log(posicion)
 
   return (
     <div
@@ -114,9 +112,9 @@ const Mapa = () => {
             type="fill"
             paint={{
               'fill-color': {
-                property: `v${dia}`,
+                property: `v${posicion}`,
                 stops: [
-                  [0, '#efefef'],
+                  // [0, '#efefef'],
                   [0.1, '#abdda4'],
                   [3.5, '#e6f598'],
                   [7, '#ffffbf'],

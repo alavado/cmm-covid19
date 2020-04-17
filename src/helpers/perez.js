@@ -60,7 +60,7 @@ export const procesarRegiones = (data, geoJSON) => {
           ...region.properties,
           nombre: region.properties.Region,
           codigo: region.properties.codregion,
-          ...datosRegion.reduce((prev, d, i) => ({...prev, [`v${i}`]: d }), {})
+          ...datosRegion.reduce((prev, d, i) => ({...prev, [`v${i}`]: d.valor }), {})
         }
       }
     })

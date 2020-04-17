@@ -6,15 +6,16 @@ import SeccionInferior from '../SeccionInferior'
 import { Switch, Route } from 'react-router-dom'
 import axios from 'axios'
 import { procesarRegiones } from '../../helpers/perez'
-import { useDispatch } from 'react-redux'
-import { actualizarSerie } from '../../redux/actions'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
+import { useDispatch, useSelector } from 'react-redux'
+import { actualizarSerie, seleccionarSerie, seleccionarSubserie } from '../../redux/actions'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE } from '../../redux/reducers/series'
 
 const urlRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'
 const urlGeoJSONRegiones = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/geojsons/regiones.json'
 
 const App = () => {
 
+  const { subserieSeleccionada } = useSelector(state => state.series)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -24,9 +25,15 @@ const App = () => {
       const [casosPor100000Habitantes, geoJSONConDatos] = procesarRegiones(datosCSV, geoJSON)
       dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'geoJSON', geoJSONConDatos))
       dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'datos', casosPor100000Habitantes))
+      dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
+      dispatch(seleccionarSubserie(CODIGO_CHILE))
     }
     inicializarDatos()
   }, [])
+
+  if (!subserieSeleccionada) {
+    return null
+  }
 
   return (
     <div className="App">

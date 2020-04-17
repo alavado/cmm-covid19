@@ -5,9 +5,8 @@ import moment from 'moment/min/moment-with-locales'
 
 const CodigoColor = () => {
 
-  const { dia } = useSelector(state => state.fecha)
-  const { region } = useSelector(state => state.region)
-  const fecha = moment(region.fechaInicial).add(dia, 'days')
+  const { subserieSeleccionada: serie, posicion } = useSelector(state => state.series)
+  const { fecha } = serie.datos[posicion]
   const diferencia = fecha.diff(moment(), 'days')
 
   return (

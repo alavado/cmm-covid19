@@ -1,5 +1,9 @@
-import { ACTUALIZAR_SERIE, AVANZAR_EN_SERIE, RETROCEDER_EN_SERIE, FIJAR_POSICION_SERIE } from '../actionTypes'
+import {
+  ACTUALIZAR_SERIE, AVANZAR_EN_SERIE, RETROCEDER_EN_SERIE, FIJAR_POSICION_SERIE,
+  SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE }
+from '../actionTypes'
 
+export const CODIGO_CHILE = 0
 export const CONTAGIOS_REGIONALES_POR_100000_HABITANTES =  'CONTAGIOS_REGIONALES_POR_100000_HABITANTES'
 
 const initialState = {
@@ -10,7 +14,8 @@ const initialState = {
       geoJSON: null
     }
   ],
-  serieSeleccionada: CONTAGIOS_REGIONALES_POR_100000_HABITANTES,
+  serieSeleccionada: null,
+  subserieSeleccionada: null,
   posicion: 0
 }
 
@@ -50,6 +55,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         posicion: action.payload
+      }
+    }
+    case SELECCIONAR_SERIE: {
+      return {
+        ...state,
+        serieSeleccionada: state.series.find(s => s.id === action.payload)
+      }
+    }
+    case SELECCIONAR_SUBSERIE: {
+      return {
+        ...state,
+        subserieSeleccionada: state.serieSeleccionada.datos.find(s => s.codigo === action.payload)
       }
     }
     default:

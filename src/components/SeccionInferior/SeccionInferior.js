@@ -3,16 +3,15 @@ import { Chart, Line } from 'react-chartjs-2'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import './SeccionInferior.css'
-import { fijarDia, seleccionarChile } from '../../redux/actions'
 import { FaCaretRight } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import { CODIGO_CHILE } from '../../redux/reducers/series'
+import { fijarPosicionSerie } from '../../redux/actions'
 
 const SeccionInferior = () => {
 
-  const { region } = useSelector(state => state.region)
-  const { dia } = useSelector(state => state.fecha)
-  const { series, serieSeleccionada } = useSelector(state => state.series)
-  const serie = series.find(s => s.id === serieSeleccionada).datos
+  const { subserieSeleccionada: serie, posicion } = useSelector(state => state.series)
+  const fecha = serie.datos[posicion].fecha
   const dispatch = useDispatch()
   Chart.defaults.global.defaultFontColor = 'white'
 
@@ -43,14 +42,13 @@ const SeccionInferior = () => {
           maxRotation: 0,
           minRotation: 0,
           callback: (val, i) => {
-            const fecha = moment(region.fechaInicial).add(Number(val), 'days')
-            if (i === region.datos.length - 1) {
+            if (fecha.diff(moment(), 'days') === 0) {
               return 'Hoy'
             }
             else if (fecha.weekday() === 0) {
               return fecha.format('D MMM')
             }
-            else if (dia === Number(val)) {
+            else if (posicion === Number(val)) {
               return ''
             }
             return null
@@ -73,17 +71,15 @@ const SeccionInferior = () => {
           return `${etiqueta}: ${valor.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`
         },
         title: (tooltipItem, data) => {
-          return moment(region.fechaInicial)
-            .add(Number(tooltipItem[0].label), 'days')
-            .format('dddd D [de] MMMM')
+          return tooltipItem[0].label.format('dddd D [de] MMMM')
         }
       }
     }
-  }), [dia, region])
+  }), [posicion, serie])
   
   const chartData = useMemo(() => {
     let data = {
-      labels: serie.map((d, i) => i),
+      labels: serie.datos.map(d => d.fecha),
       datasets: [
         {
           label: 'Contagios por 100.000 habitantes',
@@ -93,16 +89,16 @@ const SeccionInferior = () => {
           pointStrokeColor: '#fff',
           pointHighlightFill: '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data: region.datos,
+          data: serie.datos.map(d => d.valor),
           lineTension: .2,
         }
       ]
     }
     const canvas = document.getElementById('SeccionInferior__grafico')
-    if (serie.length > 0 && canvas) {
+    if (serie.datos.length > 0 && canvas) {
       const ctx = canvas.getContext('2d')
       const gradientStroke = ctx.createLinearGradient(0, 100, 0, 0)
-      const maximo = serie.reduce((prev, v) => Math.max(prev, v))
+      const maximo = serie.datos.reduce((prev, d) => Math.max(prev, d.valor), 0)
       let limiteEspectro = 1
       if (maximo >= 20) {
         limiteEspectro = 20.0 / (5 * (Math.floor((maximo + 5) / 5)))
@@ -135,23 +131,19 @@ const SeccionInferior = () => {
      }
     }
     return data
-  }, [region])
-
-  useEffect(() => {
-    dispatch(seleccionarChile())
-  }, [])
+  }, [serie])
 
   return (
     <div className="SeccionInferior">
       <div className="SeccionInferior__contenedor_region">
         <div className="SeccionInferior__region">
-          {region.nombre !== 'Chile' ?
+          {serie.codigo !== CODIGO_CHILE ?
             <div className="SeccionInferior__breadcrumb">
               <Link to="/" className="SeccionInferior__breadcrumb_link">Chile</Link>
               <FaCaretRight className="SeccionInferior__breadcrumb_separador" />
-              {region.nombre}
+              {serie.codigo}
             </div> :
-            <>{region.nombre}</>
+            <>{serie.codigo}</>
           }
         </div>
       </div>
@@ -162,7 +154,7 @@ const SeccionInferior = () => {
           options={options}
           onElementsClick={e => {
             if (e[0]) {
-              dispatch(fijarDia(e[0]._index, region))
+              dispatch(fijarPosicionSerie(e[0]._index))
             }
           }}
         />
