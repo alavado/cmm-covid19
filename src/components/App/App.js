@@ -20,6 +20,7 @@ const App = () => {
     axios.get(urlRegiones)
       .then(({ data }) => {
         const [casosPor100000Habitantes, geoJSONRegiones] = procesarRegiones(data)
+        dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'datos', casosPor100000Habitantes))
         dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'geoJSON', geoJSONRegiones))
       })
   }, [])

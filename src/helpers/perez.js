@@ -53,6 +53,8 @@ export const procesarRegiones = data => {
         ...region,
         properties: {
           ...region.properties,
+          nombre: region.properties.Region,
+          codigo: region.properties.codregion,
           ...datosRegion.reduce((prev, d, i) => ({...prev, [`v${i}`]: d }), {})
         }
       }

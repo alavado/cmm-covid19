@@ -26,8 +26,8 @@ const vpInicial = {
 }
 
 const Mapa = () => {
-  const [viewport, setViewport] = useState(vpInicial)
 
+  const [viewport, setViewport] = useState(vpInicial)
   const [popupRegion, setPopupRegion] = useState({
     mostrando: false,
     latitude: 0,
@@ -62,12 +62,12 @@ const Mapa = () => {
     })
   }
 
-  const clickEnRegion = e => {
+  const clickEnPoligono = e => {
     const feats = e.features
     if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
       return
     }
-    const { Region: nombre, codregion } = feats[0].properties
+    const { nombre, codregion } = feats[0].properties
     dispatch(seleccionarRegion(nombre, codregion))
     history.push(`/region/${codregion}`)
   }
@@ -85,8 +85,8 @@ const Mapa = () => {
       mostrando: true,
       latitude: e.lngLat[1],
       longitude: e.lngLat[0],
-      titulo: feats[0].properties.NOM_COM,
-      valor: data.find(r => r.codigo === Number(feats[0].properties.COD_COMUNA)).datos[dia]
+      titulo: feats[0].properties.nombre,
+      valor: serie.datos.find(r => r.codigo === Number(feats[0].properties.codigo)).datos[dia]
     })
   }
 
@@ -103,7 +103,7 @@ const Mapa = () => {
         {...viewport}
         mapStyle={mapStyle}
         getCursor={obtenerCursor}
-        onClick={clickEnRegion}
+        onClick={clickEnPoligono}
         onViewportChange={cambioEnElViewport}
         onHover={actualizarPopupChico}        
       >
