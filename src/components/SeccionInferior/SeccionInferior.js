@@ -13,8 +13,8 @@ const SeccionInferior = () => {
   const { subserieSeleccionada: serie, posicion } = useSelector(state => state.series)
   const fecha = serie.datos[posicion].fecha
   const dispatch = useDispatch()
-  Chart.defaults.global.defaultFontColor = 'white'
-
+  Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
+  
   const options = useMemo(() => ({
     maintainAspectRatio: false,
     scales: {
@@ -41,14 +41,14 @@ const SeccionInferior = () => {
           autoSkip: false,
           maxRotation: 0,
           minRotation: 0,
-          callback: (val, i) => {
-            if (fecha.diff(moment(), 'days') === 0) {
+          callback: f => {
+            if (f.diff(moment(), 'days') === 0) {
               return 'Hoy'
             }
-            else if (fecha.weekday() === 0) {
-              return fecha.format('D MMM')
+            else if (f.weekday() === 0) {
+              return f.format('DD[/]MM')
             }
-            else if (posicion === Number(val)) {
+            else if (f.diff(fecha, 'days') === 0) {
               return ''
             }
             return null
@@ -65,14 +65,8 @@ const SeccionInferior = () => {
     },
     tooltips: {
       callbacks: {
-        label: function(tooltipItem, data) {
-          const etiqueta = data.datasets[tooltipItem.datasetIndex].label
-          const valor = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
-          return `${etiqueta}: ${valor.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`
-        },
-        title: (tooltipItem, data) => {
-          return tooltipItem[0].label.format('dddd D [de] MMMM')
-        }
+        label: ({ yLabel: v }) => `Contagios: ${v.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`,
+        title: ([{ xLabel: fecha }]) => fecha.format('dddd D [de] MMMM')
       }
     }
   }), [posicion, serie])
@@ -141,9 +135,9 @@ const SeccionInferior = () => {
             <div className="SeccionInferior__breadcrumb">
               <Link to="/" className="SeccionInferior__breadcrumb_link">Chile</Link>
               <FaCaretRight className="SeccionInferior__breadcrumb_separador" />
-              {serie.codigo}
+              {serie.nombre}
             </div> :
-            <>{serie.codigo}</>
+            <>Chile</>
           }
         </div>
       </div>

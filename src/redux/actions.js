@@ -15,7 +15,7 @@ export const retrocederEnSerie = () => ({
 
 export const fijarPosicionSerie = pos => ({
   type: FIJAR_POSICION_SERIE,
-  payload: pos
+  payload: Number(pos)
 })
 
 export const seleccionarSerie = id => ({

@@ -52,6 +52,7 @@ export default function(state = initialState, action) {
       }
     }
     case FIJAR_POSICION_SERIE: {
+      console.log('pos en redux', action.payload)
       return {
         ...state,
         posicion: action.payload

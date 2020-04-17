@@ -1,5 +1,5 @@
 import demografiaRegiones from '../data/demografia/regiones.json'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 
 const formatearDatosRegion = datos => {
   const filas = datos.split('\r\n')
@@ -9,8 +9,10 @@ const formatearDatosRegion = datos => {
     .map(fila => fila.split(','))
     .map(fila => {
       const codigo = Number(fila[0])
+      const nombre = demografiaRegiones.find(r => r.codigo === codigo).nombre
       return {
         codigo,
+        nombre,
         datos: fila
           .slice(2)
           .map(Number)
@@ -32,9 +34,10 @@ const obtenerCasosPorHabitantes = (region, habitantes) => {
 }
 
 export const procesarRegiones = (data, geoJSON) => {
+  console.log(data)
   let casosPorRegion = formatearDatosRegion(data)
   let casosPor100000Habitantes = casosPorRegion.map(region => obtenerCasosPorHabitantes(region, 100000))
-  const poblacionChile = demografiaRegiones.reduce((suma, { habitantes }) => suma + habitantes, 0)
+  const poblacionChile = demografiaRegiones.reduce((suma, { poblacion }) => suma + poblacion, 0)
   const datosChile = casosPorRegion
     .reduce((prev, { datos }) => ({
       ...prev,

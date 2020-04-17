@@ -1,82 +1,82 @@
 [
   {
     "codigo": 15,
-    "nombre": "Arica y Parinacota",
+    "nombre": "Región de Arica y Parinacota",
     "habitantes": 252110
   },
   {
     "codigo": 1,
-    "nombre": "Tarapacá",
+    "nombre": "Región de Tarapacá",
     "habitantes": 382773
   },
   {
     "codigo": 2,
-    "nombre": "Antofagasta",
+    "nombre": "Región de Antofagasta",
     "habitantes": 691854
   },
   {
     "codigo": 3,
-    "nombre": "Atacama",
+    "nombre": "Región de Atacama",
     "habitantes": 314709
   },
   {
     "codigo": 4,
-    "nombre": "Coquimbo",
+    "nombre": "Región de Coquimbo",
     "habitantes": 836096
   },
   {
     "codigo": 5,
-    "nombre": "Valparaíso",
+    "nombre": "Región de Valparaíso",
     "habitantes": 1960170
   },
   {
     "codigo": 13,
-    "nombre": "Santiago",
+    "nombre": "Región Metropolitana de Santiago",
     "habitantes": 8125072
   },
   {
     "codigo": 6,
-    "nombre": "O’Higgins",
+    "nombre": "Región de O’Higgins",
     "habitantes": 991063
   },
   {
     "codigo": 7,
-    "nombre": "Maule",
+    "nombre": "Región del Maule",
     "habitantes": 1131939
   },
   {
     "codigo": 16,
-    "nombre": "Ñuble",
+    "nombre": "Región de Ñuble",
     "habitantes": 511551
   },
   {
     "codigo": 8,
-    "nombre": "Biobío",
+    "nombre": "Región del Biobío",
     "habitantes": 1663696
   },
   {
     "codigo": 9,
-    "nombre": "Araucanía",
+    "nombre": "Región de La Araucanía",
     "habitantes": 1014343
   },
   {
     "codigo": 14,
-    "nombre": "Los Ríos",
+    "nombre": "Región de Los Ríos",
     "habitantes": 405835
   },
   {
     "codigo": 10,
-    "nombre": "Los Lagos",
+    "nombre": "Región de Los Lagos",
     "habitantes": 891440
   },
   {
     "codigo": 11,
-    "nombre": "Aysén",
+    "nombre": "Región de Aysén",
     "habitantes": 107297
   },
   {
     "codigo": 12,
-    "nombre": "Magallanes",
+    "nombre": "Región de Magallanes",
     "habitantes": 178362
   }
 ]

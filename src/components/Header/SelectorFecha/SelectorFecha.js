@@ -10,9 +10,8 @@ moment.locale('es')
 const SelectorFecha = () => {
 
   const { subserieSeleccionada: serie, posicion } = useSelector(state => state.series)
-  console.log(serie)
   const diferencia = serie.datos[posicion].fecha.diff(moment(), 'days')
-  const rangoDias = 10
+  const rangoDias = serie.datos.length
   const dispatch = useDispatch()
   const [ancho, setAncho] = useState(window.innerWidth)
 
@@ -34,8 +33,8 @@ const SelectorFecha = () => {
           type="range"
           className="SelectorFecha__selector"
           min={0}
-          max={rangoDias}
           step={1}
+          max={rangoDias - 1}
           onChange={e => dispatch(fijarPosicionSerie(e.target.value))}
           value={posicion}
         />

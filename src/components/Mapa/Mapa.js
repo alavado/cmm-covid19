@@ -25,6 +25,7 @@ const vpInicial = {
 
 const Mapa = () => {
 
+  const { serieSeleccionada: serie, posicion } = useSelector(state => state.series)
   const [viewport, setViewport] = useState(vpInicial)
   const [popupRegion, setPopupRegion] = useState({
     mostrando: false,
@@ -32,7 +33,6 @@ const Mapa = () => {
     longitude: 0,
     titulo: ''
   })
-  const { serieSeleccionada: serie, posicion } = useSelector(state => state.series)
   const dispatch = useDispatch()
   const history = useHistory()
   const params = useParams()
@@ -47,7 +47,7 @@ const Mapa = () => {
       dispatch(seleccionarSubserie(CODIGO_CHILE))
       setViewport(v => ({ ...v, ...vpInicial }))
     }
-  }, [params])
+  }, [params.codigo])
 
   const cambioEnElViewport = vp => {
     setViewport({
@@ -62,18 +62,20 @@ const Mapa = () => {
     if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
       return
     }
-    const { nombre, codregion } = feats[0].properties
-    dispatch(seleccionarSubserie(codregion))
-    history.push(`/region/${codregion}`)
+    const { codigo } = feats[0].properties
+    dispatch(seleccionarSubserie(codigo))
+    history.push(`/region/${codigo}`)
   }
 
   const actualizarPopupChico = e => {
     const feats = e.features
     if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
-      setPopupRegion({
-        ...popupRegion,
-        mostrando: false
-      })
+      if (popupRegion.mostrando) {
+        setPopupRegion({
+          ...popupRegion,
+          mostrando: false
+        })
+      }
       return
     }
     setPopupRegion({
@@ -81,15 +83,9 @@ const Mapa = () => {
       latitude: e.lngLat[1],
       longitude: e.lngLat[0],
       titulo: feats[0].properties.nombre,
-      valor: serie.find(r => r.codigo === Number(feats[0].properties.codigo)).datos[posicion]
+      valor: serie.datos[posicion]
     })
   }
-
-  const obtenerCursor = e => {
-    return 'pointer'
-  }
-
-  console.log(posicion)
 
   return (
     <div
@@ -99,10 +95,10 @@ const Mapa = () => {
       <ReactMapGL
         {...viewport}
         mapStyle={mapStyle}
-        getCursor={obtenerCursor}
+        getCursor={() => 'pointer'}
         onClick={clickEnPoligono}
         onViewportChange={cambioEnElViewport}
-        onHover={actualizarPopupChico}        
+        onHover={actualizarPopupChico}
       >
         <CodigoColor />
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
@@ -127,20 +123,6 @@ const Mapa = () => {
               'fill-opacity': .7
             }}
           />
-          {/* <Layer
-            id="data"
-            type="line"
-            paint={{
-              'line-color': {
-                property: `x`,
-                stops: [
-                  [0, 'rgba(0, 0, 0, 0)'],
-                  [1, '#0288D1']
-                ]
-              },
-              'line-width': 1
-            }}
-          /> */}
         </Source>
       </ReactMapGL>
     </div>
