@@ -71,6 +71,7 @@ export const procesarRegiones = (csv, geoJSON) => {
   return [casosPor100000Habitantes, geoJSONConDatos]
 }
 
+//.map((val, i) => ({ fecha: fechas[i], valor: isNaN(val) ? -1 : Number(val) }))
 const formatearDatosComuna = csv => {
   const filas = csv.split('\n')
   const fechas = filas[0].split(',').slice(4).map(fecha => moment(fecha, 'MM/DD/YYYY'))
@@ -85,7 +86,12 @@ const formatearDatosComuna = csv => {
         nombre,
         datos: fila
           .slice(4)
-          .map((val, i) => ({ fecha: fechas[i], valor: isNaN(val) ? -1 : Number(val) }))
+          .map(x => isNaN(x) ? 0 : Number(x))
+          .reduce((prev, x, i, arr) => {
+            return i > 0 ?
+              [...prev, { fecha: fechas[i], valor: (x - arr[i - 1]) / fechas[i].diff(fechas[i - 1], 'days') }] :
+              [{ fecha: fechas[0], valor: x }]
+          }, [])
       }
     })
 }

@@ -19,7 +19,7 @@ const initialState = {
       id: CASOS_COMUNALES_POR_100000_HABITANTES,
       datos: [],
       geoJSON: null,
-      nombre: 'Casos por 100.000 habitantes en comunas'
+      nombre: 'Nuevos casos por 100.000 habitantes'
     }
   ],
   serieSeleccionada: null,
@@ -53,10 +53,9 @@ export default function(state = initialState, action) {
       }
     }
     case AVANZAR_EN_SERIE: {
-      const serie = state.series.find(s => s.id === state.serieSeleccionada)
       return {
         ...state,
-        posicion: Math.min(state.posicion + 1, serie.datos.length - 1)
+        posicion: Math.min(state.posicion + 1, state.subserieSeleccionada.datos.length - 1)
       }
     }
     case FIJAR_POSICION_SERIE: {

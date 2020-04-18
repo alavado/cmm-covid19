@@ -1,19 +1,26 @@
 .SeccionInferior {
   height: 15em;
   background-color: #212121;
-  padding-right: 2.8em;
   color: rgba(255, 255, 255, .9);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
-  padding-left: 9em;
+}
+
+.SeccionInferior__opciones {
+  min-width: 13em;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
 }
 
 .SeccionInferior__contenedor_region {
-  font-size: 1em;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  flex: 1;
 }
 
 .SeccionInferior__region {
@@ -28,8 +35,9 @@
 }
 
 .SeccionInferior__grafico {
+  width: 100%;
   flex: 1;
-  padding: 0 0 1em 0;
+  padding: 0 2.5em 1em 0;
 }
 
 .SeccionInferior__breadcrumb {

@@ -5,8 +5,8 @@ import moment from 'moment/min/moment-with-locales'
 import './SeccionInferior.css'
 import { FaCaretRight } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { CODIGO_CHILE } from '../../redux/reducers/series'
-import { fijarPosicionSerie } from '../../redux/actions'
+import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
+import { fijarPosicionSerie, seleccionarSerie } from '../../redux/actions'
 
 const SeccionInferior = () => {
 
@@ -65,7 +65,7 @@ const SeccionInferior = () => {
     },
     tooltips: {
       callbacks: {
-        label: ({ yLabel: v }) => `Contagios: ${v.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`,
+        label: ({ yLabel: v }) => `Nuevos casos: ${v.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`,
         title: ([{ xLabel: fecha }]) => fecha.format('dddd D [de] MMMM')
       }
     }
@@ -128,6 +128,12 @@ const SeccionInferior = () => {
 
   return (
     <div className="SeccionInferior">
+      <div className="SeccionInferior__opciones">
+        <select onChange={e => dispatch(seleccionarSerie(e.target.value))}>
+          <option value={CONTAGIOS_REGIONALES_POR_100000_HABITANTES}>Regiones</option>
+          <option value={CASOS_COMUNALES_POR_100000_HABITANTES}>Comunas</option>
+        </select>
+      </div>
       <div className="SeccionInferior__contenedor_region">
         <div className="SeccionInferior__region">
           {serie.codigo !== CODIGO_CHILE ?
@@ -139,18 +145,18 @@ const SeccionInferior = () => {
             <>Chile</>
           }
         </div>
-      </div>
-      <div className="SeccionInferior__grafico">
-        <Line
-          id="SeccionInferior__grafico"
-          data={chartData}
-          options={options}
-          onElementsClick={e => {
-            if (e[0]) {
-              dispatch(fijarPosicionSerie(e[0]._index))
-            }
-          }}
-        />
+        <div className="SeccionInferior__grafico">
+          <Line
+            id="SeccionInferior__grafico"
+            data={chartData}
+            options={options}
+            onElementsClick={e => {
+              if (e[0]) {
+                dispatch(fijarPosicionSerie(e[0]._index))
+              }
+            }}
+          />
+        </div>
       </div>
     </div>
   )

@@ -92,7 +92,6 @@ const Mapa = () => {
       className="Mapa"
       onMouseLeave={() => setPopupRegion({...popupRegion, mostrando: false})}
     >
-      <button onClick={() => dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))} style={{position: 'absolute', top: 20, left: 20, zIndex: 4 }}>AAA</button>
       <ReactMapGL
         {...viewport}
         mapStyle={mapStyle}
@@ -111,7 +110,6 @@ const Mapa = () => {
               'fill-color': {
                 property: `v${posicion}`,
                 stops: [
-                  [-1, '#efefef'],
                   [0, '#abdda4'],
                   [3.5, '#e6f598'],
                   [7, '#ffffbf'],
