@@ -5,11 +5,17 @@ from '../actionTypes'
 
 export const CODIGO_CHILE = 0
 export const CONTAGIOS_REGIONALES_POR_100000_HABITANTES =  'CONTAGIOS_REGIONALES_POR_100000_HABITANTES'
+export const CONTAGIOS_COMUNALES_POR_100000_HABITANTES =  'CONTAGIOS_COMUNALES_POR_100000_HABITANTES'
 
 const initialState = {
   series: [
     {
       id: CONTAGIOS_REGIONALES_POR_100000_HABITANTES,
+      datos: [],
+      geoJSON: null
+    },
+    {
+      id: CONTAGIOS_COMUNALES_POR_100000_HABITANTES,
       datos: [],
       geoJSON: null
     }
@@ -52,7 +58,6 @@ export default function(state = initialState, action) {
       }
     }
     case FIJAR_POSICION_SERIE: {
-      console.log('pos en redux', action.payload)
       return {
         ...state,
         posicion: action.payload
@@ -61,7 +66,9 @@ export default function(state = initialState, action) {
     case SELECCIONAR_SERIE: {
       return {
         ...state,
-        serieSeleccionada: state.series.find(s => s.id === action.payload)
+        serieSeleccionada: state.series.find(s => s.id === action.payload),
+        subserieSeleccionada: state.series.find(s => s.id === action.payload).datos[0],
+        posicion: 0
       }
     }
     case SELECCIONAR_SUBSERIE: {

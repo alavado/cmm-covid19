@@ -7,8 +7,8 @@ import CodigoColor from './CodigoColor'
 import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
-import { seleccionarSubserie } from '../../redux/actions'
-import { CODIGO_CHILE } from '../../redux/reducers/series'
+import { seleccionarSubserie, seleccionarSerie } from '../../redux/actions'
+import { CODIGO_CHILE, CONTAGIOS_COMUNALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
 
 const vpInicial = {
   width: '100%',
@@ -20,12 +20,12 @@ const vpInicial = {
   pitch: 0,
   altitude: 1.5,
   transitionDuration: 'auto',
-  transitionInterpolator: new FlyToInterpolator({ speed: 1 }),
+  transitionInterpolator: new FlyToInterpolator({ speed: 1.2 }),
 }
 
 const Mapa = () => {
 
-  const { serieSeleccionada: serie, posicion } = useSelector(state => state.series)
+  const { serieSeleccionada: serie, subserieSeleccionada, posicion } = useSelector(state => state.series)
   const [viewport, setViewport] = useState(vpInicial)
   const [popupRegion, setPopupRegion] = useState({
     mostrando: false,
@@ -83,7 +83,7 @@ const Mapa = () => {
       latitude: e.lngLat[1],
       longitude: e.lngLat[0],
       titulo: feats[0].properties.nombre,
-      valor: serie.datos[posicion]
+      valor: serie.datos.find(s => s.codigo === feats[0].properties.codigo).datos[posicion].valor
     })
   }
 
@@ -92,6 +92,7 @@ const Mapa = () => {
       className="Mapa"
       onMouseLeave={() => setPopupRegion({...popupRegion, mostrando: false})}
     >
+      <button onClick={() => dispatch(seleccionarSerie(CONTAGIOS_COMUNALES_POR_100000_HABITANTES))} style={{position: 'absolute', top: 20, left: 20, zIndex: 4 }}>AAA</button>
       <ReactMapGL
         {...viewport}
         mapStyle={mapStyle}
@@ -110,8 +111,8 @@ const Mapa = () => {
               'fill-color': {
                 property: `v${posicion}`,
                 stops: [
-                  // [0, '#efefef'],
-                  [0.1, '#abdda4'],
+                  [-1, '#efefef'],
+                  [0, '#abdda4'],
                   [3.5, '#e6f598'],
                   [7, '#ffffbf'],
                   [10.5, '#fee08b'],

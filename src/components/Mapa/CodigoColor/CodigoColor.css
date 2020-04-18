@@ -11,6 +11,7 @@
   gap: .3em;
   text-transform: uppercase;
   pointer-events: none;
+  max-width: 66vw;
 }
 
 .CodigoColor__espectro {

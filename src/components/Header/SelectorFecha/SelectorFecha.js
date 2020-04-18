@@ -25,6 +25,8 @@ const SelectorFecha = () => {
 
   window.addEventListener('resize', () => setAncho(window.innerWidth))
 
+  console.log({serie})
+
   return (
     <div className="SelectorFecha">
       <div className="SelectorFecha__contenedor_rango">

@@ -5,13 +5,15 @@ import Mapa from '../Mapa'
 import SeccionInferior from '../SeccionInferior'
 import { Switch, Route } from 'react-router-dom'
 import axios from 'axios'
-import { procesarRegiones } from '../../helpers/perez'
+import { procesarRegiones, procesarComunas } from '../../helpers/perez'
 import { useDispatch, useSelector } from 'react-redux'
 import { actualizarSerie, seleccionarSerie, seleccionarSubserie } from '../../redux/actions'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE } from '../../redux/reducers/series'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CONTAGIOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE } from '../../redux/reducers/series'
 
-const urlRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'
+const urlDatosRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'
+const urlDatosComunas = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados_comunas.csv'
 const urlGeoJSONRegiones = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/geojsons/regiones.json'
+const urlGeoJSONComunas = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/geojsons/comunas.json'
 
 const App = () => {
 
@@ -20,13 +22,18 @@ const App = () => {
 
   useEffect(() => {
     async function inicializarDatos() {
-      const { data: geoJSON } = await axios.get(urlGeoJSONRegiones)
-      const { data: datosCSV } = await axios.get(urlRegiones)
-      const [casosPor100000Habitantes, geoJSONConDatos] = procesarRegiones(datosCSV, geoJSON)
-      dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'geoJSON', geoJSONConDatos))
-      dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'datos', casosPor100000Habitantes))
+      const { data: datosCSVRegiones } = await axios.get(urlDatosRegiones)
+      const { data: geoJSONRegiones } = await axios.get(urlGeoJSONRegiones)
+      const [casosRegionalesPor100000Habitantes, geoJSONRegionesConDatos] = procesarRegiones(datosCSVRegiones, geoJSONRegiones)
+      dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'geoJSON', geoJSONRegionesConDatos))
+      dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'datos', casosRegionalesPor100000Habitantes))
       dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
       dispatch(seleccionarSubserie(CODIGO_CHILE))
+      const { data: datosCSVComunas } = await axios.get(urlDatosComunas)
+      const { data: geoJSONComunas } = await axios.get(urlGeoJSONComunas)
+      const [casosComunalesPor100000Habitantes, geoJSONComunalConDatos] = procesarComunas(datosCSVComunas, geoJSONComunas)
+      dispatch(actualizarSerie(CONTAGIOS_COMUNALES_POR_100000_HABITANTES, 'geoJSON', geoJSONComunalConDatos))
+      dispatch(actualizarSerie(CONTAGIOS_COMUNALES_POR_100000_HABITANTES, 'datos', casosComunalesPor100000Habitantes))
     }
     inicializarDatos()
   }, [])

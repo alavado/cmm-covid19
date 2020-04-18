@@ -1,8 +1,9 @@
 import demografiaRegiones from '../data/demografia/regiones.json'
+import demografiaComunas from '../data/demografia/comunas.json'
 import moment from 'moment/min/moment-with-locales'
 
-const formatearDatosRegion = datos => {
-  const filas = datos.split('\r\n')
+const formatearDatosRegion = csv => {
+  const filas = csv.split('\r\n')
   const fechas = filas[0].split(',').slice(2).map(fecha => moment(fecha, 'MM/DD/YYYY'))
   return filas
     .slice(1, -1)
@@ -25,7 +26,7 @@ const formatearDatosRegion = datos => {
     })
 }
 
-const obtenerCasosPorHabitantes = (region, habitantes) => {
+const obtenerCasosRegionalesPorHabitantes = (region, habitantes) => {
   const { poblacion } = demografiaRegiones.find(r => r.codigo === region.codigo)
     return {
       ...region,
@@ -33,10 +34,9 @@ const obtenerCasosPorHabitantes = (region, habitantes) => {
     }
 }
 
-export const procesarRegiones = (data, geoJSON) => {
-  console.log(data)
-  let casosPorRegion = formatearDatosRegion(data)
-  let casosPor100000Habitantes = casosPorRegion.map(region => obtenerCasosPorHabitantes(region, 100000))
+export const procesarRegiones = (csv, geoJSON) => {
+  let casosPorRegion = formatearDatosRegion(csv)
+  let casosPor100000Habitantes = casosPorRegion.map(region => obtenerCasosRegionalesPorHabitantes(region, 100000))
   const poblacionChile = demografiaRegiones.reduce((suma, { poblacion }) => suma + poblacion, 0)
   const datosChile = casosPorRegion
     .reduce((prev, { datos }) => ({
@@ -62,8 +62,62 @@ export const procesarRegiones = (data, geoJSON) => {
         properties: {
           ...region.properties,
           nombre: region.properties.Region,
-          codigo: region.properties.codregion,
+          codigo: Number(region.properties.codregion),
           ...datosRegion.reduce((prev, d, i) => ({...prev, [`v${i}`]: d.valor }), {})
+        }
+      }
+    })
+  }
+  return [casosPor100000Habitantes, geoJSONConDatos]
+}
+
+const formatearDatosComuna = csv => {
+  const filas = csv.split('\n')
+  const fechas = filas[0].split(',').slice(4).map(fecha => moment(fecha, 'MM/DD/YYYY'))
+  return filas
+    .slice(1, -1)
+    .map(fila => fila.split(','))
+    .map(fila => {
+      const codigo = Number(fila[2])
+      const nombre = demografiaComunas.find(r => Number(r.codigo) === codigo).nombre
+      return {
+        codigo,
+        nombre,
+        datos: fila
+          .slice(4)
+          .map((val, i) => ({ fecha: fechas[i], valor: isNaN(val) ? -1 : Number(val) }))
+      }
+    })
+}
+
+const obtenerCasosComunalesPorHabitantes = (comuna, habitantes) => {
+  const { poblacion } = demografiaComunas.find(c => Number(c.codigo) === comuna.codigo)
+  return {
+    ...comuna,
+    datos: comuna.datos.map(d => ({ ...d, valor: Math.round(100 * d.valor * habitantes / poblacion) / 100 }))
+  }
+}
+
+export const procesarComunas = (csv, geoJSON) => {
+  let casosPorComuna = formatearDatosComuna(csv)
+  let casosPor100000Habitantes = casosPorComuna.map(comuna => obtenerCasosComunalesPorHabitantes(comuna, 100000))
+  const geoJSONConDatos = {
+    ...geoJSON,
+    features: geoJSON.features.map(feature => {
+      const id = Number(feature.properties.COD_COMUNA)
+      const x = casosPor100000Habitantes.find(({ codigo }) => codigo === id)
+      if (!x) {
+        console.log('no')
+        return {}
+      }
+      const datosFeature = x.datos
+      return {
+        ...feature,
+        properties: {
+          ...feature.properties,
+          nombre: feature.properties.NOM_COM,
+          codigo: Number(feature.properties.COD_COMUNA),
+          ...datosFeature.reduce((prev, d, i) => ({...prev, [`v${i}`]: d.valor }), {})
         }
       }
     })
