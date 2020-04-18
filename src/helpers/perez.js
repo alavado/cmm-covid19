@@ -94,7 +94,7 @@ const obtenerCasosComunalesPorHabitantes = (comuna, habitantes) => {
   const { poblacion } = demografiaComunas.find(c => Number(c.codigo) === comuna.codigo)
   return {
     ...comuna,
-    datos: comuna.datos.map(d => ({ ...d, valor: Math.round(100 * d.valor * habitantes / poblacion) / 100 }))
+    datos: comuna.datos.map(d => d.valor < 0 ? d : ({ ...d, valor: Math.round(100 * d.valor * habitantes / poblacion) / 100 }))
   }
 }
 

@@ -8,7 +8,7 @@ import axios from 'axios'
 import { procesarRegiones, procesarComunas } from '../../helpers/perez'
 import { useDispatch, useSelector } from 'react-redux'
 import { actualizarSerie, seleccionarSerie, seleccionarSubserie } from '../../redux/actions'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CONTAGIOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE } from '../../redux/reducers/series'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE } from '../../redux/reducers/series'
 
 const urlDatosRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'
 const urlDatosComunas = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados_comunas.csv'
@@ -32,8 +32,8 @@ const App = () => {
       const { data: datosCSVComunas } = await axios.get(urlDatosComunas)
       const { data: geoJSONComunas } = await axios.get(urlGeoJSONComunas)
       const [casosComunalesPor100000Habitantes, geoJSONComunalConDatos] = procesarComunas(datosCSVComunas, geoJSONComunas)
-      dispatch(actualizarSerie(CONTAGIOS_COMUNALES_POR_100000_HABITANTES, 'geoJSON', geoJSONComunalConDatos))
-      dispatch(actualizarSerie(CONTAGIOS_COMUNALES_POR_100000_HABITANTES, 'datos', casosComunalesPor100000Habitantes))
+      dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES, 'geoJSON', geoJSONComunalConDatos))
+      dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES, 'datos', casosComunalesPor100000Habitantes))
     }
     inicializarDatos()
   }, [])

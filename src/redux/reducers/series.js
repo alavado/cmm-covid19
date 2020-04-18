@@ -5,19 +5,21 @@ from '../actionTypes'
 
 export const CODIGO_CHILE = 0
 export const CONTAGIOS_REGIONALES_POR_100000_HABITANTES =  'CONTAGIOS_REGIONALES_POR_100000_HABITANTES'
-export const CONTAGIOS_COMUNALES_POR_100000_HABITANTES =  'CONTAGIOS_COMUNALES_POR_100000_HABITANTES'
+export const CASOS_COMUNALES_POR_100000_HABITANTES =  'CONTAGIOS_COMUNALES_POR_100000_HABITANTES'
 
 const initialState = {
   series: [
     {
       id: CONTAGIOS_REGIONALES_POR_100000_HABITANTES,
       datos: [],
-      geoJSON: null
+      geoJSON: null,
+      nombre: 'Nuevos casos por 100.000 habitantes'
     },
     {
-      id: CONTAGIOS_COMUNALES_POR_100000_HABITANTES,
+      id: CASOS_COMUNALES_POR_100000_HABITANTES,
       datos: [],
-      geoJSON: null
+      geoJSON: null,
+      nombre: 'Casos por 100.000 habitantes en comunas'
     }
   ],
   serieSeleccionada: null,
@@ -64,11 +66,12 @@ export default function(state = initialState, action) {
       }
     }
     case SELECCIONAR_SERIE: {
+      const serieSeleccionada = state.series.find(s => s.id === action.payload)
       return {
         ...state,
-        serieSeleccionada: state.series.find(s => s.id === action.payload),
-        subserieSeleccionada: state.series.find(s => s.id === action.payload).datos[0],
-        posicion: 0
+        serieSeleccionada,
+        subserieSeleccionada: serieSeleccionada.datos[0],
+        posicion: serieSeleccionada.datos[0].datos.length - 1
       }
     }
     case SELECCIONAR_SUBSERIE: {

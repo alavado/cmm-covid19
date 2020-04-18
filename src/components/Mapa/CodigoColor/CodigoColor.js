@@ -5,13 +5,13 @@ import moment from 'moment/min/moment-with-locales'
 
 const CodigoColor = () => {
 
-  const { subserieSeleccionada: serie, posicion } = useSelector(state => state.series)
-  const { fecha } = serie.datos[posicion]
+  const { serieSeleccionada, subserieSeleccionada, posicion } = useSelector(state => state.series)
+  const { fecha } = subserieSeleccionada.datos[posicion]
   const diferencia = fecha.diff(moment(), 'days')
 
   return (
     <div className="CodigoColor">
-      <div className="CodigoColor__titulo">Contagios por 100.000 habitantes</div>
+      <div className="CodigoColor__titulo">{serieSeleccionada.nombre}</div>
       <div className="CodigoColor__fecha">
         {diferencia === 0 ? 'Hoy, ' : (diferencia === -1 ? 'Ayer, ' : '')} {fecha.format('dddd D [de] MMMM')}
       </div>

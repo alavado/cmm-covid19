@@ -20,12 +20,13 @@ const SelectorFecha = () => {
     const limite = document.getElementsByClassName('SelectorFecha__limite')[0]
     const slider = document.getElementsByClassName('SelectorFecha__selector')[0]
     fecha.style.marginLeft = `calc(
-      ${limite.clientWidth}px - ${fecha.clientWidth / 2}px + 9px + ${slider.clientWidth * posicion / rangoDias}px)`
+      ${limite.clientWidth}px - ${fecha.clientWidth / 2}px + 9px + ${slider.clientWidth * posicion / (rangoDias - 1)}px)`
   }, [posicion, ancho])
 
-  window.addEventListener('resize', () => setAncho(window.innerWidth))
-
-  console.log({serie})
+  useEffect(() => {
+    window.addEventListener('resize', () => setAncho(window.innerWidth))
+    return () => window.removeEventListener('resize')
+  }, [])
 
   return (
     <div className="SelectorFecha">

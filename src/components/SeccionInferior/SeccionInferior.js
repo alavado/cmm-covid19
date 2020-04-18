@@ -105,7 +105,6 @@ const SeccionInferior = () => {
       gradientStroke.addColorStop(2 * limiteEspectro / 3, '#fdae61')
       gradientStroke.addColorStop(5 * limiteEspectro / 6, '#f46d43')
       gradientStroke.addColorStop(limiteEspectro, '#d53e4f')
-      gradientStroke.addColorStop(1, '#d53e4f')
       data = {
         ...data,
         datasets: [

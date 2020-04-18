@@ -8,7 +8,7 @@ import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
 import { seleccionarSubserie, seleccionarSerie } from '../../redux/actions'
-import { CODIGO_CHILE, CONTAGIOS_COMUNALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
+import { CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
 
 const vpInicial = {
   width: '100%',
@@ -92,7 +92,7 @@ const Mapa = () => {
       className="Mapa"
       onMouseLeave={() => setPopupRegion({...popupRegion, mostrando: false})}
     >
-      <button onClick={() => dispatch(seleccionarSerie(CONTAGIOS_COMUNALES_POR_100000_HABITANTES))} style={{position: 'absolute', top: 20, left: 20, zIndex: 4 }}>AAA</button>
+      <button onClick={() => dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))} style={{position: 'absolute', top: 20, left: 20, zIndex: 4 }}>AAA</button>
       <ReactMapGL
         {...viewport}
         mapStyle={mapStyle}
