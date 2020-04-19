@@ -25,9 +25,14 @@ const CodigoColor = () => {
       <div className="CodigoColor__fecha">{etiqueta}</div>
       <div className="CodigoColor__espectro">
         {escala.map(([limite, backgroundColor], i) => (
-          <div className="CodigoColor__fraccion">
-            <div className="CodigoColor__fraccion_color" style={{ backgroundColor }} />
-            <div className="CodigoColor__fraccion_limite">{i === escala.length - 1 ? '50+' : limite}</div>
+          <div className="CodigoColor__fraccion" key={`CodigoColor__fraccion_${i}`}>
+            <div
+              className="CodigoColor__fraccion_color"
+              style={{ backgroundColor }}
+              />
+            <div className="CodigoColor__fraccion_limite">
+              {i === escala.length - 1 ? '50+' : limite}
+            </div>
           </div>
         ))}
       </div>

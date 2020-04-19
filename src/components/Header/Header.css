@@ -12,13 +12,20 @@
 .Header__titulo {
   width: 14em;
   display: flex;
-  justify-content: center;
   align-items: center;
+  padding-left: 1em;
   background-color: #212121;
   border-bottom-right-radius: .5em;
   font-size: 1em;
   pointer-events: all;
   text-decoration: none;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.Header__logo {
+  height: 1.9em;
+  margin-right: .5em;
 }
 
 @media (orientation: portrait) {
