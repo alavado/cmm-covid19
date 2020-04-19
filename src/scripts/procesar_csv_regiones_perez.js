@@ -110,7 +110,6 @@ axios.get(urlPerezComunas)
           datos: comuna.datos.map(casos => Math.round(100 * casos * 100_000 / poblacion) / 100)
         }
       })
-    console.log(datosPor100000Habitantes.find(c => c.codigo == 8409))
     const geoJSONconDatos = JSON.stringify({
       ...comunasChile,
       features: comunasChile.features.map(feature => {

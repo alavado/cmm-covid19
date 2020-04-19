@@ -58,5 +58,10 @@
   .SeccionInferior {
     padding-left: 1.5em;
     padding-right: 1.5em;
+    flex-direction: column;
+  }
+
+  .SeccionInferior__grafico {
+    padding: 0;
   }
 }

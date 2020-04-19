@@ -3,7 +3,6 @@
   left: 1.5em;
   top: 6.5em;
   color: rgba(255, 255, 255, .9);
-  opacity: .8;
   font-size: .7em;
   display: grid;
   grid-template-rows: auto auto auto;
@@ -17,23 +16,40 @@
 .CodigoColor__espectro {
   width: 100%;
   height: .5em;
-  background: linear-gradient(to right, #66c2a5, #abdda4, #e6f598, #ffffbf, #fee08b, #fdae61, #f46d43, #d53e4f);
   opacity: .8;
   border-radius: .1em;
+  display: flex;
 }
 
-.CodigoColor__limites {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
+.CodigoColor__fraccion {
+  flex: 1;
+  display: grid;
+  height: 2em;
+  gap: .2em;
+}
+
+.CodigoColor__fraccion_color {
+  opacity: .8;
+}
+
+.CodigoColor__fraccion_limite {
+  flex: 2;
 }
 
 .CodigoColor__titulo {
   font-size: 2em;
+  opacity: .85;
 }
 
 .CodigoColor__fecha {
   font-size: 1.5em;
   margin-bottom: .3em;
   font-weight: bold;
+  opacity: .85;
+}
+
+@media (orientation: portrait) {
+  .CodigoColor {
+    top: 9em;
+  }
 }

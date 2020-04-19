@@ -2,6 +2,7 @@ import React from 'react'
 import './CodigoColor.css'
 import { useSelector } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
+import escala from '../../../helpers/escala'
 
 const CodigoColor = () => {
 
@@ -22,10 +23,13 @@ const CodigoColor = () => {
     <div className="CodigoColor">
       <div className="CodigoColor__titulo">{serieSeleccionada.nombre}</div>
       <div className="CodigoColor__fecha">{etiqueta}</div>
-      <div className="CodigoColor__espectro" />
-      <div className="CodigoColor__limites">
-        <div>0</div>
-        <div>Más de 20</div>
+      <div className="CodigoColor__espectro">
+        {escala.map(([limite, backgroundColor], i) => (
+          <div className="CodigoColor__fraccion">
+            <div className="CodigoColor__fraccion_color" style={{ backgroundColor }} />
+            <div className="CodigoColor__fraccion_limite">{i === escala.length - 1 ? '50+' : limite}</div>
+          </div>
+        ))}
       </div>
     </div>
   )

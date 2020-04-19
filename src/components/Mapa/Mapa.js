@@ -9,13 +9,15 @@ import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
 import { seleccionarSubserie, seleccionarSerie } from '../../redux/actions'
 import { CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
+import escala from '../../helpers/escala'
+import { esMovil } from '../../helpers/responsive'
 
 const vpInicial = {
   width: '100%',
   height: 'calc(100vh - 15em)',
   latitude: -39.204954641160536,
   longitude: -69.26430872363804,
-  zoom: 4,
+  zoom: esMovil() ? 2.5 : 4,
   bearing: 98.49519730510106,
   pitch: 0,
   altitude: 1.5,
@@ -109,15 +111,9 @@ const Mapa = () => {
             paint={{
               'fill-color': {
                 property: `v${posicion}`,
-                stops: [
-                  [0, '#abdda4'],
-                  [3.5, '#e6f598'],
-                  [7, '#ffffbf'],
-                  [10.5, '#fee08b'],
-                  [14, '#fdae61'],
-                  [17.5, '#f46d43'],
-                  [20, '#d53e4f']
-                ]
+                stops: escala.reduce((prev, [v, color], i) => (
+                  i > 0 ? [...prev, [v - 0.0001, escala[i - 1][1]], [v, color]] : [[v, color]]
+                ), [])
               },
               'fill-opacity': .7
             }}

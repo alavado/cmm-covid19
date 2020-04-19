@@ -92,6 +92,7 @@ const formatearDatosComuna = csv => {
               [...prev, { fecha: fechas[i], valor: (x - arr[i - 1]) / fechas[i].diff(fechas[i - 1], 'days') }] :
               [{ fecha: fechas[0], valor: x }]
           }, [])
+          .slice(1)
       }
     })
 }
@@ -113,7 +114,6 @@ export const procesarComunas = (csv, geoJSON) => {
       const id = Number(feature.properties.COD_COMUNA)
       const x = casosPor100000Habitantes.find(({ codigo }) => codigo === id)
       if (!x) {
-        console.log('no')
         return {}
       }
       const datosFeature = x.datos

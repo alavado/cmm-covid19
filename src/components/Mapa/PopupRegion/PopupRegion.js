@@ -18,7 +18,7 @@ const PopupRegion = props => {
         <h1 className="PopupRegion__titulo">{titulo}</h1>
         {hayDatos && <div className="PopupRegion__contenido">{valorFormateado}</div>}
         <h2 className="PopupRegion__subtitulo">
-          {hayDatos ? `contagio${valorFormateado !== '1' ? 's' : ''} por 100.000 habitantes` : 'Sin información'}
+          {hayDatos ? `${valorFormateado !== '1' ? 'Nuevos casos' : 'Nuevo caso'} por 100.000 hab.` : 'Sin información'}
         </h2>
       </div>
     </Popup>

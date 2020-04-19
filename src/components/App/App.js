@@ -39,7 +39,6 @@ const App = () => {
     }
     inicializarDatos()
     window.addEventListener('keydown', k => {
-      console.log(k)
       switch (k.code) {
         case 'PageDown':
           dispatch(avanzarEnSerie())
