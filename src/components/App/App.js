@@ -62,7 +62,7 @@ const App = () => {
       <main className="App__contenedor">
         <Switch>
           <Route path="/" exact component={Mapa} />
-          <Route path="/region/:codigo" component={Mapa} />
+          <Route path="/:division/:codigo" component={Mapa} />
         </Switch>
         <SeccionInferior />
       </main>

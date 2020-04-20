@@ -24,8 +24,8 @@ const SelectorFecha = () => {
   }, [posicion, ancho])
 
   useEffect(() => {
-    const evento = window.addEventListener('resize', () => setAncho(window.innerWidth))
-    return () => window.removeEventListener(evento)
+    const listener = window.addEventListener('resize', () => setAncho(window.innerWidth))
+    return () => window.removeEventListener('resize', listener)
   }, [])
 
   return (

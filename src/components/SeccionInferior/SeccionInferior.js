@@ -10,7 +10,7 @@ import { fijarPosicionSerie, seleccionarSerie } from '../../redux/actions'
 
 const SeccionInferior = () => {
 
-  const { subserieSeleccionada: serie, posicion } = useSelector(state => state.series)
+  const { subserieSeleccionada: serie, serieSeleccionada, posicion } = useSelector(state => state.series)
   const fecha = serie.datos[posicion].fecha
   const dispatch = useDispatch()
   Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'

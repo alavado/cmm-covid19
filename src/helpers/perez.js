@@ -19,7 +19,7 @@ const formatearDatosRegion = csv => {
           .map(Number)
           .reduce((prev, x, i, arr) => {
             return i > 0 ?
-              [...prev, { fecha: fechas[i], valor: x - arr[i - 1] }] :
+              [...prev, { fecha: fechas[i], valor: Math.max(0, x - arr[i - 1]) }] :
               [{ fecha: fechas[0], valor: x }]
           }, [])
       }
@@ -91,8 +91,9 @@ const formatearDatosComuna = csv => {
           .slice(4)
           .map(x => isNaN(x) ? 0 : Number(x))
           .reduce((prev, x, i, arr) => {
+            const diasDiferencia = fechas[i].diff(fechas[i - 1], 'days')
             return i > 0 ?
-              [...prev, { fecha: fechas[i], valor: (x - arr[i - 1]) / fechas[i].diff(fechas[i - 1], 'days') }] :
+              [...prev, { fecha: fechas[i], valor: Math.max(0, (x - arr[i - 1]) / diasDiferencia) }] :
               [{ fecha: fechas[0], valor: x }]
           }, [])
           .slice(1)

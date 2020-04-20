@@ -83,9 +83,24 @@ export default function(state = initialState, action) {
       }
     }
     case SELECCIONAR_SUBSERIE: {
+      const codigo = action.payload
+      if (codigo === CODIGO_CHILE) {
+        const serieRegional = state.series.find(c => c.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES)
+        const serieChile = serieRegional.datos.find(s => s.codigo === CODIGO_CHILE)
+        return {
+          ...state,
+          serieSeleccionada: {
+            ...serieRegional,
+            filtroRegion: state.serieSeleccionada.filtroRegion,
+            filtroValor: state.serieSeleccionada.filtroValor
+          },
+          subserieSeleccionada: serieChile,
+          posicion: serieChile.datos.length - 1
+        }
+      }
       return {
         ...state,
-        subserieSeleccionada: state.serieSeleccionada.datos.find(s => s.codigo === action.payload)
+        subserieSeleccionada: state.serieSeleccionada.datos.find(s => s.codigo === codigo)
       }
     }
     case FILTRAR_GEOJSON_POR_VALOR: {
@@ -114,7 +129,6 @@ export default function(state = initialState, action) {
       }
     }
     case LIMPIAR_FILTROS: {
-      console.log('se limpiaron los filtros')
       return {
         ...state,
         filtroToggle: false,

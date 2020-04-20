@@ -8,7 +8,7 @@ import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
 import { seleccionarSubserie, seleccionarSerie, filtrarGeoJSONPorRegion, limpiarFiltros } from '../../redux/actions'
-import { CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
+import { CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES, CONTAGIOS_REGIONALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
 import escala from '../../helpers/escala'
 import { esMovil } from '../../helpers/responsive'
 
@@ -41,10 +41,12 @@ const Mapa = () => {
   const params = useParams()
 
   useEffect(() => {
-    const codigoRegion = params.codigo
-    if (codigoRegion) {
-      const vpRegion = viewportRegiones.find(({ codigo }) => codigo === Number(codigoRegion)).vp
-      setViewport(v => ({ ...v, ...vpRegion }))
+    const { division, codigo } = params
+    if (division) {
+      if (division === 'region') {
+        const vpRegion = viewportRegiones.find(vp => vp.codigo === Number(codigo)).vp
+        setViewport(v => ({ ...v, ...vpRegion }))
+      }
     }
     else {
       dispatch(seleccionarSubserie(CODIGO_CHILE))
@@ -89,7 +91,12 @@ const Mapa = () => {
     console.log(feats[0].properties)
     dispatch(seleccionarSubserie(codigo))
     dispatch(filtrarGeoJSONPorRegion(c => c === codigoRegion))
-    history.push(`/region/${codigo}`)
+    if (serie.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
+      history.push(`/region/${codigo}`)
+    }
+    else {
+      history.push(`/comuna/${codigo}`)
+    }
   }
 
   const actualizarPopupChico = e => {
