@@ -56,8 +56,20 @@ const Mapa = () => {
   const geoJSONFiltrado = useMemo(() => ({
     ...serie.geoJSON,
     features: serie.geoJSON.features
-      .filter(f => filtroValor(f.properties[`v${posicion}`]))
-      .filter(f => filtroRegion(f.properties.codigoRegion))
+      .map(f => {
+        let valor = f.properties[`v${posicion}`]
+        if(!filtroValor(valor)) {
+          valor = -1
+        }
+        return {...f, properties: {...f.properties, [`v${posicion}`]: valor}}
+      })
+      .map(f => {
+        let valor = f.properties[`v${posicion}`]
+        if(!filtroRegion(f.properties.codigoRegion)) {
+          valor = -1
+        }
+        return {...f, properties: {...f.properties, [`v${posicion}`]: valor}}
+      })
   }), [filtroValor, filtroRegion, posicion])
 
   const cambioEnElViewport = vp => {
@@ -122,9 +134,9 @@ const Mapa = () => {
             paint={{
               'fill-color': {
                 property: `v${posicion}`,
-                stops: escala.reduce((prev, [v, color], i) => (
+                stops: [[-1, '#757575'], ...escala.reduce((prev, [v, color], i) => (
                   i > 0 ? [...prev, [v - 0.0001, escala[i - 1][1]], [v, color]] : [[v, color]]
-                ), [])
+                ), [])]
               },
               'fill-opacity': .7
             }}
