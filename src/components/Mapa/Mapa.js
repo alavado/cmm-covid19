@@ -53,7 +53,7 @@ const Mapa = () => {
       setViewport(v => ({ ...v, ...vpInicial }))
       dispatch(limpiarFiltros())
     }
-  }, [params.codigo])
+  }, [params.codigo])    
 
   const geoJSONFiltrado = useMemo(() => ({
     ...serie.geoJSON,

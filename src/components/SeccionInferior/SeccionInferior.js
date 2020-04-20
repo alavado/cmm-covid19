@@ -70,8 +70,8 @@ const SeccionInferior = () => {
       }
     }
   }), [posicion, serie])
-  
-  const chartData = useMemo(() => {
+
+  const actualizarGrafico = () => {
     let data = {
       labels: serie.datos.map(d => d.fecha),
       datasets: [
@@ -121,10 +121,12 @@ const SeccionInferior = () => {
             pointBorderWidth: 1
           }
         ]
-     }
+    }
     }
     return data
-  }, [serie])
+  }
+  
+  const chartData = useMemo(actualizarGrafico, [serie])
 
   return (
     <div className="SeccionInferior">

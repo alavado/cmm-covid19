@@ -15,7 +15,7 @@
 .CodigoColor__espectro {
   width: 100%;
   height: .5em;
-  opacity: .8;
+  opacity: .95;
   border-radius: .1em;
   display: flex;
 }
@@ -28,7 +28,8 @@
 }
 
 .CodigoColor__fraccion_color {
-  opacity: .8;
+  opacity: 1;
+  filter: brightness(75%);
 }
 
 .CodigoColor__fraccion_color:hover {
