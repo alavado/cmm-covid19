@@ -54,6 +54,26 @@
   opacity: .85;
 }
 
+.CodigoColor__boton_cambio {
+  margin-top: 2em;
+  width: 12em;
+  cursor: pointer;
+  border: none;
+  color: rgba(255, 255, 255, .9);
+  background-color: #0288D1;
+  padding: 1em;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: .95em;
+  box-shadow: 0 .25em .25em rgba(0, 0, 0, .25);
+  letter-spacing: .5px;
+  transition: all .25s ease-in-out;
+}
+
+.CodigoColor__boton_cambio:hover {
+  filter: brightness(120%);
+}
+
 @media (orientation: portrait) {
   .CodigoColor {
     top: 9em;

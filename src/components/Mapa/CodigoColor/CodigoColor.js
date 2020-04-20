@@ -3,7 +3,8 @@ import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import escala from '../../../helpers/escala'
-import { filtrarGeoJSONPorValor, toggleFiltro } from '../../../redux/actions'
+import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie } from '../../../redux/actions'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
 
 const CodigoColor = () => {
 
@@ -19,6 +20,10 @@ const CodigoColor = () => {
         ${subserieSeleccionada.datos[posicion - 1].fecha.clone().add(1, 'days').format('D')}–${fecha.format('D')}
         de ${fecha.format('MMMM')}`
     }
+  }
+
+  const toggleRegiones = () => {
+    dispatch(seleccionarSerie(serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? CASOS_COMUNALES_POR_100000_HABITANTES : CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
   }
 
   return (
@@ -47,6 +52,9 @@ const CodigoColor = () => {
           </div>
         ))}
       </div>
+      <button onClick={toggleRegiones} className="CodigoColor__boton_cambio">
+        {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? 'Ver comunas' : 'Ver regiones'}
+      </button>
     </div>
   )
 }
