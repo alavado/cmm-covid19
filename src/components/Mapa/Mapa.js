@@ -7,7 +7,7 @@ import CodigoColor from './CodigoColor'
 import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
-import { seleccionarSubserie, seleccionarSerie } from '../../redux/actions'
+import { seleccionarSubserie, seleccionarSerie, filtrarGeoJSONPorRegion, limpiarFiltros } from '../../redux/actions'
 import { CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
 import escala from '../../helpers/escala'
 import { esMovil } from '../../helpers/responsive'
@@ -27,7 +27,8 @@ const vpInicial = {
 
 const Mapa = () => {
 
-  const { serieSeleccionada: serie, subserieSeleccionada, posicion } = useSelector(state => state.series)
+  const { serieSeleccionada: serie, posicion } = useSelector(state => state.series)
+  const { filtroValor, filtroRegion } = serie
   const [viewport, setViewport] = useState(vpInicial)
   const [popupRegion, setPopupRegion] = useState({
     mostrando: false,
@@ -48,8 +49,16 @@ const Mapa = () => {
     else {
       dispatch(seleccionarSubserie(CODIGO_CHILE))
       setViewport(v => ({ ...v, ...vpInicial }))
+      dispatch(limpiarFiltros())
     }
   }, [params.codigo])
+
+  const geoJSONFiltrado = useMemo(() => ({
+    ...serie.geoJSON,
+    features: serie.geoJSON.features
+      .filter(f => filtroValor(f.properties[`v${posicion}`]))
+      .filter(f => filtroRegion(f.properties.codigoRegion))
+  }), [filtroValor, filtroRegion, posicion])
 
   const cambioEnElViewport = vp => {
     setViewport({
@@ -64,8 +73,10 @@ const Mapa = () => {
     if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
       return
     }
-    const { codigo } = feats[0].properties
+    const { codigo, codigoRegion } = feats[0].properties
+    console.log(feats[0].properties)
     dispatch(seleccionarSubserie(codigo))
+    dispatch(filtrarGeoJSONPorRegion(c => c === codigoRegion))
     history.push(`/region/${codigo}`)
   }
 
@@ -104,7 +115,7 @@ const Mapa = () => {
       >
         <CodigoColor />
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
-        <Source id="capa-datos-regiones" type="geojson" data={serie.geoJSON}>
+        <Source id="capa-datos-regiones" type="geojson" data={geoJSONFiltrado}>
           <Layer
             id="data2"
             type="fill"

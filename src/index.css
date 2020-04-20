@@ -80,3 +80,9 @@ a {
 	src: url('./assets/fonts/Open_Sans/OpenSans-Bold.ttf');
 	font-weight: bold;
 }
+
+@font-face {
+	font-family: 'Open Sans';
+	src: url('./assets/fonts/Open_Sans/OpenSans-Italic.ttf');
+	font-style: italic;
+}

@@ -133,6 +133,7 @@ const SeccionInferior = () => {
           <option value={CONTAGIOS_REGIONALES_POR_100000_HABITANTES}>Regiones</option>
           <option value={CASOS_COMUNALES_POR_100000_HABITANTES}>Comunas</option>
         </select>
+        <div className="SeccionInferior__cita">Why say lot word when few chart do trick</div>
       </div>
       <div className="SeccionInferior__contenedor_region">
         <div className="SeccionInferior__region">

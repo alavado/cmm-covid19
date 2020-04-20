@@ -8,11 +8,24 @@
 }
 
 .SeccionInferior__opciones {
-  min-width: 13em;
+  width: 13em;
   padding: 1em;
   display: flex;
   flex-direction: column;
   justify-items: center;
+}
+
+.SeccionInferior__cita {
+  font-size: .75em;
+  font-style: italic;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2em;
+  opacity: .7;
+  line-height: 1.25;
 }
 
 .SeccionInferior__contenedor_region {

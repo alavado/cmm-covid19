@@ -63,6 +63,7 @@ export const procesarRegiones = (csv, geoJSON) => {
           ...region.properties,
           nombre: region.properties.Region,
           codigo: Number(region.properties.codregion),
+          codigoRegion: Number(region.properties.codregion),
           ...datosRegion.reduce((prev, d, i) => ({...prev, [`v${i}`]: d.valor }), {})
         }
       }
@@ -79,11 +80,13 @@ const formatearDatosComuna = csv => {
     .slice(1, -1)
     .map(fila => fila.split(','))
     .map(fila => {
+      const codigoRegion = Number(fila[0])
       const codigo = Number(fila[2])
       const nombre = demografiaComunas.find(r => Number(r.codigo) === codigo).nombre
       return {
         codigo,
         nombre,
+        codigoRegion,
         datos: fila
           .slice(4)
           .map(x => isNaN(x) ? 0 : Number(x))
@@ -123,6 +126,7 @@ export const procesarComunas = (csv, geoJSON) => {
           ...feature.properties,
           nombre: feature.properties.NOM_COM,
           codigo: Number(feature.properties.COD_COMUNA),
+          codigoRegion: Number(x.codigoRegion),
           ...datosFeature.reduce((prev, d, i) => ({...prev, [`v${i}`]: d.valor }), {})
         }
       }

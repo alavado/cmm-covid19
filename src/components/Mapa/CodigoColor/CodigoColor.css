@@ -9,7 +9,6 @@
   align-items: center;
   gap: .3em;
   text-transform: uppercase;
-  pointer-events: none;
   max-width: 66vw;
 }
 
@@ -30,6 +29,12 @@
 
 .CodigoColor__fraccion_color {
   opacity: .8;
+}
+
+.CodigoColor__fraccion_color:hover {
+  box-sizing: content-box;
+  margin-top: -2px;
+  border: 1px solid black;
 }
 
 .CodigoColor__fraccion_limite {
