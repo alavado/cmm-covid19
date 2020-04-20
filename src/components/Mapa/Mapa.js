@@ -60,17 +60,17 @@ const Mapa = () => {
     features: serie.geoJSON.features
       .map(f => {
         let valor = f.properties[`v${posicion}`]
-        if(!filtroValor(valor)) {
+        if (!filtroValor(valor)) {
           valor = -1
         }
-        return {...f, properties: {...f.properties, [`v${posicion}`]: valor}}
+        return { ...f, properties: {...f.properties, [`v${posicion}`]: valor }}
       })
       .map(f => {
         let valor = f.properties[`v${posicion}`]
-        if(!filtroRegion(f.properties.codigoRegion)) {
+        if (!filtroRegion(f.properties.codigoRegion)) {
           valor = -1
         }
-        return {...f, properties: {...f.properties, [`v${posicion}`]: valor}}
+        return { ...f, properties: {...f.properties, [`v${posicion}`]: valor }}
       })
   }), [filtroValor, filtroRegion, posicion])
 
@@ -88,7 +88,6 @@ const Mapa = () => {
       return
     }
     const { codigo, codigoRegion } = feats[0].properties
-    console.log(feats[0].properties)
     dispatch(seleccionarSubserie(codigo))
     dispatch(filtrarGeoJSONPorRegion(c => c === codigoRegion))
     if (serie.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {

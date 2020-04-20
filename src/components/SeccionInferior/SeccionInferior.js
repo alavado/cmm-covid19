@@ -32,7 +32,7 @@ const SeccionInferior = () => {
         ticks: {
           maxTicksLimit: 6,
           suggestedMin: 0,
-          suggestedMax: 20,
+          suggestedMax: 10,
           fontColor: 'rgba(255, 255, 255, 0.75)'
         }
       }],

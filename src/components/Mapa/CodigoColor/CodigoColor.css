@@ -5,7 +5,7 @@
   color: rgba(255, 255, 255, .9);
   font-size: .7em;
   display: grid;
-  grid-template-rows: auto auto auto;
+  grid-auto-flow: row;
   align-items: center;
   gap: .3em;
   text-transform: uppercase;

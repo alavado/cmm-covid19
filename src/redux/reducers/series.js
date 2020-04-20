@@ -70,13 +70,14 @@ export default function(state = initialState, action) {
       }
     }
     case SELECCIONAR_SERIE: {
-      const nuevaSerieSeleccionada = state.series.find(s => s.id === action.payload)
+      const idSerie = action.payload
+      const nuevaSerieSeleccionada = state.series.find(s => s.id === idSerie)
       return {
         ...state,
         serieSeleccionada: {
           ...nuevaSerieSeleccionada,
           filtroRegion: state.serieSeleccionada.filtroRegion,
-          filtroValor: state.serieSeleccionada.filtroValor
+          filtroValor: state.serieSeleccionada.filtroValor,
         },
         subserieSeleccionada: nuevaSerieSeleccionada.datos[0],
         posicion: nuevaSerieSeleccionada.datos[0].datos.length - 1
@@ -113,7 +114,6 @@ export default function(state = initialState, action) {
       }
     }
     case FILTRAR_GEOJSON_POR_REGION: {
-      console.log(action.payload)
       return {
         ...state,
         serieSeleccionada: {
