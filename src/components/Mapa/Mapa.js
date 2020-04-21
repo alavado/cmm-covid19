@@ -83,6 +83,7 @@ const Mapa = () => {
   }
 
   const clickEnPoligono = e => {
+    console.log('aaa')
     const feats = e.features
     if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
       return

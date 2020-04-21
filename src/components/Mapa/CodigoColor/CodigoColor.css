@@ -1,7 +1,7 @@
 .CodigoColor {
   position: absolute;
   left: 1.5em;
-  top: 6.5em;
+  top: 5.5em;
   color: rgba(255, 255, 255, .9);
   font-size: .7em;
   display: grid;
@@ -68,6 +68,7 @@
   box-shadow: 0 .25em .25em rgba(0, 0, 0, .25);
   letter-spacing: .5px;
   transition: all .25s ease-in-out;
+  z-index: 5;
 }
 
 .CodigoColor__boton_cambio:hover {

@@ -21,6 +21,7 @@ const SelectorFecha = () => {
     const slider = document.getElementsByClassName('SelectorFecha__selector')[0]
     fecha.style.marginLeft = `calc(
       ${limite.clientWidth}px - ${fecha.clientWidth / 2}px + 9px + ${slider.clientWidth * posicion / (rangoDias - 1)}px)`
+      document.getElementsByClassName('SelectorFecha')[0].style.overflow = posicion < rangoDias / 2 ? 'inherit' : 'hidden'
   }, [posicion, ancho])
 
   useEffect(() => {

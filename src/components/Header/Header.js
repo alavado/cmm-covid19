@@ -9,8 +9,8 @@ const Header = () => {
     <div className="Header">
       <div className="Header__titulo">
         <img className="Header__logo" src={logo} alt="Logo COVID-19 en Chile" />
-        <Link to="/">
-          COVID-19<br/>en Chile
+        <Link className="Header__nombre" to="/">
+          COVID-19 en Chile
         </Link>
       </div>
       <SelectorFecha />

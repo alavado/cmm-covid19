@@ -3,7 +3,7 @@
   width: 100%;
   background-color: transparent;
   color: white;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   z-index: 2;
   position: fixed;
   pointer-events: none;
@@ -15,16 +15,21 @@
   align-items: center;
   padding-left: 1em;
   background-color: #212121;
-  border-bottom-right-radius: .5em;
+  color: rgba(255, 255, 255, .9);
   font-size: 1em;
   pointer-events: all;
   text-decoration: none;
   align-items: center;
   line-height: 1.1;
+  height: 2em;
+}
+
+.Header__nombre {
+  font-size: .9em;
 }
 
 .Header__logo {
-  height: 1.9em;
+  height: 1.5em;
   margin-right: .5em;
   opacity: .9;
 }

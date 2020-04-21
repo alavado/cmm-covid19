@@ -22,7 +22,10 @@ const CodigoColor = () => {
     }
   }
 
-  const toggleRegiones = () => {
+  const toggleRegiones = e => {
+    console.log('toh')
+    e.stopPropagation()
+    e.preventDefault()
     dispatch(seleccionarSerie(serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? CASOS_COMUNALES_POR_100000_HABITANTES : CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
   }
 
