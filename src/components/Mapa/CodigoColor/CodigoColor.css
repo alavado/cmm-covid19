@@ -54,6 +54,22 @@
   opacity: .85;
 }
 
+.CodigoColor__fecha--avanza-1 {
+  animation: avanza-fecha-1 .1s ease-in-out both;
+}
+
+.CodigoColor__fecha--avanza-2 {
+  animation: avanza-fecha-2 .1s ease-in-out both;
+}
+
+.CodigoColor__fecha--retrocede-1 {
+  animation: retrocede-fecha-1 .1s ease-in-out both;
+}
+
+.CodigoColor__fecha--retrocede-2 {
+  animation: retrocede-fecha-2 .1s ease-in-out both;
+}
+
 .CodigoColor__boton_cambio {
   margin-top: 2em;
   width: 12em;
@@ -78,5 +94,49 @@
 @media (orientation: portrait) {
   .CodigoColor {
     top: 9em;
+  }
+}
+
+@keyframes avanza-fecha-1 {
+  0% {
+    transform: translateX(.5em);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateX(0em);
+    opacity: 1;
+  }
+}
+
+@keyframes avanza-fecha-2 {
+  0% {
+    transform: translateX(.5em);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateX(0em);
+    opacity: 1;
+  }
+}
+
+@keyframes retrocede-fecha-1 {
+  0% {
+    transform: translateX(-.5em);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateX(0em);
+    opacity: 1;
+  }
+}
+
+@keyframes retrocede-fecha-2 {
+  0% {
+    transform: translateX(-.5em);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateX(0em);
+    opacity: 1;
   }
 }

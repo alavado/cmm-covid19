@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
@@ -10,6 +10,11 @@ const CodigoColor = () => {
 
   const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle } = useSelector(state => state.series)
   const { fecha } = subserieSeleccionada.datos[posicion]
+
+  const [vecesAnimada, setVecesAnimada] = useState(0)
+  const [avanza, setAvanza] = useState(false)
+  const [posicionPrevia, setPosicionPrevia] = useState(posicion)
+
   const dispatch = useDispatch()
   const diferencia = fecha.diff(moment(), 'days')
   let etiqueta = `${diferencia === 0 ? 'Hoy, ' : (diferencia === -1 ? 'Ayer, ' : '')} ${fecha.format('dddd D [de] MMMM')}`
@@ -23,16 +28,31 @@ const CodigoColor = () => {
   }
 
   const toggleRegiones = e => {
-    console.log('toh')
     e.stopPropagation()
     e.preventDefault()
-    dispatch(seleccionarSerie(serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? CASOS_COMUNALES_POR_100000_HABITANTES : CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
+    dispatch(seleccionarSerie(
+      serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ?
+        CASOS_COMUNALES_POR_100000_HABITANTES :
+        CONTAGIOS_REGIONALES_POR_100000_HABITANTES
+    ))
   }
+
+  useEffect(() => {
+    setVecesAnimada(vecesAnimada + 1)
+    setAvanza(posicionPrevia < posicion)
+    setPosicionPrevia(posicion)
+  }, [posicion])
 
   return (
     <div className="CodigoColor">
       <div className="CodigoColor__titulo">{serieSeleccionada.nombre}</div>
-      <div className="CodigoColor__fecha">{etiqueta}</div>
+      <div
+        className={`
+          CodigoColor__fecha
+          CodigoColor__fecha--${avanza ? 'avanza' : 'retrocede'}-${vecesAnimada % 2 + 1}`}
+      >
+        {etiqueta}
+      </div>
       <div className="CodigoColor__espectro">
         {escala.map((v, i) => (
           <div
