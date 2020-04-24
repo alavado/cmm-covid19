@@ -4,6 +4,26 @@
   max-height: 100vh;
   overflow: hidden;
   font-family: 'Open Sans', sans-serif;
+  background-color: #0C0C0C;
+}
+
+.App__contenedor_precarga {
+  height: 100vh;
+  background-color: #0C0C0C;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.App__contenedor_poscarga {
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  overflow: hidden;
+  font-family: 'Open Sans', sans-serif;
+  background-color: #000;
+  animation: aparece-app .25s ease-in-out both;
 }
 
 .App_contenedor_header {
@@ -16,4 +36,13 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+@keyframes aparece-app {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

@@ -6,6 +6,7 @@
 
 .PopupRegion__titulo {
   font-size: .8em;
+  text-transform: uppercase;
 }
 
 .PopupRegion__contenido {

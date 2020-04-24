@@ -9,6 +9,7 @@ import { procesarRegiones, procesarComunas } from '../../helpers/perez'
 import { useDispatch, useSelector } from 'react-redux'
 import { actualizarSerie, seleccionarSerie, seleccionarSubserie, avanzarEnSerie, retrocederEnSerie } from '../../redux/actions'
 import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE } from '../../redux/reducers/series'
+import Loader from './Loader'
 
 const urlDatosRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'
 const urlDatosComunas = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados_comunas.csv'
@@ -18,6 +19,7 @@ const urlGeoJSONComunas = 'https://raw.githubusercontent.com/alavado/cmm-covid19
 const App = () => {
 
   const [inicializada, setInicializada] = useState(false)
+  const [errorAlCargar, setErrorAlCargar] = useState(false)
   const { subserieSeleccionada } = useSelector(state => state.series)
   const dispatch = useDispatch()
 
@@ -38,6 +40,10 @@ const App = () => {
       setInicializada(true)
     }
     inicializarDatos()
+      .catch(err => {
+        console.log(err)
+        setErrorAlCargar('Ocurrió un error al obtener los datos')
+      })
     window.addEventListener('keydown', k => {
       switch (k.code) {
         case 'PageDown':
@@ -50,22 +56,29 @@ const App = () => {
     })
   }, [])
 
-  if (!inicializada) {
-    return null
+  if (errorAlCargar) {
+    return errorAlCargar
   }
 
   return (
     <div className="App">
-      <section className="App_contenedor_header">
-        <Header />
-      </section>
-      <main className="App__contenedor">
-        <Switch>
-          <Route path="/" exact component={Mapa} />
-          <Route path="/:division/:codigo" component={Mapa} />
-        </Switch>
-        <SeccionInferior />
-      </main>
+      {inicializada ?
+        <div className="App__contenedor_poscarga">
+          <section className="App_contenedor_header">
+            <Header />
+          </section>
+          <main className="App__contenedor">
+            <Switch>
+              <Route path="/" exact component={Mapa} />
+              <Route path="/:division/:codigo" component={Mapa} />
+            </Switch>
+            <SeccionInferior />
+          </main>
+        </div> :
+        <div className="App__contenedor_precarga">
+          <Loader />
+        </div>
+      }
     </div>
   )
 }

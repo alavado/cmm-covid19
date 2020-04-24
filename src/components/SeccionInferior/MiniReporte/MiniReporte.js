@@ -34,7 +34,7 @@ const MiniReporte = () => {
             }
           </div>
           {diferenciaDiaAnterior >= 0 && '+'}
-          {diferenciaDiaAnterior.toLocaleString('de-DE', { maximumFractionDigits: 2 })} casos respecto al <br/>reporte anterior ({fecha.diff(serie.datos[posicion - 1].fecha, 'days')} {fecha.diff(serie.datos[posicion - 1].fecha, 'days') > 1 ? 'días' : 'día'} antes)
+          {diferenciaDiaAnterior.toLocaleString('de-DE', { maximumFractionDigits: 2 })} casos por 100.000 habitantes respecto al <br/>reporte anterior ({fecha.diff(serie.datos[posicion - 1].fecha, 'days')} {fecha.diff(serie.datos[posicion - 1].fecha, 'days') > 1 ? 'días' : 'día'} antes)
         </div>
       }
     </div>

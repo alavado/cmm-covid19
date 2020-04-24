@@ -37,7 +37,7 @@
 }
 
 .MiniReporte__diferencia {
-  font-size: .8em;
+  font-size: .7em;
   align-self: flex-start;
   display: flex;
   align-items: center;
@@ -47,7 +47,7 @@
 
 .MiniReporte__diferencia_icono {
   font-size: 2em;
-  margin-right: .25em;
+  margin-right: .5em;
 }
 
 .MiniReporte__diferencia_icono_sube {

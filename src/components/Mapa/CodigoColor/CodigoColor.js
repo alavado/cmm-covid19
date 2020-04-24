@@ -5,6 +5,7 @@ import moment from 'moment/min/moment-with-locales'
 import escala from '../../../helpers/escala'
 import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie } from '../../../redux/actions'
 import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
+import { useHistory } from 'react-router-dom'
 
 const CodigoColor = () => {
 
@@ -14,6 +15,7 @@ const CodigoColor = () => {
   const [vecesAnimada, setVecesAnimada] = useState(0)
   const [avanza, setAvanza] = useState(false)
   const [posicionPrevia, setPosicionPrevia] = useState(posicion)
+  const history = useHistory()
 
   const dispatch = useDispatch()
   const diferencia = fecha.diff(moment(), 'days')
@@ -30,11 +32,13 @@ const CodigoColor = () => {
   const toggleRegiones = e => {
     e.stopPropagation()
     e.preventDefault()
-    dispatch(seleccionarSerie(
-      serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ?
-        CASOS_COMUNALES_POR_100000_HABITANTES :
-        CONTAGIOS_REGIONALES_POR_100000_HABITANTES
-    ))
+    if (serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
+      dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))
+    }
+    else {
+      dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
+      history.push(`/`)
+    }
   }
 
   useEffect(() => {
