@@ -20,23 +20,11 @@
 
 .SeccionInferior__opciones {
   width: 13em;
-  padding: 1em;
+  margin: 0 1em;
   display: flex;
   flex-direction: column;
   justify-items: center;
-}
-
-.SeccionInferior__cita {
-  font-size: .75em;
-  font-style: italic;
-  flex: 1;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 2em;
-  opacity: .7;
-  line-height: 1.25;
 }
 
 .SeccionInferior__contenedor_region {
@@ -72,6 +60,35 @@
 
 .SeccionInferior__breadcrumb_separador {
   margin: 0 .1em;
+}
+
+.SeccionInferior__resumen {
+  color: white;
+  /* background-color: rgba(255, 255, 255, .9); */
+  padding: .5em 0;
+  border-radius: .25em;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 1em;
+  align-items: center;
+}
+
+.SeccionInferior__resumen_casos {
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: .15em;
+  background-color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: rgba(0, 0, 0, .75);
+  font-size: 2em;
+}
+
+.SeccionInferior__resumen_descripcion {
+  font-size: .85em;
+  line-height: 1.15;
 }
 
 @media (orientation: portrait) {

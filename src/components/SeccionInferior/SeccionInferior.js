@@ -12,7 +12,7 @@ import escala from '../../helpers/escala'
 const SeccionInferior = () => {
 
   const { subserieSeleccionada: serie, serieSeleccionada, posicion } = useSelector(state => state.series)
-  const fecha = serie.datos[posicion].fecha
+  const { valor: valorPosicion, fecha } = serie.datos[posicion]
   const dispatch = useDispatch()
   Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
   
@@ -33,7 +33,7 @@ const SeccionInferior = () => {
         ticks: {
           maxTicksLimit: 6,
           suggestedMin: 0,
-          suggestedMax: 5,
+          suggestedMax: 10,
           fontColor: 'rgba(255, 255, 255, 0.75)'
         }
       }],
@@ -98,7 +98,6 @@ const SeccionInferior = () => {
       if (maximo >= 10) {
         limiteEspectro = 5 * Math.floor((maximo + 5) / 5)
       }
-      // limiteEspectro *= .6
       escala.forEach((v, i) => {
         const [valor, color] = v
         if (valor / limiteEspectro > 1) {
@@ -110,13 +109,6 @@ const SeccionInferior = () => {
           gradientStroke.addColorStop((valor - 0.01) / limiteEspectro, colorPrevio)
         }
       })
-      // gradientStroke.addColorStop(0, '#abdda4')
-      // gradientStroke.addColorStop(limiteEspectro / 6, '#e6f598')
-      // gradientStroke.addColorStop(limiteEspectro / 3, '#ffffbf')
-      // gradientStroke.addColorStop(limiteEspectro / 2, '#fee08b')
-      // gradientStroke.addColorStop(2 * limiteEspectro / 3, '#fdae61')
-      // gradientStroke.addColorStop(5 * limiteEspectro / 6, '#f46d43')
-      // gradientStroke.addColorStop(limiteEspectro, '#d53e4f')
       data = {
         ...data,
         datasets: [
@@ -165,7 +157,12 @@ const SeccionInferior = () => {
       </div>
       <div className="SeccionInferior__inferior">
         <div className="SeccionInferior__opciones">
-          <div className="SeccionInferior__cita">Why say lot word when few chart do trick</div>
+          <div className="SeccionInferior__resumen">
+            <div className="SeccionInferior__resumen_casos" style={{ backgroundColor: escala.find((e, i) => escala[i + 1][0] > valorPosicion)[1] }}>
+              {valorPosicion.toLocaleString('de-DE', { maximumFractionDigits: 2 })}
+            </div>
+            <div className="SeccionInferior__resumen_descripcion">Nuevos casos por 100.000 habitantes</div>
+          </div>
         </div>
         <div className="SeccionInferior__grafico">
           <Line
