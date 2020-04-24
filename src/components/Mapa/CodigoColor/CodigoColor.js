@@ -44,7 +44,7 @@ const CodigoColor = () => {
               style={{ backgroundColor: v[1] }}
               onMouseEnter={() => {
                 dispatch(toggleFiltro(false))
-                dispatch(filtrarGeoJSONPorValor(x => x > v[0] && i < escala.length - 1 && x < escala[i + 1][0]))
+                dispatch(filtrarGeoJSONPorValor(x => x >= v[0] && i < escala.length - 1 && x < escala[i + 1][0]))
               }}
               onMouseLeave={() => !filtroToggle && dispatch(filtrarGeoJSONPorValor(() => true))}
               onClick={() => dispatch(toggleFiltro(true))}

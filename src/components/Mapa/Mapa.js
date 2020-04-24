@@ -54,24 +54,23 @@ const Mapa = () => {
       setViewport(v => ({ ...v, ...vpInicial }))
       dispatch(limpiarFiltros())
     }
-  }, [params.codigo])    
+  }, [params.codigo])
 
   const geoJSONFiltrado = useMemo(() => ({
     ...serie.geoJSON,
     features: serie.geoJSON.features
       .map(f => {
         let valor = f.properties[`v${posicion}`]
-        if (!filtroValor(valor)) {
-          valor = -1
+        let codigoRegion = f.properties.codigoRegion
+        if (filtroValor(valor) && filtroRegion(codigoRegion)) {
+          return f
         }
-        return { ...f, properties: {...f.properties, [`v${posicion}`]: valor }}
-      })
-      .map(f => {
-        let valor = f.properties[`v${posicion}`]
-        if (!filtroRegion(f.properties.codigoRegion)) {
-          valor = -1
-        }
-        return { ...f, properties: {...f.properties, [`v${posicion}`]: valor }}
+        let properties = Object.keys(f.properties)
+          .reduce((prev, k) => ({
+            ...prev,
+            [k]: k.startsWith('v') ? -1 : f.properties[k]
+          }), {})
+        return {...f, properties}
       })
   }), [filtroValor, filtroRegion, posicion])
 
@@ -88,12 +87,6 @@ const Mapa = () => {
     if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
       return
     }
-    // const coordenadas = feats[0].geometry.coordinates.flat()
-    // const minLng = coordenadas.reduce((c1, c2) => c1[0] < c2[0] ? c1 : c2)[0]
-    // const maxLng = coordenadas.reduce((c1, c2) => c1[0] > c2[0] ? c1 : c2)[0]
-    // const minLat = coordenadas.reduce((c1, c2) => c1[1] < c2[1] ? c1 : c2)[1]
-    // const maxLat = coordenadas.reduce((c1, c2) => c1[1] > c2[1] ? c1 : c2)[1]
-    // mapa.current.getMap().fitBounds([[minLng, minLat], [maxLng, maxLat]])
     const { codigo, codigoRegion } = feats[0].properties
     dispatch(seleccionarSubserie(codigo))
     dispatch(filtrarGeoJSONPorRegion(c => c === codigoRegion))
