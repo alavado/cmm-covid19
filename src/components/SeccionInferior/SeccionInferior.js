@@ -7,6 +7,7 @@ import { fijarPosicionSerie } from '../../redux/actions'
 import escala from '../../helpers/escala'
 import MiniReporte from './MiniReporte'
 import Breadcrumb from './Breadcrumb'
+import { Route, Switch } from 'react-router-dom'
 
 const SeccionInferior = () => {
 
@@ -134,7 +135,10 @@ const SeccionInferior = () => {
   return (
     <div className="SeccionInferior">
       <div className="SeccionInferior__superior">
-        <Breadcrumb />
+        <Switch>
+          <Route path="/:division/:codigo" component={Breadcrumb} />
+          <Route path="/" component={Breadcrumb} />
+        </Switch>
       </div>
       <div className="SeccionInferior__inferior">
         <MiniReporte />
