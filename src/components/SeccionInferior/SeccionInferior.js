@@ -1,18 +1,16 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { Chart, Line } from 'react-chartjs-2'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import './SeccionInferior.css'
-import { FaCaretRight } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
-import { CODIGO_CHILE } from '../../redux/reducers/series'
 import { fijarPosicionSerie } from '../../redux/actions'
 import escala from '../../helpers/escala'
 import MiniReporte from './MiniReporte'
+import Breadcrumb from './Breadcrumb'
 
 const SeccionInferior = () => {
 
-  const { subserieSeleccionada: serie, serieSeleccionada, posicion } = useSelector(state => state.series)
+  const { subserieSeleccionada: serie, posicion } = useSelector(state => state.series)
   const { fecha } = serie.datos[posicion]
   const dispatch = useDispatch()
   Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
@@ -136,18 +134,7 @@ const SeccionInferior = () => {
   return (
     <div className="SeccionInferior">
       <div className="SeccionInferior__superior">
-        <div className="SeccionInferior__contenedor_region">
-          <div className="SeccionInferior__region">
-            {serie.codigo !== CODIGO_CHILE ?
-              <div className="SeccionInferior__breadcrumb">
-                <Link to="/" className="SeccionInferior__breadcrumb_link">Chile</Link>
-                <FaCaretRight className="SeccionInferior__breadcrumb_separador" />
-                {serie.nombre}
-              </div> :
-              <>Chile</>
-            }
-          </div>
-        </div>
+        <Breadcrumb />
       </div>
       <div className="SeccionInferior__inferior">
         <MiniReporte />

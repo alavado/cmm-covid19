@@ -1,0 +1,22 @@
+.Breadcrumb {
+  display: flex;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1em;
+  padding: 1em;
+  font-weight: bold;
+}
+
+.Breadcrumb__link {
+  border-bottom: .2em solid #0288D1;
+  margin-bottom: -.2em;
+  color: rgba(255, 255, 255, .65);
+}
+
+.Breadcrumb__separador {
+  margin: 0 .1em;
+}

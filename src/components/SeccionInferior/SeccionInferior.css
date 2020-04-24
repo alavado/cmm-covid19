@@ -7,51 +7,16 @@
   width: 100%;
 }
 
-.SeccionInferior__breadcrumb {
-  display: flex;
-  align-items: center;
-}
-
 .SeccionInferior__inferior {
   display: flex;
   flex: 1;
   padding-bottom: 1.5em;
 }
 
-.SeccionInferior__contenedor_region {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-  flex: 1;
-}
-
-.SeccionInferior__region {
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1em;
-  padding: 1em;
-  font-weight: bold;
-}
-
 .SeccionInferior__grafico {
   width: 100%;
   flex: 1;
   padding: 0 2.5em 0em 0;
-}
-
-.SeccionInferior__breadcrumb_link {
-  border-bottom: .2em solid #0288D1;
-  margin-bottom: -.2em;
-  color: rgba(255, 255, 255, .65);
-}
-
-.SeccionInferior__breadcrumb_separador {
-  margin: 0 .1em;
 }
 
 @media (orientation: portrait) {
