@@ -11,6 +11,7 @@ import { seleccionarSubserie, seleccionarSerie, filtrarGeoJSONPorRegion, limpiar
 import { CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES, CONTAGIOS_REGIONALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
 import escala from '../../helpers/escala'
 import { esMovil } from '../../helpers/responsive'
+import demograficosComunas from '../../data/demografia/comunas.json'
 
 const vpInicial = {
   width: '100%',
@@ -46,6 +47,11 @@ const Mapa = () => {
     if (division) {
       if (division === 'region') {
         const vpRegion = viewportRegiones.find(vp => vp.codigo === Number(codigo)).vp
+        setViewport(v => ({ ...v, ...vpRegion }))
+      }
+      else {
+        const codigoRegion = demograficosComunas.find(c => c.codigo === codigo).region
+        const vpRegion = viewportRegiones.find(vp => vp.codigo === Number(codigoRegion)).vp
         setViewport(v => ({ ...v, ...vpRegion }))
       }
     }
