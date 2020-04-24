@@ -5,8 +5,9 @@ import moment from 'moment/min/moment-with-locales'
 import './SeccionInferior.css'
 import { FaCaretRight } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
-import { fijarPosicionSerie, seleccionarSerie } from '../../redux/actions'
+import { CODIGO_CHILE } from '../../redux/reducers/series'
+import { fijarPosicionSerie } from '../../redux/actions'
+import escala from '../../helpers/escala'
 
 const SeccionInferior = () => {
 
@@ -32,7 +33,7 @@ const SeccionInferior = () => {
         ticks: {
           maxTicksLimit: 6,
           suggestedMin: 0,
-          suggestedMax: 10,
+          suggestedMax: 5,
           fontColor: 'rgba(255, 255, 255, 0.75)'
         }
       }],
@@ -65,7 +66,7 @@ const SeccionInferior = () => {
     },
     tooltips: {
       callbacks: {
-        label: ({ yLabel: v }) => `Nuevos casos: ${v.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`,
+        label: ({ yLabel: v }) => `Nuevos casos por 100.000 hab.: ${v.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`,
         title: ([{ xLabel: fecha }]) => fecha.format('dddd D [de] MMMM')
       }
     }
@@ -83,7 +84,7 @@ const SeccionInferior = () => {
           pointStrokeColor: '#fff',
           pointHighlightFill: '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data: serie.datos.map(d => d.valor),
+          data: serie.datos.map((d, i) => i <= posicion ? d.valor : null),
           lineTension: .2,
         }
       ]
@@ -91,20 +92,31 @@ const SeccionInferior = () => {
     const canvas = document.getElementById('SeccionInferior__grafico')
     if (serie.datos.length > 0 && canvas) {
       const ctx = canvas.getContext('2d')
-      const gradientStroke = ctx.createLinearGradient(0, 100, 0, 0)
-      const maximo = serie.datos.reduce((prev, d) => Math.max(prev, d.valor), 0)
-      let limiteEspectro = 1
-      if (maximo >= 20) {
-        limiteEspectro = 20.0 / (5 * (Math.floor((maximo + 5) / 5)))
+      const gradientStroke = ctx.createLinearGradient(0, canvas.getBoundingClientRect().height - 28, 0, 0)
+      const maximo = serie.datos.filter((v, i) => i <= posicion).reduce((prev, d) => Math.max(prev, d.valor), 0)
+      let limiteEspectro = 10
+      if (maximo >= 10) {
+        limiteEspectro = 5 * Math.floor((maximo + 5) / 5)
       }
-      limiteEspectro *= .6
-      gradientStroke.addColorStop(0, '#abdda4')
-      gradientStroke.addColorStop(limiteEspectro / 6, '#e6f598')
-      gradientStroke.addColorStop(limiteEspectro / 3, '#ffffbf')
-      gradientStroke.addColorStop(limiteEspectro / 2, '#fee08b')
-      gradientStroke.addColorStop(2 * limiteEspectro / 3, '#fdae61')
-      gradientStroke.addColorStop(5 * limiteEspectro / 6, '#f46d43')
-      gradientStroke.addColorStop(limiteEspectro, '#d53e4f')
+      // limiteEspectro *= .6
+      escala.forEach((v, i) => {
+        const [valor, color] = v
+        if (valor / limiteEspectro > 1) {
+          return
+        }
+        gradientStroke.addColorStop(valor / limiteEspectro, color)
+        if (i > 0) {
+          const [, colorPrevio] = escala[i - 1]
+          gradientStroke.addColorStop((valor - 0.01) / limiteEspectro, colorPrevio)
+        }
+      })
+      // gradientStroke.addColorStop(0, '#abdda4')
+      // gradientStroke.addColorStop(limiteEspectro / 6, '#e6f598')
+      // gradientStroke.addColorStop(limiteEspectro / 3, '#ffffbf')
+      // gradientStroke.addColorStop(limiteEspectro / 2, '#fee08b')
+      // gradientStroke.addColorStop(2 * limiteEspectro / 3, '#fdae61')
+      // gradientStroke.addColorStop(5 * limiteEspectro / 6, '#f46d43')
+      // gradientStroke.addColorStop(limiteEspectro, '#d53e4f')
       data = {
         ...data,
         datasets: [
@@ -121,28 +133,39 @@ const SeccionInferior = () => {
             pointBorderWidth: 1
           }
         ]
-    }
+      }
     }
     return data
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log('to')
+      actualizarGrafico()
+    }, 2000)
+  }, [])
   
-  const chartData = useMemo(actualizarGrafico, [serie])
+  const chartData = useMemo(actualizarGrafico, [posicion, serie])
 
   return (
     <div className="SeccionInferior">
-      <div className="SeccionInferior__opciones">
-        <div className="SeccionInferior__cita">Why say lot word when few chart do trick</div>
+      <div className="SeccionInferior__superior">
+        <div className="SeccionInferior__contenedor_region">
+          <div className="SeccionInferior__region">
+            {serie.codigo !== CODIGO_CHILE ?
+              <div className="SeccionInferior__breadcrumb">
+                <Link to="/" className="SeccionInferior__breadcrumb_link">Chile</Link>
+                <FaCaretRight className="SeccionInferior__breadcrumb_separador" />
+                {serie.nombre}
+              </div> :
+              <>Chile</>
+            }
+          </div>
+        </div>
       </div>
-      <div className="SeccionInferior__contenedor_region">
-        <div className="SeccionInferior__region">
-          {serie.codigo !== CODIGO_CHILE ?
-            <div className="SeccionInferior__breadcrumb">
-              <Link to="/" className="SeccionInferior__breadcrumb_link">Chile</Link>
-              <FaCaretRight className="SeccionInferior__breadcrumb_separador" />
-              {serie.nombre}
-            </div> :
-            <>Chile</>
-          }
+      <div className="SeccionInferior__inferior">
+        <div className="SeccionInferior__opciones">
+          <div className="SeccionInferior__cita">Why say lot word when few chart do trick</div>
         </div>
         <div className="SeccionInferior__grafico">
           <Line

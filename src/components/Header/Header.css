@@ -45,5 +45,7 @@
     border-bottom-right-radius: 0;
     width: 100%;
     padding: .75em 0 .25em 0;
+    display: flex;
+    justify-content: center;
   }
 }
