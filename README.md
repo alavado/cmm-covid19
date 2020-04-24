@@ -9,3 +9,5 @@ poner chile en todos los graficos
 poner region en graficos de comunas
 corregir error de flashes
 destacar comuna seleccionada
+corregir animacion
+corregir problema de ruteo al entrar a la pagina

@@ -1,0 +1,105 @@
+.MiniReporte {
+  width: 13em;
+  margin: 0 1em;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+
+.MiniReporte__cuadro {
+  color: white;
+  padding: 0 0 .5em 0;
+  border-radius: .25em;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: .75em;
+  align-items: center;
+}
+
+.MiniReporte__casos {
+  width: 3em;
+  height: 2em;
+  border-radius: .15em;
+  background-color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #212121;
+  font-size: 2em;
+  transition: all .25s ease-in-out;
+}
+
+.MiniReporte__descripcion {
+  font-size: .85em;
+  line-height: 1.15;
+}
+
+.MiniReporte__diferencia {
+  font-size: .8em;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  margin-top: .25em;
+  line-height: 1.15;
+}
+
+.MiniReporte__diferencia_icono {
+  font-size: 2em;
+  margin-right: .25em;
+}
+
+.MiniReporte__diferencia_icono_sube {
+  animation: diferencia-icono-baja .15s ease-in-out both;
+}
+
+.MiniReporte__diferencia_icono_baja {
+  animation: diferencia-icono-sube .15s ease-in-out both;
+}
+
+
+
+@media (orientation: portrait) {
+
+  .MiniReporte {
+    overflow-y: scroll;
+  }
+
+  .MiniReporte__inferior {
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .MiniReporte__grafico {
+    padding: 0;
+  }
+
+  .MiniReporte__breadcrumb {
+    font-size: .6em;
+  }
+}
+
+@keyframes diferencia-icono-sube {
+  0% {
+    opacity: 0.5;
+    transform: translateY(-.15em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0em);
+  }
+}
+
+@keyframes diferencia-icono-baja {
+  0% {
+    opacity: 0.5;
+    transform: translateY(.15em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0em);
+  }
+}

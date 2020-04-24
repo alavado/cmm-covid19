@@ -8,11 +8,12 @@ import { Link } from 'react-router-dom'
 import { CODIGO_CHILE } from '../../redux/reducers/series'
 import { fijarPosicionSerie } from '../../redux/actions'
 import escala from '../../helpers/escala'
+import MiniReporte from './MiniReporte'
 
 const SeccionInferior = () => {
 
   const { subserieSeleccionada: serie, serieSeleccionada, posicion } = useSelector(state => state.series)
-  const { valor: valorPosicion, fecha } = serie.datos[posicion]
+  const { fecha } = serie.datos[posicion]
   const dispatch = useDispatch()
   Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
   
@@ -129,13 +130,6 @@ const SeccionInferior = () => {
     }
     return data
   }
-
-  useEffect(() => {
-    setTimeout(() => {
-      console.log('to')
-      actualizarGrafico()
-    }, 2000)
-  }, [])
   
   const chartData = useMemo(actualizarGrafico, [posicion, serie])
 
@@ -156,14 +150,7 @@ const SeccionInferior = () => {
         </div>
       </div>
       <div className="SeccionInferior__inferior">
-        <div className="SeccionInferior__opciones">
-          <div className="SeccionInferior__resumen">
-            <div className="SeccionInferior__resumen_casos" style={{ backgroundColor: escala.find((e, i) => escala[i + 1][0] > valorPosicion)[1] }}>
-              {valorPosicion.toLocaleString('de-DE', { maximumFractionDigits: 2 })}
-            </div>
-            <div className="SeccionInferior__resumen_descripcion">Nuevos casos por 100.000 habitantes</div>
-          </div>
-        </div>
+        <MiniReporte />
         <div className="SeccionInferior__grafico">
           <Line
             id="SeccionInferior__grafico"
