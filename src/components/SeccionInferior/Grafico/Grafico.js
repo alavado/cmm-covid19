@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Chart, Line } from 'react-chartjs-2'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
@@ -9,65 +9,10 @@ import './Grafico.css'
 const Grafico = () => {
 
   const { subserieSeleccionada: serie, posicion } = useSelector(state => state.series)
+  const [datos, setDatos] = useState({})
   const { fecha } = serie.datos[posicion]
   const dispatch = useDispatch()
   Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
-  
-  const options = useMemo(() => ({
-    maintainAspectRatio: false,
-    scales: {
-      yAxes: [{
-        display: true,
-        scaleLabel: {
-          display: true,
-          labelString: 'Contagios por 100.000 hab.',
-          fontColor: 'rgba(255, 255, 255, 0.75)',
-          fontSize: 10
-        },
-        gridLines: {
-          display: false
-        },
-        ticks: {
-          maxTicksLimit: 6,
-          suggestedMin: 0,
-          suggestedMax: 10,
-          fontColor: 'rgba(255, 255, 255, 0.75)'
-        }
-      }],
-      xAxes: [{
-        ticks: {
-          autoSkip: false,
-          maxRotation: 0,
-          minRotation: 0,
-          callback: f => {
-            if (f.diff(moment(), 'days') === 0) {
-              return 'Hoy'
-            }
-            else if (f.weekday() === 0) {
-              return f.format('DD[/]MM')
-            }
-            else if (f.diff(fecha, 'days') === 0) {
-              return ''
-            }
-            return null
-          },
-          fontColor: 'rgba(255, 255, 255, 0.85)'
-        },
-        gridLines: {
-          color: 'rgba(255, 255, 255, .25)',
-        },
-      }]
-    },
-    legend: {
-      display: false
-    },
-    tooltips: {
-      callbacks: {
-        label: ({ yLabel: v }) => `Nuevos casos por 100.000 hab.: ${v.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`,
-        title: ([{ xLabel: fecha }]) => fecha.format('dddd D [de] MMMM')
-      }
-    }
-  }), [posicion, serie])
 
   const actualizarGrafico = () => {
     let data = {
@@ -126,15 +71,75 @@ const Grafico = () => {
     }
     return data
   }
-  
-  const chartData = useMemo(actualizarGrafico, [posicion, serie])
+
+  useEffect(() => {
+    setDatos(actualizarGrafico())
+  }, [posicion, serie])
+
+  useEffect(() => {
+    setDatos(actualizarGrafico())
+  }, [])
   
   return (
     <div className="Grafico">
       <Line
         id="Grafico"
-        data={chartData}
-        options={options}
+        data={datos}
+        options={{
+          maintainAspectRatio: false,
+          scales: {
+            yAxes: [{
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Contagios por 100.000 hab.',
+                fontColor: 'rgba(255, 255, 255, 0.75)',
+                fontSize: 10
+              },
+              gridLines: {
+                display: false
+              },
+              ticks: {
+                maxTicksLimit: 6,
+                suggestedMin: 0,
+                suggestedMax: 10,
+                fontColor: 'rgba(255, 255, 255, 0.75)'
+              }
+            }],
+            xAxes: [{
+              ticks: {
+                autoSkip: false,
+                maxRotation: 0,
+                minRotation: 0,
+                callback: f => {
+                  if (f.diff(moment(), 'days') === 0) {
+                    return 'Hoy'
+                  }
+                  else if (f.weekday() === 0) {
+                    return f.format('DD[/]MM')
+                  }
+                  else if (f.diff(fecha, 'days') === 0) {
+                    return ''
+                  }
+                  return null
+                },
+                fontColor: 'rgba(255, 255, 255, 0.85)'
+              },
+              gridLines: {
+                color: 'rgba(255, 255, 255, .25)',
+              },
+            }]
+          },
+          legend: {
+            display: false
+          },
+          tooltips: {
+            callbacks: {
+              label: ({ yLabel: v }) => `Nuevos casos por 100.000 hab.: ${v.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`,
+              title: ([{ xLabel: fecha }]) => fecha.format('dddd D [de] MMMM')
+            }
+          }
+        }}
         onElementsClick={e => {
           if (e[0]) {
             dispatch(fijarPosicionSerie(e[0]._index))

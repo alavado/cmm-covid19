@@ -134,8 +134,6 @@ const Mapa = () => {
     }
   }
 
-  console.log({poligonoDestacado})
-
   return (
     <div
       className="Mapa"
