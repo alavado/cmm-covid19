@@ -152,9 +152,6 @@ const Mapa = () => {
       >
         <CodigoColor />
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
-        {/* <Marker className="test" latitude={-39.204954641160536} longitude={-69.26430872363804}>
-          <div>asdsadsasadas</div>
-        </Marker> */}
         <Source id="capa-datos-regiones" type="geojson" data={geoJSONFiltrado}>
           <Layer
             id="data2"

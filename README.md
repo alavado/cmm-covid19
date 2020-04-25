@@ -1,7 +1,7 @@
 ## Readme en construcción (es como esas manos que dibujó Escher, ¿o no? quizás no, pero en este momento me da la impresión de que sí).
 
 Por hacer:
-mejorar popup (que aparezcan los casos ademas del agregado)
+Que aparezcan los casos ademas del agregado abajo
 corregir que sale negro el grafico al principio (para chile)
 poner chile en todos los graficos
 poner region en graficos de comunas

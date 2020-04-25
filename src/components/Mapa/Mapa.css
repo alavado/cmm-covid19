@@ -3,13 +3,12 @@
 }
 
 .test {
-  background-color: wheat;
-  animation: aparece .25s ease-in-out both;
+  animation: aparece .25s ease-in-out infinite both;
 }
 
 @keyframes aparece {
   0% {
-    opacity: 0;
+    opacity: .5;
   }
   50% {
     opacity: 1;
