@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react'
-import ReactMapGL, { Source, Layer, FlyToInterpolator } from 'react-map-gl'
+import ReactMapGL, { Source, Layer, FlyToInterpolator, Marker } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import './Mapa.css'
 import { useSelector, useDispatch } from 'react-redux'
@@ -7,8 +7,8 @@ import CodigoColor from './CodigoColor'
 import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
-import { seleccionarSubserie, seleccionarSerie, filtrarGeoJSONPorRegion, limpiarFiltros } from '../../redux/actions'
-import { CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES, CONTAGIOS_REGIONALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
+import { seleccionarSubserie, filtrarGeoJSONPorRegion, limpiarFiltros } from '../../redux/actions'
+import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
 import escala from '../../helpers/escala'
 import { esMovil } from '../../helpers/responsive'
 import demograficosComunas from '../../data/demografia/comunas.json'
@@ -31,6 +31,8 @@ const Mapa = () => {
   const { serieSeleccionada: serie, posicion } = useSelector(state => state.series)
   const { filtroValor, filtroRegion } = serie
   const [viewport, setViewport] = useState(vpInicial)
+  const [divisionPrevia, setDivisionPrevia] = useState('')
+  const [poligonoDestacado, setPoligonoDestacado] = useState(null)
   const [popupRegion, setPopupRegion] = useState({
     mostrando: false,
     latitude: 0,
@@ -46,12 +48,13 @@ const Mapa = () => {
     const { division, codigo } = params
     if (division) {
       if (division === 'region') {
-        const vpRegion = viewportRegiones.find(vp => vp.codigo === Number(codigo)).vp
+        const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigo))
         setViewport(v => ({ ...v, ...vpRegion }))
+        setPoligonoDestacado(null)
       }
-      else {
+      else if (division !== divisionPrevia) {
         const codigoRegion = demograficosComunas.find(c => c.codigo === codigo).region
-        const vpRegion = viewportRegiones.find(vp => vp.codigo === Number(codigoRegion)).vp
+        const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigoRegion))
         setViewport(v => ({ ...v, ...vpRegion }))
       }
     }
@@ -59,7 +62,9 @@ const Mapa = () => {
       dispatch(seleccionarSubserie(CODIGO_CHILE))
       setViewport(v => ({ ...v, ...vpInicial }))
       dispatch(limpiarFiltros())
+      setPoligonoDestacado(null)
     }
+    setDivisionPrevia(division)
   }, [params.codigo])
 
   const geoJSONFiltrado = useMemo(() => ({
@@ -97,9 +102,11 @@ const Mapa = () => {
     dispatch(seleccionarSubserie(codigo))
     dispatch(filtrarGeoJSONPorRegion(c => c === codigoRegion))
     if (serie.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
+      setPoligonoDestacado(null)
       history.push(`/region/${codigo}`)
     }
     else {
+      setPoligonoDestacado(feats[0])
       history.push(`/comuna/${codigo}`)
     }
   }
@@ -115,14 +122,19 @@ const Mapa = () => {
       }
       return
     }
-    setPopupRegion({
-      mostrando: true,
-      latitude: e.lngLat[1],
-      longitude: e.lngLat[0],
-      titulo: feats[0].properties.nombre,
-      valor: serie.datos.find(s => s.codigo === feats[0].properties.codigo).datos[posicion].valor
-    })
+    const valorRegion = serie.datos.find(s => s.codigo === feats[0].properties.codigo)
+    if (valorRegion) {
+      setPopupRegion({
+        mostrando: true,
+        latitude: e.lngLat[1],
+        longitude: e.lngLat[0],
+        titulo: feats[0].properties.nombre,
+        valor: valorRegion.datos[posicion].valor
+      })
+    }
   }
+
+  console.log({poligonoDestacado})
 
   return (
     <div
@@ -140,6 +152,9 @@ const Mapa = () => {
       >
         <CodigoColor />
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
+        {/* <Marker className="test" latitude={-39.204954641160536} longitude={-69.26430872363804}>
+          <div>asdsadsasadas</div>
+        </Marker> */}
         <Source id="capa-datos-regiones" type="geojson" data={geoJSONFiltrado}>
           <Layer
             id="data2"
@@ -155,6 +170,25 @@ const Mapa = () => {
             }}
           />
         </Source>
+        {poligonoDestacado &&
+          <Source id="capa-poligono-destacado" type="geojson" data={poligonoDestacado}>
+            <Layer
+              id="data-poligono-fill"
+              type="fill"
+              paint={{
+                'fill-color': 'rgba(255, 255, 255, .1)'
+              }}
+            />
+            <Layer
+              id="data-poligono-stroke"
+              type="line"
+              paint={{
+                'line-color': 'rgba(0, 0, 0, 0.75)',
+                'line-width': 3
+              }}
+            />
+          </Source>
+        }
       </ReactMapGL>
     </div>
   )

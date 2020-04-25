@@ -22,6 +22,22 @@
   margin: 0 .3em;
 }
 
+.Breadcrumb__boton_comunas {
+  width: 12em;
+  cursor: pointer;
+  border: none;
+  color: rgba(255, 255, 255, .9);
+  background-color: #0288D1;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: .7em;
+  align-self: stretch;
+  box-shadow: 0 .25em .25em rgba(0, 0, 0, .25);
+  letter-spacing: .5px;
+  transition: all .25s ease-in-out;
+  align-self: stretch;
+}
+
 @media (orientation: portrait) {
 
   .Breadcrumb__link {
