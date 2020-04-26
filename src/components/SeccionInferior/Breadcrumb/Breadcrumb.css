@@ -13,9 +13,13 @@
 }
 
 .Breadcrumb__link {
-  border-bottom: .2em solid #0288D1;
+  border-bottom: .2em solid #3F51B5;
   margin-bottom: -.2em;
   color: rgba(255, 255, 255, .65);
+}
+
+.Breadcrumb__link--region {
+  border-bottom: .2em solid #039BE5;
 }
 
 .Breadcrumb__separador {

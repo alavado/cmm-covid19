@@ -17,7 +17,10 @@ const SeccionInferior = () => {
       </div>
       <div className="SeccionInferior__inferior">
         <MiniReporte />
-        <Grafico />
+        <Switch>
+          <Route path="/:division/:codigo" component={Grafico} />
+          <Route path="/" component={Grafico} />
+        </Switch>
       </div>
     </div>
   )

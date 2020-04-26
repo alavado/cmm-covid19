@@ -54,7 +54,7 @@ const Breadcrumb = () => {
           <>
             <Link to="/" className="Breadcrumb__link">Chile</Link>
             <FaCaretRight className="Breadcrumb__separador" />
-            <Link to={`/region/${codigoRegion}`} className="Breadcrumb__link">{nombreRegion}</Link>
+            <Link to={`/region/${codigoRegion}`} className="Breadcrumb__link Breadcrumb__link--region">{nombreRegion}</Link>
             <FaCaretRight className="Breadcrumb__separador" />
             {nombreComuna}
           </>
