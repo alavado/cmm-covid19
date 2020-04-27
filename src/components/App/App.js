@@ -20,7 +20,6 @@ const App = () => {
 
   const [inicializada, setInicializada] = useState(false)
   const [errorAlCargar, setErrorAlCargar] = useState(false)
-  const { subserieSeleccionada } = useSelector(state => state.series)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -54,7 +53,7 @@ const App = () => {
           break
       }
     })
-  }, [])
+  }, [dispatch])
 
   if (errorAlCargar) {
     return errorAlCargar

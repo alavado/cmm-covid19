@@ -3,9 +3,10 @@ import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import escala from '../../../helpers/escala'
-import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie } from '../../../redux/actions'
+import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda } from '../../../redux/actions'
 import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
 import { useHistory } from 'react-router-dom'
+import { FaQuestionCircle as IconoAyuda } from 'react-icons/fa'
 
 const CodigoColor = () => {
 
@@ -16,8 +17,8 @@ const CodigoColor = () => {
   const [avanza, setAvanza] = useState(false)
   const [posicionPrevia, setPosicionPrevia] = useState(posicion)
   const history = useHistory()
-
   const dispatch = useDispatch()
+
   const diferencia = fecha.diff(moment(), 'days')
   let etiqueta = `${diferencia === 0 ? 'Hoy, ' : (diferencia === -1 ? 'Ayer, ' : '')} ${fecha.format('dddd D [de] MMMM')}`
   if (posicion > 0) {
@@ -49,13 +50,22 @@ const CodigoColor = () => {
 
   return (
     <div className="CodigoColor">
-      <div className="CodigoColor__titulo">{serieSeleccionada.nombre}</div>
+      <div className="CodigoColor__titulo">
+        {serieSeleccionada.nombre}
+      </div>
       <div
         className={`
           CodigoColor__fecha
           CodigoColor__fecha--${avanza ? 'avanza' : 'retrocede'}-${vecesAnimada % 2 + 1}`}
       >
         {etiqueta}
+        {posicion > 0 && serieSeleccionada.id === CASOS_COMUNALES_POR_100000_HABITANTES &&
+          <IconoAyuda
+            className="CodigoColor__icono_ayuda"
+            title="¿Qué es esto?"
+            onClick={() => dispatch(mostrarAyuda(true))}
+          />
+        }
       </div>
       <div className="CodigoColor__espectro">
         {escala.map((v, i) => (

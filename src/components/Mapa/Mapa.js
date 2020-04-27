@@ -7,11 +7,12 @@ import CodigoColor from './CodigoColor'
 import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
-import { seleccionarSubserie, filtrarGeoJSONPorRegion, limpiarFiltros } from '../../redux/actions'
-import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
+import { seleccionarSubserie, filtrarGeoJSONPorRegion, limpiarFiltros, seleccionarSerie } from '../../redux/actions'
+import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
 import escala from '../../helpers/escala'
 import { esMovil } from '../../helpers/responsive'
 import demograficosComunas from '../../data/demografia/comunas.json'
+import Ayuda from './Ayuda'
 
 const vpInicial = {
   width: '100%',
@@ -50,11 +51,15 @@ const Mapa = () => {
       if (division === 'region') {
         const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigo))
         setViewport(v => ({ ...v, ...vpRegion }))
+        dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
+        dispatch(seleccionarSubserie(Number(codigo)))
         setPoligonoDestacado(null)
       }
       else if (division !== divisionPrevia) {
         const codigoRegion = demograficosComunas.find(c => c.codigo === codigo).region
         const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigoRegion))
+        dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))
+        dispatch(seleccionarSubserie(Number(codigo)))
         setViewport(v => ({ ...v, ...vpRegion }))
       }
     }
@@ -149,6 +154,7 @@ const Mapa = () => {
         ref={mapa}
       >
         <CodigoColor />
+        <Ayuda />
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
         <Source id="capa-datos-regiones" type="geojson" data={geoJSONFiltrado}>
           <Layer
@@ -179,7 +185,7 @@ const Mapa = () => {
               type="line"
               paint={{
                 'line-color': 'rgba(0, 0, 0, 0.75)',
-                'line-width': 3
+                'line-width': 2
               }}
             />
           </Source>

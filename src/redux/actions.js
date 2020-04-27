@@ -1,7 +1,8 @@
 import { SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, ACTUALIZAR_SERIE,
   AVANZAR_EN_SERIE, RETROCEDER_EN_SERIE, FIJAR_POSICION_SERIE,
   FILTRAR_GEOJSON_POR_VALOR, FILTRAR_GEOJSON_POR_REGION, TOGGLE_FILTRO,
-  LIMPIAR_FILTROS } from './actionTypes'
+  LIMPIAR_FILTROS, 
+  MOSTRAR_AYUDA} from './actionTypes'
 
 export const actualizarSerie = (id, propiedad, valor) => ({
   type: ACTUALIZAR_SERIE,
@@ -48,4 +49,9 @@ export const toggleFiltro = estado => ({
 
 export const limpiarFiltros = () => ({
   type: LIMPIAR_FILTROS
+})
+
+export const mostrarAyuda = mostrar => ({
+  type: MOSTRAR_AYUDA,
+  payload: mostrar
 })

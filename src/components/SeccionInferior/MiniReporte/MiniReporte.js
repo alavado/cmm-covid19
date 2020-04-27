@@ -10,13 +10,14 @@ const MiniReporte = () => {
   const { valor: valorPosicion, fecha } = serie.datos[posicion]
   
   const diferenciaDiaAnterior = posicion > 0 && (valorPosicion - serie.datos[posicion - 1].valor)
+  const backgroundColor = escala.find((e, i) => i === escala.length - 1 || escala[i + 1][0] > valorPosicion)[1]
 
   return (
     <div className="MiniReporte">
       <div className="MiniReporte__cuadro">
         <div
           className="MiniReporte__casos"
-          style={{ backgroundColor: escala.find((e, i) => escala[i + 1][0] > valorPosicion)[1] }}
+          style={{ backgroundColor }}
         >
           {valorPosicion.toLocaleString('de-DE', { maximumFractionDigits: 2 })}
         </div>
