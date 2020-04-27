@@ -5,7 +5,7 @@ import moment from 'moment/min/moment-with-locales'
 import escala from '../../../helpers/escala'
 import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda } from '../../../redux/actions'
 import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { FaQuestionCircle as IconoAyuda } from 'react-icons/fa'
 
 const CodigoColor = () => {
@@ -18,6 +18,7 @@ const CodigoColor = () => {
   const [posicionPrevia, setPosicionPrevia] = useState(posicion)
   const history = useHistory()
   const dispatch = useDispatch()
+  const { division } = useParams()
 
   const diferencia = fecha.diff(moment(), 'days')
   let etiqueta = `${diferencia === 0 ? 'Hoy, ' : (diferencia === -1 ? 'Ayer, ' : '')} ${fecha.format('dddd D [de] MMMM')}`
@@ -59,7 +60,7 @@ const CodigoColor = () => {
           CodigoColor__fecha--${avanza ? 'avanza' : 'retrocede'}-${vecesAnimada % 2 + 1}`}
       >
         {etiqueta}
-        {posicion > 0 && serieSeleccionada.id === CASOS_COMUNALES_POR_100000_HABITANTES &&
+        {posicion > 0 && division === 'comuna' &&
           <IconoAyuda
             className="CodigoColor__icono_ayuda"
             title="¿Qué es esto?"
@@ -76,15 +77,16 @@ const CodigoColor = () => {
             <div
               className="CodigoColor__fraccion_color"
               style={{ backgroundColor: v[1] }}
-              onMouseEnter={() => {
-                dispatch(toggleFiltro(false))
-                dispatch(filtrarGeoJSONPorValor(x => x >= v[0] && i < escala.length - 1 && x < escala[i + 1][0]))
-              }}
-              onMouseLeave={() => !filtroToggle && dispatch(filtrarGeoJSONPorValor(() => true))}
-              onClick={() => dispatch(toggleFiltro(true))}
+              // onMouseEnter={() => {
+              //   dispatch(toggleFiltro(false))
+              //   dispatch(filtrarGeoJSONPorValor(x => x >= v[0] && i < escala.length - 1 && x < escala[i + 1][0]))
+              // // }}
+              // onMouseLeave={() => !filtroToggle && dispatch(filtrarGeoJSONPorValor(() => true))}
+              // onClick={() => dispatch(toggleFiltro(true))}
+              title={i < escala.length - 1 ? `Entre ${v[0].toLocaleString()} y ${escala[i + 1][0].toLocaleString()} casos` : `Más de ${escala.slice(-1)[0][0]} casos`}
             />
             <div className="CodigoColor__fraccion_limite">
-              {i === escala.length - 1 ? '50+' : v[0]}
+              {i === escala.length - 1 ? '50+' : v[0].toLocaleString()}
             </div>
           </div>
         ))}

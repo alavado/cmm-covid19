@@ -11,9 +11,9 @@ import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNAL
 
 const Grafico = () => {
 
-  const { subserieSeleccionada: serie, series, posicion } = useSelector(state => state.series)
+  const { subserieSeleccionada: ss, series, posicion } = useSelector(state => state.series)
   const [datos, setDatos] = useState({})
-  const { fecha } = serie.datos[posicion]
+  const { fecha } = ss.datos[posicion]
   const dispatch = useDispatch()
   Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
   const params = useParams()
@@ -97,6 +97,10 @@ const Grafico = () => {
     // borderDash: [5, 3]
   }
 
+  const fechaEsAntesDeFechaPosicionSelecionada = f => {
+    return f.diff(fecha, 'days') <= 0
+  }
+
   useEffect(() => {
     let data = {
       labels: {},
@@ -104,14 +108,14 @@ const Grafico = () => {
     }
     let puntosChile = obtenerSerieChile()
     let puntosRegion, puntosComuna
-    let todosLosValores = [...puntosChile.filter((v, i) => i <= posicion)]
+    let todosLosValores = [...puntosChile.filter(v => fechaEsAntesDeFechaPosicionSelecionada(v.fecha))]
     if (!division) {
       data.labels = puntosChile.map(d => d.fecha)
       data.datasets = [
         {
           ...estiloLineaPrincipal,
           label: 'Chile',
-          data: puntosChile.map((d, i) => i <= posicion ? d.valor : null)
+          data: puntosChile.map((d, i) => fechaEsAntesDeFechaPosicionSelecionada(d.fecha) ? d.valor : null)
         }
       ]
     }
@@ -140,8 +144,8 @@ const Grafico = () => {
       puntosComuna = obtenerSerieComuna(codigo)
       todosLosValores = [
         ...todosLosValores,
-        ...puntosRegion.filter((v, i) => i <= posicion),
-        ...puntosComuna.filter((v, i) => i <= posicion)
+        ...puntosRegion,
+        ...puntosComuna
       ]
       let puntosConDatos = [
         { fecha: puntosChile[0].fecha.clone(), valor: null },
