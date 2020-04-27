@@ -25,7 +25,7 @@ const CodigoColor = () => {
     const diferenciaMedicionAnterior = fecha.diff(subserieSeleccionada.datos[posicion - 1].fecha, 'days')
     if (diferenciaMedicionAnterior > 1) {
       etiqueta = `Promedio 
-        ${subserieSeleccionada.datos[posicion - 1].fecha.clone().add(1, 'days').format('D')}–${fecha.format('D')}
+        ${subserieSeleccionada.datos[posicion - 1].fecha.clone().format('D')}–${fecha.format('D')}
         de ${fecha.format('MMMM')}`
     }
   }

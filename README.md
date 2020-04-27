@@ -8,3 +8,4 @@ agregar ayuda para las comunas
 destacar la comuna seleccionada al azar
 que se muestre solo la parte relevante del grafico al cambiar la fecha teniendo una comuna seleccionada
 al seleccionar "ver comunas" con la vista en chile no se ve bien el grafico
+corregir el stop propagation de los botones del codigo de color

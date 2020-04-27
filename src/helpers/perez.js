@@ -109,6 +109,31 @@ const obtenerCasosComunalesPorHabitantes = (comuna, habitantes) => {
   }
 }
 
+const formatearDatosOriginales = csv => {
+  const filas = csv.split('\n')
+  const fechas = filas[0].split(',').slice(4).map(fecha => moment(fecha, 'MM/DD/YYYY'))
+  return filas
+    .slice(1, -1)
+    .map(fila => fila.split(','))
+    .map(fila => {
+      const codigoRegion = Number(fila[0])
+      const codigo = Number(fila[2])
+      const nombre = demografiaComunas.find(r => Number(r.codigo) === codigo).nombre
+      return {
+        codigo,
+        nombre,
+        codigoRegion,
+        datos: fila
+          .slice(4)
+          .map((x, i) => ({
+            fecha: fechas[i],
+            valor: isNaN(x) ? 0 : Number(x)
+          }))
+          .slice(1)
+      }
+    })
+}
+
 export const procesarComunas = (csv, geoJSON) => {
   let casosPorComuna = formatearDatosComuna(csv)
   let casosPor100000Habitantes = casosPorComuna.map(comuna => obtenerCasosComunalesPorHabitantes(comuna, 100000))
@@ -133,5 +158,5 @@ export const procesarComunas = (csv, geoJSON) => {
       }
     })
   }
-  return [casosPor100000Habitantes, geoJSONConDatos]
+  return [casosPor100000Habitantes, geoJSONConDatos, formatearDatosOriginales(csv)]
 }

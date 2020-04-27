@@ -6,7 +6,8 @@ import {
 
 export const CODIGO_CHILE = 0
 export const CONTAGIOS_REGIONALES_POR_100000_HABITANTES =  'CONTAGIOS_REGIONALES_POR_100000_HABITANTES'
-export const CASOS_COMUNALES_POR_100000_HABITANTES =  'CONTAGIOS_COMUNALES_POR_100000_HABITANTES'
+export const CASOS_COMUNALES_POR_100000_HABITANTES =  'CASOS_COMUNALES_POR_100000_HABITANTES'
+export const CASOS_COMUNALES =  'CASOS_COMUNALES'
 
 const initialState = {
   series: [
@@ -21,6 +22,12 @@ const initialState = {
       datos: [],
       geoJSON: null,
       nombre: 'Nuevos casos por 100.000 habitantes'
+    },
+    {
+      id: CASOS_COMUNALES,
+      datos: [],
+      geoJSON: null,
+      nombre: 'Casos comunales'
     }
   ],
   serieSeleccionada: {
