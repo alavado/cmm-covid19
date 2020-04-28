@@ -10,7 +10,7 @@ const formatearDatosRegion = csv => {
     .map(fila => fila.split(','))
     .map(fila => {
       const codigo = Number(fila[0])
-      const nombre = demografiaRegiones.find(r => r.codigo === codigo).nombre
+      const nombre = demografiaRegiones.find(r => Number(r.codigo) === codigo).nombre
       return {
         codigo,
         nombre,
@@ -27,7 +27,7 @@ const formatearDatosRegion = csv => {
 }
 
 const obtenerCasosRegionalesPorHabitantes = (region, habitantes) => {
-  const { poblacion } = demografiaRegiones.find(r => r.codigo === region.codigo)
+  const { poblacion } = demografiaRegiones.find(r => Number(r.codigo) === region.codigo)
     return {
       ...region,
       datos: region.datos.map(r => ({ ...r, valor: Math.round(100 * r.valor * habitantes / poblacion) / 100 }))
@@ -37,7 +37,7 @@ const obtenerCasosRegionalesPorHabitantes = (region, habitantes) => {
 export const procesarRegiones = (csv, geoJSON) => {
   let casosPorRegion = formatearDatosRegion(csv)
   let casosPor100000Habitantes = casosPorRegion.map(region => obtenerCasosRegionalesPorHabitantes(region, 100000))
-  const poblacionChile = demografiaRegiones.reduce((suma, { poblacion }) => suma + poblacion, 0)
+  const poblacionChile = demografiaRegiones.reduce((suma, { poblacion }) => suma + Number(poblacion), 0)
   const datosChile = casosPorRegion
     .reduce((prev, { datos }) => ({
       ...prev,
