@@ -3,7 +3,7 @@
   color: rgba(255, 255, 255, .95);
   background-color: rgba(0, 0, 0, .75);
   text-transform: none;
-  max-width: 25em;
+  max-width: 30em;
   right: 1em;
   top: 4em;
   border-radius: .5em;
@@ -12,10 +12,11 @@
   flex-direction: column;
   box-shadow: 0 .1em .2em rgba(0, 0, 0, .15);
   animation: aparece-ayuda .25s ease-in-out both;
+  z-index: 5;
 }
 
 .Ayuda__contenedor {
-  font-size: .7em;
+  font-size: .8em;
   line-height: 1.25;
   display: grid;
   gap: .5em;
