@@ -33,6 +33,27 @@ const obtenerCasosRegionalesPorHabitantes = (region, habitantes) => {
       datos: region.datos.map(r => ({ ...r, valor: Math.round(100 * r.valor * habitantes / poblacion) / 100 }))
     }
 }
+const formatearDatosOriginalesRegiones = csv => {
+  const filas = csv.split('\r\n')
+  const fechas = filas[0].split(',').slice(2).map(fecha => moment(fecha, 'MM/DD/YYYY'))
+  return filas
+    .slice(1, -1)
+    .map(fila => fila.split(','))
+    .map(fila => {
+      const codigo = Number(fila[0])
+      const nombre = demografiaRegiones.find(r => Number(r.codigo) === codigo).nombre
+      return {
+        codigo,
+        nombre,
+        datos: fila
+          .slice(2)
+          .map((x, i) => ({
+            fecha: fechas[i],
+            valor: isNaN(x) ? 0 : Number(x)
+          }))
+      }
+    })
+}
 
 export const procesarRegiones = (csv, geoJSON) => {
   let casosPorRegion = formatearDatosRegion(csv)
@@ -69,7 +90,7 @@ export const procesarRegiones = (csv, geoJSON) => {
       }
     })
   }
-  return [casosPor100000Habitantes, geoJSONConDatos]
+  return [casosPor100000Habitantes, geoJSONConDatos, formatearDatosOriginalesRegiones(csv)]
 }
 
 //.map((val, i) => ({ fecha: fechas[i], valor: isNaN(val) ? -1 : Number(val) }))
@@ -109,7 +130,7 @@ const obtenerCasosComunalesPorHabitantes = (comuna, habitantes) => {
   }
 }
 
-const formatearDatosOriginales = csv => {
+const formatearDatosOriginalesComunas = csv => {
   const filas = csv.split('\n')
   const fechas = filas[0].split(',').slice(4).map(fecha => moment(fecha, 'MM/DD/YYYY'))
   return filas
@@ -158,5 +179,5 @@ export const procesarComunas = (csv, geoJSON) => {
       }
     })
   }
-  return [casosPor100000Habitantes, geoJSONConDatos, formatearDatosOriginales(csv)]
+  return [casosPor100000Habitantes, geoJSONConDatos, formatearDatosOriginalesComunas(csv)]
 }

@@ -30,7 +30,7 @@ const Breadcrumb = () => {
     const { division, codigo } = params
     if (division) {
       if (division === 'region') {
-        const { nombre: nombreRegion } = demograficosRegiones.find(r => r.codigo === Number(codigo))
+        const { nombre: nombreRegion } = demograficosRegiones.find(r => Number(r.codigo) === Number(codigo))
         setLinks(
           <>
             <Link to="/" className="Breadcrumb__link">Chile</Link>
@@ -49,7 +49,7 @@ const Breadcrumb = () => {
       }
       else {
         const { nombre: nombreComuna, region } = demograficosComunas.find(r => r.codigo === codigo)
-        const { nombre: nombreRegion, codigo: codigoRegion } = demograficosRegiones.find(r => r.codigo === Number(region))
+        const { nombre: nombreRegion, codigo: codigoRegion } = demograficosRegiones.find(r => Number(r.codigo) === Number(region))
         setLinks(
           <>
             <Link to="/" className="Breadcrumb__link">Chile</Link>

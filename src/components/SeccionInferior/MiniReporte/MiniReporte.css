@@ -42,11 +42,12 @@
   display: flex;
   align-items: center;
   margin-top: .25em;
+  margin-bottom: .25em;
   line-height: 1.15;
 }
 
 .MiniReporte__diferencia_icono {
-  font-size: 2em;
+  font-size: 1.75em;
   margin-right: .5em;
 }
 
@@ -58,12 +59,11 @@
   animation: diferencia-icono-sube .15s ease-in-out both;
 }
 
-
-
 @media (orientation: portrait) {
 
   .MiniReporte {
     overflow-y: scroll;
+    width: 100%;
   }
 
   .MiniReporte__inferior {
