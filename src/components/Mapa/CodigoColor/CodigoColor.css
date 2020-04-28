@@ -61,6 +61,7 @@
   margin-left: .25em;
   color: rgba(255, 255, 255, .75);
   transition: all .25s ease-in-out;
+  animation: aparece-icono-ayuda .5s ease-in-out .25s both;
 }
 
 .CodigoColor__icono_ayuda:hover {
@@ -98,6 +99,7 @@
   letter-spacing: .5px;
   transition: all .25s ease-in-out;
   z-index: 5;
+  animation: aparece-boton-molesto .25s ease-in-out both;
 }
 
 .CodigoColor__boton_cambio:hover {
@@ -164,5 +166,28 @@
   100% {
     transform: translateX(0em);
     opacity: 1;
+  }
+}
+
+@keyframes aparece-boton-molesto {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes aparece-icono-ayuda {
+  0% {
+    opacity: 0;
+    transform: scale(.5);
+  }
+  75% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
   }
 }

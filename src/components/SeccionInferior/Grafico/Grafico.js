@@ -7,6 +7,7 @@ import escala from '../../../helpers/escala'
 import './Grafico.css'
 import { useParams } from 'react-router-dom'
 import demograficosComunas from '../../../data/demografia/comunas.json'
+import demograficosRegiones from '../../../data/demografia/regiones.json'
 import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
 
 const Grafico = () => {
@@ -33,7 +34,7 @@ const Grafico = () => {
   }
 
   const obtenerSerieRegionComuna = codigoComuna => {
-    const codigoRegion = Number(demograficosComunas.find(c => c.codigo === codigo).region)
+    const codigoRegion = Number(demograficosComunas.find(c => c.codigo === codigoComuna).region)
     return obtenerSerieRegion(codigoRegion)
   }
 
@@ -129,7 +130,7 @@ const Grafico = () => {
       data.datasets = [
         {
           ...estiloLineaPrincipal,
-          label: 'Región',
+          label: demograficosRegiones.find(c => c.codigo === codigo).nombre,
           data: puntosRegion.map((d, i) => i <= posicion ? d.valor : null),
         },
         {
@@ -167,17 +168,18 @@ const Grafico = () => {
         return [...prev, ...otros, p]
       }, [])
       data.labels = puntosRellenados.map(d => d.fecha)
+      const datosComuna = demograficosComunas.find(c => c.codigo === codigo)
       data.datasets = [
         {
           ...estiloLineaPrincipal,
-          label: 'Comuna',
+          label: datosComuna.nombre,
           data: puntosRellenados.map((d, i) => d.valor),
           spanGaps: true,
           borderDash: [5, 1]
         },
         {
           ...estiloLineaRegion,
-          label: 'Región',
+          label: demograficosRegiones.find(c => c.codigo === datosComuna.region).nombre,
           data: puntosRegion.map((d, i) => d.valor)
         },
         {
@@ -277,7 +279,10 @@ const Grafico = () => {
           tooltips: {
             callbacks: {
               label: ({ yLabel: v }) => `Nuevos casos por 100.000 hab.: ${v.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`,
-              title: ([{ xLabel: fecha }]) => fecha.format('dddd D [de] MMMM')
+              title: ([{ xLabel: fecha }]) => {
+                return `${fecha.format('dddd D [de] MMMM')}`
+              },
+              beforeTitle: ([{datasetIndex}]) => `${datos.datasets[datasetIndex].label}`
             }
           }
         }}

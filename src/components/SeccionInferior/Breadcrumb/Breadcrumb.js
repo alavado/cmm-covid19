@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Breadcrumb.css'
 import { Link, useParams, useHistory } from 'react-router-dom'
-import { FaCaretRight } from 'react-icons/fa'
+import { FaCaretRight, FaHome } from 'react-icons/fa'
 import demograficosRegiones from '../../../data/demografia/regiones.json'
 import demograficosComunas from '../../../data/demografia/comunas.json'
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,7 +35,7 @@ const Breadcrumb = () => {
           <>
             <Link to="/" className="Breadcrumb__link">Chile</Link>
             <FaCaretRight className="Breadcrumb__separador" />
-            {nombreRegion}
+            <div className="Breadcrumb__destino">{nombreRegion}</div>
             {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES &&
               <>
                 <FaCaretRight className="Breadcrumb__separador" />
@@ -56,7 +56,7 @@ const Breadcrumb = () => {
             <FaCaretRight className="Breadcrumb__separador" />
             <Link to={`/region/${codigoRegion}`} className="Breadcrumb__link Breadcrumb__link--region">{nombreRegion}</Link>
             <FaCaretRight className="Breadcrumb__separador" />
-            {nombreComuna}
+            <div className="Breadcrumb__destino">{nombreComuna}</div>
           </>
         )
       }

@@ -83,7 +83,11 @@ const MiniReporte = () => {
         <div className="MiniReporte__diferencia_icono">
           <FaUserFriends />
         </div>
-        <div><a href="https://www.censo2017.cl/descargas/proyecciones/metodologia-estimaciones-y-proyecciones-de-poblacion-chile-1992-2050.pdf" target="_blank">{datosExtra.nombre} tiene {Number(datosExtra.poblacion).toLocaleString('de-DE')} habitantes</a></div>
+        <div>
+          <a href="https://www.censo2017.cl/descargas/proyecciones/metodologia-estimaciones-y-proyecciones-de-poblacion-chile-1992-2050.pdf" target="_blank">
+            {division === 'region' && 'La '} {datosExtra.nombre} tiene {Number(datosExtra.poblacion).toLocaleString('de-DE')} habitantes
+          </a>
+        </div>
       </div>
       <div className="MiniReporte__diferencia">
         <div className="MiniReporte__diferencia_icono">

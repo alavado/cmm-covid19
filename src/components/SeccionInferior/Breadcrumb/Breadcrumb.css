@@ -18,6 +18,10 @@
   color: rgba(255, 255, 255, .65);
 }
 
+.Breadcrumb__destino {
+  animation: aparece-breadcrumb-destino .25s ease-in-out both;
+}
+
 .Breadcrumb__link--region {
   border-bottom: .2em solid #039BE5;
 }
@@ -40,11 +44,32 @@
   letter-spacing: .5px;
   transition: all .25s ease-in-out;
   align-self: stretch;
+  animation: aparece-boton-ver-comunas .25s ease-in-out .35s both;
 }
 
 @media (orientation: portrait) {
 
   .Breadcrumb__link {
     font-size: .6em;
+  }
+}
+
+@keyframes aparece-breadcrumb-destino {
+  0% {
+    opacity: 0;
+    transform: translateX(-1em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0em);
+  }
+}
+
+@keyframes aparece-boton-ver-comunas {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

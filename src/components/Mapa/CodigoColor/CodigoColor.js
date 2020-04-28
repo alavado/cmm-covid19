@@ -18,7 +18,7 @@ const CodigoColor = () => {
   const [posicionPrevia, setPosicionPrevia] = useState(posicion)
   const history = useHistory()
   const dispatch = useDispatch()
-  const { division } = useParams()
+  const { division, codigo } = useParams()
 
   const diferencia = fecha.diff(moment(), 'days')
   let etiqueta = `${diferencia === 0 ? 'Hoy, ' : (diferencia === -1 ? 'Ayer, ' : '')} ${fecha.format('dddd D [de] MMMM')}`
@@ -91,9 +91,9 @@ const CodigoColor = () => {
           </div>
         ))}
       </div>
-      <button onClick={toggleRegiones} className="CodigoColor__boton_cambio">
+      {!division && <button onClick={toggleRegiones} className="CodigoColor__boton_cambio">
         {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? 'Ver comunas' : 'Ver regiones'}
-      </button>
+      </button>}
     </div>
   )
 }
