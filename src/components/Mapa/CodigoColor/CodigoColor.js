@@ -3,8 +3,8 @@ import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import escala from '../../../helpers/escala'
-import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda } from '../../../redux/actions'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
+import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie } from '../../../redux/actions'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE } from '../../../redux/reducers/series'
 import { useHistory, useParams } from 'react-router-dom'
 import { FaQuestionCircle as IconoAyuda } from 'react-icons/fa'
 
@@ -39,6 +39,7 @@ const CodigoColor = () => {
     }
     else {
       dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
+      dispatch(seleccionarSubserie(CODIGO_CHILE))
       history.push(`/`)
     }
   }

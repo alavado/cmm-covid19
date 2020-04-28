@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Breadcrumb.css'
 import { Link, useParams, useHistory } from 'react-router-dom'
-import { FaCaretRight, FaHome } from 'react-icons/fa'
+import { FaCaretRight } from 'react-icons/fa'
 import demograficosRegiones from '../../../data/demografia/regiones.json'
 import demograficosComunas from '../../../data/demografia/comunas.json'
 import { useDispatch, useSelector } from 'react-redux'

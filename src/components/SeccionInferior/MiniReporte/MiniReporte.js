@@ -2,10 +2,9 @@ import React from 'react'
 import './MiniReporte.css'
 import escala from '../../../helpers/escala'
 import { useSelector } from 'react-redux'
-import { FaArrowCircleUp, FaArrowCircleDown, FaPeopleCarry, FaUserFriends, FaRegSun, FaChartBar } from 'react-icons/fa'
-import demograficosComunas from '../../../data/demografia/comunas.json'
+import { FaArrowCircleUp, FaArrowCircleDown, FaUserFriends, FaChartBar } from 'react-icons/fa'
 import { useParams } from 'react-router-dom'
-import { CASOS_COMUNALES, CASOS_REGIONALES, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE } from '../../../redux/reducers/series'
+import { CASOS_COMUNALES, CASOS_REGIONALES, CODIGO_CHILE } from '../../../redux/reducers/series'
 import { obtenerDemograficosComuna, obtenerDemograficosRegion } from '../../../helpers/demograficos'
 
 const MiniReporte = () => {
@@ -37,7 +36,6 @@ const MiniReporte = () => {
     const datosRegion = series.find(s => s.id === CASOS_REGIONALES)
       .datos
       .find(d => Number(d.codigo) === Number(codigo))
-    console.log(datosRegion.datos[posicion])
     if (datosRegion.datos[posicion]) {
       datosExtra.casos = datosRegion.datos[posicion].valor
       datosExtra.poblacion = obtenerDemograficosRegion(codigo).poblacion

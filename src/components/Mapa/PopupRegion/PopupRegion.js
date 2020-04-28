@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Popup } from 'react-map-gl'
 import './PopupRegion.css'
 import escala from '../../../helpers/escala'
