@@ -1,82 +1,82 @@
 [
   {
-    "codigo": 15,
+    "codigo": "15",
     "nombre": "Región de Arica y Parinacota",
-    "poblacion": 252110
+    "poblacion": "252110"
   },
   {
-    "codigo": 1,
+    "codigo": "1",
     "nombre": "Región de Tarapacá",
-    "poblacion": 382773
+    "poblacion": "382773"
   },
   {
-    "codigo": 2,
+    "codigo": "2",
     "nombre": "Región de Antofagasta",
-    "poblacion": 691854
+    "poblacion": "691854"
   },
   {
-    "codigo": 3,
+    "codigo": "3",
     "nombre": "Región de Atacama",
-    "poblacion": 314709
+    "poblacion": "314709"
   },
   {
-    "codigo": 4,
+    "codigo": "4",
     "nombre": "Región de Coquimbo",
-    "poblacion": 836096
+    "poblacion": "836096"
   },
   {
-    "codigo": 5,
+    "codigo": "5",
     "nombre": "Región de Valparaíso",
-    "poblacion": 1960170
+    "poblacion": "1960170"
   },
   {
-    "codigo": 13,
+    "codigo": "13",
     "nombre": "Región Metropolitana",
-    "poblacion": 8125072
+    "poblacion": "8125072"
   },
   {
-    "codigo": 6,
+    "codigo": "6",
     "nombre": "Región de O’Higgins",
-    "poblacion": 991063
+    "poblacion": "991063"
   },
   {
-    "codigo": 7,
+    "codigo": "7",
     "nombre": "Región del Maule",
-    "poblacion": 1131939
+    "poblacion": "1131939"
   },
   {
-    "codigo": 16,
+    "codigo": "16",
     "nombre": "Región de Ñuble",
-    "poblacion": 511551
+    "poblacion": "511551"
   },
   {
-    "codigo": 8,
+    "codigo": "8",
     "nombre": "Región del Biobío",
-    "poblacion": 1663696
+    "poblacion": "1663696"
   },
   {
-    "codigo": 9,
+    "codigo": "9",
     "nombre": "Región de La Araucanía",
-    "poblacion": 1014343
+    "poblacion": "1014343"
   },
   {
-    "codigo": 14,
+    "codigo": "14",
     "nombre": "Región de Los Ríos",
-    "poblacion": 405835
+    "poblacion": "405835"
   },
   {
-    "codigo": 10,
+    "codigo": "10",
     "nombre": "Región de Los Lagos",
-    "poblacion": 891440
+    "poblacion": "891440"
   },
   {
-    "codigo": 11,
+    "codigo": "11",
     "nombre": "Región de Aysén",
-    "poblacion": 107297
+    "poblacion": "107297"
   },
   {
-    "codigo": 12,
+    "codigo": "12",
     "nombre": "Región de Magallanes",
-    "poblacion": 178362
+    "poblacion": "178362"
   }
 ]

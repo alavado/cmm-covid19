@@ -16,7 +16,10 @@ const SeccionInferior = () => {
         </Switch>
       </div>
       <div className="SeccionInferior__inferior">
-        <MiniReporte />
+        <Switch>
+          <Route path="/:division/:codigo" component={MiniReporte} />
+          <Route path="/" component={MiniReporte} />
+        </Switch>
         <Switch>
           <Route path="/:division/:codigo" component={Grafico} />
           <Route path="/" component={Grafico} />
