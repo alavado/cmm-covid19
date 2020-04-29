@@ -3,8 +3,11 @@ import demografiaComunas from '../data/demografia/comunas.json'
 import moment from 'moment/min/moment-with-locales'
 
 const formatearDatosRegion = csv => {
-  const filas = csv.split('\r\n')
+  let filas = csv.split('\r\n')
   const fechas = filas[0].split(',').slice(2).map(fecha => moment(fecha, 'MM/DD/YYYY'))
+  if (filas.slice(-1)[0].trim() === '') {
+    filas = filas.slice(0, -1)
+  }
   return filas
     .slice(1)
     .map(fila => fila.split(','))
@@ -35,10 +38,13 @@ const obtenerCasosRegionalesPorHabitantes = (region, habitantes) => {
     }
 }
 const formatearDatosOriginalesRegiones = csv => {
-  const filas = csv.split('\r\n')
+  let filas = csv.split('\r\n')
   const fechas = filas[0].split(',').slice(2).map(fecha => moment(fecha, 'MM/DD/YYYY'))
+  if (filas.slice(-1)[0].trim() === '') {
+    filas = filas.slice(0, -1)
+  }
   return filas
-    .slice(1, -1)
+    .slice(1)
     .map(fila => fila.split(','))
     .map(fila => {
       const codigo = Number(fila[0])
@@ -96,10 +102,13 @@ export const procesarRegiones = (csv, geoJSON) => {
 
 //.map((val, i) => ({ fecha: fechas[i], valor: isNaN(val) ? -1 : Number(val) }))
 const formatearDatosComuna = csv => {
-  const filas = csv.split('\n')
+  let filas = csv.split('\n')
   const fechas = filas[0].split(',').slice(4).map(fecha => moment(fecha, 'MM/DD/YYYY'))
+  if (filas.slice(-1)[0].trim() === '') {
+    filas = filas.slice(0, -1)
+  }
   return filas
-    .slice(1, -1)
+    .slice(1)
     .map(fila => fila.split(','))
     .map(fila => {
       const codigoRegion = Number(fila[0])
@@ -132,10 +141,13 @@ const obtenerCasosComunalesPorHabitantes = (comuna, habitantes) => {
 }
 
 const formatearDatosOriginalesComunas = csv => {
-  const filas = csv.split('\n')
+  let filas = csv.split('\n')
   const fechas = filas[0].split(',').slice(4).map(fecha => moment(fecha, 'MM/DD/YYYY'))
+  if (filas.slice(-1)[0].trim() === '') {
+    filas = filas.slice(0, -1)
+  }
   return filas
-    .slice(1, -1)
+    .slice(1)
     .map(fila => fila.split(','))
     .map(fila => {
       const codigoRegion = Number(fila[0])
