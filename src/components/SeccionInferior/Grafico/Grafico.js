@@ -287,7 +287,7 @@ const Grafico = () => {
           }
         }}
         onElementsClick={e => {
-          if (e[0]) {
+          if (e[0] && e[0]._index < ss.datos.length) {
             dispatch(fijarPosicionSerie(e[0]._index))
           }
         }}
