@@ -19,7 +19,7 @@ const PopupRegion = props => {
         <div className="PopupRegion__cuadro">
           <div
             className="PopupRegion__casos"
-            style={{ backgroundColor: escala.find((e, i) => escala[i + 1][0] > valor)[1] }}
+            style={{ backgroundColor: escala.find((e, i) => i === escala.length - 1 || escala[i + 1][0] > valor)[1] }}
           >
             {valorFormateado}
           </div>
