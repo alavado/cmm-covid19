@@ -10,6 +10,8 @@ export const CASOS_COMUNALES_POR_100000_HABITANTES =  'CASOS_COMUNALES_POR_10000
 export const CASOS_COMUNALES =  'CASOS_COMUNALES'
 export const CASOS_REGIONALES =  'CASOS_REGIONALES'
 
+const omitirUltimoDia = false
+
 const initialState = {
   series: [
     {
@@ -94,7 +96,7 @@ export default function(state = initialState, action) {
           filtroValor: state.serieSeleccionada.filtroValor,
         },
         subserieSeleccionada: nuevaSerieSeleccionada.datos[0],
-        posicion: nuevaSerieSeleccionada.datos[0].datos.length - 2
+        posicion: nuevaSerieSeleccionada.datos[0].datos.length - 1 - omitirUltimoDia
       }
     }
     case SELECCIONAR_SUBSERIE: {
@@ -110,7 +112,7 @@ export default function(state = initialState, action) {
             filtroValor: state.serieSeleccionada.filtroValor
           },
           subserieSeleccionada: serieChile,
-          posicion: serieChile.datos.length - 2
+          posicion: serieChile.datos.length - 1 - omitirUltimoDia
         }
       }
       return {

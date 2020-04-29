@@ -6,7 +6,7 @@ const formatearDatosRegion = csv => {
   const filas = csv.split('\r\n')
   const fechas = filas[0].split(',').slice(2).map(fecha => moment(fecha, 'MM/DD/YYYY'))
   return filas
-    .slice(1, -1)
+    .slice(1)
     .map(fila => fila.split(','))
     .map(fila => {
       const codigo = Number(fila[0])
