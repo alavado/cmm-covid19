@@ -94,7 +94,7 @@ export default function(state = initialState, action) {
           filtroValor: state.serieSeleccionada.filtroValor,
         },
         subserieSeleccionada: nuevaSerieSeleccionada.datos[0],
-        posicion: nuevaSerieSeleccionada.datos[0].datos.length - 1
+        posicion: nuevaSerieSeleccionada.datos[0].datos.length - 2
       }
     }
     case SELECCIONAR_SUBSERIE: {
