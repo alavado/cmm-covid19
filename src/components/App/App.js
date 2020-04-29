@@ -57,7 +57,7 @@ const App = () => {
     })
   }, [dispatch])
 
-  if (errorAlCargar) {
+  if (!errorAlCargar) {
     return errorAlCargar
   }
 

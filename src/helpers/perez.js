@@ -22,6 +22,7 @@ const formatearDatosRegion = csv => {
               [...prev, { fecha: fechas[i], valor: Math.max(0, x - arr[i - 1]) }] :
               [{ fecha: fechas[0], valor: x }]
           }, [])
+          .slice(1)
       }
     })
 }
