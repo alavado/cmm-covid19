@@ -38,7 +38,7 @@ const SelectorFecha = () => {
           className="SelectorFecha__selector"
           min={0}
           step={1}
-          max={rangoDias - 2}
+          max={rangoDias - 1}
           onChange={e => dispatch(fijarPosicionSerie(e.target.value))}
           value={posicion}
         />
