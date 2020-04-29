@@ -110,7 +110,7 @@ export default function(state = initialState, action) {
             filtroValor: state.serieSeleccionada.filtroValor
           },
           subserieSeleccionada: serieChile,
-          posicion: serieChile.datos.length - 1
+          posicion: serieChile.datos.length - 2
         }
       }
       return {
