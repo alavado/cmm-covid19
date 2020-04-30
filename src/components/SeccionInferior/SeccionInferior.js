@@ -33,7 +33,7 @@ const SeccionInferior = () => {
           </button>
           <button
             className={`SeccionInferior__opcion${pantallaCompleta ? ' SeccionInferior__opcion--activa' : ''}`}
-            title={'Pantalla completa'}
+            title={pantallaCompleta ? 'Salir de pantalla completa' : 'Pantalla completa'}
             onClick={() => {
               if (document.fullscreenElement) {
                 document.exitFullscreen()
