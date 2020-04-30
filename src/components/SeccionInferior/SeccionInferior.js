@@ -4,6 +4,7 @@ import Breadcrumb from './Breadcrumb'
 import { Route, Switch } from 'react-router-dom'
 import Grafico from './Grafico'
 import './SeccionInferior.css'
+import Buscador from './Buscador'
 
 const SeccionInferior = () => {
 
@@ -14,6 +15,7 @@ const SeccionInferior = () => {
           <Route path="/:division/:codigo" component={Breadcrumb} />
           <Route path="/" component={Breadcrumb} />
         </Switch>
+        <Buscador />
       </div>
       <div className="SeccionInferior__inferior">
         <Switch>
