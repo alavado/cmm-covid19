@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
-import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie } from '../../../redux/actions'
+import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice } from '../../../redux/actions'
 import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE } from '../../../redux/reducers/series'
 import { useHistory, useParams } from 'react-router-dom'
 import { FaQuestionCircle as IconoAyuda } from 'react-icons/fa'
@@ -11,7 +11,7 @@ const CodigoColor = () => {
 
   const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle } = useSelector(state => state.series)
   const { fecha } = subserieSeleccionada.datos[posicion]
-  const { escala } = useSelector(state => state.colores)
+  const { escala, indiceDestacado } = useSelector(state => state.colores)
 
   const [vecesAnimada, setVecesAnimada] = useState(0)
   const [avanza, setAvanza] = useState(false)
@@ -50,6 +50,8 @@ const CodigoColor = () => {
     setPosicionPrevia(posicion)
   }, [posicion])
 
+  console.log(indiceDestacado)
+
   return (
     <div className="CodigoColor">
       <div className="CodigoColor__titulo">
@@ -77,13 +79,28 @@ const CodigoColor = () => {
           >
             <div
               className="CodigoColor__fraccion_color"
-              style={{ backgroundColor: v[1] }}
-              // onMouseEnter={() => {
-              //   dispatch(toggleFiltro(false))
-              //   dispatch(filtrarGeoJSONPorValor(x => x >= v[0] && i < escala.length - 1 && x < escala[i + 1][0]))
-              // // }}
-              // onMouseLeave={() => !filtroToggle && dispatch(filtrarGeoJSONPorValor(() => true))}
-              // onClick={() => dispatch(toggleFiltro(true))}
+              style={{
+                backgroundColor: indiceDestacado < 0 || indiceDestacado === i ? v[1] : '#999',
+                filter: indiceDestacado === i ? `drop-shadow(0 0 .25em ${v[1]})` : 'none'
+               }}
+              onMouseEnter={() => {
+                if (indiceDestacado < 0) {
+                  dispatch(toggleFiltro(false))
+                  dispatch(filtrarGeoJSONPorValor(x => x >= v[0] && i < escala.length - 1 && x < escala[i + 1][0]))
+                }
+              }}
+              onMouseLeave={() => !filtroToggle && dispatch(filtrarGeoJSONPorValor(() => true))}
+              onClick={() => {
+                if (indiceDestacado >= 0 && indiceDestacado === i) {
+                  dispatch(destacarIndice(-1))
+                  dispatch(toggleFiltro(false))
+                }
+                else {
+                  dispatch(destacarIndice(i))
+                  dispatch(filtrarGeoJSONPorValor(x => x >= v[0] && i < escala.length - 1 && x < escala[i + 1][0]))
+                  dispatch(toggleFiltro(true))
+                }
+              }}
               title={i < escala.length - 1 ? `Entre ${v[0].toLocaleString()} y ${escala[i + 1][0].toLocaleString()} casos` : `Más de ${escala.slice(-1)[0][0]} casos`}
             />
             <div className="CodigoColor__fraccion_limite">

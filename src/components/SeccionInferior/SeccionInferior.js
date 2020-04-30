@@ -25,7 +25,7 @@ const SeccionInferior = () => {
           <Buscador />
           <button
             className={`SeccionInferior__opcion${daltonicos ? ' SeccionInferior__opcion--activa' : ''}`}
-            title="Modo daltónico"
+            title={daltonicos ? 'Desactivar modo daltónico' : 'Modo daltónico'}
             onClick={() => dispatch(activarDaltonismo(!daltonicos))}
           >
             <FaTintSlash />

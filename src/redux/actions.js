@@ -2,7 +2,8 @@ import { SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, ACTUALIZAR_SERIE,
   AVANZAR_EN_SERIE, RETROCEDER_EN_SERIE, FIJAR_POSICION_SERIE,
   FILTRAR_GEOJSON_POR_VALOR, FILTRAR_GEOJSON_POR_REGION, TOGGLE_FILTRO,
   LIMPIAR_FILTROS, ACTIVAR_DALTONISMO,
-  MOSTRAR_AYUDA} from './actionTypes'
+  MOSTRAR_AYUDA,
+  DESTACAR_INDICE} from './actionTypes'
 
 export const actualizarSerie = (id, propiedad, valor) => ({
   type: ACTUALIZAR_SERIE,
@@ -59,4 +60,9 @@ export const mostrarAyuda = mostrar => ({
 export const activarDaltonismo = estado => ({
   type: ACTIVAR_DALTONISMO,
   payload: estado
+})
+
+export const destacarIndice = indice => ({
+  type: DESTACAR_INDICE,
+  payload: indice
 })

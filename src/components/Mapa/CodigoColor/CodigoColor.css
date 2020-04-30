@@ -23,19 +23,13 @@
 .CodigoColor__fraccion {
   flex: 1;
   display: grid;
-  height: 2em;
+  height: 2.2em;
   gap: .2em;
 }
 
 .CodigoColor__fraccion_color {
   opacity: 1;
   filter: brightness(75%);
-}
-
-.CodigoColor__fraccion_color:hover {
-  box-sizing: content-box;
-  margin-top: -2px;
-  border: 1px solid black;
 }
 
 .CodigoColor__fraccion_limite {
