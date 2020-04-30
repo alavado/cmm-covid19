@@ -60,10 +60,10 @@ const Mapa = () => {
         const codigoRegion = demograficosComunas.find(c => c.codigo === codigo).region
         if (codigoRegion !== regionPrevia) {
           const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigoRegion))
-          dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))
-          dispatch(filtrarGeoJSONPorRegion(c => c === Number(codigoRegion)))
           setViewport(v => ({ ...v, ...vpRegion }))
         }
+        dispatch(filtrarGeoJSONPorRegion(c => c === Number(codigoRegion)))
+        dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))
         dispatch(seleccionarSubserie(Number(codigo)))
         setRegionPrevia(codigoRegion)
       }
@@ -80,6 +80,8 @@ const Mapa = () => {
   useEffect(() => {
     if (subserieSeleccionada) {
       const { codigo } = subserieSeleccionada
+      const feature = serie.geoJSON.features.find(f => f.properties.codigo === codigo)
+      if (feature)
       setPoligonoDestacado(serie.geoJSON.features.find(f => f.properties.codigo === codigo))
     }
   }, [subserieSeleccionada])
