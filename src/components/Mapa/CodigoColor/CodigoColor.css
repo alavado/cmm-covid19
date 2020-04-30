@@ -79,7 +79,6 @@
 }
 
 .CodigoColor__boton_cambio {
-  margin-top: 2em;
   width: 12em;
   cursor: pointer;
   border: none;
@@ -98,6 +97,29 @@
 
 .CodigoColor__boton_cambio:hover {
   filter: brightness(120%);
+}
+
+.CodigoColor__boton_limpiar_filtro_rango {
+  width: 12em;
+  cursor: pointer;
+  border: none;
+  color: rgba(0, 0, 0, .75);
+  padding: 1em;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: .95em;
+  box-shadow: 0 .25em .25em rgba(0, 0, 0, .25);
+  letter-spacing: .5px;
+  transition: all .25s ease-in-out;
+  z-index: 5;
+  animation: aparece-boton-molesto .25s ease-in-out both;
+}
+
+.CodigoColor__botones {
+  margin-top: 2em;
+  display: grid;
+  gap: .5em;
+  justify-items: start;
 }
 
 @media (orientation: portrait) {
@@ -166,9 +188,11 @@
 @keyframes aparece-boton-molesto {
   0% {
     opacity: 0;
+    transform: translateY(-1em);
   }
   100% {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 

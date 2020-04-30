@@ -24,7 +24,7 @@
     "openmaptiles": {
       "type": "vector",
       "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=9sVe3g7n8Rv4JJBJXlbK",
-      "attribution": "Fuente de datos: <a target='_blank' href='https://github.com/jorgeperezrojas/covid19-data'>jorgeperezrojas@GitHub</a> | <a href='http://openmaptiles.org/' target='_blank'>© OpenMapTiles</a>"
+      "attribution": "Fuente de datos: <a target='_blank' href='https://github.com/jorgeperezrojas/covid19-data/tree/master/csv'>jorgeperezrojas@GitHub</a> | <a href='http://openmaptiles.org/' target='_blank'>© OpenMapTiles</a>"
     }
   },
   "sprite": "https://openmaptiles.github.io/dark-matter-gl-style/sprite",

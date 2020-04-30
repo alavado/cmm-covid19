@@ -92,6 +92,7 @@ const CodigoColor = () => {
                 if (indiceDestacado >= 0 && indiceDestacado === i) {
                   dispatch(destacarIndice(-1))
                   dispatch(toggleFiltro(false))
+                  dispatch(filtrarGeoJSONPorValor(() => true))
                 }
                 else {
                   dispatch(destacarIndice(i))
@@ -107,9 +108,24 @@ const CodigoColor = () => {
           </div>
         ))}
       </div>
-      {!division && <button onClick={toggleRegiones} className="CodigoColor__boton_cambio">
-        {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? 'Ver comunas' : 'Ver regiones'}
-      </button>}
+      <div className="CodigoColor__botones">
+        {indiceDestacado >= 0 &&
+          <button
+            className="CodigoColor__boton_limpiar_filtro_rango"
+            style={{ backgroundColor: escala[indiceDestacado][1] }}
+            onClick={() => {
+              dispatch(destacarIndice(-1))
+              dispatch(toggleFiltro(false))
+              dispatch(filtrarGeoJSONPorValor(() => true))
+            }}
+          >
+            Quitar filtro
+          </button>
+        }
+        {!division && <button onClick={toggleRegiones} className="CodigoColor__boton_cambio">
+          {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? 'Ver comunas' : 'Ver regiones'}
+        </button>}
+      </div>
     </div>
   )
 }
