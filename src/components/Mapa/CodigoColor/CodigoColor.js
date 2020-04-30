@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
-import escala from '../../../helpers/escala'
 import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie } from '../../../redux/actions'
 import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE } from '../../../redux/reducers/series'
 import { useHistory, useParams } from 'react-router-dom'
@@ -12,6 +11,7 @@ const CodigoColor = () => {
 
   const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle } = useSelector(state => state.series)
   const { fecha } = subserieSeleccionada.datos[posicion]
+  const { escala } = useSelector(state => state.colores)
 
   const [vecesAnimada, setVecesAnimada] = useState(0)
   const [avanza, setAvanza] = useState(false)

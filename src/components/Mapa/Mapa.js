@@ -9,7 +9,6 @@ import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
 import { seleccionarSubserie, filtrarGeoJSONPorRegion, limpiarFiltros, seleccionarSerie } from '../../redux/actions'
 import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
-import escala from '../../helpers/escala'
 import { esMovil } from '../../helpers/responsive'
 import demograficosComunas from '../../data/demografia/comunas.json'
 import Ayuda from './Ayuda'
@@ -30,6 +29,7 @@ const vpInicial = {
 const Mapa = () => {
 
   const { serieSeleccionada: serie, posicion, subserieSeleccionada } = useSelector(state => state.series)
+  const { escala, colorApagado, daltonicos } = useSelector(state => state.colores)
   const { filtroValor, filtroRegion } = serie
   const [viewport, setViewport] = useState(vpInicial)
   const [regionPrevia, setRegionPrevia] = useState('')
@@ -177,9 +177,12 @@ const Mapa = () => {
             paint={{
               'fill-color': {
                 property: `v${posicion}`,
-                stops: [[-1, '#757575'], ...escala.reduce((prev, [v, color], i) => (
-                  i > 0 ? [...prev, [v - 0.0001, escala[i - 1][1]], [v, color]] : [[v, color]]
-                ), [])]
+                stops: [
+                  [-1, colorApagado],
+                  ...escala.reduce((prev, [v, color], i) => (
+                    i > 0 ? [...prev, [v - 0.0001, escala[i - 1][1]], [v, color]] : [[v, color]]
+                  ), [])
+                ]
               },
               'fill-opacity': .7
             }}

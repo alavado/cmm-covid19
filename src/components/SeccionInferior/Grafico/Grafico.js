@@ -3,7 +3,6 @@ import { Chart, Line } from 'react-chartjs-2'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import { fijarPosicionSerie } from '../../../redux/actions'
-import escala from '../../../helpers/escala'
 import './Grafico.css'
 import { useParams } from 'react-router-dom'
 import demograficosComunas from '../../../data/demografia/comunas.json'
@@ -12,6 +11,7 @@ import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNAL
 
 const Grafico = () => {
 
+  const { escala } = useSelector(state => state.colores)
   const { subserieSeleccionada: ss, series, posicion } = useSelector(state => state.series)
   const [datos, setDatos] = useState({})
   const { fecha } = ss.datos[posicion]
@@ -221,7 +221,7 @@ const Grafico = () => {
       ...data.datasets.slice(1),
     ]
     setDatos(data)
-  }, [posicion, division, codigo])
+  }, [posicion, division, codigo, escala])
 
   return (
     <div className="Grafico">

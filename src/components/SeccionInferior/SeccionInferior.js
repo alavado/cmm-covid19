@@ -5,8 +5,14 @@ import { Route, Switch } from 'react-router-dom'
 import Grafico from './Grafico'
 import './SeccionInferior.css'
 import Buscador from './Buscador'
+import { FaPalette, FaTintSlash } from 'react-icons/fa'
+import { useDispatch, useSelector } from 'react-redux'
+import { activarDaltonismo } from '../../redux/actions'
 
 const SeccionInferior = () => {
+  
+  const { daltonicos } = useSelector(state => state.colores)
+  const dispatch = useDispatch()
 
   return (
     <div className="SeccionInferior">
@@ -15,7 +21,16 @@ const SeccionInferior = () => {
           <Route path="/:division/:codigo" component={Breadcrumb} />
           <Route path="/" component={Breadcrumb} />
         </Switch>
-        <Buscador />
+        <div className="SeccionInferior__opciones">
+          <Buscador />
+          <button
+            className={`SeccionInferior__opcion${daltonicos ? ' SeccionInferior__opcion--activa' : ''}`}
+            title="Modo daltónico"
+            onClick={() => dispatch(activarDaltonismo(!daltonicos))}
+          >
+            <FaTintSlash />
+          </button>
+        </div>
       </div>
       <div className="SeccionInferior__inferior">
         <Switch>

@@ -19,6 +19,32 @@
   padding-bottom: 1.5em;
 }
 
+.SeccionInferior__opciones {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: 1.5em;
+  margin-right: 2.5em;
+}
+
+.SeccionInferior__opcion {
+  cursor: pointer;
+  color: white;
+  transition: all .25s ease-in-out;
+  background-color: transparent;
+  border: none;
+  font-size: 1.15em;
+}
+
+.SeccionInferior__opcion:hover {
+  opacity: 1;
+}
+
+.SeccionInferior__opcion--activa {
+  color: #02A3FB;
+  filter: drop-shadow(0 0 .35em #02A3FB);
+}
+
 @media (orientation: portrait) {
 
   .SeccionInferior {

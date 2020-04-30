@@ -1,12 +1,13 @@
 import React from 'react'
 import { Popup } from 'react-map-gl'
 import './PopupRegion.css'
-import escala from '../../../helpers/escala'
+import { useSelector } from 'react-redux'
 
 const PopupRegion = props => {
 
   const { latitude, longitude, titulo, valor } = props.config
   const valorFormateado = valor.toLocaleString('de-DE', { maximumFractionDigits: 2 })
+  const { escala } = useSelector(state => state.colores)
 
   return (
     <Popup

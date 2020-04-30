@@ -1,6 +1,5 @@
 import React from 'react'
 import './MiniReporte.css'
-import escala from '../../../helpers/escala'
 import { useSelector } from 'react-redux'
 import { FaArrowCircleUp, FaArrowCircleDown, FaUserFriends, FaChartBar } from 'react-icons/fa'
 import { useParams } from 'react-router-dom'
@@ -11,11 +10,12 @@ const MiniReporte = () => {
 
   const { subserieSeleccionada: ss, series, posicion } = useSelector(state => state.series)
   const { division, codigo } = useParams()
+  const { escala } = useSelector(state => state.colores)
   
   const { valor: valorPosicion, fecha } = ss.datos[posicion]
   const diferenciaDiaAnterior = posicion > 0 && (valorPosicion - ss.datos[posicion - 1].valor)
   const backgroundColor = escala.find((e, i) => i === escala.length - 1 || escala[i + 1][0] > valorPosicion)[1]
-  
+
   let datosExtra = {
     casos: 0,
     casosAnteriores: 0,
@@ -69,8 +69,14 @@ const MiniReporte = () => {
             style={{ color: diferenciaDiaAnterior > 0 ? '#F44336' : '#43A047' }}
           >
             {diferenciaDiaAnterior > 0 ?
-              <FaArrowCircleUp className="MiniReporte__diferencia_icono_sube" /> :
-              <FaArrowCircleDown className="MiniReporte__diferencia_icono_baja" />
+              <FaArrowCircleUp
+                className="MiniReporte__diferencia_icono_sube"
+                style={{ color: escala.slice(-1)[0][1] }}
+              /> :
+              <FaArrowCircleDown
+                className="MiniReporte__diferencia_icono_baja"
+                style={{ color: escala[0][1] }}
+              />
             }
           </div>
           {diferenciaDiaAnterior >= 0 && '+'}

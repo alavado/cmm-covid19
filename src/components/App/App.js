@@ -27,7 +27,6 @@ const App = () => {
       const { data: datosCSVRegiones } = await axios.get(urlDatosRegiones)
       const { data: geoJSONRegiones } = await axios.get(urlGeoJSONRegiones)
       const [casosRegionalesPor100000Habitantes, geoJSONRegionesConDatos, datosRegionalesOriginales] = procesarRegiones(datosCSVRegiones, geoJSONRegiones)
-      console.log(casosRegionalesPor100000Habitantes)
       dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'geoJSON', geoJSONRegionesConDatos))
       dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'datos', casosRegionalesPor100000Habitantes))
       dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
