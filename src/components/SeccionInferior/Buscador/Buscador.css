@@ -1,6 +1,7 @@
 .Buscador {
   display: flex;
   justify-content: flex-end;
+  margin-right: 1em;
 }
 
 .Buscador__label {

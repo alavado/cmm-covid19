@@ -50,8 +50,6 @@ const CodigoColor = () => {
     setPosicionPrevia(posicion)
   }, [posicion])
 
-  console.log(indiceDestacado)
-
   return (
     <div className="CodigoColor">
       <div className="CodigoColor__titulo">
