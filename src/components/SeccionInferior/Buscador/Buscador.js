@@ -3,17 +3,18 @@ import './Buscador.css'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import comunas from '../../../data/demografia/comunas.json'
 import { busqueda as busquedaLocal } from '../../../helpers/busqueda'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 const Buscador = () => {
 
   const [comunasEncontradas, setComunasEncontradas] = useState([])
   const [busqueda, setBusqueda] = useState([])
+  const history = useHistory()
 
   const filtrarComunas = e => {
     const terminoBusqueda = e.target.value
     setBusqueda(terminoBusqueda)
-    if (terminoBusqueda.length > 2) {
+    if (terminoBusqueda.length > 1) {
       setComunasEncontradas(comunas.filter(({ nombre }) => busquedaLocal(terminoBusqueda, nombre) >= 0).slice(0, 3))
     }
     else {
@@ -21,12 +22,24 @@ const Buscador = () => {
     }
   }
 
+  const limpiarBusqueda = () => {
+    setBusqueda('')
+    setComunasEncontradas([])
+  }
+
   return (
     <div className="Buscador">
       <div className="Buscador__contenedor_resultados">
         <div className="Buscador__resultados">
           {comunasEncontradas.map(comuna => (
-            <Link to={`/comuna/${comuna.codigo}`} className="Buscador_resultado">{comuna.nombre}</Link>
+            <Link
+              to={`/comuna/${comuna.codigo}`}
+              className="Buscador_resultado"
+              onClick={limpiarBusqueda}
+              key={`resultado-busqueda-${comuna.codigo}`}
+            >
+              {comuna.nombre}
+            </Link>
           ))}
         </div>
       </div>
@@ -35,13 +48,16 @@ const Buscador = () => {
           className="Buscador__input"
           onChange={filtrarComunas}
           value={busqueda}
+          onKeyUp={e => {
+            if (e.keyCode === 13 && comunasEncontradas.length > 0) {
+              history.push(`/comuna/${comunasEncontradas[0].codigo}`)
+              limpiarBusqueda()
+            }
+          }}
         />
       </label>
       {comunasEncontradas.length > 0 ?
-        <FaTimes className="Buscador__icono" onClick={() => {
-          setBusqueda('')
-          setComunasEncontradas([])
-        }} /> :
+        <FaTimes className="Buscador__icono" onClick={limpiarBusqueda} /> :
         <FaSearch className="Buscador__icono" />
       }
     </div>

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react'
-import ReactMapGL, { Source, Layer, FlyToInterpolator, Marker } from 'react-map-gl'
+import ReactMapGL, { Source, Layer, FlyToInterpolator } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import './Mapa.css'
 import { useSelector, useDispatch } from 'react-redux'
@@ -29,10 +29,10 @@ const vpInicial = {
 
 const Mapa = () => {
 
-  const { serieSeleccionada: serie, posicion } = useSelector(state => state.series)
+  const { serieSeleccionada: serie, posicion, subserieSeleccionada } = useSelector(state => state.series)
   const { filtroValor, filtroRegion } = serie
   const [viewport, setViewport] = useState(vpInicial)
-  const [divisionPrevia, setDivisionPrevia] = useState('')
+  const [regionPrevia, setRegionPrevia] = useState('')
   const [poligonoDestacado, setPoligonoDestacado] = useState(null)
   const [popupRegion, setPopupRegion] = useState({
     mostrando: false,
@@ -54,13 +54,18 @@ const Mapa = () => {
         dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
         dispatch(seleccionarSubserie(Number(codigo)))
         setPoligonoDestacado(null)
+        setRegionPrevia(codigo)
       }
-      else if (division !== divisionPrevia) {
+      else if (division === 'comuna') {
         const codigoRegion = demograficosComunas.find(c => c.codigo === codigo).region
-        const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigoRegion))
-        dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))
+        if (codigoRegion !== regionPrevia) {
+          const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigoRegion))
+          dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))
+          dispatch(filtrarGeoJSONPorRegion(c => c === Number(codigoRegion)))
+          setViewport(v => ({ ...v, ...vpRegion }))
+        }
         dispatch(seleccionarSubserie(Number(codigo)))
-        setViewport(v => ({ ...v, ...vpRegion }))
+        setRegionPrevia(codigoRegion)
       }
     }
     else {
@@ -68,9 +73,16 @@ const Mapa = () => {
       setViewport(v => ({ ...v, ...vpInicial }))
       dispatch(limpiarFiltros())
       setPoligonoDestacado(null)
+      setRegionPrevia(null)
     }
-    setDivisionPrevia(division)
   }, [params.codigo])
+
+  useEffect(() => {
+    if (subserieSeleccionada) {
+      const { codigo } = subserieSeleccionada
+      setPoligonoDestacado(serie.geoJSON.features.find(f => f.properties.codigo === codigo))
+    }
+  }, [subserieSeleccionada])
 
   const geoJSONFiltrado = useMemo(() => ({
     ...serie.geoJSON,
@@ -185,7 +197,7 @@ const Mapa = () => {
               type="line"
               paint={{
                 'line-color': 'rgba(0, 0, 0, 0.75)',
-                'line-width': 2
+                'line-width': 2.5
               }}
             />
           </Source>
