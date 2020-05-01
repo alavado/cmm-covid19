@@ -8,7 +8,7 @@ import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
 import { seleccionarSubserie, filtrarGeoJSONPorRegion, limpiarFiltros, seleccionarSerie } from '../../redux/actions'
-import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../redux/reducers/series'
+import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CUARENTENAS } from '../../redux/reducers/series'
 import { esMovil } from '../../helpers/responsive'
 import demograficosComunas from '../../data/demografia/comunas.json'
 import Ayuda from './Ayuda'
@@ -28,8 +28,9 @@ const vpInicial = {
 
 const Mapa = () => {
 
-  const { serieSeleccionada: serie, posicion, subserieSeleccionada } = useSelector(state => state.series)
-  const { escala, colorApagado, daltonicos } = useSelector(state => state.colores)
+  const { serieSeleccionada: serie, posicion, subserieSeleccionada, series } = useSelector(state => state.series)
+  const { escala, colorApagado } = useSelector(state => state.colores)
+  const geoJSONCuarentenas = series.find(({ id }) => id === CUARENTENAS).geoJSON
   const { filtroValor, filtroRegion } = serie
   const [viewport, setViewport] = useState(vpInicial)
   const [regionPrevia, setRegionPrevia] = useState('')
@@ -188,6 +189,18 @@ const Mapa = () => {
             }}
           />
         </Source>
+        {geoJSONCuarentenas && false && 
+        <Source id="capa-cuarentenas" type="geojson" data={geoJSONCuarentenas}>
+          <Layer
+            id="dataCuarentenas"
+            type="fill"
+            paint={{
+              'fill-color': 'black',
+              'fill-opacity': .7
+            }}
+          />
+        </Source>
+        }
         {poligonoDestacado &&
           <Source id="capa-poligono-destacado" type="geojson" data={poligonoDestacado}>
             <Layer
