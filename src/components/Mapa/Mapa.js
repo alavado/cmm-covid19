@@ -189,7 +189,7 @@ const Mapa = () => {
             }}
           />
         </Source>
-        {geoJSONCuarentenas && false && 
+        {geoJSONCuarentenas && 
         <Source id="capa-cuarentenas" type="geojson" data={geoJSONCuarentenas}>
           <Layer
             id="dataCuarentenas"

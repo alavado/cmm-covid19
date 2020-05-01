@@ -37,7 +37,7 @@ const MiniReporte = () => {
       .datos
       .find(d => Number(d.codigo) === Number(codigo))
     if (datosRegion.datos[posicion]) {
-      datosExtra.casos = datosRegion.datos[posicion].valor
+      datosExtra.casos = datosRegion.datos[posicion + 1].valor
       datosExtra.poblacion = obtenerDemograficosRegion(codigo).poblacion
       datosExtra.nombre = obtenerDemograficosRegion(codigo).nombre
     }

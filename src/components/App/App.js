@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux'
 import { actualizarSerie, seleccionarSerie, seleccionarSubserie, avanzarEnSerie, retrocederEnSerie } from '../../redux/actions'
 import { CASOS_COMUNALES, CASOS_REGIONALES, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE, CUARENTENAS } from '../../redux/reducers/series'
 import Loader from './Loader'
+import geoJSONCuarentenas from '../../data/geojsons/cuarentenas.json'
 
 const urlDatosRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'
 const urlDatosComunas = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados_comunas.csv'
@@ -41,7 +42,6 @@ const App = () => {
       setInicializada(true)
 
       // ver: https://covid19.soporta.cl/datasets/0b944d9bf1954c71a7fae96bdddee464_1/geoservice?geometry=-71.394%2C-33.683%2C-69.660%2C-33.282
-      const { data: geoJSONCuarentenas } = await axios.get('https://opendata.arcgis.com/datasets/0b944d9bf1954c71a7fae96bdddee464_1.geojson')
       dispatch(actualizarSerie(CUARENTENAS, 'geoJSON', geoJSONCuarentenas))
     }
     inicializarDatos()
