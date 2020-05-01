@@ -2,7 +2,7 @@ import { SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, ACTUALIZAR_SERIE,
   AVANZAR_EN_SERIE, RETROCEDER_EN_SERIE, FIJAR_POSICION_SERIE,
   FILTRAR_GEOJSON_POR_VALOR, FILTRAR_GEOJSON_POR_REGION, TOGGLE_FILTRO,
   LIMPIAR_FILTROS, ACTIVAR_DALTONISMO,
-  MOSTRAR_AYUDA,
+  MOSTRAR_AYUDA, FIJAR_GEOJSON_CUARENTENAS,
   DESTACAR_INDICE} from './actionTypes'
 
 export const actualizarSerie = (id, propiedad, valor) => ({
@@ -65,4 +65,9 @@ export const activarDaltonismo = estado => ({
 export const destacarIndice = indice => ({
   type: DESTACAR_INDICE,
   payload: indice
+})
+
+export const fijarGeoJSONCuarentenas = geoJSON => ({
+  type: FIJAR_GEOJSON_CUARENTENAS,
+  payload: geoJSON
 })

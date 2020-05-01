@@ -28,9 +28,8 @@ const vpInicial = {
 
 const Mapa = () => {
 
-  const { serieSeleccionada: serie, posicion, subserieSeleccionada, series } = useSelector(state => state.series)
+  const { serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenas: geoJSONCuarentenasActivas } = useSelector(state => state.series)
   const { escala, colorApagado } = useSelector(state => state.colores)
-  const geoJSONCuarentenas = series.find(({ id }) => id === CUARENTENAS).geoJSON
   const { filtroValor, filtroRegion } = serie
   const [viewport, setViewport] = useState(vpInicial)
   const [regionPrevia, setRegionPrevia] = useState('')
@@ -171,6 +170,18 @@ const Mapa = () => {
         <CodigoColor />
         <Ayuda />
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
+        {geoJSONCuarentenasActivas && division === 'comuna' &&
+          <Source id="capa-cuarentenas" type="geojson" data={geoJSONCuarentenasActivas}>
+            <Layer
+              id="dataCuarentenas"
+              type="fill"
+              paint={{
+                'fill-color': 'black',
+                'fill-opacity': .7
+              }}
+            />
+          </Source>
+        }
         <Source id="capa-datos-regiones" type="geojson" data={geoJSONFiltrado}>
           <Layer
             id="data2"
@@ -189,18 +200,6 @@ const Mapa = () => {
             }}
           />
         </Source>
-        {geoJSONCuarentenas && division === 'comuna' && false &&
-        <Source id="capa-cuarentenas" type="geojson" data={geoJSONCuarentenas}>
-          <Layer
-            id="dataCuarentenas"
-            type="fill"
-            paint={{
-              'fill-color': 'black',
-              'fill-opacity': .7
-            }}
-          />
-        </Source>
-        }
         {poligonoDestacado &&
           <Source id="capa-poligono-destacado" type="geojson" data={poligonoDestacado}>
             <Layer

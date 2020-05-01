@@ -1,7 +1,7 @@
 import {
   ACTUALIZAR_SERIE, AVANZAR_EN_SERIE, RETROCEDER_EN_SERIE, FIJAR_POSICION_SERIE,
   SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, FILTRAR_GEOJSON_POR_VALOR, FILTRAR_GEOJSON_POR_REGION,
-  TOGGLE_FILTRO, LIMPIAR_FILTROS
+  TOGGLE_FILTRO, LIMPIAR_FILTROS, FIJAR_GEOJSON_CUARENTENAS
 } from '../actionTypes'
 
 export const CODIGO_CHILE = 0
@@ -38,12 +38,6 @@ const initialState = {
       datos: [],
       geoJSON: null,
       nombre: 'Casos regionales'
-    },
-    {
-      id: CUARENTENAS,
-      datos: [],
-      geoJSON: null,
-      nombre: 'Cuarentenas'
     }
   ],
   serieSeleccionada: {
@@ -52,6 +46,8 @@ const initialState = {
   },
   subserieSeleccionada: null,
   filtroToggle: false,
+  geoJSONCuarentenasActivas: null,
+  geoJSONCuarentenas: null,
   posicion: 0
 }
 
@@ -160,6 +156,12 @@ export default function(state = initialState, action) {
           filtroRegion: x => true,
           filtroValor: x => true
         }
+      }
+    }
+    case FIJAR_GEOJSON_CUARENTENAS: {
+      return {
+        ...state,
+        geoJSONCuarentenas: action.payload
       }
     }
     default:

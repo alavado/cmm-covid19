@@ -228,6 +228,20 @@ const Grafico = () => {
       <Line
         id="Grafico"
         data={datos}
+        // data={{
+        //   labels: datos.labels,
+        //   datasets: datos.datasets ? [
+        //     ...datos.datasets,
+        //     {
+        //       type: 'bar',
+        //       key: 'Barras-cuarentenas-totales',
+        //       label: 'labelio',
+        //       data: datos.labels.map((l, i) => i > 10 && i < 20 ? 15 : 0),
+        //       backgroundColor: 'rgba(255, 255, 255, .2)',
+        //       barPercentage: 1.25
+        //     }
+        //   ] : datos.datasets
+        // }}
         options={{
           maintainAspectRatio: false,
           scales: {

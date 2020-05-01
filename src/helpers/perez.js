@@ -8,7 +8,6 @@ const formatearDatosRegion = csv => {
   if (filas.slice(-1)[0].trim() === '') {
     filas = filas.slice(0, -1)
   }
-  console.log({filas})
   return filas
     .slice(1)
     .map(fila => fila.split(','))
