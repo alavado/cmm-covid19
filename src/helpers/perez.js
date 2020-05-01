@@ -3,11 +3,12 @@ import demografiaComunas from '../data/demografia/comunas.json'
 import moment from 'moment/min/moment-with-locales'
 
 const formatearDatosRegion = csv => {
-  let filas = csv.split('\r\n')
+  let filas = csv.split('\n')
   const fechas = filas[0].split(',').slice(2).map(fecha => moment(fecha, 'MM/DD/YYYY'))
   if (filas.slice(-1)[0].trim() === '') {
     filas = filas.slice(0, -1)
   }
+  console.log({filas})
   return filas
     .slice(1)
     .map(fila => fila.split(','))
@@ -38,7 +39,7 @@ const obtenerCasosRegionalesPorHabitantes = (region, habitantes) => {
     }
 }
 const formatearDatosOriginalesRegiones = csv => {
-  let filas = csv.split('\r\n')
+  let filas = csv.split('\n')
   const fechas = filas[0].split(',').slice(2).map(fecha => moment(fecha, 'MM/DD/YYYY'))
   if (filas.slice(-1)[0].trim() === '') {
     filas = filas.slice(0, -1)
