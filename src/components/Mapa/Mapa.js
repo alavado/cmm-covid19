@@ -44,10 +44,10 @@ const Mapa = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const params = useParams()
+  const { division, codigo } = params
   const mapa = useRef()
 
   useEffect(() => {
-    const { division, codigo } = params
     if (division) {
       if (division === 'region') {
         const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigo))
@@ -76,7 +76,7 @@ const Mapa = () => {
       setPoligonoDestacado(null)
       setRegionPrevia(null)
     }
-  }, [params.codigo])
+  }, [division, codigo])
 
   useEffect(() => {
     if (subserieSeleccionada) {
@@ -189,7 +189,7 @@ const Mapa = () => {
             }}
           />
         </Source>
-        {geoJSONCuarentenas && 
+        {geoJSONCuarentenas && division === 'comuna' && false &&
         <Source id="capa-cuarentenas" type="geojson" data={geoJSONCuarentenas}>
           <Layer
             id="dataCuarentenas"
