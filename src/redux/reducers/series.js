@@ -3,6 +3,7 @@ import {
   SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, FILTRAR_GEOJSON_POR_VALOR, FILTRAR_GEOJSON_POR_REGION,
   TOGGLE_FILTRO, LIMPIAR_FILTROS, FIJAR_GEOJSON_CUARENTENAS
 } from '../actionTypes'
+import { obtenerCuarentenasActivas } from '../../helpers/cuarentenas'
 
 export const CODIGO_CHILE = 0
 export const CONTAGIOS_REGIONALES_POR_100000_HABITANTES =  'CONTAGIOS_REGIONALES_POR_100000_HABITANTES'
@@ -71,21 +72,30 @@ export default function(state = initialState, action) {
       }
     }
     case RETROCEDER_EN_SERIE: {
+      const posicion = Math.max(state.posicion - 1, 0)
+      const fechaSerie = state.subserieSeleccionada.datos[posicion].fecha
       return {
         ...state,
-        posicion: Math.max(state.posicion - 1, 0)
+        posicion,
+        geoJSONCuarentenasActivas: obtenerCuarentenasActivas(state.geoJSONCuarentenas, fechaSerie) 
       }
     }
     case AVANZAR_EN_SERIE: {
+      const posicion = Math.min(state.posicion + 1, state.subserieSeleccionada.datos.length - 1)
+      const fechaSerie = state.subserieSeleccionada.datos[posicion].fecha
       return {
         ...state,
-        posicion: Math.min(state.posicion + 1, state.subserieSeleccionada.datos.length - 1)
+        posicion,
+        geoJSONCuarentenasActivas: obtenerCuarentenasActivas(state.geoJSONCuarentenas, fechaSerie)
       }
     }
     case FIJAR_POSICION_SERIE: {
+      const posicion = action.payload
+      const fechaSerie = state.subserieSeleccionada.datos[posicion].fecha
       return {
         ...state,
-        posicion: action.payload
+        posicion,
+        geoJSONCuarentenasActivas: obtenerCuarentenasActivas(state.geoJSONCuarentenas, fechaSerie)
       }
     }
     case SELECCIONAR_SERIE: {

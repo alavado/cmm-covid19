@@ -28,11 +28,12 @@ const vpInicial = {
 
 const Mapa = () => {
 
-  const { serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenas: geoJSONCuarentenasActivas } = useSelector(state => state.series)
+  const { serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenasActivas } = useSelector(state => state.series)
   const { escala, colorApagado } = useSelector(state => state.colores)
   const { filtroValor, filtroRegion } = serie
   const [viewport, setViewport] = useState(vpInicial)
   const [regionPrevia, setRegionPrevia] = useState('')
+  const [divisionPrevia, setDivisionPrevia] = useState('')
   const [poligonoDestacado, setPoligonoDestacado] = useState(null)
   const [popupRegion, setPopupRegion] = useState({
     mostrando: false,
@@ -63,7 +64,9 @@ const Mapa = () => {
           setViewport(v => ({ ...v, ...vpRegion }))
         }
         dispatch(filtrarGeoJSONPorRegion(c => c === Number(codigoRegion)))
-        dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))
+        if (divisionPrevia !== division) {
+          dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))
+        }
         dispatch(seleccionarSubserie(Number(codigo)))
         setRegionPrevia(codigoRegion)
       }
@@ -75,6 +78,7 @@ const Mapa = () => {
       setPoligonoDestacado(null)
       setRegionPrevia(null)
     }
+    setDivisionPrevia(division)
   }, [division, codigo])
 
   useEffect(() => {
@@ -113,11 +117,11 @@ const Mapa = () => {
   }
 
   const clickEnPoligono = e => {
-    const feats = e.features
-    if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
+    const featurePoligono = e.features && e.features.find(f => f.source === 'capa-datos-regiones')
+    if (!featurePoligono) {
       return
     }
-    const { codigo, codigoRegion } = feats[0].properties
+    const { codigo, codigoRegion } = featurePoligono.properties
     dispatch(seleccionarSubserie(codigo))
     dispatch(filtrarGeoJSONPorRegion(c => c === codigoRegion))
     if (serie.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
@@ -125,14 +129,14 @@ const Mapa = () => {
       history.push(`/region/${codigo}`)
     }
     else {
-      setPoligonoDestacado(feats[0])
+      setPoligonoDestacado(featurePoligono)
       history.push(`/comuna/${codigo}`)
     }
   }
 
   const actualizarPopupChico = e => {
-    const feats = e.features
-    if (!feats || feats.length === 0 || feats[0].source !== 'capa-datos-regiones') {
+    const featurePoligono = e.features && e.features.find(f => f.source === 'capa-datos-regiones')
+    if (!featurePoligono) {
       if (popupRegion.mostrando) {
         setPopupRegion({
           ...popupRegion,
@@ -141,13 +145,13 @@ const Mapa = () => {
       }
       return
     }
-    const valorRegion = serie.datos.find(s => s.codigo === feats[0].properties.codigo)
+    const valorRegion = serie.datos.find(s => s.codigo === featurePoligono.properties.codigo)
     if (valorRegion) {
       setPopupRegion({
         mostrando: true,
         latitude: e.lngLat[1],
         longitude: e.lngLat[0],
-        titulo: feats[0].properties.nombre,
+        titulo: featurePoligono.properties.nombre,
         valor: valorRegion.datos[posicion].valor
       })
     }
@@ -177,7 +181,7 @@ const Mapa = () => {
               type="fill"
               paint={{
                 'fill-color': 'black',
-                'fill-opacity': .7
+                'fill-opacity': .25
               }}
             />
           </Source>
@@ -214,7 +218,7 @@ const Mapa = () => {
               type="line"
               paint={{
                 'line-color': 'rgba(0, 0, 0, 0.75)',
-                'line-width': 2.5
+                'line-width': 2
               }}
             />
           </Source>
