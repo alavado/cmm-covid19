@@ -124,16 +124,16 @@
 
 @media (orientation: portrait) {
   .CodigoColor {
-    top: 8em;
+    top: 7em;
     max-width: 90vw;
   }
 
   .CodigoColor__titulo {
-    font-size: 1.5em;
+    font-size: 1.15em;
   }
   
   .CodigoColor__fecha {
-    font-size: 2em;
+    font-size: 1.75em;
   }
 
   .CodigoColor__boton_cambio {

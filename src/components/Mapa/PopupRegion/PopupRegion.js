@@ -14,8 +14,9 @@ const PopupRegion = props => {
       latitude={latitude}
       longitude={longitude}
       closeButton={false}
+      className="PopupRegion"
     >
-      <div className="PopupRegion">
+      <div className="PopupRegion__contenido">
         <h1 className="PopupRegion__titulo">{titulo}</h1>
         <div className="PopupRegion__cuadro">
           <div

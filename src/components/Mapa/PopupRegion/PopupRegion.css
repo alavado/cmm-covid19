@@ -1,4 +1,4 @@
-.PopupRegion {
+.PopupRegion__contenido {
   display: grid;
   justify-items: center;
   gap: .25em;
@@ -37,4 +37,10 @@
 .PopupRegion__descripcion {
   font-size: .75em;
   line-height: 1.15;
+}
+
+@media (orientation: portrait) {
+  .PopupRegion {
+    display: none;
+  }
 }

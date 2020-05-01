@@ -64,3 +64,10 @@
 .SelectorFecha__texto_fecha::first-letter {
   text-transform: uppercase;
 }
+
+@media (orientation: portrait) {
+  
+  .SelectorFecha__contenedor_fecha {
+    display: none;
+  }
+}

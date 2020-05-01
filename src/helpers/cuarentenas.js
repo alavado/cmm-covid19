@@ -5,7 +5,7 @@ export const procesarCuarentenas = geoJSON => {
 }
 
 export const obtenerCuarentenasActivas = (geoJSONCuarentenas, fecha) => {
-  console.log(geoJSONCuarentenas)
+  // console.log(geoJSONCuarentenas)
   const c = {
     type: 'FeatureCollection',
     features: geoJSONCuarentenas.features.filter(feature => {
@@ -14,6 +14,6 @@ export const obtenerCuarentenasActivas = (geoJSONCuarentenas, fecha) => {
       return fecha.diff(fechaInicio, 'days') >= 0 && fecha.diff(fechaFinal, 'days') < 0
     })
   }
-  console.log({c})
+  // console.log({c})
   return c
 }
