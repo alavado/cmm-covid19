@@ -80,9 +80,15 @@ const MiniReporte = () => {
             }
           </div>
           {diferenciaDiaAnterior >= 0 && '+'}
-          {diferenciaDiaAnterior.toLocaleString('de-DE', { maximumFractionDigits: 2 })} casos por 100.000 habitantes respecto al <br/>reporte anterior ({fecha.diff(ss.datos[posicion - 1].fecha, 'days')} {fecha.diff(ss.datos[posicion - 1].fecha, 'days') > 1 ? 'días' : 'día'} antes)
+          {diferenciaDiaAnterior.toLocaleString('de-DE', { maximumFractionDigits: 2 })} casos por 100.000 habitantes respecto al reporte anterior ({fecha.diff(ss.datos[posicion - 1].fecha, 'days')} {fecha.diff(ss.datos[posicion - 1].fecha, 'days') > 1 ? 'días' : 'día'} antes)
         </div>
       }
+      <div className="MiniReporte__diferencia">
+        <div className="MiniReporte__diferencia_icono">
+          <FaChartBar />
+        </div>
+        <div>{Number(datosExtra.casos).toLocaleString('de-DE')} casos en total hasta el {fecha.format('dddd D [de] MMMM')}</div>
+      </div>
       <div className="MiniReporte__diferencia">
         <div className="MiniReporte__diferencia_icono">
           <FaUserFriends />
@@ -92,12 +98,6 @@ const MiniReporte = () => {
             {division === 'region' && 'La '} {datosExtra.nombre} tiene {Number(datosExtra.poblacion).toLocaleString('de-DE')} habitantes
           </a>
         </div>
-      </div>
-      <div className="MiniReporte__diferencia">
-        <div className="MiniReporte__diferencia_icono">
-          <FaChartBar />
-        </div>
-        <div>{Number(datosExtra.casos).toLocaleString('de-DE')} casos en total hasta el {fecha.format('dddd D [de] MMMM')}</div>
       </div>
     </div>
   )

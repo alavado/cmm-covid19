@@ -10,6 +10,7 @@
   gap: .3em;
   text-transform: uppercase;
   max-width: 66vw;
+  pointer-events: none;
 }
 
 .CodigoColor__espectro {
@@ -18,6 +19,7 @@
   opacity: 1;
   border-radius: .1em;
   display: flex;
+  user-select: none;
 }
 
 .CodigoColor__fraccion {
@@ -30,15 +32,21 @@
 .CodigoColor__fraccion_color {
   opacity: 1;
   filter: brightness(75%);
+  cursor: pointer;
+  pointer-events: all;
 }
 
 .CodigoColor__fraccion_limite {
   flex: 2;
+  pointer-events: none;
+  user-select: none;
 }
 
 .CodigoColor__titulo {
   font-size: 1.85em;
   opacity: .85;
+  pointer-events: none;
+  user-select: none;
 }
 
 .CodigoColor__fecha {
@@ -48,14 +56,18 @@
   opacity: .85;
   display: flex;
   align-items: center;
+  pointer-events: none;
+  user-select: none;
 }
 
 .CodigoColor__icono_ayuda {
   font-size: .75em;
-  margin-left: .25em;
+  margin-left: .5em;
   color: rgba(255, 255, 255, .75);
   transition: all .25s ease-in-out;
   animation: aparece-icono-ayuda .5s ease-in-out .25s both;
+  pointer-events: all;
+  cursor: pointer;
 }
 
 .CodigoColor__icono_ayuda:hover {
@@ -93,6 +105,8 @@
   transition: all .25s ease-in-out;
   z-index: 5;
   animation: aparece-boton-molesto .25s ease-in-out both;
+  user-select: none;
+  pointer-events: all;
 }
 
 .CodigoColor__boton_cambio:hover {
@@ -113,6 +127,8 @@
   transition: all .25s ease-in-out;
   z-index: 5;
   animation: aparece-boton-molesto .25s ease-in-out both;
+  user-select: none;
+  pointer-events: all;
 }
 
 .CodigoColor__botones {

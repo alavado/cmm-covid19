@@ -33,7 +33,6 @@ const CodigoColor = () => {
 
   const toggleRegiones = e => {
     e.stopPropagation()
-    e.preventDefault()
     if (serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
       dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))
     }
@@ -123,15 +122,13 @@ const CodigoColor = () => {
           </button>
         }
         {!division &&
-        <div onMouseOver={e => e.stopPropagation()} onTouchMove={e => e.stopPropagation()} style={{zIndex: 1000}}>
           <button
             onClick={toggleRegiones}
             className="CodigoColor__boton_cambio"
             onMouseOver={e => e.stopPropagation()}
-            onMouseMove={e => e.stopPropagation()}
           >
             {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? 'Ver comunas' : 'Ver regiones'}
-          </button></div>
+          </button>
         }
       </div>
     </div>

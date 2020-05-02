@@ -175,9 +175,9 @@ const Mapa = () => {
         onClick={clickEnPoligono}
         onViewportChange={cambioEnElViewport}
         onHover={actualizarPopupChico}
+        onMouseOut={() => {console.log('x'); setPopupRegion({ ...popupRegion, mostrando: false });}}
         ref={mapa}
       >
-        <CodigoColor />
         <Ayuda />
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
         <Source id="capa-datos-regiones" type="geojson" data={geoJSONFiltrado}>
@@ -213,7 +213,7 @@ const Mapa = () => {
               type="fill"
               paint={{
                 'fill-pattern': 'x',
-                'fill-opacity': .85
+                'fill-opacity': 1
               }}
             />
           </Source>
@@ -231,13 +231,14 @@ const Mapa = () => {
               id="data-poligono-stroke"
               type="line"
               paint={{
-                'line-color': 'rgba(0, 0, 0, 0.75)',
-                'line-width': 2
+                'line-color': 'rgba(0, 0, 0, 0.5)',
+                'line-width': 2.5
               }}
             />
           </Source>
         }
       </ReactMapGL>
+      <CodigoColor />
     </div>
   )
 }
