@@ -11,13 +11,13 @@ export const escala = [
 export const colorApagado = '#424242'
 
 export const escalaDaltonica = [
-  [0, '#AE9D4A'],
-  [0.5, '#ACA685'],
-  [1.0, '#AAAEB6'],
+  [0, '#6174B2'],
+  [0.5, '#7587C6'],
+  [1.0, '#90A2E1'],
   [2.5, '#A7B8F8'],
-  [5.0, '#90A2E1'],
-  [10.0, '#7587C6'],
-  [50.0, '#6174B2']
+  [5.0, '#AAAEB6'],
+  [10.0, '#ACA685'],
+  [50.0, '#AE9D4A']
 ]
 
 export const colorApagadoDaltonico = '#333333'

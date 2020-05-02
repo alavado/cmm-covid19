@@ -110,7 +110,6 @@ const Mapa = () => {
   }), [filtroValor, filtroRegion, posicion])
 
   const cambioEnElViewport = vp => {
-    console.log({vp})
     setViewport({
       ...vp,
       width: '100%',
@@ -239,7 +238,11 @@ const Mapa = () => {
           </Source>
         }
         <div className="Mapa__actualizacion">
-          Datos actualizados hoy, a las 10:10 AM
+          <div className="Mapa__actualizacion_contenido">
+            Últimas actualizaciones<br />
+            Datos regionales: sábado 2 de mayo<br />
+            Datos comunales: viernes 1 de mayo
+          </div>
         </div>
       </ReactMapGL>
       <CodigoColor />
