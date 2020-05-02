@@ -11,6 +11,7 @@
   text-transform: uppercase;
   max-width: 66vw;
   pointer-events: none;
+  transition: all .25s ease-in-out;
 }
 
 .CodigoColor__espectro {
@@ -20,6 +21,7 @@
   border-radius: .1em;
   display: flex;
   user-select: none;
+  transition: all .25s ease-in-out;
 }
 
 .CodigoColor__fraccion {
@@ -27,6 +29,7 @@
   display: grid;
   height: 2.3em;
   gap: .2em;
+  transition: all .25s ease-in-out;
 }
 
 .CodigoColor__fraccion_color {
@@ -34,6 +37,7 @@
   filter: brightness(75%);
   cursor: pointer;
   pointer-events: all;
+  transition: all .25s ease-in-out;
 }
 
 .CodigoColor__fraccion_limite {

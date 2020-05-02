@@ -2,18 +2,11 @@
   flex: 1;
 }
 
-.test {
-  animation: aparece .25s ease-in-out infinite both;
-}
-
-@keyframes aparece {
-  0% {
-    opacity: .5;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-  }
+.Mapa__actualizacion {
+  position: absolute;
+  right: 2em;
+  bottom: 3em;
+  color: rgba(255, 255, 255, .9);
+  z-index: 5;
+  font-size: .65em;
 }

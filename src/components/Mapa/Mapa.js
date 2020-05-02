@@ -238,6 +238,9 @@ const Mapa = () => {
             />
           </Source>
         }
+        <div className="Mapa__actualizacion">
+          Datos actualizados hoy, a las 10:10 AM
+        </div>
       </ReactMapGL>
       <CodigoColor />
     </div>
