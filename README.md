@@ -4,5 +4,5 @@ Por hacer:
 corregir el stop propagation de los botones del codigo de color
 que recuerde el filtro daltonico
 parsear serie de cuarentena
-agregar cuarentena a mapa
+agregar textura a region de cuarentena
 agregar cuarentena a grafico

@@ -12,8 +12,6 @@ export const CASOS_COMUNALES =  'CASOS_COMUNALES'
 export const CASOS_REGIONALES =  'CASOS_REGIONALES'
 export const CUARENTENAS = 'CUARENTENAS'
 
-const omitirUltimoDia = false
-
 const initialState = {
   series: [
     {
@@ -109,7 +107,8 @@ export default function(state = initialState, action) {
           filtroValor: state.serieSeleccionada.filtroValor,
         },
         subserieSeleccionada: nuevaSerieSeleccionada.datos[0],
-        posicion: nuevaSerieSeleccionada.datos[0].datos.length - 1 - omitirUltimoDia
+        posicion: nuevaSerieSeleccionada.datos[0].datos.length - 1,
+        geoJSONCuarentenasActivas: obtenerCuarentenasActivas(state.geoJSONCuarentenas, nuevaSerieSeleccionada.datos[0].datos.slice(-1)[0].fecha)
       }
     }
     case SELECCIONAR_SUBSERIE: {
@@ -125,13 +124,12 @@ export default function(state = initialState, action) {
             filtroValor: state.serieSeleccionada.filtroValor
           },
           subserieSeleccionada: serieChile,
-          posicion: serieChile.datos.length - 1 - omitirUltimoDia
+          posicion: serieChile.datos.length - 1 
         }
       }
       return {
         ...state,
-        subserieSeleccionada: state.serieSeleccionada.datos.find(s => s.codigo === codigo)
-      }
+        subserieSeleccionada: state.serieSeleccionada.datos.find(s => s.codigo === codigo)      }
     }
     case FILTRAR_GEOJSON_POR_VALOR: {
       return {

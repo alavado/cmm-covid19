@@ -174,18 +174,6 @@ const Mapa = () => {
         <CodigoColor />
         <Ayuda />
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
-        {geoJSONCuarentenasActivas && division === 'comuna' &&
-          <Source id="capa-cuarentenas" type="geojson" data={geoJSONCuarentenasActivas}>
-            <Layer
-              id="dataCuarentenas"
-              type="fill"
-              paint={{
-                'fill-color': 'black',
-                'fill-opacity': .25
-              }}
-            />
-          </Source>
-        }
         <Source id="capa-datos-regiones" type="geojson" data={geoJSONFiltrado}>
           <Layer
             id="data2"
@@ -204,6 +192,18 @@ const Mapa = () => {
             }}
           />
         </Source>
+        {division === 'comuna' &&
+          <Source id="capa-cuarentenas" type="geojson" data={geoJSONCuarentenasActivas}>
+            <Layer
+              id="dataCuarentenas"
+              type="fill"
+              paint={{
+                'fill-color': 'black',
+                'fill-opacity': .2
+              }}
+            />
+          </Source>
+        }
         {poligonoDestacado &&
           <Source id="capa-poligono-destacado" type="geojson" data={poligonoDestacado}>
             <Layer

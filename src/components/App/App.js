@@ -28,22 +28,22 @@ const App = () => {
     async function inicializarDatos() {
       const { data: datosCSVRegiones } = await axios.get(urlDatosRegiones)
       const { data: geoJSONRegiones } = await axios.get(urlGeoJSONRegiones)
+      const { data: geoJSONComunas } = await axios.get(urlGeoJSONComunas)
+      const { data: datosCSVComunas } = await axios.get(urlDatosComunas)
+      const [casosComunalesPor100000Habitantes, geoJSONComunalConDatos, datosComunalesOriginales] = procesarComunas(datosCSVComunas, geoJSONComunas)
       const [casosRegionalesPor100000Habitantes, geoJSONRegionesConDatos, datosRegionalesOriginales] = procesarRegiones(datosCSVRegiones, geoJSONRegiones)
+
+      // ver: https://covid19.soporta.cl/datasets/0b944d9bf1954c71a7fae96bdddee464_1/geoservice?geometry=-71.394%2C-33.683%2C-69.660%2C-33.282
+      dispatch(fijarGeoJSONCuarentenas(procesarCuarentenas(geoJSONCuarentenas)))
       dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'geoJSON', geoJSONRegionesConDatos))
       dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'datos', casosRegionalesPor100000Habitantes))
       dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
       dispatch(actualizarSerie(CASOS_REGIONALES, 'datos', datosRegionalesOriginales))
       dispatch(seleccionarSubserie(CODIGO_CHILE))
-      const { data: datosCSVComunas } = await axios.get(urlDatosComunas)
-      const { data: geoJSONComunas } = await axios.get(urlGeoJSONComunas)
-      const [casosComunalesPor100000Habitantes, geoJSONComunalConDatos, datosComunalesOriginales] = procesarComunas(datosCSVComunas, geoJSONComunas)
       dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES, 'geoJSON', geoJSONComunalConDatos))
       dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES, 'datos', casosComunalesPor100000Habitantes))
       dispatch(actualizarSerie(CASOS_COMUNALES, 'datos', datosComunalesOriginales))
       setInicializada(true)
-
-      // ver: https://covid19.soporta.cl/datasets/0b944d9bf1954c71a7fae96bdddee464_1/geoservice?geometry=-71.394%2C-33.683%2C-69.660%2C-33.282
-      dispatch(fijarGeoJSONCuarentenas(procesarCuarentenas(geoJSONCuarentenas)))
     }
     inicializarDatos()
       .catch(err => {
