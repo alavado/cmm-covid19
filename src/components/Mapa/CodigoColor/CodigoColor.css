@@ -180,6 +180,10 @@
   .CodigoColor__boton_cambio {
     display: none;
   }
+  
+  .CodigoColor__boton_cuarentenas {
+    display: none;
+  }
 }
 
 @keyframes avanza-fecha-1 {

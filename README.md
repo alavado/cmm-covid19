@@ -3,9 +3,6 @@
 Por hacer:
 corregir interpolador de vuelo
 que recuerde el filtro daltonico
-que recuerde el mostrar cuarentenas
-parsear serie de cuarentena
-agregar cuarentena a grafico
 agregar cuadro con regiones y comunas con mayor variación
 sacar popup en touch
 que centre la comuna o algo asi

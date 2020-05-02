@@ -138,7 +138,6 @@ const CodigoColor = () => {
             className="CodigoColor__boton_cuarentenas"
             onMouseOver={e => e.stopPropagation()}
             onClick={() => dispatch(fijarVerCuarentenas(!verCuarentenas))}
-            style={{ backgroundImage: verCuarentenas ? `url(${texture})` : 'none' }}
           >
             {verCuarentenas ? 'Ocultar' : 'Ver'} cuarentenas
           </button>
