@@ -197,6 +197,14 @@ const Mapa = () => {
               'fill-opacity': .7
             }}
           />
+          <Layer
+            id="data2-poligono-stroke"
+            type="line"
+            paint={{
+              'line-color': 'rgba(0, 0, 0, 0.5)',
+              'line-width': 1
+            }}
+          />
         </Source>
         {division === 'comuna' &&
           <Source id="capa-cuarentenas" type="geojson" data={geoJSONCuarentenasActivas}>
@@ -205,7 +213,7 @@ const Mapa = () => {
               type="fill"
               paint={{
                 'fill-pattern': 'x',
-                'fill-opacity': .8
+                'fill-opacity': .85
               }}
             />
           </Source>
