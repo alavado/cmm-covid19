@@ -79,7 +79,7 @@ const CodigoColor = () => {
               className="CodigoColor__fraccion_color"
               style={{
                 backgroundColor: indiceDestacado < 0 || indiceDestacado === i ? v[1] : '#999',
-                filter: indiceDestacado === i ? `drop-shadow(0 0 .25em ${v[1]})` : 'none'
+                filter: indiceDestacado === i ? `brightness(75%) drop-shadow(0 0 .25em ${v[1]})` : 'brightness(75%)'
                }}
               onMouseEnter={e => {
                 if (indiceDestacado < 0) {

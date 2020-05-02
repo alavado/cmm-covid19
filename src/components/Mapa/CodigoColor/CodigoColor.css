@@ -15,7 +15,7 @@
 .CodigoColor__espectro {
   width: 100%;
   height: .5em;
-  opacity: .95;
+  opacity: 1;
   border-radius: .1em;
   display: flex;
 }
@@ -37,7 +37,7 @@
 }
 
 .CodigoColor__titulo {
-  font-size: 2em;
+  font-size: 1.85em;
   opacity: .85;
 }
 

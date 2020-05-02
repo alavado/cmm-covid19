@@ -12,6 +12,7 @@ import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNAL
 import { esMovil } from '../../helpers/responsive'
 import demograficosComunas from '../../data/demografia/comunas.json'
 import Ayuda from './Ayuda'
+import texture from '../../assets/black-twill-sm.png'
 
 const vpInicial = {
   width: '100%',
@@ -156,6 +157,11 @@ const Mapa = () => {
       })
     }
   }
+  
+  useEffect(() => mapa.current.getMap()
+    .loadImage(texture, (err, image) => {
+      mapa.current.getMap().addImage('x', image)
+    }), [])
 
   return (
     <div
@@ -198,8 +204,8 @@ const Mapa = () => {
               id="dataCuarentenas"
               type="fill"
               paint={{
-                'fill-color': 'black',
-                'fill-opacity': .2
+                'fill-pattern': 'x',
+                'fill-opacity': .8
               }}
             />
           </Source>
@@ -210,7 +216,7 @@ const Mapa = () => {
               id="data-poligono-fill"
               type="fill"
               paint={{
-                'fill-color': 'rgba(255, 255, 255, .1)'
+                'fill-color': 'rgba(255, 255, 255, .05)'
               }}
             />
             <Layer
