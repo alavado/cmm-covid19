@@ -7,7 +7,7 @@ import CodigoColor from './CodigoColor'
 import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
-import { seleccionarSubserie, filtrarGeoJSONPorRegion, limpiarFiltros, seleccionarSerie } from '../../redux/actions'
+import { seleccionarSubserie, filtrarGeoJSONPorRegion, limpiarFiltros, seleccionarSerie, verCuarentenas } from '../../redux/actions'
 import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CUARENTENAS } from '../../redux/reducers/series'
 import { esMovil } from '../../helpers/responsive'
 import demograficosComunas from '../../data/demografia/comunas.json'
@@ -29,7 +29,7 @@ const vpInicial = {
 
 const Mapa = () => {
 
-  const { serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenasActivas } = useSelector(state => state.series)
+  const { serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenasActivas, verCuarentenas } = useSelector(state => state.series)
   const { escala, colorApagado } = useSelector(state => state.colores)
   const { filtroValor, filtroRegion } = serie
   const [viewport, setViewport] = useState(vpInicial)
@@ -110,6 +110,7 @@ const Mapa = () => {
   }), [filtroValor, filtroRegion, posicion])
 
   const cambioEnElViewport = vp => {
+    console.log({vp})
     setViewport({
       ...vp,
       width: '100%',
@@ -160,7 +161,7 @@ const Mapa = () => {
   
   useEffect(() => mapa.current.getMap()
     .loadImage(texture, (err, image) => {
-      mapa.current.getMap().addImage('x', image)
+      mapa.current.getMap().addImage('texturaCuarentenas', image)
     }), [])
 
   return (
@@ -175,7 +176,7 @@ const Mapa = () => {
         onClick={clickEnPoligono}
         onViewportChange={cambioEnElViewport}
         onHover={actualizarPopupChico}
-        onMouseOut={() => {console.log('x'); setPopupRegion({ ...popupRegion, mostrando: false });}}
+        onMouseOut={() => setPopupRegion({ ...popupRegion, mostrando: false })}
         ref={mapa}
       >
         <Ayuda />
@@ -206,13 +207,13 @@ const Mapa = () => {
             }}
           />
         </Source>
-        {division === 'comuna' &&
+        {division === 'comuna' && verCuarentenas &&
           <Source id="capa-cuarentenas" type="geojson" data={geoJSONCuarentenasActivas}>
             <Layer
               id="dataCuarentenas"
               type="fill"
               paint={{
-                'fill-pattern': 'x',
+                'fill-pattern': 'texturaCuarentenas',
                 'fill-opacity': 1
               }}
             />

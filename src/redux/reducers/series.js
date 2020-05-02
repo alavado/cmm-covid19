@@ -1,7 +1,7 @@
 import {
   ACTUALIZAR_SERIE, AVANZAR_EN_SERIE, RETROCEDER_EN_SERIE, FIJAR_POSICION_SERIE,
   SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, FILTRAR_GEOJSON_POR_VALOR, FILTRAR_GEOJSON_POR_REGION,
-  TOGGLE_FILTRO, LIMPIAR_FILTROS, FIJAR_GEOJSON_CUARENTENAS
+  TOGGLE_FILTRO, LIMPIAR_FILTROS, FIJAR_GEOJSON_CUARENTENAS, VER_CUARENTENAS
 } from '../actionTypes'
 import { obtenerCuarentenasActivas } from '../../helpers/cuarentenas'
 
@@ -47,6 +47,7 @@ const initialState = {
   filtroToggle: false,
   geoJSONCuarentenasActivas: null,
   geoJSONCuarentenas: null,
+  verCuarentenas: false,
   posicion: 0
 }
 
@@ -170,6 +171,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         geoJSONCuarentenas: action.payload
+      }
+    }
+    case VER_CUARENTENAS: {
+      return {
+        ...state,
+        verCuarentenas: action.payload
       }
     }
     default:

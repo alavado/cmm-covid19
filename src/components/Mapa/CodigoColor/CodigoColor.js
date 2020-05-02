@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react'
 import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
-import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice } from '../../../redux/actions'
+import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice, fijarVerCuarentenas } from '../../../redux/actions'
 import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE } from '../../../redux/reducers/series'
 import { useHistory, useParams } from 'react-router-dom'
 import { FaQuestionCircle as IconoAyuda } from 'react-icons/fa'
+import texture from '../../../assets/black-twill-sm.png'
 
 const CodigoColor = () => {
 
-  const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle } = useSelector(state => state.series)
+  const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle, verCuarentenas } = useSelector(state => state.series)
   const { fecha } = subserieSeleccionada.datos[posicion]
   const { escala, indiceDestacado } = useSelector(state => state.colores)
 
@@ -128,6 +129,16 @@ const CodigoColor = () => {
             onMouseOver={e => e.stopPropagation()}
           >
             {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? 'Ver comunas' : 'Ver regiones'}
+          </button>
+        }
+        {division === 'comuna' &&
+          <button
+            className="CodigoColor__boton_cuarentenas"
+            onMouseOver={e => e.stopPropagation()}
+            onClick={() => dispatch(fijarVerCuarentenas(!verCuarentenas))}
+            style={{ backgroundImage: verCuarentenas ? `url(${texture})` : 'none' }}
+          >
+            {verCuarentenas ? 'Ocultar' : 'Ver'} cuarentenas
           </button>
         }
       </div>
