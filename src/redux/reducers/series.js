@@ -10,7 +10,6 @@ export const CONTAGIOS_REGIONALES_POR_100000_HABITANTES =  'CONTAGIOS_REGIONALES
 export const CASOS_COMUNALES_POR_100000_HABITANTES =  'CASOS_COMUNALES_POR_100000_HABITANTES'
 export const CASOS_COMUNALES =  'CASOS_COMUNALES'
 export const CASOS_REGIONALES =  'CASOS_REGIONALES'
-export const CUARENTENAS = 'CUARENTENAS'
 
 const initialState = {
   series: [
@@ -47,7 +46,7 @@ const initialState = {
   filtroToggle: false,
   geoJSONCuarentenasActivas: null,
   geoJSONCuarentenas: null,
-  verCuarentenas: false,
+  verCuarentenas: true,
   posicion: 0
 }
 
@@ -130,7 +129,8 @@ export default function(state = initialState, action) {
       }
       return {
         ...state,
-        subserieSeleccionada: state.serieSeleccionada.datos.find(s => s.codigo === codigo)      }
+        subserieSeleccionada: state.serieSeleccionada.datos.find(s => s.codigo === codigo)
+      }
     }
     case FILTRAR_GEOJSON_POR_VALOR: {
       return {

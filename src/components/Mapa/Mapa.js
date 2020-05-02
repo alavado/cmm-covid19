@@ -13,6 +13,7 @@ import { esMovil } from '../../helpers/responsive'
 import demograficosComunas from '../../data/demografia/comunas.json'
 import Ayuda from './Ayuda'
 import texture from '../../assets/black-twill-sm.png'
+import RankingComunas from './RankingComunas'
 
 const vpInicial = {
   width: '100%',
@@ -237,6 +238,7 @@ const Mapa = () => {
             />
           </Source>
         }
+        {/* <RankingComunas /> */}
         <div className="Mapa__actualizacion">
           <div className="Mapa__actualizacion_contenido">
             Últimas actualizaciones<br />

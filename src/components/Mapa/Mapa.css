@@ -7,11 +7,23 @@
   right: 1em;
   bottom: 2em;
   z-index: 4;
+  animation: aparece-actualizacion 1s ease-in-out 1.5s both;
 }
 
 .Mapa__actualizacion_contenido {
   font-size: .6em;
-  color: rgba(255, 255, 255, .75);
+  color: rgba(255, 255, 255, .85);
   line-height: 1.5;
   text-align: right;
+}
+
+@keyframes aparece-actualizacion {
+  0% {
+    opacity: 0;
+    transform: translateY(.5em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

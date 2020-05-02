@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Chart, Line } from 'react-chartjs-2'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
@@ -8,11 +8,12 @@ import { useParams } from 'react-router-dom'
 import demograficosComunas from '../../../data/demografia/comunas.json'
 import demograficosRegiones from '../../../data/demografia/regiones.json'
 import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
+import pattern from 'patternomaly'
 
 const Grafico = () => {
 
   const { escala } = useSelector(state => state.colores)
-  const { subserieSeleccionada: ss, series, posicion } = useSelector(state => state.series)
+  const { subserieSeleccionada: ss, series, posicion, geoJSONCuarentenas, verCuarentenas } = useSelector(state => state.series)
   const [datos, setDatos] = useState({})
   const { fecha } = ss.datos[posicion]
   const dispatch = useDispatch()
@@ -21,11 +22,11 @@ const Grafico = () => {
 
   const { division, codigo } = params
 
-  const obtenerSerieChile = () => {
+  const serieChile = useMemo(() => {
     return series
       .find(s => s.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES).datos
       .find(d => d.codigo === CODIGO_CHILE).datos
-  }
+  }, [])
 
   const obtenerSerieRegion = codigo => {
     return series
@@ -95,7 +96,6 @@ const Grafico = () => {
     pointRadius: 2,
     lineTension: .2,
     fill: false
-    // borderDash: [5, 3]
   }
 
   const fechaEsAntesDeFechaPosicionSelecionada = f => {
@@ -107,16 +107,15 @@ const Grafico = () => {
       labels: {},
       datasets: []
     }
-    let puntosChile = obtenerSerieChile()
     let puntosRegion, puntosComuna
-    let todosLosValores = [...puntosChile.filter(v => fechaEsAntesDeFechaPosicionSelecionada(v.fecha))]
+    let todosLosValores = [...serieChile.filter(v => fechaEsAntesDeFechaPosicionSelecionada(v.fecha))]
     if (!division) {
-      data.labels = puntosChile.map(d => d.fecha)
+      data.labels = serieChile.map(d => d.fecha)
       data.datasets = [
         {
           ...estiloLineaPrincipal,
           label: 'Chile',
-          data: puntosChile.map((d, i) => fechaEsAntesDeFechaPosicionSelecionada(d.fecha) ? d.valor : null)
+          data: serieChile.map((d, i) => fechaEsAntesDeFechaPosicionSelecionada(d.fecha) ? d.valor : null)
         }
       ]
     }
@@ -136,7 +135,7 @@ const Grafico = () => {
         {
           ...estiloLineaChile,
           label: 'Chile',
-          data: puntosChile.map((d, i) => i <= posicion ? d.valor : null)
+          data: serieChile.map((d, i) => i <= posicion ? d.valor : null)
         }
       ]
     }
@@ -149,10 +148,10 @@ const Grafico = () => {
         ...puntosComuna
       ]
       let puntosConDatos = [
-        { fecha: puntosChile[0].fecha.clone(), valor: null },
+        { fecha: serieChile[0].fecha.clone(), valor: null },
         ...puntosComuna
       ]
-      const ultimaFechaChile = puntosChile.slice(-1)[0].fecha
+      const ultimaFechaChile = serieChile.slice(-1)[0].fecha
       const ultimaFechaComuna = puntosComuna.slice(-1)[0].fecha
       if (ultimaFechaComuna.diff(ultimaFechaChile, 'days') !== 0) {
         puntosConDatos.push({ fecha: ultimaFechaChile.clone(), valor: null })
@@ -185,7 +184,7 @@ const Grafico = () => {
         {
           ...estiloLineaChile,
           label: 'Chile',
-          data: puntosChile.map((d, i) => d.valor)
+          data: serieChile.map((d, i) => d.valor)
         },
       ]
     }
@@ -220,28 +219,41 @@ const Grafico = () => {
       },
       ...data.datasets.slice(1),
     ]
+    if (division === 'comuna' && verCuarentenas) {
+
+      const rangosCuarentenas = geoJSONCuarentenas.features.map(({ properties: { Cut_Com, FInicio, FTermino } }) => ({
+        codigo: Cut_Com,
+        inicio: moment(FInicio, 'YYYY/MM/DD hh:mm:ss'),
+        fin: moment(FTermino, 'YYYY/MM/DD hh:mm:ss')
+      }))
+    
+      const cuarentenasComuna = rangosCuarentenas.filter(({ codigo: codigoComuna }) => codigoComuna === Number(codigo))
+      if (cuarentenasComuna) {
+        data.datasets = [
+          ...data.datasets,
+          {
+            type: 'bar',
+            key: 'Barras-cuarentenas-totales',
+            label: 'Comuna en cuarentena total o parcial',
+            data: serieChile.map(({ fecha }) => {
+              return cuarentenasComuna.some(({ inicio, fin }) => (
+                fecha.diff(inicio, 'days') >= 0 && fecha.diff(fin, 'days') < 0
+              )) ? limiteEspectro : 0
+            }),
+            backgroundColor: pattern.draw('diagonal-right-left', 'rgba(255, 255, 255, 0.1)', '#212121', 7.5),
+            barPercentage: 1.25
+          }
+        ]
+      }
+    }
     setDatos(data)
-  }, [posicion, division, codigo, escala])
+  }, [posicion, division, codigo, escala, verCuarentenas])
 
   return (
     <div className="Grafico">
       <Line
         id="Grafico"
         data={datos}
-        // data={{
-        //   labels: datos.labels,
-        //   datasets: datos.datasets ? [
-        //     ...datos.datasets,
-        //     {
-        //       type: 'bar',
-        //       key: 'Barras-cuarentenas-totales',
-        //       label: 'labelio',
-        //       data: datos.labels.map((l, i) => i > 10 && i < 20 ? 15 : 0),
-        //       backgroundColor: 'rgba(255, 255, 255, .2)',
-        //       barPercentage: 1.25
-        //     }
-        //   ] : datos.datasets
-        // }}
         options={{
           maintainAspectRatio: false,
           scales: {
@@ -292,11 +304,16 @@ const Grafico = () => {
           },
           tooltips: {
             callbacks: {
-              label: ({ yLabel: v }) => `Nuevos casos por 100.000 hab.: ${v.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`,
+              label: ({ yLabel: v, datasetIndex }) => {
+                if (datos.datasets[datasetIndex].label.endsWith('cuarentena total o parcial')) {
+                  return ''
+                }
+                return `Nuevos casos por 100.000 hab.: ${v.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`
+              },
               title: ([{ xLabel: fecha }]) => {
                 return `${fecha.format('dddd D [de] MMMM')}`
               },
-              beforeTitle: ([{datasetIndex}]) => `${datos.datasets[datasetIndex].label}`
+              beforeTitle: ([{datasetIndex}]) => datos.datasets[datasetIndex].label
             }
           }
         }}

@@ -1,0 +1,13 @@
+.RankingComunas {
+  position: absolute;
+  z-index: 5;
+  background-color: white;
+  right: 1em;
+  top: 4.7em;
+}
+
+@media (orientation: portrait) {
+  .RankingComunas {
+    display: none;
+  }
+}
