@@ -205,10 +205,10 @@ const Grafico = () => {
       if (valor / limiteEspectro > 1) {
         return
       }
-      gradientStroke.addColorStop(valor / limiteEspectro, color)
+      gradientStroke.addColorStop(Math.max(0, valor / limiteEspectro), color)
       if (i > 0) {
         const [, colorPrevio] = escala[i - 1]
-        gradientStroke.addColorStop((valor - 0.01) / limiteEspectro, colorPrevio)
+        gradientStroke.addColorStop(Math.max(0, (valor - 0.01) / limiteEspectro), colorPrevio)
       }
     })
     data.datasets = [
