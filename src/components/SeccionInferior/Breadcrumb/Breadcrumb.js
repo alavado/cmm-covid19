@@ -32,7 +32,7 @@ const Breadcrumb = () => {
       if (division === 'region') {
         const { nombre: nombreRegion } = demograficosRegiones.find(r => Number(r.codigo) === Number(codigo))
         setLinks(
-          <>
+          <div className="Breadcrumb__links">
             <Link to="/" className="Breadcrumb__link">Chile</Link>
             <FaCaretRight className="Breadcrumb__separador" />
             <div className="Breadcrumb__destino">{nombreRegion}</div>
@@ -44,20 +44,20 @@ const Breadcrumb = () => {
                 </button>
               </>
             }
-          </>
+          </div>
         )
       }
       else {
         const { nombre: nombreComuna, region } = demograficosComunas.find(r => r.codigo === codigo)
         const { nombre: nombreRegion, codigo: codigoRegion } = demograficosRegiones.find(r => Number(r.codigo) === Number(region))
         setLinks(
-          <>
+          <div className="Breadcrumb__links">
             <Link to="/" className="Breadcrumb__link">Chile</Link>
             <FaCaretRight className="Breadcrumb__separador" />
             <Link to={`/region/${codigoRegion}`} className="Breadcrumb__link Breadcrumb__link--region">{nombreRegion}</Link>
             <FaCaretRight className="Breadcrumb__separador" />
             <div className="Breadcrumb__destino">{nombreComuna}</div>
-          </>
+          </div>
         )
       }
     }

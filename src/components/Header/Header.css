@@ -34,6 +34,39 @@
   opacity: .9;
 }
 
+.Header__separador {
+  display: none;
+}
+
+.Header__opciones {
+  display: none;
+  grid-auto-flow: column;
+  align-items: center;
+  margin-right: .5em;
+}
+
+.Header__opcion {
+  cursor: pointer;
+  color: white;
+  transition: all .25s ease-in-out;
+  background-color: transparent;
+  border: none;
+  font-size: 1.15em;
+  opacity: .8;
+  display: flex;
+  align-items: center;
+}
+
+.Header__opcion:hover {
+  opacity: 1;
+}
+
+.Header__opcion--activa {
+  color: #02A3FB;
+  filter: drop-shadow(0 0 .35em #02A3FB);
+  opacity: 1;
+}
+
 @media (orientation: portrait) {
   .Header {
     flex-direction: column;
@@ -44,8 +77,18 @@
   .Header__titulo {
     border-bottom-right-radius: 0;
     width: 100%;
-    padding: .75em 0 .25em 0;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    padding-left: .5em;
+  }
+
+  .Header__separador {
+    display: flex;
+    flex: 1;
+  }
+
+  .Header__opciones {
+    display: grid;
+    align-items: center;
   }
 }

@@ -72,7 +72,7 @@ const CodigoColor = () => {
         }
       </div>
       <div className="CodigoColor__espectro">
-        {escala.map((v, i) => (
+        {escala.reverse().map((v, i) => (
           <div
             className="CodigoColor__fraccion"
             key={`CodigoColor__fraccion_${i}`}

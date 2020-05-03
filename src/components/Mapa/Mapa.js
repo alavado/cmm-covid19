@@ -15,7 +15,7 @@ import Ayuda from './Ayuda'
 import texture from '../../assets/black-twill-sm.png'
 import RankingComunas from './RankingComunas'
 
-const vpInicial = {
+const vpInicialLandscape = {
   width: '100%',
   height: 'calc(100vh - 15em)',
   latitude: -39.204954641160536,
@@ -28,11 +28,21 @@ const vpInicial = {
   transitionInterpolator: new FlyToInterpolator({ speed: 1.2 }),
 }
 
+const vpInicialPortrait = {
+  altitude: 1.5,
+  bearing: 48.09519730510106,
+  latitude: -38.36201512202589,
+  longitude: -65.56203686781191,
+  pitch: 33.28986658630797,
+  zoom: 2.7105375924527375
+}
+
 const Mapa = () => {
 
   const { serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenasActivas, verCuarentenas } = useSelector(state => state.series)
   const { escala, colorApagado } = useSelector(state => state.colores)
   const { filtroValor, filtroRegion } = serie
+  const vpInicial = window.innerWidth < 600 ? {...vpInicialLandscape, ...vpInicialPortrait} : {...vpInicialLandscape}
   const [viewport, setViewport] = useState(vpInicial)
   const [regionPrevia, setRegionPrevia] = useState('')
   const [divisionPrevia, setDivisionPrevia] = useState('')
@@ -111,6 +121,7 @@ const Mapa = () => {
   }), [filtroValor, filtroRegion, posicion])
 
   const cambioEnElViewport = vp => {
+    console.log({vp})
     setViewport({
       ...vp,
       width: '100%',

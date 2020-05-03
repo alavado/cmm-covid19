@@ -7,9 +7,15 @@
   align-items: center;
   justify-content: flex-start;
   font-size: 1em;
-  padding: 1em;
+  padding: 0 1em;
+  height: 2.5em;
   font-weight: bold;
   letter-spacing: .1em;
+}
+
+.Breadcrumb__links {
+  display: flex;
+  align-items: center;
 }
 
 .Breadcrumb__link {
@@ -44,13 +50,14 @@
   letter-spacing: .5px;
   transition: all .25s ease-in-out;
   align-self: stretch;
+  height: 2.5em;
   animation: aparece-boton-ver-comunas .25s ease-in-out .35s both;
 }
 
 @media (orientation: portrait) {
 
-  .Breadcrumb__link {
-    font-size: .6em;
+  .Breadcrumb {
+    font-size: .8em;
   }
 }
 

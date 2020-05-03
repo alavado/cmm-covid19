@@ -1,9 +1,9 @@
 .CodigoColor {
   position: absolute;
-  left: 1.5em;
-  top: 4.7em;
+  left: 1em;
+  top: 3.25em;
   color: rgba(255, 255, 255, .95);
-  font-size: .7em;
+  font-size: 1em;
   display: grid;
   grid-auto-flow: row;
   align-items: center;
@@ -16,20 +16,21 @@
 
 .CodigoColor__espectro {
   width: 100%;
-  height: .5em;
+  height: .25em;
   opacity: 1;
   border-radius: .1em;
   display: flex;
   user-select: none;
   transition: all .25s ease-in-out;
+  max-width: 25em;
 }
 
 .CodigoColor__fraccion {
   flex: 1;
   display: grid;
-  height: 2.3em;
   gap: .2em;
   transition: all .25s ease-in-out;
+  width: .5em;
 }
 
 .CodigoColor__fraccion_color {
@@ -38,23 +39,25 @@
   cursor: pointer;
   pointer-events: all;
   transition: all .25s ease-in-out;
+  height: .35em;
 }
 
 .CodigoColor__fraccion_limite {
   flex: 2;
   pointer-events: none;
   user-select: none;
+  font-size: .65em;
 }
 
 .CodigoColor__titulo {
-  font-size: 1.85em;
+  font-size: 1.25em;
   pointer-events: none;
   user-select: none;
 }
 
 .CodigoColor__fecha {
-  font-size: 2.5em;
-  margin-bottom: .3em;
+  font-size: 1.75em;
+  margin-bottom: .2em;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -101,7 +104,7 @@
   padding: 1em;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: .95em;
+  font-size: .65em;
   box-shadow: 0 .25em .25em rgba(0, 0, 0, .25);
   letter-spacing: .5px;
   transition: all .25s ease-in-out;
@@ -123,7 +126,7 @@
   padding: 1em;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: .95em;
+  font-size: .65em;
   box-shadow: 0 .25em .25em rgba(0, 0, 0, .25);
   letter-spacing: .5px;
   transition: all .25s ease-in-out;
@@ -142,7 +145,7 @@
   padding: 1em;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: .95em;
+  font-size: .65em;
   box-shadow: 0 .25em .25em rgba(0, 0, 0, .25);
   letter-spacing: .5px;
   transition: all .25s ease-in-out;
@@ -157,7 +160,7 @@
 }
 
 .CodigoColor__botones {
-  margin-top: 2em;
+  margin-top: 1.5em;
   display: grid;
   gap: .5em;
   justify-items: start;
@@ -165,16 +168,16 @@
 
 @media (orientation: portrait) {
   .CodigoColor {
-    top: 7em;
+    top: 5.5em;
     max-width: 90vw;
   }
 
   .CodigoColor__titulo {
-    font-size: 1.15em;
+    font-size: 1em;
   }
   
   .CodigoColor__fecha {
-    font-size: 1.75em;
+    font-size: 1.5em;
   }
 
   .CodigoColor__boton_cambio {
