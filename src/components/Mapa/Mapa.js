@@ -121,7 +121,6 @@ const Mapa = () => {
   }), [filtroValor, filtroRegion, posicion])
 
   const cambioEnElViewport = vp => {
-    console.log({vp})
     setViewport({
       ...vp,
       width: '100%',

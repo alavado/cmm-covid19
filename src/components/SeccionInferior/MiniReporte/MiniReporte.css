@@ -65,6 +65,7 @@
   .MiniReporte {
     overflow-y: scroll;
     width: 100%;
+    display: none;
   }
 
   .MiniReporte__inferior {

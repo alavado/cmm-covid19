@@ -57,7 +57,10 @@
 @media (orientation: portrait) {
 
   .Breadcrumb {
-    font-size: .8em;
+    font-size: .7em;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: .5em;
   }
 }
 

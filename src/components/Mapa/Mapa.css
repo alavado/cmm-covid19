@@ -27,3 +27,15 @@
     transform: translateY(0);
   }
 }
+
+@media (orientation: portrait) {
+
+  .Mapa__actualizacion {
+    bottom: 2.5em;
+    right: .75em;
+  }
+
+  .Mapa__actualizacion_contenido {
+    line-height: 1.15;
+  }
+}

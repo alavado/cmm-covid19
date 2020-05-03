@@ -55,7 +55,7 @@ const Grafico = () => {
     pointHighlightStroke: 'rgba(220,220,220,1)',
     borderDash: [0, 0],
     lineTension: .2,
-    pointRadius: 3,
+    pointRadius: window.innerWidth < 600 ? 2 : 3,
     pointBorderWidth: 1,
     borderWidth: 2,
     fill: false
@@ -75,7 +75,7 @@ const Grafico = () => {
     pointHighlightStroke: '#3F51B5',
     borderColor: '#3F51B5',
     borderWidth: 1.5,
-    pointRadius: 2,
+    pointRadius: window.innerWidth < 600 ? .5 : 3,
     lineTension: 0,
     fill: false
   }
@@ -94,7 +94,7 @@ const Grafico = () => {
     pointHighlightStroke: '#039BE5',
     borderColor: '#039BE5',
     borderWidth: 1.5,
-    pointRadius: 2,
+    pointRadius: window.innerWidth < 600 ? .5 : 3,
     lineTension: .2,
     fill: false
   }
