@@ -201,7 +201,7 @@ const Mapa = () => {
                 stops: [
                   [-1, colorApagado],
                   ...escala.reduce((prev, [v, color], i) => (
-                    i > 0 ? [...prev, [v - 0.0001, escala[i - 1][1]], [v, color]] : [[v, color]]
+                    i > 0 ? [...prev, [Math.max(v - 0.0001, 0), escala[i - 1][1]], [v, color]] : [[v, color]]
                   ), [])
                 ]
               },
