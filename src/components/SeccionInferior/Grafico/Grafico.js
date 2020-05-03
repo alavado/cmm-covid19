@@ -11,6 +11,7 @@ import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNAL
 import pattern from 'patternomaly'
 
 Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
+const diasDispositivoPequeño = 42
 
 const Grafico = () => {
 
@@ -112,12 +113,12 @@ const Grafico = () => {
     let puntosRegion, puntosComuna
     let todosLosValores = [...serieChile.filter(v => fechaEsAntesDeFechaPosicionSelecionada(v.fecha))]
     if (!division) {
-      data.labels = serieChile.map(d => d.fecha).slice(esDispositivoPequeño ? -42 : 0)
+      data.labels = serieChile.map(d => d.fecha).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
       data.datasets = [
         {
           ...estiloLineaPrincipal,
           label: 'Chile',
-          data: serieChile.map((d, i) => fechaEsAntesDeFechaPosicionSelecionada(d.fecha) ? d.valor : null).slice(esDispositivoPequeño ? -42 : 0)
+          data: serieChile.map((d, i) => fechaEsAntesDeFechaPosicionSelecionada(d.fecha) ? d.valor : null).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
         }
       ]
     }
@@ -127,17 +128,17 @@ const Grafico = () => {
         ...todosLosValores,
         ...puntosRegion.filter((v, i) => i <= posicion)
       ]
-      data.labels = puntosRegion.map(d => d.fecha).slice(esDispositivoPequeño ? -42 : 0)
+      data.labels = puntosRegion.map(d => d.fecha).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
       data.datasets = [
         {
           ...estiloLineaPrincipal,
           label: demograficosRegiones.find(c => c.codigo === codigo).nombre,
-          data: puntosRegion.map((d, i) => i <= posicion ? d.valor : null).slice(esDispositivoPequeño ? -42 : 0),
+          data: puntosRegion.map((d, i) => i <= posicion ? d.valor : null).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0),
         },
         {
           ...estiloLineaChile,
           label: 'Chile',
-          data: serieChile.map((d, i) => i <= posicion ? d.valor : null).slice(esDispositivoPequeño ? -42 : 0)
+          data: serieChile.map((d, i) => i <= posicion ? d.valor : null).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
         }
       ]
     }
@@ -168,25 +169,25 @@ const Grafico = () => {
         }
         return [...prev, ...otros, p]
       }, [])
-      data.labels = puntosRellenados.map(d => d.fecha).slice(esDispositivoPequeño ? -42 : 0)
+      data.labels = puntosRellenados.map(d => d.fecha).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
       const datosComuna = demograficosComunas.find(c => c.codigo === codigo)
       data.datasets = [
         {
           ...estiloLineaPrincipal,
           label: datosComuna.nombre,
-          data: puntosRellenados.map((d, i) => d.valor).slice(esDispositivoPequeño ? -42 : 0),
+          data: puntosRellenados.map((d, i) => d.valor).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0),
           spanGaps: true,
           borderDash: [5, 1]
         },
         {
           ...estiloLineaRegion,
           label: demograficosRegiones.find(c => c.codigo === datosComuna.region).nombre,
-          data: puntosRegion.map((d, i) => d.valor).slice(esDispositivoPequeño ? -42 : 0)
+          data: puntosRegion.map((d, i) => d.valor).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
         },
         {
           ...estiloLineaChile,
           label: 'Chile',
-          data: serieChile.map((d, i) => d.valor).slice(esDispositivoPequeño ? -42 : 0)
+          data: serieChile.map((d, i) => d.valor).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
         },
       ]
     }
@@ -244,7 +245,7 @@ const Grafico = () => {
               return cuarentenasComuna.some(({ inicio, fin }) => (
                 fecha.diff(inicio, 'days') >= 0 && fecha.diff(fin, 'days') < 0
               )) ? limiteEspectro : 0
-            }).slice(esDispositivoPequeño ? -42 : 0),
+            }).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0),
             backgroundColor: pattern.draw('diagonal-right-left', 'rgba(255, 255, 255, 0.1)', '#212121', 7.5),
             barPercentage: 1.25
           }
@@ -322,11 +323,11 @@ const Grafico = () => {
             }
           }
         }}
-        onElementsClick={e => {
-          if (e[0] && e[0]._index < ss.datos.length) {
-            dispatch(fijarPosicionSerie(e[0]._index))
-          }
-        }}
+        // onElementsClick={e => {
+        //   if (e[0] && e[0]._index < ss.datos.length) {
+        //     dispatch(fijarPosicionSerie(e[0]._index))
+        //   }
+        // }}
       />
     </div>
   )
