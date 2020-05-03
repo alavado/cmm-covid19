@@ -238,14 +238,14 @@ const Mapa = () => {
             />
           </Source>
         }
-        <RankingComunas />
+        {/* <RankingComunas /> */}
         <div className="Mapa__actualizacion">
           <div className="Mapa__actualizacion_contenido">
             Últimas actualizaciones<br />
             Datos regionales: domingo 3 de mayo<br />
             Datos comunales: viernes 1 de mayo
           </div>
-        </div>
+        </div>|
       </ReactMapGL>
       <CodigoColor />
     </div>
