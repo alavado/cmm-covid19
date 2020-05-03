@@ -2,7 +2,7 @@
   position: absolute;
   left: 1.5em;
   top: 4.7em;
-  color: rgba(255, 255, 255, .9);
+  color: rgba(255, 255, 255, .95);
   font-size: .7em;
   display: grid;
   grid-auto-flow: row;
@@ -64,7 +64,7 @@
 
 .CodigoColor__icono_ayuda {
   font-size: .75em;
-  margin-left: .5em;
+  margin-left: .4em;
   color: rgba(255, 255, 255, .75);
   transition: all .25s ease-in-out;
   animation: aparece-icono-ayuda .5s ease-in-out .25s both;
@@ -180,7 +180,7 @@
   .CodigoColor__boton_cambio {
     display: none;
   }
-  
+
   .CodigoColor__boton_cuarentenas {
     display: none;
   }

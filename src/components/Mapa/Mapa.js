@@ -238,7 +238,7 @@ const Mapa = () => {
             />
           </Source>
         }
-        {/* <RankingComunas /> */}
+        <RankingComunas />
         <div className="Mapa__actualizacion">
           <div className="Mapa__actualizacion_contenido">
             Últimas actualizaciones<br />

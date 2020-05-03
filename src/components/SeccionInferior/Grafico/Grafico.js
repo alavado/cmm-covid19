@@ -10,6 +10,8 @@ import demograficosRegiones from '../../../data/demografia/regiones.json'
 import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
 import pattern from 'patternomaly'
 
+Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
+
 const Grafico = () => {
 
   const { escala } = useSelector(state => state.colores)
@@ -17,7 +19,6 @@ const Grafico = () => {
   const [datos, setDatos] = useState({})
   const { fecha } = ss.datos[posicion]
   const dispatch = useDispatch()
-  Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
   const params = useParams()
 
   const { division, codigo } = params
@@ -193,7 +194,10 @@ const Grafico = () => {
     const gradientStroke = ctx.createLinearGradient(0, canvas.getBoundingClientRect().height - 28, 0, 0)
     const maximo = todosLosValores.reduce((prev, d) => Math.max(prev, d.valor), 0)
     let limiteEspectro = 10
-    if (maximo >= 10) {
+    if (maximo >= 30) {
+      limiteEspectro = 10 * Math.floor((maximo + 10) / 10)
+    }
+    else if (maximo >= 10) {
       limiteEspectro = 5 * Math.floor((maximo + 5) / 5)
     }
     escala.forEach((v, i) => {
