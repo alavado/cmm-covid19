@@ -31,11 +31,14 @@
 @media (orientation: portrait) {
 
   .Mapa__actualizacion {
-    bottom: 2.5em;
-    right: .75em;
+    bottom: .75em;
+    left: .75em;
+    right: auto;
   }
 
   .Mapa__actualizacion_contenido {
     line-height: 1.15;
+    text-align: left;
+    font-size: .5em;
   }
 }

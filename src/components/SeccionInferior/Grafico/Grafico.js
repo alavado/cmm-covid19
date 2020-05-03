@@ -20,6 +20,7 @@ const Grafico = () => {
   const { fecha } = ss.datos[posicion]
   const dispatch = useDispatch()
   const params = useParams()
+  const esDispositivoPequeño = window.innerWidth < 600 
 
   const { division, codigo } = params
 
@@ -55,7 +56,7 @@ const Grafico = () => {
     pointHighlightStroke: 'rgba(220,220,220,1)',
     borderDash: [0, 0],
     lineTension: .2,
-    pointRadius: window.innerWidth < 600 ? 2 : 3,
+    pointRadius: esDispositivoPequeño ? 2 : 3,
     pointBorderWidth: 1,
     borderWidth: 2,
     fill: false
@@ -75,7 +76,7 @@ const Grafico = () => {
     pointHighlightStroke: '#3F51B5',
     borderColor: '#3F51B5',
     borderWidth: 1.5,
-    pointRadius: window.innerWidth < 600 ? .5 : 3,
+    pointRadius: esDispositivoPequeño ? .5 : 3,
     lineTension: 0,
     fill: false
   }
@@ -94,7 +95,7 @@ const Grafico = () => {
     pointHighlightStroke: '#039BE5',
     borderColor: '#039BE5',
     borderWidth: 1.5,
-    pointRadius: window.innerWidth < 600 ? .5 : 3,
+    pointRadius: esDispositivoPequeño ? .5 : 3,
     lineTension: .2,
     fill: false
   }
@@ -111,12 +112,12 @@ const Grafico = () => {
     let puntosRegion, puntosComuna
     let todosLosValores = [...serieChile.filter(v => fechaEsAntesDeFechaPosicionSelecionada(v.fecha))]
     if (!division) {
-      data.labels = serieChile.map(d => d.fecha)
+      data.labels = serieChile.map(d => d.fecha).slice(esDispositivoPequeño ? -42 : 0)
       data.datasets = [
         {
           ...estiloLineaPrincipal,
           label: 'Chile',
-          data: serieChile.map((d, i) => fechaEsAntesDeFechaPosicionSelecionada(d.fecha) ? d.valor : null)
+          data: serieChile.map((d, i) => fechaEsAntesDeFechaPosicionSelecionada(d.fecha) ? d.valor : null).slice(esDispositivoPequeño ? -42 : 0)
         }
       ]
     }
@@ -126,17 +127,17 @@ const Grafico = () => {
         ...todosLosValores,
         ...puntosRegion.filter((v, i) => i <= posicion)
       ]
-      data.labels = puntosRegion.map(d => d.fecha)
+      data.labels = puntosRegion.map(d => d.fecha).slice(esDispositivoPequeño ? -42 : 0)
       data.datasets = [
         {
           ...estiloLineaPrincipal,
           label: demograficosRegiones.find(c => c.codigo === codigo).nombre,
-          data: puntosRegion.map((d, i) => i <= posicion ? d.valor : null),
+          data: puntosRegion.map((d, i) => i <= posicion ? d.valor : null).slice(esDispositivoPequeño ? -42 : 0),
         },
         {
           ...estiloLineaChile,
           label: 'Chile',
-          data: serieChile.map((d, i) => i <= posicion ? d.valor : null)
+          data: serieChile.map((d, i) => i <= posicion ? d.valor : null).slice(esDispositivoPequeño ? -42 : 0)
         }
       ]
     }
@@ -167,25 +168,25 @@ const Grafico = () => {
         }
         return [...prev, ...otros, p]
       }, [])
-      data.labels = puntosRellenados.map(d => d.fecha)
+      data.labels = puntosRellenados.map(d => d.fecha).slice(esDispositivoPequeño ? -42 : 0)
       const datosComuna = demograficosComunas.find(c => c.codigo === codigo)
       data.datasets = [
         {
           ...estiloLineaPrincipal,
           label: datosComuna.nombre,
-          data: puntosRellenados.map((d, i) => d.valor),
+          data: puntosRellenados.map((d, i) => d.valor).slice(esDispositivoPequeño ? -42 : 0),
           spanGaps: true,
           borderDash: [5, 1]
         },
         {
           ...estiloLineaRegion,
           label: demograficosRegiones.find(c => c.codigo === datosComuna.region).nombre,
-          data: puntosRegion.map((d, i) => d.valor)
+          data: puntosRegion.map((d, i) => d.valor).slice(esDispositivoPequeño ? -42 : 0)
         },
         {
           ...estiloLineaChile,
           label: 'Chile',
-          data: serieChile.map((d, i) => d.valor)
+          data: serieChile.map((d, i) => d.valor).slice(esDispositivoPequeño ? -42 : 0)
         },
       ]
     }
@@ -243,7 +244,7 @@ const Grafico = () => {
               return cuarentenasComuna.some(({ inicio, fin }) => (
                 fecha.diff(inicio, 'days') >= 0 && fecha.diff(fin, 'days') < 0
               )) ? limiteEspectro : 0
-            }),
+            }).slice(esDispositivoPequeño ? -42 : 0),
             backgroundColor: pattern.draw('diagonal-right-left', 'rgba(255, 255, 255, 0.1)', '#212121', 7.5),
             barPercentage: 1.25
           }
