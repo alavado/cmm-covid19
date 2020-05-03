@@ -192,7 +192,7 @@ const Mapa = () => {
         <Ayuda />
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
         <Source id="capa-datos-regiones" type="geojson" data={geoJSONFiltrado}>
-          <Layer
+          {/* <Layer
             id="data2"
             type="fill"
             paint={{
@@ -207,7 +207,7 @@ const Mapa = () => {
               },
               'fill-opacity': .7
             }}
-          />
+          /> */}
           <Layer
             id="data2-poligono-stroke"
             type="line"
