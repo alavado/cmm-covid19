@@ -5,13 +5,13 @@ import { Route, Switch } from 'react-router-dom'
 import Grafico from './Grafico'
 import './SeccionInferior.css'
 import Buscador from './Buscador'
-import { FaPalette, FaTintSlash, FaExpand, FaCompress } from 'react-icons/fa'
+import { FaTintSlash, FaExpand, FaVideoSlash } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
-import { activarDaltonismo } from '../../redux/actions'
+import { activarDaltonismo, activarAnimaciones } from '../../redux/actions'
 
 const SeccionInferior = () => {
   
-  const { daltonicos } = useSelector(state => state.colores)
+  const { daltonicos, animaciones } = useSelector(state => state.colores)
   const dispatch = useDispatch()
   const [pantallaCompleta, setPantallaCompleta] = useState(false)
 
@@ -24,6 +24,13 @@ const SeccionInferior = () => {
         </Switch>
         <div className="SeccionInferior__opciones">
           <Buscador />
+          <button
+            className={`SeccionInferior__opcion${!animaciones ? ' SeccionInferior__opcion--activa' : ''}`}
+            title={animaciones ? 'Desactivar animaciones' : 'Activar animaciones'}
+            onClick={() => dispatch(activarAnimaciones(!animaciones))}
+          >
+            <FaVideoSlash />
+          </button>
           <button
             className={`SeccionInferior__opcion${daltonicos ? ' SeccionInferior__opcion--activa' : ''}`}
             title={daltonicos ? 'Desactivar modo daltónico' : 'Modo daltónico'}

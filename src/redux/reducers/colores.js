@@ -1,10 +1,11 @@
-import { ACTIVAR_DALTONISMO, DESTACAR_INDICE } from '../actionTypes'
+import { ACTIVAR_DALTONISMO, DESTACAR_INDICE, ACTIVAR_ANIMACIONES } from '../actionTypes'
 import { escala, colorApagado, escalaDaltonica, colorApagadoDaltonico } from '../../helpers/escala'
 
 const initialState = {
   escala,
   colorApagado,
   daltonicos: false,
+  animaciones: true,
   indiceDestacado: -1
 }
 
@@ -32,6 +33,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         indiceDestacado: action.payload
+      }
+    }
+    case ACTIVAR_ANIMACIONES: {
+      return {
+        ...state,
+        animaciones: action.payload
       }
     }
     default:

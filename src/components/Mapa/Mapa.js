@@ -24,7 +24,6 @@ const vpInicialLandscape = {
   bearing: 98.49519730510106,
   pitch: 0,
   altitude: 1.5,
-  transitionDuration: 'auto',
   transitionInterpolator: new FlyToInterpolator({ speed: 1.2 }),
 }
 
@@ -40,9 +39,11 @@ const vpInicialPortrait = {
 const Mapa = () => {
 
   const { serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenasActivas, verCuarentenas } = useSelector(state => state.series)
-  const { escala, colorApagado } = useSelector(state => state.colores)
+  const { escala, colorApagado, animaciones } = useSelector(state => state.colores)
   const { filtroValor, filtroRegion } = serie
-  const vpInicial = window.innerWidth < 600 ? {...vpInicialLandscape, ...vpInicialPortrait} : {...vpInicialLandscape}
+  const vpInicial = window.innerWidth < 600 ?
+    {...vpInicialLandscape, ...vpInicialPortrait, transitionDuration: animaciones ? 'auto' : 0} :
+    {...vpInicialLandscape, transitionDuration: animaciones ? 'auto' : 0}
   const [viewport, setViewport] = useState(vpInicial)
   const [regionPrevia, setRegionPrevia] = useState('')
   const [divisionPrevia, setDivisionPrevia] = useState('')
@@ -58,6 +59,10 @@ const Mapa = () => {
   const params = useParams()
   const { division, codigo } = params
   const mapa = useRef()
+
+  useEffect(() => {
+    setViewport(v => ({ ...v, transitionDuration: animaciones ? 'auto' : 0 }))
+  }, [animaciones])
 
   useEffect(() => {
     if (division) {
