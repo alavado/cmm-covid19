@@ -252,7 +252,7 @@ const Mapa = () => {
         <div className="Mapa__actualizacion">
           <div className="Mapa__actualizacion_contenido">
             Últimas actualizaciones<br />
-            Datos regionales: domingo 3 de mayo<br />
+            Datos regionales: lunes 4 de mayo<br />
             Datos comunales: viernes 1 de mayo
           </div>
         </div>|

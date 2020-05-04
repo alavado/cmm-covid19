@@ -19,7 +19,6 @@ const Grafico = () => {
   const { subserieSeleccionada: ss, series, posicion, geoJSONCuarentenas, verCuarentenas } = useSelector(state => state.series)
   const [datos, setDatos] = useState({})
   const { fecha } = ss.datos[posicion]
-  const dispatch = useDispatch()
   const params = useParams()
   const esDispositivoPequeño = window.innerWidth < 600 
 
@@ -77,7 +76,7 @@ const Grafico = () => {
     pointHighlightStroke: '#3F51B5',
     borderColor: '#3F51B5',
     borderWidth: 1.5,
-    pointRadius: esDispositivoPequeño ? .5 : 3,
+    pointRadius: esDispositivoPequeño ? .5 : 2,
     lineTension: 0,
     fill: false
   }
@@ -96,7 +95,7 @@ const Grafico = () => {
     pointHighlightStroke: '#039BE5',
     borderColor: '#039BE5',
     borderWidth: 1.5,
-    pointRadius: esDispositivoPequeño ? .5 : 3,
+    pointRadius: esDispositivoPequeño ? .5 : 2,
     lineTension: .2,
     fill: false
   }
@@ -323,11 +322,6 @@ const Grafico = () => {
             }
           }
         }}
-        // onElementsClick={e => {
-        //   if (e[0] && e[0]._index < ss.datos.length) {
-        //     dispatch(fijarPosicionSerie(e[0]._index))
-        //   }
-        // }}
       />
     </div>
   )

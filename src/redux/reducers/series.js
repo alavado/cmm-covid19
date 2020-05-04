@@ -10,6 +10,7 @@ export const CONTAGIOS_REGIONALES_POR_100000_HABITANTES =  'CONTAGIOS_REGIONALES
 export const CASOS_COMUNALES_POR_100000_HABITANTES =  'CASOS_COMUNALES_POR_100000_HABITANTES'
 export const CASOS_COMUNALES =  'CASOS_COMUNALES'
 export const CASOS_REGIONALES =  'CASOS_REGIONALES'
+export const CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS =  'CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS'
 
 const initialState = {
   series: [
@@ -36,6 +37,12 @@ const initialState = {
       datos: [],
       geoJSON: null,
       nombre: 'Casos regionales'
+    },
+    {
+      id: CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS,
+      datos: [],
+      geoJSON: null,
+      nombre: 'Casos comunales interpolados'
     }
   ],
   serieSeleccionada: {

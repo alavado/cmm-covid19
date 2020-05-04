@@ -194,3 +194,116 @@ export const procesarComunas = (csv, geoJSON) => {
   }
   return [casosPor100000Habitantes, geoJSONConDatos, formatearDatosOriginalesComunas(csv)]
 }
+
+export const interpolarComunas = (datosComunales, datosRegionales, geoJSONComunas) => {
+  console.log({datosComunales})
+  console.log({datosRegionales})
+  const fechasDatosComunas = datosComunales[0].datos.map(d => d.fecha)
+  console.log({fechasDatosComunas})
+  const aumentoRegional = datosRegionales.map(region => ({
+    ...region,
+    datos: region.datos
+      .filter(d => fechasDatosComunas.some(f => f.diff(d.fecha, 'days') === 0))
+      .map((d, i, arr) => ({
+        ...d,
+        valor: i > 0 ? Math.max(d.valor - arr[i - 1].valor, 0) : 0
+      }))
+  }))
+  console.log({aumentoRegional})
+  datosComunales = datosComunales.map(comuna => {
+    const aumentoRegion = aumentoRegional.find(({ codigo }) => codigo === comuna.codigoRegion)
+    return {
+      ...comuna,
+      datos: comuna.datos.map((d, i, arr) => {
+        const aumentoComunaFecha = d.valor - arr[Math.max(0, i - 1)].valor
+        const aumentoRegionFecha = aumentoRegion.datos[i].valor
+        return {
+          ...d,
+          aumentoRegionFecha,
+          aumentoComunaFecha,
+          factorFecha: aumentoRegionFecha > 0 ? (1.0 * aumentoComunaFecha / aumentoRegionFecha) : 0
+        }
+      })
+    }
+  })
+  console.log({datosComunales})
+  const datosComunalesInterpolados = datosComunales.map(comuna => ({
+    ...comuna,
+    datos: datosRegionales
+      .find(({ codigo }) => codigo === comuna.codigoRegion)
+      .datos
+      .reduce(({ indiceDatosComunales: idc, datos: prev, acum }, { fecha }, i) => {
+        let aumentoRegion = datosRegionales
+            .find(({ codigo }) => codigo === comuna.codigoRegion)
+        aumentoRegion = aumentoRegion.datos[i].valor - aumentoRegion.datos[Math.max(0, i - 1)].valor
+        if (idc < comuna.datos.length && comuna.datos[idc].fecha.diff(fecha, 'days') === 0) {
+          return {
+            indiceDatosComunales: idc + 1,
+            acum: 0,
+            datos: [...prev, {
+              ...comuna.datos[idc],
+              interpolado: false
+            }]
+          }
+        }
+        else {
+          return {
+            indiceDatosComunales: idc,
+            acum: acum + aumentoRegion,
+            datos: [...prev, {
+              fecha,
+              valor: comuna.datos[Math.max(0, idc - 1)].valor + (acum + aumentoRegion) * comuna.datos[Math.max(0, idc - 1)].factorFecha,
+              interpolado: true
+            }]
+          }
+        }
+      }, { indiceDatosComunales: 0, acum: 0, datos: [] }).datos
+  }))
+  console.log({datosComunalesInterpolados})
+  console.log(datosComunalesInterpolados.find(c => c.codigo === 13101))
+  console.log({demografiaComunas})
+
+  const datosComunalesInterpoladosNormalizados = datosComunalesInterpolados.map(comuna => {
+    const { poblacion } = demografiaComunas.find(c => Number(c.codigo) === comuna.codigo)
+    return {
+      ...comuna,
+      datos: comuna.datos.map(d => ({
+        ...d,
+        valorNormalizado: d.valor * 1e5 / poblacion
+      }))
+    }
+  })
+  console.log({datosComunalesInterpoladosNormalizados})
+  const aumentoComunal = datosComunalesInterpoladosNormalizados.map(comuna => ({
+    ...comuna,
+    datos: comuna.datos
+      .map((d, i, arr) => ({
+        ...d,
+        valor: i > 0 ? Math.max(d.valorNormalizado - arr[i - 1].valorNormalizado, 0) : 0
+      }))
+  }))
+  console.log({aumentoComunal})
+  console.log(aumentoComunal.find(c => c.codigo === 13101))
+  const geoJSONConDatos = {
+    ...geoJSONComunas,
+    features: geoJSONComunas.features.map(feature => {
+      const id = Number(feature.properties.COD_COMUNA)
+      const x = aumentoComunal.find(({ codigo }) => codigo === id)
+      if (!x) {
+        return {}
+      }
+      const datosFeature = x.datos
+      return {
+        ...feature,
+        properties: {
+          ...feature.properties,
+          nombre: feature.properties.NOM_COM,
+          codigo: Number(feature.properties.COD_COMUNA),
+          codigoRegion: Number(x.codigoRegion),
+          ...datosFeature.reduce((prev, d, i) => ({...prev, [`v${i}`]: d.valor }), {})
+        }
+      }
+    })
+  }
+  return [aumentoComunal, geoJSONConDatos, datosComunalesInterpolados]
+}
