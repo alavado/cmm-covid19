@@ -14,6 +14,7 @@ import demograficosComunas from '../../data/demografia/comunas.json'
 import Ayuda from './Ayuda'
 import texture from '../../assets/black-twill-sm.png'
 import RankingComunas from './RankingComunas'
+import { easeCubic } from 'd3-ease'
 
 const vpInicialLandscape = {
   width: '100%',
@@ -23,8 +24,7 @@ const vpInicialLandscape = {
   zoom: esMovil() ? 2.5 : 4,
   bearing: 98.49519730510106,
   pitch: 0,
-  altitude: 1.5,
-  transitionInterpolator: new FlyToInterpolator({ speed: 1.2 }),
+  altitude: 1.5
 }
 
 const vpInicialPortrait = {
@@ -61,14 +61,20 @@ const Mapa = () => {
   const mapa = useRef()
 
   useEffect(() => {
-    setViewport(v => ({ ...v, transitionDuration: animaciones ? 'auto' : 0 }))
+    setViewport(v => ({ ...v, transitionDuration: animaciones ? 1500 : 0 }))
   }, [animaciones])
 
   useEffect(() => {
     if (division) {
       if (division === 'region') {
         const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigo))
-        setViewport(v => ({ ...v, ...vpRegion }))
+        setViewport(v => ({
+          ...v,
+          ...vpRegion,
+          transitionDuration: 1500,
+          transitionInterpolator: new FlyToInterpolator(),
+          transitionEasing: easeCubic
+        }))
         dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
         dispatch(seleccionarSubserie(Number(codigo)))
         setPoligonoDestacado(null)
@@ -78,7 +84,13 @@ const Mapa = () => {
         const codigoRegion = demograficosComunas.find(c => c.codigo === codigo).region
         if (codigoRegion !== regionPrevia) {
           const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigoRegion))
-          setViewport(v => ({ ...v, ...vpRegion }))
+          setViewport(v => ({
+            ...v,
+            ...vpRegion,
+            transitionDuration: 1500,
+            transitionInterpolator: new FlyToInterpolator(),
+            transitionEasing: easeCubic
+          }))
         }
         dispatch(filtrarGeoJSONPorRegion(c => c === Number(codigoRegion)))
         if (divisionPrevia !== division) {
@@ -90,7 +102,13 @@ const Mapa = () => {
     }
     else {
       dispatch(seleccionarSubserie(CODIGO_CHILE))
-      setViewport(v => ({ ...v, ...vpInicial }))
+      setViewport(v => ({
+        ...v,
+        ...vpInicial,
+        transitionDuration: 1500,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: easeCubic
+      }))
       dispatch(limpiarFiltros())
       setPoligonoDestacado(null)
       setRegionPrevia(null)
@@ -257,7 +275,7 @@ const Mapa = () => {
         <div className="Mapa__actualizacion">
           <div className="Mapa__actualizacion_contenido">
             Últimas actualizaciones<br />
-            Datos regionales: lunes 4 de mayo<br />
+            Datos regionales: martes 5 de mayo<br />
             Datos comunales: viernes 1 de mayo
           </div>
         </div>|
