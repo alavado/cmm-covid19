@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom'
 import Grafico from './Grafico'
 import './SeccionInferior.css'
 import Buscador from './Buscador'
-import { FaTintSlash, FaExpand, FaVideoSlash } from 'react-icons/fa'
+import { FaTintSlash, FaExpand, FaPlane } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { activarDaltonismo, activarAnimaciones } from '../../redux/actions'
 
@@ -25,18 +25,18 @@ const SeccionInferior = () => {
         <div className="SeccionInferior__opciones">
           <Buscador />
           <button
-            className={`SeccionInferior__opcion${!animaciones ? ' SeccionInferior__opcion--activa' : ''}`}
-            title={animaciones ? 'Desactivar animaciones' : 'Activar animaciones'}
-            onClick={() => dispatch(activarAnimaciones(!animaciones))}
-          >
-            <FaVideoSlash />
-          </button>
-          <button
             className={`SeccionInferior__opcion${daltonicos ? ' SeccionInferior__opcion--activa' : ''}`}
             title={daltonicos ? 'Desactivar modo daltónico' : 'Modo daltónico'}
             onClick={() => dispatch(activarDaltonismo(!daltonicos))}
           >
             <FaTintSlash />
+          </button>
+          <button
+            className={`SeccionInferior__opcion${animaciones ? ' SeccionInferior__opcion--activa' : ''}`}
+            title={animaciones ? 'Desactivar animaciones de vuelo' : 'Activar animaciones de vuelo'}
+            onClick={() => dispatch(activarAnimaciones(!animaciones))}
+          >
+            <FaPlane />
           </button>
           <button
             className={`SeccionInferior__opcion${pantallaCompleta ? ' SeccionInferior__opcion--activa' : ''}`}

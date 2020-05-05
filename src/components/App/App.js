@@ -44,20 +44,25 @@ const App = () => {
       dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES, 'datos', casosComunalesPor100000Habitantes))
       dispatch(actualizarSerie(CASOS_COMUNALES, 'datos', datosComunalesOriginales))
 
-      // console.log({casosComunalesPor100000Habitantes})
+      console.log({geoJSONComunalConDatos})
+      console.log({casosComunalesPor100000Habitantes})
+      console.log({datosComunalesOriginales})
 
-      // const [datosComunalesInterpolados, geoJSONInterpolado, datosComunalesOriginalesInterpolados] = interpolarComunas(datosComunalesOriginales, datosRegionalesOriginales, geoJSONComunas)
-      // dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES, 'datos', datosComunalesInterpolados))
+      const [datosComunalesInterpolados, geoJSONInterpolado, datosComunalesOriginalesInterpolados] = interpolarComunas(datosComunalesOriginales, datosRegionalesOriginales, geoJSONComunas)
       // dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES, 'geoJSON', geoJSONInterpolado))
+      // dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES, 'datos', datosComunalesInterpolados))
       // dispatch(actualizarSerie(CASOS_COMUNALES, 'datos', datosComunalesOriginalesInterpolados))
 
+      console.log({geoJSONInterpolado})
+      console.log({datosComunalesInterpolados})
+      console.log({datosComunalesOriginalesInterpolados})
       
       setInicializada(true)
     }
     inicializarDatos()
       .catch(err => {
         console.log(err)
-        setErrorAlCargar('Ocurrió un error al obtener los datos')
+        setErrorAlCargar('Ocurrió un error al obtener los datos. A veces pasa esto, pero se arregla en unos minutos.')
       })
     window.addEventListener('keydown', k => {
       switch (k.code) {

@@ -196,10 +196,7 @@ export const procesarComunas = (csv, geoJSON) => {
 }
 
 export const interpolarComunas = (datosComunales, datosRegionales, geoJSONComunas) => {
-  console.log({datosComunales})
-  console.log({datosRegionales})
   const fechasDatosComunas = datosComunales[0].datos.map(d => d.fecha)
-  console.log({fechasDatosComunas})
   const aumentoRegional = datosRegionales.map(region => ({
     ...region,
     datos: region.datos
@@ -209,7 +206,6 @@ export const interpolarComunas = (datosComunales, datosRegionales, geoJSONComuna
         valor: i > 0 ? Math.max(d.valor - arr[i - 1].valor, 0) : 0
       }))
   }))
-  console.log({aumentoRegional})
   datosComunales = datosComunales.map(comuna => {
     const aumentoRegion = aumentoRegional.find(({ codigo }) => codigo === comuna.codigoRegion)
     return {
@@ -226,7 +222,6 @@ export const interpolarComunas = (datosComunales, datosRegionales, geoJSONComuna
       })
     }
   })
-  console.log({datosComunales})
   const datosComunalesInterpolados = datosComunales.map(comuna => ({
     ...comuna,
     datos: datosRegionales
@@ -259,10 +254,6 @@ export const interpolarComunas = (datosComunales, datosRegionales, geoJSONComuna
         }
       }, { indiceDatosComunales: 0, acum: 0, datos: [] }).datos
   }))
-  console.log({datosComunalesInterpolados})
-  console.log(datosComunalesInterpolados.find(c => c.codigo === 13101))
-  console.log({demografiaComunas})
-
   const datosComunalesInterpoladosNormalizados = datosComunalesInterpolados.map(comuna => {
     const { poblacion } = demografiaComunas.find(c => Number(c.codigo) === comuna.codigo)
     return {
@@ -273,7 +264,6 @@ export const interpolarComunas = (datosComunales, datosRegionales, geoJSONComuna
       }))
     }
   })
-  console.log({datosComunalesInterpoladosNormalizados})
   const aumentoComunal = datosComunalesInterpoladosNormalizados.map(comuna => ({
     ...comuna,
     datos: comuna.datos
@@ -282,8 +272,6 @@ export const interpolarComunas = (datosComunales, datosRegionales, geoJSONComuna
         valor: i > 0 ? Math.max(d.valorNormalizado - arr[i - 1].valorNormalizado, 0) : 0
       }))
   }))
-  console.log({aumentoComunal})
-  console.log(aumentoComunal.find(c => c.codigo === 13101))
   const geoJSONConDatos = {
     ...geoJSONComunas,
     features: geoJSONComunas.features.map(feature => {
