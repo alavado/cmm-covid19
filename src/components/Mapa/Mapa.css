@@ -17,6 +17,10 @@
   text-align: right;
 }
 
+.Contacto {
+  text-decoration: underline;
+}
+
 @keyframes aparece-actualizacion {
   0% {
     opacity: 0;
