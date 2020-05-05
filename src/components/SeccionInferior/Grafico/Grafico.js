@@ -198,8 +198,13 @@ const Grafico = () => {
     const ctx = canvas.getContext('2d')
     const gradientStroke = ctx.createLinearGradient(0, canvas.getBoundingClientRect().height - 28, 0, 0)
     const maximo = todosLosValores.reduce((prev, d) => Math.max(prev, d.valor), 0)
+    console.log(todosLosValores)
+    console.log(maximo)
     let limiteEspectro = 10
-    if (maximo >= 30) {
+    if (maximo >= 40) {
+      limiteEspectro = 20 * Math.floor((maximo + 20) / 20)
+    }
+    else if (maximo >= 30) {
       limiteEspectro = 10 * Math.floor((maximo + 10) / 10)
     }
     else if (maximo >= 10) {

@@ -135,12 +135,12 @@ const CodigoColor = () => {
         }
         {division === 'comuna' &&
           <>
-            <button style={{pointerEvents: 'all' }} onClick={e => {
+            {/* <button style={{pointerEvents: 'all' }} onClick={e => {
               e.stopPropagation()
               dispatch(seleccionarSerie(interpolarComunas ? CASOS_COMUNALES_POR_100000_HABITANTES : CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS))
             }}>
               sdasd
-            </button>
+            </button> */}
             <button
               className="CodigoColor__boton_cuarentenas"
               onMouseOver={e => e.stopPropagation()}

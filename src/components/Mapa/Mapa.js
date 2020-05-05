@@ -276,7 +276,7 @@ const Mapa = () => {
           <div className="Mapa__actualizacion_contenido">
             Últimas actualizaciones<br />
             Datos regionales: martes 5 de mayo<br />
-            Datos comunales: viernes 1 de mayo<br />
+            Datos comunales: martes 5 de mayo<br />
             <a target="_blank" href="https://twitter.com/alavado_desu">Si algo te molesta o tienes alguna idea, puedes <span className="Contacto">contactarme por Twitter</span></a>
           </div>
         </div>|

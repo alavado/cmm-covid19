@@ -258,7 +258,7 @@ export const interpolarComunas = (datosComunales, datosRegionales, geoJSONComuna
           const regionEnFechaAnterior = datosRegion.datos.find(v => v.fecha.diff(muestraAnterior.fecha, 'days') === 0)
           const regionEnFechaSiguiente = datosRegion.datos.find(v => v.fecha.diff(muestraSiguiente.fecha, 'days') === 0)
           const aumentoTotalRegion = regionEnFechaSiguiente.valor - regionEnFechaAnterior.valor
-          const proporcion = aumentoRegion / aumentoTotalRegion
+          const proporcion = aumentoRegion / (aumentoTotalRegion === 0 ? 1 : aumentoTotalRegion)
           const aumentoComuna = proporcion * (muestraSiguiente.valor - muestraAnterior.valor)
           return {
             indiceDatosComunales: idc,
