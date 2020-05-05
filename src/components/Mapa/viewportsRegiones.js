@@ -58,7 +58,6 @@ const viewports = [
     codigo: 13,
     vp: {
       bearing: 10.9609308669604,
-      height: 370,
       latitude: -33.537375678675765,
       longitude: -70.81966493085949,
       pitch: 10.01281704404148,

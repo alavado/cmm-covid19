@@ -36,7 +36,7 @@ const MiniReporte = () => {
     const datosRegion = series.find(s => s.id === CASOS_REGIONALES)
       .datos
       .find(d => Number(d.codigo) === Number(codigo))
-    if (datosRegion.datos[posicion]) {
+    if (datosRegion.datos[posicion + 1]) {
       datosExtra.casos = datosRegion.datos[posicion + 1].valor
       datosExtra.poblacion = obtenerDemograficosRegion(codigo).poblacion
       datosExtra.nombre = obtenerDemograficosRegion(codigo).nombre
@@ -45,7 +45,7 @@ const MiniReporte = () => {
   else {
     datosExtra.casos = series.find(s => s.id === CASOS_REGIONALES)
       .datos
-      .map(r => r.datos[posicion + 1].valor)
+      .map(r => r.datos[Math.min(r.datos.length - 1, posicion + 1)].valor)
       .reduce((sum, v) => sum + v)
     datosExtra.poblacion = obtenerDemograficosRegion(CODIGO_CHILE).poblacion
     datosExtra.nombre = obtenerDemograficosRegion(CODIGO_CHILE).nombre

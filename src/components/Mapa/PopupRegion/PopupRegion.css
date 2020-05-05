@@ -1,36 +1,40 @@
+.PopupRegion {
+  opacity: .9;
+}
+
 .PopupRegion__contenido {
-  display: grid;
+  display: flex;
   justify-items: center;
+  align-items: center;
   gap: .25em;
 }
 
 .PopupRegion__titulo {
-  font-size: .8em;
+  font-size: .65em;
   font-weight: bold;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
 }
 
 .PopupRegion__cuadro {
   color: rgba(0, 0, 0, .9);
-  padding: .25em 0 0em 0;
   border-radius: .25em;
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: .75em;
+  display: flex;
   align-items: center;
 }
 
 .PopupRegion__casos {
-  width: 3em;
-  height: 2em;
   border-radius: .15em;
+  padding: .25em .4em;
   background-color: red;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   color: #212121;
-  font-size: 1.15em;
+  font-size: .75em;
+  margin-left: .5em;
   transition: all .15s ease-in-out;
 }
 

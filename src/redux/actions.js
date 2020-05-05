@@ -4,7 +4,8 @@ import { SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, ACTUALIZAR_SERIE,
   LIMPIAR_FILTROS, ACTIVAR_DALTONISMO,
   MOSTRAR_AYUDA, FIJAR_GEOJSON_CUARENTENAS, VER_CUARENTENAS,
   DESTACAR_INDICE,
-  ACTIVAR_ANIMACIONES} from './actionTypes'
+  ACTIVAR_ANIMACIONES,
+  INTERPOLAR_COMUNAS} from './actionTypes'
 
 export const actualizarSerie = (id, propiedad, valor) => ({
   type: ACTUALIZAR_SERIE,
@@ -81,4 +82,9 @@ export const fijarGeoJSONCuarentenas = geoJSON => ({
 export const fijarVerCuarentenas = ver => ({
   type: VER_CUARENTENAS,
   payload: ver
+})
+
+export const interpolarComunas = interpolar => ({
+  type: INTERPOLAR_COMUNAS,
+  payload: interpolar
 })

@@ -9,7 +9,12 @@ import { procesarRegiones, procesarComunas, interpolarComunas } from '../../help
 import { useDispatch } from 'react-redux'
 import { actualizarSerie, seleccionarSerie, seleccionarSubserie, avanzarEnSerie, retrocederEnSerie, fijarGeoJSONCuarentenas } from '../../redux/actions'
 import { procesarCuarentenas } from '../../helpers/cuarentenas'
-import { CASOS_COMUNALES, CASOS_REGIONALES, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE, CUARENTENAS } from '../../redux/reducers/series'
+import {
+  CASOS_COMUNALES, CASOS_REGIONALES,
+  CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES,
+  CODIGO_CHILE, CUARENTENAS, CASOS_COMUNALES_INTERPOLADOS,
+  CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS
+} from '../../redux/reducers/series'
 import Loader from './Loader'
 import geoJSONCuarentenas from '../../data/geojsons/cuarentenas.json'
 
@@ -44,18 +49,10 @@ const App = () => {
       dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES, 'datos', casosComunalesPor100000Habitantes))
       dispatch(actualizarSerie(CASOS_COMUNALES, 'datos', datosComunalesOriginales))
 
-      console.log({geoJSONComunalConDatos})
-      console.log({casosComunalesPor100000Habitantes})
-      console.log({datosComunalesOriginales})
-
       const [datosComunalesInterpolados, geoJSONInterpolado, datosComunalesOriginalesInterpolados] = interpolarComunas(datosComunalesOriginales, datosRegionalesOriginales, geoJSONComunas)
-      // dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES, 'geoJSON', geoJSONInterpolado))
-      // dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES, 'datos', datosComunalesInterpolados))
-      // dispatch(actualizarSerie(CASOS_COMUNALES, 'datos', datosComunalesOriginalesInterpolados))
-
-      console.log({geoJSONInterpolado})
-      console.log({datosComunalesInterpolados})
-      console.log({datosComunalesOriginalesInterpolados})
+      dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'geoJSON', geoJSONInterpolado))
+      dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'datos', datosComunalesInterpolados))
+      dispatch(actualizarSerie(CASOS_COMUNALES_INTERPOLADOS, 'datos', datosComunalesOriginalesInterpolados))
       
       setInicializada(true)
     }

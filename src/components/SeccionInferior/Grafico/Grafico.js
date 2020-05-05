@@ -16,7 +16,7 @@ const diasDispositivoPequeño = 42
 const Grafico = () => {
 
   const { escala } = useSelector(state => state.colores)
-  const { subserieSeleccionada: ss, series, posicion, geoJSONCuarentenas, verCuarentenas } = useSelector(state => state.series)
+  const { subserieSeleccionada: ss, series, posicion, geoJSONCuarentenas, verCuarentenas, interpolarComunas } = useSelector(state => state.series)
   const [datos, setDatos] = useState({})
   const { fecha } = ss.datos[posicion]
   const params = useParams()
@@ -158,16 +158,18 @@ const Grafico = () => {
       if (ultimaFechaComuna.diff(ultimaFechaChile, 'days') !== 0) {
         puntosConDatos.push({ fecha: ultimaFechaChile.clone(), valor: null })
       }
-      const puntosRellenados = puntosConDatos.reduce((prev, p, i, arr) => {
-        let otros = []
-        if (i > 0) {
-          let fechaAnterior = arr[i - 1].fecha.clone()
-          while (fechaAnterior.add(1, 'days').diff(p.fecha, 'days') !== 0) {
-            otros.push({ fecha: fechaAnterior.clone(), valor: null })
+      const puntosRellenados = interpolarComunas ?
+        puntosConDatos.slice(2) :
+        puntosConDatos.reduce((prev, p, i, arr) => {
+          let otros = []
+          if (i > 0) {
+            let fechaAnterior = arr[i - 1].fecha.clone()
+            while (fechaAnterior.add(1, 'days').diff(p.fecha, 'days') !== 0) {
+              otros.push({ fecha: fechaAnterior.clone(), valor: null })
+            }
           }
-        }
         return [...prev, ...otros, p]
-      }, [])
+        }, [])
       data.labels = puntosRellenados.map(d => d.fecha).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
       const datosComuna = demograficosComunas.find(c => c.codigo === codigo)
       data.datasets = [
@@ -176,7 +178,9 @@ const Grafico = () => {
           label: datosComuna.nombre,
           data: puntosRellenados.map((d, i) => d.valor).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0),
           spanGaps: true,
-          borderDash: [5, 1]
+          borderDash: interpolarComunas ? [0, 0] : [3, 1],
+          pointStyle: puntosRellenados.map(d => d.interpolado ? 'star' : 'dot'),
+          borderWidth: 2
         },
         {
           ...estiloLineaRegion,
@@ -220,7 +224,7 @@ const Grafico = () => {
         pointBorderColor: gradientStroke,
         pointBackgroundColor: gradientStroke,
         pointHoverBackgroundColor: gradientStroke,
-        pointHoverBorderColor: gradientStroke
+        pointHoverBorderColor: gradientStroke,
       },
       ...data.datasets.slice(1),
     ]

@@ -125,14 +125,6 @@ const Mapa = () => {
       })
   }), [filtroValor, filtroRegion, posicion])
 
-  const cambioEnElViewport = vp => {
-    setViewport({
-      ...vp,
-      width: '100%',
-      height: 'calc(100vh - 15em)',
-    })
-  }
-
   const clickEnPoligono = e => {
     const featurePoligono = e.features && e.features.find(f => f.source === 'capa-datos-regiones')
     if (!featurePoligono) {
@@ -178,6 +170,14 @@ const Mapa = () => {
     .loadImage(texture, (err, image) => {
       mapa.current.getMap().addImage('texturaCuarentenas', image)
     }), [])
+
+  const cambioEnElViewport = vp => {
+    setViewport({
+      ...vp,
+      width: '100%',
+      height: 'calc(100vh - 15em)',
+    })
+  }
 
   return (
     <div

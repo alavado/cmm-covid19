@@ -1,16 +1,18 @@
 import {
   ACTUALIZAR_SERIE, AVANZAR_EN_SERIE, RETROCEDER_EN_SERIE, FIJAR_POSICION_SERIE,
   SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, FILTRAR_GEOJSON_POR_VALOR, FILTRAR_GEOJSON_POR_REGION,
-  TOGGLE_FILTRO, LIMPIAR_FILTROS, FIJAR_GEOJSON_CUARENTENAS, VER_CUARENTENAS
+  TOGGLE_FILTRO, LIMPIAR_FILTROS, FIJAR_GEOJSON_CUARENTENAS, VER_CUARENTENAS,
+  INTERPOLAR_COMUNAS
 } from '../actionTypes'
 import { obtenerCuarentenasActivas } from '../../helpers/cuarentenas'
 
 export const CODIGO_CHILE = 0
-export const CONTAGIOS_REGIONALES_POR_100000_HABITANTES =  'CONTAGIOS_REGIONALES_POR_100000_HABITANTES'
-export const CASOS_COMUNALES_POR_100000_HABITANTES =  'CASOS_COMUNALES_POR_100000_HABITANTES'
-export const CASOS_COMUNALES =  'CASOS_COMUNALES'
-export const CASOS_REGIONALES =  'CASOS_REGIONALES'
-export const CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS =  'CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS'
+export const CONTAGIOS_REGIONALES_POR_100000_HABITANTES = 'CONTAGIOS_REGIONALES_POR_100000_HABITANTES'
+export const CASOS_COMUNALES_POR_100000_HABITANTES = 'CASOS_COMUNALES_POR_100000_HABITANTES'
+export const CASOS_COMUNALES = 'CASOS_COMUNALES'
+export const CASOS_REGIONALES = 'CASOS_REGIONALES'
+export const CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS = 'CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS'
+export const CASOS_COMUNALES_INTERPOLADOS = 'CASOS_COMUNALES_INTERPOLADOS'
 
 const initialState = {
   series: [
@@ -42,6 +44,12 @@ const initialState = {
       id: CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS,
       datos: [],
       geoJSON: null,
+      nombre: 'Casos comunales por 100.000 habitantes interpolados'
+    },
+    {
+      id: CASOS_COMUNALES_INTERPOLADOS,
+      datos: [],
+      geoJSON: null,
       nombre: 'Casos comunales interpolados'
     }
   ],
@@ -54,7 +62,8 @@ const initialState = {
   geoJSONCuarentenasActivas: null,
   geoJSONCuarentenas: null,
   verCuarentenas: true,
-  posicion: 0
+  posicion: 0,
+  interpolarComunas: false
 }
 
 export default function(state = initialState, action) {
@@ -184,6 +193,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         verCuarentenas: action.payload
+      }
+    }
+    case INTERPOLAR_COMUNAS: {
+      return {
+        ...state,
+        interpolarComunas: action.payload
       }
     }
     default:
