@@ -61,7 +61,7 @@ const Mapa = () => {
   const mapa = useRef()
 
   useEffect(() => {
-    setViewport(v => ({ ...v, transitionDuration: animaciones ? 1500 : 0 }))
+    setViewport(v => ({ ...v, transitionDuration: animaciones ? animaciones ? 1500 : 0 : 0 }))
   }, [animaciones])
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const Mapa = () => {
         setViewport(v => ({
           ...v,
           ...vpRegion,
-          transitionDuration: 1500,
+          transitionDuration: animaciones ? 1500 : 0,
           transitionInterpolator: new FlyToInterpolator(),
           transitionEasing: easeCubic
         }))
@@ -87,7 +87,7 @@ const Mapa = () => {
           setViewport(v => ({
             ...v,
             ...vpRegion,
-            transitionDuration: 1500,
+            transitionDuration: animaciones ? 1500 : 0,
             transitionInterpolator: new FlyToInterpolator(),
             transitionEasing: easeCubic
           }))
@@ -105,7 +105,7 @@ const Mapa = () => {
       setViewport(v => ({
         ...v,
         ...vpInicial,
-        transitionDuration: 1500,
+        transitionDuration: animaciones ? 1500 : 0,
         transitionInterpolator: new FlyToInterpolator(),
         transitionEasing: easeCubic
       }))
