@@ -7,7 +7,7 @@ import './Grafico.css'
 import { useParams } from 'react-router-dom'
 import demograficosComunas from '../../../data/demografia/comunas.json'
 import demograficosRegiones from '../../../data/demografia/regiones.json'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
 import pattern from 'patternomaly'
 
 Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
@@ -41,9 +41,9 @@ const Grafico = () => {
     return obtenerSerieRegion(codigoRegion)
   }
 
-  const obtenerSerieComuna = codigo => {
+  const obtenerSerieComuna = (codigo, interp) => {
     return series
-      .find(s => s.id === CASOS_COMUNALES_POR_100000_HABITANTES).datos
+      .find(s => s.id === (interp ? CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : CASOS_COMUNALES_POR_100000_HABITANTES)).datos
       .find(d => d.codigo === Number(codigo)).datos
   }
 
@@ -143,7 +143,7 @@ const Grafico = () => {
     }
     else if (division === 'comuna') {
       puntosRegion = obtenerSerieRegionComuna(codigo)
-      puntosComuna = obtenerSerieComuna(codigo)
+      puntosComuna = obtenerSerieComuna(codigo, interpolarComunas)
       todosLosValores = [
         ...todosLosValores,
         ...puntosRegion,
@@ -178,7 +178,7 @@ const Grafico = () => {
           label: datosComuna.nombre,
           data: puntosRellenados.map((d, i) => d.valor).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0),
           spanGaps: true,
-          borderDash: interpolarComunas ? [0, 0] : [3, 1],
+          borderDash: interpolarComunas ? [3, 1] : [3, 1],
           pointStyle: puntosRellenados.map(d => d.interpolado ? 'star' : 'dot'),
           borderWidth: 2
         },
@@ -256,7 +256,7 @@ const Grafico = () => {
       }
     }
     setDatos(data)
-  }, [posicion, division, codigo, escala, verCuarentenas])
+  }, [posicion, division, codigo, escala, verCuarentenas, interpolarComunas, ss])
 
   return (
     <div className="Grafico">

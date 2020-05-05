@@ -83,8 +83,3 @@ export const fijarVerCuarentenas = ver => ({
   type: VER_CUARENTENAS,
   payload: ver
 })
-
-export const interpolarComunas = interpolar => ({
-  type: INTERPOLAR_COMUNAS,
-  payload: interpolar
-})

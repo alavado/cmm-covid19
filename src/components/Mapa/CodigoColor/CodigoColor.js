@@ -3,14 +3,14 @@ import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice, fijarVerCuarentenas } from '../../../redux/actions'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE } from '../../../redux/reducers/series'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
 import { useHistory, useParams } from 'react-router-dom'
 import { FaQuestionCircle as IconoAyuda } from 'react-icons/fa'
 import texture from '../../../assets/black-twill-sm.png'
 
 const CodigoColor = () => {
 
-  const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle, verCuarentenas } = useSelector(state => state.series)
+  const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle, verCuarentenas, interpolarComunas } = useSelector(state => state.series)
   const { fecha } = subserieSeleccionada.datos[posicion]
   const { escala, indiceDestacado } = useSelector(state => state.colores)
 
@@ -63,7 +63,7 @@ const CodigoColor = () => {
           CodigoColor__fecha--${avanza ? 'avanza' : 'retrocede'}-${vecesAnimada % 2 + 1}`}
       >
         {etiqueta}
-        {posicion > 0 && division === 'comuna' &&
+        {posicion > 0 && division === 'comuna' && false &&
           <IconoAyuda
             className="CodigoColor__icono_ayuda"
             title="¿Qué es esto?"
@@ -134,13 +134,21 @@ const CodigoColor = () => {
           </button>
         }
         {division === 'comuna' &&
-          <button
-            className="CodigoColor__boton_cuarentenas"
-            onMouseOver={e => e.stopPropagation()}
-            onClick={() => dispatch(fijarVerCuarentenas(!verCuarentenas))}
-          >
-            {verCuarentenas ? 'Ocultar' : 'Ver'} cuarentenas
-          </button>
+          <>
+            <button style={{pointerEvents: 'all' }} onClick={e => {
+              e.stopPropagation()
+              dispatch(seleccionarSerie(interpolarComunas ? CASOS_COMUNALES_POR_100000_HABITANTES : CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS))
+            }}>
+              sdasd
+            </button>
+            <button
+              className="CodigoColor__boton_cuarentenas"
+              onMouseOver={e => e.stopPropagation()}
+              onClick={() => dispatch(fijarVerCuarentenas(!verCuarentenas))}
+            >
+              {verCuarentenas ? 'Ocultar' : 'Ver'} cuarentenas
+            </button>
+          </>
         }
       </div>
     </div>

@@ -44,7 +44,7 @@ const initialState = {
       id: CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS,
       datos: [],
       geoJSON: null,
-      nombre: 'Casos comunales por 100.000 habitantes interpolados'
+      nombre: 'Casos comunales por 100.000 habitantes'
     },
     {
       id: CASOS_COMUNALES_INTERPOLADOS,
@@ -124,7 +124,8 @@ export default function(state = initialState, action) {
         },
         subserieSeleccionada: nuevaSerieSeleccionada.datos[0],
         posicion: nuevaSerieSeleccionada.datos[0].datos.length - 1,
-        geoJSONCuarentenasActivas: obtenerCuarentenasActivas(state.geoJSONCuarentenas, nuevaSerieSeleccionada.datos[0].datos.slice(-1)[0].fecha)
+        geoJSONCuarentenasActivas: obtenerCuarentenasActivas(state.geoJSONCuarentenas, nuevaSerieSeleccionada.datos[0].datos.slice(-1)[0].fecha),
+        interpolarComunas: idSerie === CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS
       }
     }
     case SELECCIONAR_SUBSERIE: {

@@ -228,9 +228,9 @@ export const interpolarComunas = (datosComunales, datosRegionales, geoJSONComuna
       .find(({ codigo }) => codigo === comuna.codigoRegion)
       .datos
       .reduce(({ indiceDatosComunales: idc, datos: prev, acum }, { fecha }, i) => {
-        let aumentoRegion = datosRegionales
+        const datosRegion = datosRegionales
             .find(({ codigo }) => codigo === comuna.codigoRegion)
-        aumentoRegion = aumentoRegion.datos[i].valor - aumentoRegion.datos[Math.max(0, i - 1)].valor
+        const aumentoRegion = datosRegion.datos[i].valor - datosRegion.datos[Math.max(0, i - 1)].valor
         if (idc < comuna.datos.length && comuna.datos[idc].fecha.diff(fecha, 'days') === 0) {
           return {
             indiceDatosComunales: idc + 1,
@@ -241,13 +241,31 @@ export const interpolarComunas = (datosComunales, datosRegionales, geoJSONComuna
             }]
           }
         }
-        else {
+        else if (idc >= comuna.datos.length) {
           return {
             indiceDatosComunales: idc,
             acum: acum + aumentoRegion,
             datos: [...prev, {
               fecha,
               valor: comuna.datos[Math.max(0, idc - 1)].valor + (acum + aumentoRegion) * comuna.datos[Math.max(0, idc - 1)].factorFecha,
+              interpolado: true
+            }]
+          }
+        }
+        else {
+          const muestraAnterior = comuna.datos[Math.max(0, idc - 1)]
+          const muestraSiguiente = comuna.datos[Math.min(idc, comuna.datos.length - 1)]
+          const regionEnFechaAnterior = datosRegion.datos.find(v => v.fecha.diff(muestraAnterior.fecha, 'days') === 0)
+          const regionEnFechaSiguiente = datosRegion.datos.find(v => v.fecha.diff(muestraSiguiente.fecha, 'days') === 0)
+          const aumentoTotalRegion = regionEnFechaSiguiente.valor - regionEnFechaAnterior.valor
+          const proporcion = aumentoRegion / aumentoTotalRegion
+          const aumentoComuna = proporcion * (muestraSiguiente.valor - muestraAnterior.valor)
+          return {
+            indiceDatosComunales: idc,
+            acum: acum + aumentoComuna,
+            datos: [...prev, {
+              fecha,
+              valor: muestraAnterior.valor + acum + aumentoComuna,
               interpolado: true
             }]
           }

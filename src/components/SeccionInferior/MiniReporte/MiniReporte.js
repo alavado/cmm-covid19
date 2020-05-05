@@ -8,7 +8,7 @@ import { obtenerDemograficosComuna, obtenerDemograficosRegion } from '../../../h
 
 const MiniReporte = () => {
 
-  const { subserieSeleccionada: ss, series, posicion } = useSelector(state => state.series)
+  const { subserieSeleccionada: ss, series, posicion, interpolarComunas } = useSelector(state => state.series)
   const { division, codigo } = useParams()
   const { escala } = useSelector(state => state.colores)
   
