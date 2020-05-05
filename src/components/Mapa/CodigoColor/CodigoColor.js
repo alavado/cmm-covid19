@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react'
 import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
-import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice, fijarVerCuarentenas } from '../../../redux/actions'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
+import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice, fijarVerCuarentenas, interpolarComunas } from '../../../redux/actions'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS } from '../../../redux/reducers/series'
 import { useHistory, useParams } from 'react-router-dom'
 import { FaQuestionCircle as IconoAyuda } from 'react-icons/fa'
 import texture from '../../../assets/black-twill-sm.png'
 
 const CodigoColor = () => {
 
-  const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle, verCuarentenas, interpolarComunas } = useSelector(state => state.series)
+  const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle, verCuarentenas, comunasInterpoladas } = useSelector(state => state.series)
   const { fecha } = subserieSeleccionada.datos[posicion]
   const { escala, indiceDestacado } = useSelector(state => state.colores)
 
@@ -19,7 +19,7 @@ const CodigoColor = () => {
   const [posicionPrevia, setPosicionPrevia] = useState(posicion)
   const history = useHistory()
   const dispatch = useDispatch()
-  const { division, codigo } = useParams()
+  const { division } = useParams()
 
   const diferencia = fecha.diff(moment(), 'days')
   let etiqueta = `${diferencia === 0 ? 'Hoy, ' : (diferencia === -1 ? 'Ayer, ' : '')} ${fecha.format('dddd D [de] MMMM')}`
@@ -37,7 +37,7 @@ const CodigoColor = () => {
   const toggleRegiones = e => {
     e.stopPropagation()
     if (serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
-      dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))
+      dispatch(seleccionarSerie(comunasInterpoladas ? CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : CASOS_COMUNALES_POR_100000_HABITANTES))
     }
     else {
       dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
@@ -63,7 +63,7 @@ const CodigoColor = () => {
           CodigoColor__fecha--${avanza ? 'avanza' : 'retrocede'}-${vecesAnimada % 2 + 1}`}
       >
         {etiqueta}
-        {posicion > 0 && division === 'comuna' && false &&
+        {posicion > 0 && division === 'comuna' && !comunasInterpoladas &&
           <IconoAyuda
             className="CodigoColor__icono_ayuda"
             title="¿Qué es esto?"
@@ -133,20 +133,24 @@ const CodigoColor = () => {
             {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? 'Ver comunas' : 'Ver regiones'}
           </button>
         }
-        {division === 'comuna' &&
+        {division === 'comuna' && false &&
           <>
-            {/* <button style={{pointerEvents: 'all' }} onClick={e => {
-              e.stopPropagation()
-              dispatch(seleccionarSerie(interpolarComunas ? CASOS_COMUNALES_POR_100000_HABITANTES : CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS))
-            }}>
-              sdasd
-            </button> */}
+            <button
+              className="CodigoColor__boton_interpolar"
+              onClick={e => {
+                e.stopPropagation()
+                dispatch(seleccionarSerie(comunasInterpoladas ? CASOS_COMUNALES_POR_100000_HABITANTES : CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS))
+                dispatch(interpolarComunas(!comunasInterpoladas))
+              }}
+            >
+              {comunasInterpoladas ? 'Días sin datos se interpolan' : 'Días sin datos se promedian'}
+            </button>
             <button
               className="CodigoColor__boton_cuarentenas"
               onMouseOver={e => e.stopPropagation()}
               onClick={() => dispatch(fijarVerCuarentenas(!verCuarentenas))}
             >
-              {verCuarentenas ? 'Ocultar' : 'Ver'} cuarentenas
+              Cuarentenas {verCuarentenas ? 'visibles' : 'ocultas'}
             </button>
           </>
         }

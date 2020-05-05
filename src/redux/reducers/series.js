@@ -44,7 +44,7 @@ const initialState = {
       id: CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS,
       datos: [],
       geoJSON: null,
-      nombre: 'Casos comunales por 100.000 habitantes'
+      nombre: 'Nuevos casos por 100.000 habitantes'
     },
     {
       id: CASOS_COMUNALES_INTERPOLADOS,
@@ -63,7 +63,7 @@ const initialState = {
   geoJSONCuarentenas: null,
   verCuarentenas: true,
   posicion: 0,
-  interpolarComunas: false
+  comunasInterpoladas: true
 }
 
 export default function(state = initialState, action) {
@@ -115,6 +115,7 @@ export default function(state = initialState, action) {
     case SELECCIONAR_SERIE: {
       const idSerie = action.payload
       const nuevaSerieSeleccionada = state.series.find(s => s.id === idSerie)
+      const subserieEquivalente = state.subserieSeleccionada && nuevaSerieSeleccionada.datos.find(d => d.codigo === state.subserieSeleccionada.codigo)
       return {
         ...state,
         serieSeleccionada: {
@@ -122,10 +123,9 @@ export default function(state = initialState, action) {
           filtroRegion: state.serieSeleccionada.filtroRegion,
           filtroValor: state.serieSeleccionada.filtroValor,
         },
-        subserieSeleccionada: nuevaSerieSeleccionada.datos[0],
+        subserieSeleccionada: subserieEquivalente || nuevaSerieSeleccionada.datos[0],
         posicion: nuevaSerieSeleccionada.datos[0].datos.length - 1,
         geoJSONCuarentenasActivas: obtenerCuarentenasActivas(state.geoJSONCuarentenas, nuevaSerieSeleccionada.datos[0].datos.slice(-1)[0].fecha),
-        interpolarComunas: idSerie === CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS
       }
     }
     case SELECCIONAR_SUBSERIE: {
@@ -199,7 +199,7 @@ export default function(state = initialState, action) {
     case INTERPOLAR_COMUNAS: {
       return {
         ...state,
-        interpolarComunas: action.payload
+        comunasInterpoladas: action.payload
       }
     }
     default:

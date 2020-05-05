@@ -53,6 +53,8 @@ const App = () => {
       dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'geoJSON', geoJSONInterpolado))
       dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'datos', datosComunalesInterpolados))
       dispatch(actualizarSerie(CASOS_COMUNALES_INTERPOLADOS, 'datos', datosComunalesOriginalesInterpolados))
+
+      console.log({datosComunalesOriginalesInterpolados})
       
       setInicializada(true)
     }

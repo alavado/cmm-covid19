@@ -16,7 +16,7 @@ const diasDispositivoPequeño = 42
 const Grafico = () => {
 
   const { escala } = useSelector(state => state.colores)
-  const { subserieSeleccionada: ss, series, posicion, geoJSONCuarentenas, verCuarentenas, interpolarComunas } = useSelector(state => state.series)
+  const { subserieSeleccionada: ss, series, posicion, geoJSONCuarentenas, verCuarentenas, comunasInterpoladas } = useSelector(state => state.series)
   const [datos, setDatos] = useState({})
   const { fecha } = ss.datos[posicion]
   const params = useParams()
@@ -143,7 +143,7 @@ const Grafico = () => {
     }
     else if (division === 'comuna') {
       puntosRegion = obtenerSerieRegionComuna(codigo)
-      puntosComuna = obtenerSerieComuna(codigo, interpolarComunas)
+      puntosComuna = obtenerSerieComuna(codigo, comunasInterpoladas)
       todosLosValores = [
         ...todosLosValores,
         ...puntosRegion,
@@ -158,7 +158,7 @@ const Grafico = () => {
       if (ultimaFechaComuna.diff(ultimaFechaChile, 'days') !== 0) {
         puntosConDatos.push({ fecha: ultimaFechaChile.clone(), valor: null })
       }
-      const puntosRellenados = interpolarComunas ?
+      const puntosRellenados = comunasInterpoladas ?
         puntosConDatos.slice(2) :
         puntosConDatos.reduce((prev, p, i, arr) => {
           let otros = []
@@ -178,7 +178,7 @@ const Grafico = () => {
           label: datosComuna.nombre,
           data: puntosRellenados.map((d, i) => d.valor).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0),
           spanGaps: true,
-          borderDash: interpolarComunas ? [3, 1] : [3, 1],
+          borderDash: comunasInterpoladas ? [3, 1] : [3, 1],
           pointStyle: puntosRellenados.map(d => d.interpolado ? 'star' : 'dot'),
           borderWidth: 2
         },
@@ -198,8 +198,6 @@ const Grafico = () => {
     const ctx = canvas.getContext('2d')
     const gradientStroke = ctx.createLinearGradient(0, canvas.getBoundingClientRect().height - 28, 0, 0)
     const maximo = todosLosValores.reduce((prev, d) => Math.max(prev, d.valor), 0)
-    console.log(todosLosValores)
-    console.log(maximo)
     let limiteEspectro = 10
     if (maximo >= 40) {
       limiteEspectro = 20 * Math.floor((maximo + 20) / 20)
@@ -261,7 +259,7 @@ const Grafico = () => {
       }
     }
     setDatos(data)
-  }, [posicion, division, codigo, escala, verCuarentenas, interpolarComunas, ss])
+  }, [posicion, division, codigo, escala, verCuarentenas, comunasInterpoladas, ss])
 
   return (
     <div className="Grafico">

@@ -7,8 +7,8 @@ import CodigoColor from './CodigoColor'
 import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
-import { seleccionarSubserie, filtrarGeoJSONPorRegion, limpiarFiltros, seleccionarSerie, verCuarentenas } from '../../redux/actions'
-import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CUARENTENAS } from '../../redux/reducers/series'
+import { seleccionarSubserie, filtrarGeoJSONPorRegion, limpiarFiltros, seleccionarSerie } from '../../redux/actions'
+import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../redux/reducers/series'
 import { esMovil } from '../../helpers/responsive'
 import demograficosComunas from '../../data/demografia/comunas.json'
 import Ayuda from './Ayuda'
@@ -38,7 +38,7 @@ const vpInicialPortrait = {
 
 const Mapa = () => {
 
-  const { serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenasActivas, verCuarentenas } = useSelector(state => state.series)
+  const { serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenasActivas, verCuarentenas, comunasInterpoladas } = useSelector(state => state.series)
   const { escala, colorApagado, animaciones } = useSelector(state => state.colores)
   const { filtroValor, filtroRegion } = serie
   const vpInicial = window.innerWidth < 600 ?
@@ -94,7 +94,7 @@ const Mapa = () => {
         }
         dispatch(filtrarGeoJSONPorRegion(c => c === Number(codigoRegion)))
         if (divisionPrevia !== division) {
-          dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES))
+          dispatch(seleccionarSerie(comunasInterpoladas ? CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : CASOS_COMUNALES_POR_100000_HABITANTES))
         }
         dispatch(seleccionarSubserie(Number(codigo)))
         setRegionPrevia(codigoRegion)
@@ -275,8 +275,8 @@ const Mapa = () => {
         <div className="Mapa__actualizacion">
           <div className="Mapa__actualizacion_contenido">
             Últimas actualizaciones<br />
-            Datos regionales: martes 5 de mayo<br />
-            Datos comunales: martes 5 de mayo<br />
+            Reporte regional: martes 5 de mayo<br />
+            Reporte comunal: lunes 4 de mayo<br />
             <a target="_blank" href="https://twitter.com/alavado_desu">Si algo te molesta o tienes alguna idea, puedes <span className="Contacto">contactarme por Twitter</span></a>
           </div>
         </div>|

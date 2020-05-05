@@ -247,7 +247,7 @@ export const interpolarComunas = (datosComunales, datosRegionales, geoJSONComuna
             acum: acum + aumentoRegion,
             datos: [...prev, {
               fecha,
-              valor: comuna.datos[Math.max(0, idc - 1)].valor + (acum + aumentoRegion) * comuna.datos[Math.max(0, idc - 1)].factorFecha,
+              valor: comuna.datos[idc - 1].valor + (acum + aumentoRegion) * comuna.datos[idc - 1].factorFecha,
               interpolado: true
             }]
           }
