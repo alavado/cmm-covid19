@@ -150,7 +150,7 @@
   letter-spacing: .5px;
   transition: all .25s ease-in-out;
   z-index: 5;
-  animation: aparece-boton-molesto .25s ease-in-out both;
+  animation: aparece-boton-molesto .5s ease-in-out .5s both;
   user-select: none;
   pointer-events: all;
 }
@@ -169,7 +169,7 @@
   letter-spacing: .5px;
   transition: all .25s ease-in-out;
   z-index: 5;
-  animation: aparece-boton-molesto .25s ease-in-out both;
+  animation: aparece-boton-molesto .5s ease-in-out .75s both;
   user-select: none;
   pointer-events: all;
 }

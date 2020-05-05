@@ -133,7 +133,7 @@ const CodigoColor = () => {
             {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? 'Ver comunas' : 'Ver regiones'}
           </button>
         }
-        {division === 'comuna' && false &&
+        {division === 'comuna' &&
           <>
             <button
               className="CodigoColor__boton_interpolar"
@@ -145,13 +145,13 @@ const CodigoColor = () => {
             >
               {comunasInterpoladas ? 'Días sin datos se interpolan' : 'Días sin datos se promedian'}
             </button>
-            <button
+            {/* <button
               className="CodigoColor__boton_cuarentenas"
               onMouseOver={e => e.stopPropagation()}
               onClick={() => dispatch(fijarVerCuarentenas(!verCuarentenas))}
             >
               Cuarentenas {verCuarentenas ? 'visibles' : 'ocultas'}
-            </button>
+            </button> */}
           </>
         }
       </div>
