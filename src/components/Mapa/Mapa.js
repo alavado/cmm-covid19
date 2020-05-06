@@ -150,12 +150,15 @@ const Mapa = () => {
     }
     const { codigo, codigoRegion } = featurePoligono.properties
     dispatch(seleccionarSubserie(codigo))
-    dispatch(filtrarGeoJSONPorRegion(c => c === codigoRegion))
     if (serie.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
+      dispatch(filtrarGeoJSONPorRegion(c => c === codigoRegion))
       setPoligonoDestacado(null)
       history.push(`/region/${codigo}`)
     }
     else {
+      if (Number(codigoRegion) !== Number(regionPrevia)) {
+        dispatch(filtrarGeoJSONPorRegion(c => c === codigoRegion))
+      }
       setPoligonoDestacado(featurePoligono)
       history.push(`/comuna/${codigo}`)
     }
@@ -196,6 +199,19 @@ const Mapa = () => {
       height: 'calc(100vh - 15em)',
     })
   }
+
+  const codigoColor = useMemo(() => <CodigoColor />, [])
+  const rankingComunas = useMemo(() => <RankingComunas />, [])
+  const actualizacion = useMemo(() => (
+    <div className="Mapa__actualizacion">
+      <div className="Mapa__actualizacion_contenido">
+        Últimas actualizaciones<br />
+        Reporte regional: martes 5 de mayo<br />
+        Reporte comunal: lunes 4 de mayo<br />
+        <a target="_blank" href="https://twitter.com/alavado_desu">Si algo te molesta o tienes alguna idea, puedes <span className="Contacto">contactarme por Twitter</span></a>
+      </div>
+    </div>
+  ), [])
 
   return (
     <div
@@ -271,17 +287,10 @@ const Mapa = () => {
             />
           </Source>
         }
-        {/* <RankingComunas /> */}
-        <div className="Mapa__actualizacion">
-          <div className="Mapa__actualizacion_contenido">
-            Últimas actualizaciones<br />
-            Reporte regional: martes 5 de mayo<br />
-            Reporte comunal: lunes 4 de mayo<br />
-            <a target="_blank" href="https://twitter.com/alavado_desu">Si algo te molesta o tienes alguna idea, puedes <span className="Contacto">contactarme por Twitter</span></a>
-          </div>
-        </div>|
+        {actualizacion}
       </ReactMapGL>
-      <CodigoColor />
+      {codigoColor}
+      {division === 'comuna' && rankingComunas}
     </div>
   )
 }

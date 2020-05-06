@@ -52,6 +52,8 @@ const CodigoColor = () => {
     setPosicionPrevia(posicion)
   }, [posicion])
 
+  console.log('rerender codigo color')
+
   return (
     <div className="CodigoColor">
       <div className="CodigoColor__titulo">

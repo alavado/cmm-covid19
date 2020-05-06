@@ -1,13 +1,73 @@
 .RankingComunas {
   position: absolute;
-  z-index: 5;
-  background-color: white;
+  z-index: 6;
+  background-color: rgba(0, 0, 0, .25);
   right: 1em;
-  top: 3.8em;
+  top: 4em;
+  height: calc(1.25em * 10 + 1em);
+  overflow: hidden;
+  opacity: .8;
+  box-shadow: 0 .25em .25em rgba(0, 0, 0, .25);
+  animation: aparece-ranking .5s ease-in-out .25s both;
+}
+
+.RankingComunas__titulo {
+  font-size: 1em;
+  height: 1em;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.RankingComunas__contenido_titulo {
+  font-size: .7em;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  padding: 0 .5em;
+}
+
+.RankingComunas__comuna {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  height: 1.25em;
+  transition: all .5s ease-out;
+  width: 100%;
+  padding: 0 .25em;
+  border-bottom: 1px solid rgba(0, 0, 0, .15);
+}
+
+.RankingComunas__nombre_comuna {
+  font-size: .7em;
+  padding: .2em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.RankingComunas__casos_comuna {
+  font-size: .8em;
+  padding: .2em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
 @media (orientation: portrait) {
   .RankingComunas {
     display: none;
+  }
+}
+
+@keyframes aparece-ranking {
+  0% {
+    opacity: 0;
+    transform: translateY(-.5em);
+  }
+  100% {
+    opacity: .9;
+    transform: translateY(0em);
   }
 }

@@ -40,8 +40,8 @@ const App = () => {
       const { data: datosCSVComunas } = await axios.get(urlDatosComunas)
       
       setMensaje('Calculando aumento en casos...')
-      const [casosComunalesPor100000Habitantes, geoJSONComunalConDatos, datosComunalesOriginales] = procesarComunas(datosCSVComunas, geoJSONComunas)
-      const [casosRegionalesPor100000Habitantes, geoJSONRegionesConDatos, datosRegionalesOriginales] = procesarRegiones(datosCSVRegiones, geoJSONRegiones)
+      const [casosComunalesPor100000Habitantes, geoJSONComunalConDatos, datosComunalesOriginales] = await procesarComunas(datosCSVComunas, geoJSONComunas)
+      const [casosRegionalesPor100000Habitantes, geoJSONRegionesConDatos, datosRegionalesOriginales] = await procesarRegiones(datosCSVRegiones, geoJSONRegiones)
 
       // ver: https://covid19.soporta.cl/datasets/0b944d9bf1954c71a7fae96bdddee464_1/geoservice?geometry=-71.394%2C-33.683%2C-69.660%2C-33.282
       dispatch(fijarGeoJSONCuarentenas(procesarCuarentenas(geoJSONCuarentenas)))
@@ -55,7 +55,7 @@ const App = () => {
       dispatch(actualizarSerie(CASOS_COMUNALES, 'datos', datosComunalesOriginales))
 
       setMensaje('Interpolando los datos desconocidos...')
-      const [datosComunalesInterpolados, geoJSONInterpolado, datosComunalesOriginalesInterpolados] = interpolarComunas(datosComunalesOriginales, datosRegionalesOriginales, geoJSONComunas)
+      const [datosComunalesInterpolados, geoJSONInterpolado, datosComunalesOriginalesInterpolados] = await interpolarComunas(datosComunalesOriginales, datosRegionalesOriginales, geoJSONComunas)
       dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'geoJSON', geoJSONInterpolado))
       dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'datos', datosComunalesInterpolados))
       dispatch(actualizarSerie(CASOS_COMUNALES_INTERPOLADOS, 'datos', datosComunalesOriginalesInterpolados))

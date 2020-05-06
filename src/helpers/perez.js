@@ -62,7 +62,7 @@ const formatearDatosOriginalesRegiones = csv => {
     })
 }
 
-export const procesarRegiones = (csv, geoJSON) => {
+export const procesarRegiones = async (csv, geoJSON) => {
   let casosPorRegion = formatearDatosRegion(csv)
   let casosPor100000Habitantes = casosPorRegion.map(region => obtenerCasosRegionalesPorHabitantes(region, 100000))
   const poblacionChile = demografiaRegiones.reduce((suma, { poblacion }) => suma + Number(poblacion), 0)
@@ -168,7 +168,7 @@ const formatearDatosOriginalesComunas = csv => {
     })
 }
 
-export const procesarComunas = (csv, geoJSON) => {
+export const procesarComunas = async (csv, geoJSON) => {
   let casosPorComuna = formatearDatosComuna(csv)
   let casosPor100000Habitantes = casosPorComuna.map(comuna => obtenerCasosComunalesPorHabitantes(comuna, 100000))
   const geoJSONConDatos = {
@@ -195,7 +195,7 @@ export const procesarComunas = (csv, geoJSON) => {
   return [casosPor100000Habitantes, geoJSONConDatos, formatearDatosOriginalesComunas(csv)]
 }
 
-export const interpolarComunas = (datosComunales, datosRegionales, geoJSONComunas) => {
+export const interpolarComunas = async (datosComunales, datosRegionales, geoJSONComunas) => {
   const fechasDatosComunas = datosComunales[0].datos.map(d => d.fecha)
   const aumentoRegional = datosRegionales.map(region => ({
     ...region,
