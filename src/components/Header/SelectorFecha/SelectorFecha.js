@@ -5,6 +5,7 @@ import './SelectorFecha.css'
 import { avanzarEnSerie, retrocederEnSerie, fijarPosicionSerie } from '../../../redux/actions'
 import moment from 'moment/min/moment-with-locales'
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa'
+import { useParams } from 'react-router-dom'
 moment.locale('es')
 
 const SelectorFecha = () => {
@@ -13,15 +14,16 @@ const SelectorFecha = () => {
   const diferencia = serie.datos[posicion].fecha.diff(moment(), 'days')
   const rangoDias = serie.datos.length
   const dispatch = useDispatch()
+  const { division } = useParams()
   const [ancho, setAncho] = useState(window.innerWidth)
 
   useEffect(() => {
     const fecha = document.getElementsByClassName('SelectorFecha__contenedor_fecha')[0]
-    const limite = document.getElementsByClassName('SelectorFecha__limite')[0]
     const slider = document.getElementsByClassName('SelectorFecha__selector')[0]
+    const botones = document.getElementsByClassName('SelectorFecha__botones')[0]
     fecha.style.marginLeft = `calc(
-      ${limite.clientWidth}px - ${fecha.clientWidth / 2}px + 9px + ${slider.clientWidth * posicion / (rangoDias - 1)}px)`
-      document.getElementsByClassName('SelectorFecha')[0].style.overflow = posicion < rangoDias / 2 ? 'inherit' : 'hidden'
+      ${botones.clientWidth}px - ${fecha.clientWidth / 2}px + ${slider.clientWidth * posicion / (rangoDias - 1)}px)`
+    document.getElementsByClassName('SelectorFecha')[0].style.overflow = posicion < rangoDias / 2 ? 'inherit' : 'hidden'
   }, [posicion, ancho])
 
   useEffect(() => {
@@ -32,7 +34,24 @@ const SelectorFecha = () => {
   return (
     <div className="SelectorFecha">
       <div className="SelectorFecha__contenedor_rango">
-        <div className="SelectorFecha__limite">{serie.datos[0].fecha.format(`DD/MM`)}</div>
+        <div className="SelectorFecha__botones">
+          <button
+            className="SelectorFecha__boton_anterior"
+            onClick={e => dispatch(retrocederEnSerie())}
+            title="Ir a día anterior"
+            aria-label={'Ir a día anterior'}
+          >
+            <FaCaretLeft />
+          </button>
+          <button 
+            className="SelectorFecha__boton_siguiente"
+            onClick={e => dispatch(avanzarEnSerie())}
+            title="Ir a día siguiente"
+            aria-label={'Ir a día siguiente'}
+          >
+            <FaCaretRight />
+          </button>
+        </div>
         <input
           type="range"
           className="SelectorFecha__selector"
@@ -42,7 +61,6 @@ const SelectorFecha = () => {
           onChange={e => dispatch(fijarPosicionSerie(e.target.value))}
           value={posicion}
         />
-        <div className="SelectorFecha__limite">{serie.datos.slice(-1)[0].fecha.format(`DD/MM`)}</div>
       </div>
       <div className="SelectorFecha__contenedor_fecha">
         <div className="SelectorFecha__fecha">

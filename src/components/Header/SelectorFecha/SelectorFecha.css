@@ -14,8 +14,32 @@
   width: 100%;
   height: 2em;
   background-color: #212121;
-  padding: .5em .2em;
+  padding: .5em 1em .5em 0em;
   pointer-events: all;
+}
+
+.SelectorFecha__botones {
+  display: flex;
+}
+
+.SelectorFecha__boton_anterior {
+  color: #0288D1;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+}
+
+.SelectorFecha__boton_siguiente {
+  color: #0288D1;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
 }
 
 .SelectorFecha__limite {

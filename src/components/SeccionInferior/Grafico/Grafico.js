@@ -297,7 +297,7 @@ const Grafico = () => {
                     return 'Hoy'
                   }
                   else if (f.weekday() === 0) {
-                    return f.format('DD[/]MM')
+                    return f.format('D[ ]MMM').slice(0, -1)
                   }
                   else if (f.diff(fecha, 'days') === 0) {
                     return ''

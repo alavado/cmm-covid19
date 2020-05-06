@@ -1,7 +1,7 @@
 .Grafico {
   width: 100%;
   flex: 1;
-  padding: 0 2.5em 0em 0;
+  padding: 0 1em 0em 0;
 }
 
 @media (orientation: portrait) {

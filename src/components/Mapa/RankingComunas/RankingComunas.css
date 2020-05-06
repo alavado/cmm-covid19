@@ -4,7 +4,7 @@
   background-color: transparent;
   right: 1em;
   top: 4em;
-  height: calc(1.25em * 10 + 1em);
+  height: calc(1.25em * 9 + 1em);
   overflow: hidden;
   opacity: .8;
   box-shadow: 0 .25em .25em rgba(0, 0, 0, .25);
