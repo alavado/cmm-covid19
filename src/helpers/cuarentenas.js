@@ -1,7 +1,17 @@
 import moment from "moment"
 
 export const procesarCuarentenas = geoJSON => {
-  return geoJSON
+  console.log({geoJSON})
+  return {
+    ...geoJSON,
+    features: geoJSON.features.map(feature => ({
+      ...feature,
+      properties: {
+        ...feature.properties,
+        FTermino: feature.properties.FTermino !== null ? feature.properties.FTermino : '2020/12/31 23:59:59'
+      }
+    }))
+  }
 }
 
 export const obtenerCuarentenasActivas = (geoJSONCuarentenas, fecha) => {
