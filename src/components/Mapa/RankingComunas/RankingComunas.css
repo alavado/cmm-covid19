@@ -107,6 +107,7 @@
     top: auto;
     right: auto;
     left: .75em;
+    display: none;
   }
   .RankingComunas__boton_detalle {
     display: none;
