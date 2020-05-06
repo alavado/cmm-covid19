@@ -26,8 +26,6 @@ const RankingComunas = () => {
     return { ...comuna, posicion }
   })
 
-  console.log({comunasConPosicion})
-
   return (
     <div className="RankingComunas">
       {comunasConPosicion.map((c, i) => (
