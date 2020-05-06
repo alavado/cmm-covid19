@@ -27,14 +27,19 @@ const App = () => {
 
   const [inicializada, setInicializada] = useState(false)
   const [errorAlCargar, setErrorAlCargar] = useState(false)
+  const [mensaje, setMensaje] = useState('')
   const dispatch = useDispatch()
 
   useEffect(() => {
     async function inicializarDatos() {
+      setMensaje('Cargando datos regionales...')
       const { data: datosCSVRegiones } = await axios.get(urlDatosRegiones)
       const { data: geoJSONRegiones } = await axios.get(urlGeoJSONRegiones)
+      setMensaje('Cargando datos comunales...')
       const { data: geoJSONComunas } = await axios.get(urlGeoJSONComunas)
       const { data: datosCSVComunas } = await axios.get(urlDatosComunas)
+      
+      setMensaje('Calculando aumento en casos...')
       const [casosComunalesPor100000Habitantes, geoJSONComunalConDatos, datosComunalesOriginales] = procesarComunas(datosCSVComunas, geoJSONComunas)
       const [casosRegionalesPor100000Habitantes, geoJSONRegionesConDatos, datosRegionalesOriginales] = procesarRegiones(datosCSVRegiones, geoJSONRegiones)
 
@@ -49,13 +54,12 @@ const App = () => {
       dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES, 'datos', casosComunalesPor100000Habitantes))
       dispatch(actualizarSerie(CASOS_COMUNALES, 'datos', datosComunalesOriginales))
 
+      setMensaje('Interpolando los datos desconocidos...')
       const [datosComunalesInterpolados, geoJSONInterpolado, datosComunalesOriginalesInterpolados] = interpolarComunas(datosComunalesOriginales, datosRegionalesOriginales, geoJSONComunas)
       dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'geoJSON', geoJSONInterpolado))
       dispatch(actualizarSerie(CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'datos', datosComunalesInterpolados))
       dispatch(actualizarSerie(CASOS_COMUNALES_INTERPOLADOS, 'datos', datosComunalesOriginalesInterpolados))
 
-      console.log({datosComunalesOriginalesInterpolados})
-      
       setInicializada(true)
     }
     inicializarDatos()
@@ -96,6 +100,7 @@ const App = () => {
         </div> :
         <div className="App__contenedor_precarga">
           <Loader />
+          <div style={{ color: 'white' }}>{mensaje}</div>
         </div>
       }
     </div>

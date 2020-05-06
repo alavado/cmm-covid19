@@ -142,6 +142,7 @@ const CodigoColor = () => {
                 dispatch(seleccionarSerie(comunasInterpoladas ? CASOS_COMUNALES_POR_100000_HABITANTES : CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS))
                 dispatch(interpolarComunas(!comunasInterpoladas))
               }}
+              title="Cambiar tratamiento de días sin datos"
             >
               {comunasInterpoladas ? 'Días sin datos se interpolan' : 'Días sin datos se promedian'}
             </button>

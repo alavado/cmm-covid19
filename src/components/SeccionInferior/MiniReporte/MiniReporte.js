@@ -30,6 +30,7 @@ const MiniReporte = () => {
       datosExtra.casos = Math.round(datosComuna.datos[posicion].valor)
       datosExtra.poblacion = obtenerDemograficosComuna(codigo).poblacion
       datosExtra.nombre = obtenerDemograficosComuna(codigo).nombre
+      datosExtra.interpolado = datosComuna.datos[posicion].interpolado
     }
   }
   else if (division === 'region') {
@@ -87,7 +88,7 @@ const MiniReporte = () => {
         <div className="MiniReporte__diferencia_icono">
           <FaChartBar />
         </div>
-        <div>{Number(datosExtra.casos).toLocaleString('de-DE')} casos en total hasta el {fecha.format('dddd D [de] MMMM')}</div>
+        <div>{Number(datosExtra.casos).toLocaleString('de-DE')} casos {datosExtra.interpolado ? 'estimados' : 'en total'} hasta el {fecha.format('dddd D [de] MMMM')}</div>
       </div>
       <div className="MiniReporte__diferencia">
         <div className="MiniReporte__diferencia_icono">
