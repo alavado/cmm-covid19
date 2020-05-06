@@ -4,8 +4,8 @@
   background-color: rgba(0, 0, 0, .55);
   right: 1em;
   top: 4em;
-  height: calc(1.25em * 9 + 1em);
-  opacity: .75;
+  height: calc(1.25em * 10 + 1.5em);
+  opacity: 1;
   box-shadow: 0 .25em .25em rgba(0, 0, 0, .15);
   animation: aparece-ranking .5s ease-in-out .25s both;
   overflow: hidden;
@@ -21,25 +21,28 @@
 
 .RankingComunas__titulo {
   font-size: 1em;
-  height: 1em;
+  height: 1.5em;
   color: white;
   display: grid;
   justify-items: start;
   padding: 0 .5em;
-  min-width: 14em;
+  min-width: 16em;
   grid-template-columns: auto 4em;
 }
 
 .RankingComunas--expandido .RankingComunas__titulo {
-  grid-template-columns: auto 4em 4em 4em 4em;
   min-width: 28em;
+  grid-template-columns: auto 4em 4em 4em 4em;
 }
 
 .RankingComunas__boton_detalle {
   background-color: transparent;
-  color: rgba(255, 255, 255, .95);
+  color: #0288D1;
   border: none;
   cursor: pointer;
+  font-size: .7em;
+  display: flex;
+  align-items: center;
 }
 
 .RankingComunas__contenido_titulo {
@@ -51,8 +54,35 @@
   font-weight: bold;
   text-align: right;
   width: 10em;
-  padding-right: 1.25em;
+  padding-right: 1.75em;
+  color: rgba(255, 255, 255, .85);
   cursor: pointer;
+}
+
+.RankingComunas__contenido_titulo {
+  display: none;
+}
+
+.RankingComunas__contenido_titulo:nth-child(2),
+.RankingComunas__contenido_titulo:first-child {
+  display: flex;
+}
+
+.RankingComunas--expandido .RankingComunas__contenido_titulo {
+  display: flex;
+}
+
+.RankingComunas .RankingComunas__casos_comuna {
+  display: none;
+}
+
+.RankingComunas__casos_comuna:nth-child(2),
+.RankingComunas__casos_comuna:first-child {
+  display: flex;
+}
+
+.RankingComunas--expandido .RankingComunas__casos_comuna {
+  display: flex;
 }
 
 .RankingComunas--expandido .RankingComunas__comuna {
@@ -69,7 +99,7 @@
   width: 100%;
   padding: 0 .25em;
   border-bottom: 1px solid rgba(0, 0, 0, .15);
-  filter: brightness(90%);
+  filter: brightness(80%);
   padding-right: 1em;
 }
 
@@ -79,6 +109,7 @@
 
 .RankingComunas__comuna--seleccionada {
   border-left: .2em solid rgba(0, 0, 0, .85);
+  filter: brightness(90%);
 }
 
 .RankingComunas__nombre_comuna {
@@ -98,6 +129,11 @@
   align-items: center;
   justify-content: flex-end;
   width: 6em;
+}
+
+.RankingComunas__botones {
+  display: flex;
+  align-items: center;
 }
 
 @media (orientation: portrait) {
@@ -120,7 +156,7 @@
     transform: translateY(-.5em);
   }
   100% {
-    opacity: .9;
+    opacity: 1;
     transform: translateY(0em);
   }
 }

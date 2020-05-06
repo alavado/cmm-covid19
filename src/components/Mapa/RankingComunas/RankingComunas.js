@@ -5,6 +5,10 @@ import { CASOS_COMUNALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABIT
 import { useParams, Link } from 'react-router-dom'
 import { expandirRanking } from '../../../redux/actions'
 import { obtenerDemograficosComuna } from '../../../helpers/demograficos'
+import {
+  FaWindowMinimize as IconoMenosDetalle,
+  FaWindowMaximize as IconoMasDetalle
+} from 'react-icons/fa'
 
 const RankingComunas = () => {
 
@@ -66,7 +70,7 @@ const RankingComunas = () => {
           key={`ranking-${c.codigo}`}
           id={`ranking-${c.codigo}`}
           style={{
-            transform: `translateY(${1 + c.posicion * 1.25}em)`,
+            transform: `translateY(${1.5 + c.posicion * 1.25}em)`,
             zIndex: c.posicion,
             backgroundColor: escala.find((e, i) => i === escala.length - 1 || escala[i + 1][0] > c.valorNormalizado)[1]
           }}
@@ -96,16 +100,16 @@ const RankingComunas = () => {
         </Link>
       ))}
       <div className="RankingComunas__titulo">
-        <h1 className="RankingComunas__contenido_titulo">
-          {/* <button
+        <h1 className="RankingComunas__botones">
+          <button
             className="RankingComunas__boton_detalle"
             onClick={() => dispatch(expandirRanking(!rankingExpandido))}
           >
-            x
-          </button> */}
+            {rankingExpandido ? <IconoMenosDetalle /> : <IconoMasDetalle />}
+          </button>
         </h1>
         <h1 className="RankingComunas__contenido_titulo" title="Casos comunales por 100.000 habitantes estimados según el último reporte regional">
-          Nuevos casos<br />x 100.000 hab
+          Nuevos casos<br />x 100.000 hab.
         </h1>
         <h1 className="RankingComunas__contenido_titulo" title="Casos comunales estimados según el último reporte regional">
           Nuevos<br />casos

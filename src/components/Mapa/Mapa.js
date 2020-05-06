@@ -205,10 +205,8 @@ const Mapa = () => {
   const actualizacion = useMemo(() => (
     <div className="Mapa__actualizacion">
       <div className="Mapa__actualizacion_contenido">
-        Últimas actualizaciones<br />
-        Reporte regional: miércoles 6 de mayo<br />
-        Reporte comunal: lunes 4 de mayo<br />
-        <a target="_blank" href="https://twitter.com/alavado_desu">Si algo te molesta o tienes alguna idea, puedes <span className="Contacto">contactarme por Twitter</span></a>
+        Última actualizacion: 06/05<br />
+        <a target="_blank" href="https://twitter.com/alavado_desu"><span className="Contacto">Contacto</span></a>
       </div>
     </div>
   ), [])
