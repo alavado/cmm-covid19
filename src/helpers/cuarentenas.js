@@ -1,7 +1,6 @@
 import moment from "moment"
 
 export const procesarCuarentenas = geoJSON => {
-  console.log({geoJSON})
   return {
     ...geoJSON,
     features: geoJSON.features.map(feature => ({

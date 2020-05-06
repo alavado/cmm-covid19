@@ -11,6 +11,7 @@ moment.locale('es')
 const SelectorFecha = () => {
 
   const { subserieSeleccionada: serie, posicion } = useSelector(state => state.series)
+  const { rankingExpandido } = useSelector(state => state.ranking)
   const diferencia = serie.datos[posicion].fecha.diff(moment(), 'days')
   const rangoDias = serie.datos.length
   const dispatch = useDispatch()
@@ -62,7 +63,7 @@ const SelectorFecha = () => {
           value={posicion}
         />
       </div>
-      <div className="SelectorFecha__contenedor_fecha">
+      <div className={`SelectorFecha__contenedor_fecha${rankingExpandido ? ` SelectorFecha__contenedor_fecha--oculto` : ''}`}>
         <div className="SelectorFecha__fecha">
           <button
             className="SelectorFecha__fecha_boton"

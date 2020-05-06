@@ -274,7 +274,7 @@ const Mapa = () => {
               id="data-poligono-fill"
               type="fill"
               paint={{
-                'fill-color': 'rgba(255, 255, 255, .05)'
+                'fill-color': 'rgba(255, 255, 255, .0)'
               }}
             />
             <Layer
@@ -282,7 +282,7 @@ const Mapa = () => {
               type="line"
               paint={{
                 'line-color': 'rgba(0, 0, 0, 0.5)',
-                'line-width': 2.5
+                'line-width': 3
               }}
             />
           </Source>

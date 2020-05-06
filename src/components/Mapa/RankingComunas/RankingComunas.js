@@ -1,60 +1,118 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import './RankingComunas.css'
-import { useSelector } from 'react-redux'
-import { CASOS_COMUNALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CODIGO_CHILE } from '../../../redux/reducers/series'
+import { useSelector, useDispatch } from 'react-redux'
+import { CASOS_COMUNALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CODIGO_CHILE, CASOS_COMUNALES_INTERPOLADOS, CASOS_COMUNALES } from '../../../redux/reducers/series'
 import { useParams, Link } from 'react-router-dom'
+import { expandirRanking } from '../../../redux/actions'
 
 const RankingComunas = () => {
 
   const { series, posicion, comunasInterpoladas } = useSelector(state => state.series)
   const { escala } = useSelector(state => state.colores)
-  const serieComunas = series.find(({ id }) => id === (comunasInterpoladas ? CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS: CASOS_COMUNALES_POR_100000_HABITANTES))
+  const { rankingExpandido } = useSelector(state => state.ranking)
+  const serieNormalizada = series.find(({ id }) => id === (comunasInterpoladas ? CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS: CASOS_COMUNALES_POR_100000_HABITANTES))
+  const serieCasos = series.find(({ id }) => id === (comunasInterpoladas ? CASOS_COMUNALES_INTERPOLADOS: CASOS_COMUNALES))
+  
   const { codigo } = useParams()
+  const dispatch = useDispatch()
+
+  if (!comunasInterpoladas) {
+    return null
+  }
 
   let comunasRegion
   if (codigo) {
-    const codigoRegion = serieComunas
+    const codigoRegion = serieNormalizada
       .datos
       .find(c => c.codigo === Number(codigo))
       .codigoRegion
-    comunasRegion = serieComunas
+    comunasRegion = serieNormalizada
       .datos
       .filter(c => c.codigoRegion === codigoRegion)
-      .map(({ codigo, nombre, datos }) => ({ nombre, codigo, valor: datos[posicion].valor }))
+      .map(({ codigo, nombre, datos }) => {
+        const serieOriginal = serieCasos.datos.find(c => c.codigo === codigo)
+        const promedioSemanal = serieOriginal.datos.slice(posicion - 6, posicion + 1).reduce((sum, x) => sum + x.valor, 0) / 7
+        const promedioSemanalAnterior = serieOriginal.datos.slice(posicion - 13, posicion - 6).reduce((sum, x) => sum + x.valor, 0) / 7
+        return {
+          nombre,
+          codigo,
+          valorNormalizado: datos[posicion].valor,
+          valorOriginal: serieOriginal.datos[posicion].valor - serieOriginal.datos[Math.max(0, posicion - 1)].valor,
+          total: serieOriginal.datos[posicion].valor,
+          variacionSemanal: 100 * (promedioSemanal / (promedioSemanalAnterior === 0 ? 1 : promedioSemanalAnterior) - 1)
+        }
+      })
   }
   else {
-    comunasRegion = serieComunas
+    comunasRegion = serieNormalizada
       .datos
-      .map(({ codigo, nombre, datos }) => ({ nombre, codigo, valor: datos[posicion].valor }))
+      .map(({ codigo, nombre, datos }) => ({ nombre, codigo, valorNormalizado: datos[posicion].valor }))
   }
 
-  const comunasOrdenadas = [...comunasRegion].sort((c1, c2) => c1.valor < c2.valor ? 1 : -1)
+  const comunasOrdenadas = [...comunasRegion].sort((c1, c2) => c1.valorNormalizado < c2.valorNormalizado ? 1 : -1)
   const comunasConPosicion = comunasRegion.map(comuna => {
     const posicion = comunasOrdenadas.findIndex(c => c.codigo === comuna.codigo)
     return { ...comuna, posicion }
   })
 
   return (
-    <div className="RankingComunas">
-      {comunasConPosicion.map((c, i) => (
+    <div className={`RankingComunas${rankingExpandido ? ' RankingComunas--expandido' : ''}`}>
+      {comunasConPosicion.map(c => (
         <Link
           to={`/comuna/${c.codigo}`}
-          className="RankingComunas__comuna"
+          className={`RankingComunas__comuna${c.codigo === Number(codigo) ? ' RankingComunas__comuna--seleccionada': ''}`}
           key={`ranking-${c.codigo}`}
           id={`ranking-${c.codigo}`}
           style={{
             transform: `translateY(${1 + c.posicion * 1.25}em)`,
             zIndex: c.posicion,
-            backgroundColor: escala.find((e, i) => i === escala.length - 1 || escala[i + 1][0] > c.valor)[1]
+            backgroundColor: escala.find((e, i) => i === escala.length - 1 || escala[i + 1][0] > c.valorNormalizado)[1]
           }}
         >
-          <div className="RankingComunas__nombre_comuna">{c.nombre}</div>
-          <div className="RankingComunas__casos_comuna">{c.valor.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}</div>
+          <div className="RankingComunas__nombre_comuna">
+            {c.posicion + 1}. {c.nombre}
+          </div>
+          <div className="RankingComunas__casos_comuna">
+            {c.valorNormalizado.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}
+          </div>
+          <div className="RankingComunas__casos_comuna">
+            {c.valorOriginal.toLocaleString('de-DE', { maximumFractionDigits: 0, minimumFractionDigits: 0 })}
+          </div>
+          <div className="RankingComunas__casos_comuna">
+            {c.total.toLocaleString('de-DE', { maximumFractionDigits: 0, minimumFractionDigits: 0 })}
+          </div>
+          <div className="RankingComunas__casos_comuna">
+            {c.variacionSemanal === 0 ?
+              '-' :
+              <>
+                {c.variacionSemanal > 0 && '+' }
+                {c.variacionSemanal.toLocaleString('de-DE', { maximumFractionDigits: 0, minimumFractionDigits: 0 })}
+                %
+              </>
+            }
+          </div>
         </Link>
       ))}
       <div className="RankingComunas__titulo">
         <h1 className="RankingComunas__contenido_titulo">
-          Comunas con más nuevos casos
+          <button
+            className="RankingComunas__boton_detalle"
+            onClick={() => dispatch(expandirRanking(!rankingExpandido))}
+          >
+            x
+          </button>
+        </h1>
+        <h1 className="RankingComunas__contenido_titulo" title="Casos comunales por 100.000 habitantes estimados según el último reporte regional">
+          Nuevos casos<br />x 100.000 hab
+        </h1>
+        <h1 className="RankingComunas__contenido_titulo" title="Casos comunales estimados según el último reporte regional">
+          Nuevos<br />casos
+        </h1>
+        <h1 className="RankingComunas__contenido_titulo" totle="Total de casos en la comuna">
+          Casos<br />totales
+        </h1>
+        <h1 className="RankingComunas__contenido_titulo" title="Promedio de casos de los últimos 7 días en relación a los 7 días anteriores">
+          Variación<br/>semanal
         </h1>
       </div>
     </div>

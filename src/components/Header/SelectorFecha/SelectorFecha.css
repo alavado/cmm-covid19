@@ -89,6 +89,10 @@
   text-transform: uppercase;
 }
 
+.SelectorFecha__contenedor_fecha--oculto {
+  display: none;
+}
+
 @media (orientation: portrait) {
   
   .SelectorFecha__contenedor_fecha {

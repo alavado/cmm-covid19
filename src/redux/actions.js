@@ -5,7 +5,8 @@ import { SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, ACTUALIZAR_SERIE,
   MOSTRAR_AYUDA, FIJAR_GEOJSON_CUARENTENAS, VER_CUARENTENAS,
   DESTACAR_INDICE,
   ACTIVAR_ANIMACIONES,
-  INTERPOLAR_COMUNAS} from './actionTypes'
+  INTERPOLAR_COMUNAS,
+  EXPANDIR_RANKING} from './actionTypes'
 
 export const actualizarSerie = (id, propiedad, valor) => ({
   type: ACTUALIZAR_SERIE,
@@ -87,4 +88,9 @@ export const fijarVerCuarentenas = ver => ({
 export const interpolarComunas = interp => ({
   type: INTERPOLAR_COMUNAS,
   payload: interp
+})
+
+export const expandirRanking = expandir => ({
+  type: EXPANDIR_RANKING,
+  payload: expandir
 })
