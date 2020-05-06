@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import './RankingComunas.css'
 import { useSelector } from 'react-redux'
-import { CASOS_COMUNALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
+import { CASOS_COMUNALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CODIGO_CHILE } from '../../../redux/reducers/series'
 import { useParams, Link } from 'react-router-dom'
 
 const RankingComunas = () => {
@@ -11,14 +11,22 @@ const RankingComunas = () => {
   const serieComunas = series.find(({ id }) => id === (comunasInterpoladas ? CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS: CASOS_COMUNALES_POR_100000_HABITANTES))
   const { codigo } = useParams()
 
-  const codigoRegion = serieComunas
-    .datos
-    .find(c => c.codigo === Number(codigo))
-    .codigoRegion
-  const comunasRegion = serieComunas
-    .datos
-    .filter(c => c.codigoRegion === codigoRegion)
-    .map(({ codigo, nombre, datos }) => ({ nombre, codigo, valor: datos[posicion].valor }))
+  let comunasRegion
+  if (codigo) {
+    const codigoRegion = serieComunas
+      .datos
+      .find(c => c.codigo === Number(codigo))
+      .codigoRegion
+    comunasRegion = serieComunas
+      .datos
+      .filter(c => c.codigoRegion === codigoRegion)
+      .map(({ codigo, nombre, datos }) => ({ nombre, codigo, valor: datos[posicion].valor }))
+  }
+  else {
+    comunasRegion = serieComunas
+      .datos
+      .map(({ codigo, nombre, datos }) => ({ nombre, codigo, valor: datos[posicion].valor }))
+  }
 
   const comunasOrdenadas = [...comunasRegion].sort((c1, c2) => c1.valor < c2.valor ? 1 : -1)
   const comunasConPosicion = comunasRegion.map(comuna => {
@@ -46,7 +54,7 @@ const RankingComunas = () => {
       ))}
       <div className="RankingComunas__titulo">
         <h1 className="RankingComunas__contenido_titulo">
-          Comunas con mayores aumentos
+          Comunas con más nuevos casos
         </h1>
       </div>
     </div>

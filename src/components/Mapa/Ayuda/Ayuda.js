@@ -36,7 +36,7 @@ const Ayuda = () => {
   const promedioCasos = diferenciaCasos / diferenciaDias
   const promedioCasosPor100000Habitantes = promedioCasos * 1e5 / poblacionComuna
 
-  const formatear = n => Number(n).toLocaleString('de-DE', { maximumFractionDigits: 1 })
+  const formatear = n => Number(n).toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })
 
   const cerrarAyuda = e => {
     e.stopPropagation()

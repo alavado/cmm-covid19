@@ -6,3 +6,4 @@ que centre la comuna o algo asi
 que manteniendo presionado shift se puedan combinar filtros
 actualiza geojson cuarentenas
 agregar ranking nacional
+agregar explicacion de interpolacion
