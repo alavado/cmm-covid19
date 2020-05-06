@@ -37,6 +37,7 @@
   width: 100%;
   padding: 0 .25em;
   border-bottom: 1px solid rgba(0, 0, 0, .15);
+  filter: brightness(90%);
 }
 
 .RankingComunas__comuna:hover {
@@ -62,7 +63,11 @@
 
 @media (orientation: portrait) {
   .RankingComunas {
-    display: none;
+    height: calc(1.25em * 5 + 1em);
+    bottom: 19em;
+    top: auto;
+    right: auto;
+    left: .75em;
   }
 }
 

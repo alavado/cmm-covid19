@@ -320,7 +320,7 @@ const Grafico = () => {
                 if (datos.datasets[datasetIndex].label.endsWith('cuarentena total o parcial')) {
                   return ''
                 }
-                return `Nuevos casos por 100.000 hab.: ${v.toLocaleString('de-DE', { maximumFractionDigits: 2 })}`
+                return `Nuevos casos por 100.000 hab.: ${v.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}`
               },
               title: ([{ xLabel: fecha }]) => {
                 return `${fecha.format('dddd D [de] MMMM')}`

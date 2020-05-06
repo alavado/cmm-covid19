@@ -41,7 +41,7 @@ const RankingComunas = () => {
           }}
         >
           <div className="RankingComunas__nombre_comuna">{c.nombre}</div>
-          <div className="RankingComunas__casos_comuna">{c.valor.toLocaleString('de-DE', { maximumFractionDigits: 2 })}</div>
+          <div className="RankingComunas__casos_comuna">{c.valor.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}</div>
         </Link>
       ))}
       <div className="RankingComunas__titulo">

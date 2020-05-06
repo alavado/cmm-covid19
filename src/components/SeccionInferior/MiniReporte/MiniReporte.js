@@ -59,7 +59,7 @@ const MiniReporte = () => {
           className="MiniReporte__casos"
           style={{ backgroundColor }}
         >
-          {valorPosicion.toLocaleString('de-DE', { maximumFractionDigits: 2 })}
+          {valorPosicion.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}
         </div>
         <div className="MiniReporte__descripcion">Nuevos casos por 100.000 habitantes</div>
       </div>
@@ -81,7 +81,7 @@ const MiniReporte = () => {
             }
           </div>
           {diferenciaDiaAnterior >= 0 && '+'}
-          {diferenciaDiaAnterior.toLocaleString('de-DE', { maximumFractionDigits: 2 })} casos por 100.000 habitantes respecto {comunasInterpoladas ? 'a la estimación' : 'al reporte'} anterior ({fecha.diff(ss.datos[posicion - 1].fecha, 'days')} {fecha.diff(ss.datos[posicion - 1].fecha, 'days') > 1 ? 'días' : 'día'} antes)
+          {diferenciaDiaAnterior.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })} casos por 100.000 habitantes respecto {comunasInterpoladas ? 'a la estimación' : 'al reporte'} anterior ({fecha.diff(ss.datos[posicion - 1].fecha, 'days')} {fecha.diff(ss.datos[posicion - 1].fecha, 'days') > 1 ? 'días' : 'día'} antes)
         </div>
       }
       <div className="MiniReporte__diferencia">

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 const PopupRegion = props => {
 
   const { latitude, longitude, titulo, valor } = props.config
-  const valorFormateado = valor.toLocaleString('de-DE', { maximumFractionDigits: 2 })
+  const valorFormateado = valor.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })
   const { escala } = useSelector(state => state.colores)
 
   return (
