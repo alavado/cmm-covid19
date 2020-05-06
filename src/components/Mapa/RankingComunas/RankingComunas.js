@@ -9,6 +9,7 @@ import {
   FaWindowMinimize as IconoMenosDetalle,
   FaWindowMaximize as IconoMasDetalle
 } from 'react-icons/fa'
+import moment from 'moment'
 
 const RankingComunas = () => {
 
@@ -21,7 +22,7 @@ const RankingComunas = () => {
   const { codigo } = useParams()
   const dispatch = useDispatch()
 
-  if (!comunasInterpoladas) {
+  if (!comunasInterpoladas || serieCasos.datos.find(c => c.codigo === Number(codigo)).datos[posicion].fecha.diff(moment('2020-04-01'), 'days') <= 0) {
     return null
   }
 
