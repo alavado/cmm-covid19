@@ -108,6 +108,9 @@
     right: auto;
     left: .75em;
   }
+  .RankingComunas__boton_detalle {
+    display: none;
+  }
 }
 
 @keyframes aparece-ranking {

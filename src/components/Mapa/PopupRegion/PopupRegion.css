@@ -36,6 +36,7 @@
   font-size: .75em;
   margin-left: .5em;
   transition: all .15s ease-in-out;
+  font-weight: bold;
 }
 
 .PopupRegion__descripcion {

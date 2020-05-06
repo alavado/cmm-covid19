@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { CASOS_COMUNALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CODIGO_CHILE, CASOS_COMUNALES_INTERPOLADOS, CASOS_COMUNALES } from '../../../redux/reducers/series'
 import { useParams, Link } from 'react-router-dom'
 import { expandirRanking } from '../../../redux/actions'
+import { obtenerDemograficosComuna } from '../../../helpers/demograficos'
 
 const RankingComunas = () => {
 
@@ -50,10 +51,11 @@ const RankingComunas = () => {
   }
 
   const comunasOrdenadas = [...comunasRegion].sort((c1, c2) => c1.valorNormalizado < c2.valorNormalizado ? 1 : -1)
-  const comunasConPosicion = comunasRegion.map(comuna => {
-    const posicion = comunasOrdenadas.findIndex(c => c.codigo === comuna.codigo)
-    return { ...comuna, posicion }
-  })
+  const comunasConPosicion = comunasRegion
+    .map(comuna => {
+      const posicion = comunasOrdenadas.findIndex(c => c.codigo === comuna.codigo)
+      return { ...comuna, posicion }
+    })
 
   return (
     <div className={`RankingComunas${rankingExpandido ? ' RankingComunas--expandido' : ''}`}>
@@ -95,12 +97,12 @@ const RankingComunas = () => {
       ))}
       <div className="RankingComunas__titulo">
         <h1 className="RankingComunas__contenido_titulo">
-          <button
+          {/* <button
             className="RankingComunas__boton_detalle"
             onClick={() => dispatch(expandirRanking(!rankingExpandido))}
           >
             x
-          </button>
+          </button> */}
         </h1>
         <h1 className="RankingComunas__contenido_titulo" title="Casos comunales por 100.000 habitantes estimados según el último reporte regional">
           Nuevos casos<br />x 100.000 hab
