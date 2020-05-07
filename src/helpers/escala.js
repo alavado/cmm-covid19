@@ -20,4 +20,14 @@ export const escalaDaltonica = [
   [50.0, '#AE9D4A']
 ]
 
+export const escalaAbsoluta = [
+  [0, '#abdda4'],
+  [1, '#e6f598'],
+  [5, '#ffffbf'],
+  [10, '#fee08b'],
+  [25, '#fdae61'],
+  [50, '#f46d43'],
+  [100, '#d53e4f']
+]
+
 export const colorApagadoDaltonico = '#333333'

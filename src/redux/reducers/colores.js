@@ -1,5 +1,5 @@
 import { ACTIVAR_DALTONISMO, DESTACAR_INDICE, ACTIVAR_ANIMACIONES, NORMALIZAR_POR_100000_HABITANTES } from '../actionTypes'
-import { escala, colorApagado, escalaDaltonica, colorApagadoDaltonico } from '../../helpers/escala'
+import { escala, colorApagado, escalaDaltonica, colorApagadoDaltonico, escalaAbsoluta } from '../../helpers/escala'
 
 const initialState = {
   escala,
@@ -43,9 +43,11 @@ export default function(state = initialState, action) {
       }
     }
     case NORMALIZAR_POR_100000_HABITANTES: {
+      const normalizar = action.payload
       return {
         ...state,
-        casosPor100000Habitantes: action.payload
+        casosPor100000Habitantes: normalizar,
+        escala: normalizar ? escala : escalaAbsoluta
       }
     }
     default:

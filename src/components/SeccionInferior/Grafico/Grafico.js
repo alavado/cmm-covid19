@@ -7,7 +7,7 @@ import './Grafico.css'
 import { useParams } from 'react-router-dom'
 import demograficosComunas from '../../../data/demografia/comunas.json'
 import demograficosRegiones from '../../../data/demografia/regiones.json'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
 import pattern from 'patternomaly'
 
 Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
@@ -43,7 +43,7 @@ const Grafico = () => {
 
   const obtenerSerieComuna = (codigo, interp) => {
     return series
-      .find(s => s.id === (interp ? CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : CASOS_COMUNALES_POR_100000_HABITANTES)).datos
+      .find(s => s.id === (interp ? NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES)).datos
       .find(d => d.codigo === Number(codigo)).datos
   }
 

@@ -9,10 +9,10 @@ import { obtenerCuarentenasActivas } from '../../helpers/cuarentenas'
 
 export const CODIGO_CHILE = 0
 export const CONTAGIOS_REGIONALES_POR_100000_HABITANTES = 'CONTAGIOS_REGIONALES_POR_100000_HABITANTES'
-export const CASOS_COMUNALES_POR_100000_HABITANTES = 'CASOS_COMUNALES_POR_100000_HABITANTES'
+export const NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES = 'CASOS_COMUNALES_POR_100000_HABITANTES'
 export const CASOS_COMUNALES = 'CASOS_COMUNALES'
 export const CASOS_REGIONALES = 'CASOS_REGIONALES'
-export const CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS = 'CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS'
+export const NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS = 'CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS'
 export const CASOS_COMUNALES_INTERPOLADOS = 'CASOS_COMUNALES_INTERPOLADOS'
 
 const initialState = {
@@ -24,7 +24,13 @@ const initialState = {
       nombre: 'Nuevos casos por 100.000 habitantes'
     },
     {
-      id: CASOS_COMUNALES_POR_100000_HABITANTES,
+      id: NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES,
+      datos: [],
+      geoJSON: null,
+      nombre: 'Nuevos casos por 100.000 habitantes'
+    },
+    {
+      id: NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS,
       datos: [],
       geoJSON: null,
       nombre: 'Nuevos casos por 100.000 habitantes'
@@ -36,22 +42,16 @@ const initialState = {
       nombre: 'Nuevos casos por comuna'
     },
     {
-      id: CASOS_REGIONALES,
-      datos: [],
-      geoJSON: null,
-      nombre: 'Casos regionales'
-    },
-    {
-      id: CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS,
-      datos: [],
-      geoJSON: null,
-      nombre: 'Nuevos casos por 100.000 habitantes'
-    },
-    {
       id: CASOS_COMUNALES_INTERPOLADOS,
       datos: [],
       geoJSON: null,
       nombre: 'Nuevos casos por comuna'
+    },
+    {
+      id: CASOS_REGIONALES,
+      datos: [],
+      geoJSON: null,
+      nombre: 'Casos regionales'
     }
   ],
   serieSeleccionada: {
@@ -118,7 +118,7 @@ export default function(state = initialState, action) {
       let idSerie = action.payload
       if (!state.datosNormalizadosPor100000Habitantes) {
         switch (idSerie) {
-          case CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS:
+          case NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS:
             idSerie = CASOS_COMUNALES_INTERPOLADOS
             break
         }

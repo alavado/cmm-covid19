@@ -3,7 +3,7 @@ import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice, fijarVerCuarentenas, interpolarComunas, normalizarPor100000Habitantes } from '../../../redux/actions'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS } from '../../../redux/reducers/series'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS } from '../../../redux/reducers/series'
 import { useHistory, useParams } from 'react-router-dom'
 import { FaQuestionCircle as IconoAyuda } from 'react-icons/fa'
 import texture from '../../../assets/black-twill-sm.png'
@@ -37,7 +37,7 @@ const CodigoColor = () => {
   const toggleRegiones = e => {
     e.stopPropagation()
     if (serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
-      dispatch(seleccionarSerie(comunasInterpoladas ? CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : CASOS_COMUNALES_POR_100000_HABITANTES))
+      dispatch(seleccionarSerie(comunasInterpoladas ? NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES))
     }
     else {
       dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
@@ -105,7 +105,7 @@ const CodigoColor = () => {
               title={i < escala.length - 1 ? `Entre ${v[0].toLocaleString()} y ${escala[i + 1][0].toLocaleString()} casos` : `Más de ${escala.slice(-1)[0][0]} casos`}
             />
             <div className="CodigoColor__fraccion_limite">
-              {i === escala.length - 1 ? '50+' : v[0].toLocaleString()}
+              {i === escala.length - 1 ? `${v[0].toLocaleString()}+` : v[0].toLocaleString()}
             </div>
           </div>
         ))}
@@ -135,7 +135,7 @@ const CodigoColor = () => {
         }
         {division === 'comuna' &&
           <>
-            <button
+            {/* <button
               className="CodigoColor__boton_interpolar"
               onClick={e => {
                 e.stopPropagation()
@@ -145,14 +145,14 @@ const CodigoColor = () => {
               title="Cambiar tratamiento de días sin datos"
             >
               {comunasInterpoladas ? 'Días sin datos se interpolan' : 'Días sin datos se promedian'}
-            </button>
+            </button> */}
             {/* <button
               className="CodigoColor__boton_interpolar"
               onClick={() => {
                 dispatch(normalizarPor100000Habitantes(!datosNormalizadosPor100000Habitantes))
               }}
             >
-              cambiar normalizacion {datosNormalizadosPor100000Habitantes ? 'SI' : 'NO'}
+              {datosNormalizadosPor100000Habitantes ? 'Casos por 100.000 habitantes' : 'Casos individuales'}
             </button> */}
             {/* <button
               className="CodigoColor__boton_cuarentenas"

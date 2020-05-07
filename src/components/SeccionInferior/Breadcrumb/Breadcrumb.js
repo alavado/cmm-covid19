@@ -6,7 +6,7 @@ import demograficosRegiones from '../../../data/demografia/regiones.json'
 import demograficosComunas from '../../../data/demografia/comunas.json'
 import { useDispatch, useSelector } from 'react-redux'
 import { seleccionarSerie } from '../../../redux/actions'
-import { CASOS_COMUNALES_POR_100000_HABITANTES, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
+import { NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
 
 const Breadcrumb = () => {
   
@@ -20,7 +20,7 @@ const Breadcrumb = () => {
     e.stopPropagation()
     e.preventDefault()
     if (serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
-      dispatch(seleccionarSerie(comunasInterpoladas ? CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : CASOS_COMUNALES_POR_100000_HABITANTES))
+      dispatch(seleccionarSerie(comunasInterpoladas ? NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES))
       const comunasRegion = demograficosComunas.filter(c => c.region === params.codigo)
       history.push(`/comuna/${comunasRegion[Math.floor(Math.random() * comunasRegion.length)].codigo}`)
     }

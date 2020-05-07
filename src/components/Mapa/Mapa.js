@@ -8,7 +8,7 @@ import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
 import { seleccionarSubserie, filtrarGeoJSONPorRegion, limpiarFiltros, seleccionarSerie } from '../../redux/actions'
-import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../redux/reducers/series'
+import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../redux/reducers/series'
 import { esMovil } from '../../helpers/responsive'
 import demograficosComunas from '../../data/demografia/comunas.json'
 import Ayuda from './Ayuda'
@@ -94,7 +94,7 @@ const Mapa = () => {
         }
         dispatch(filtrarGeoJSONPorRegion(c => c === Number(codigoRegion)))
         if (divisionPrevia !== division) {
-          dispatch(seleccionarSerie(comunasInterpoladas ? CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : CASOS_COMUNALES_POR_100000_HABITANTES))
+          dispatch(seleccionarSerie(comunasInterpoladas ? NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES))
         }
         dispatch(seleccionarSubserie(Number(codigo)))
         setRegionPrevia(codigoRegion)
