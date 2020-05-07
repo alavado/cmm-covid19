@@ -17,6 +17,7 @@ import {
 } from '../../redux/reducers/series'
 import Loader from './Loader'
 import geoJSONCuarentenas from '../../data/geojsons/cuarentenas.json'
+import AppMapaCasos from '../AppMapaCasos'
 
 const urlDatosRegiones = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/contagios/regiones.csv'
 const urlDatosComunas = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/contagios/comunas.csv'
@@ -89,18 +90,23 @@ const App = () => {
   return (
     <div className="App">
       {inicializada ?
-        <div className="App__contenedor_poscarga">
-          <section className="App_contenedor_header">
-            <Header />
-          </section>
-          <main className="App__contenedor">
-            <Switch>
-              <Route path="/" exact component={Mapa} />
-              <Route path="/:division/:codigo" component={Mapa} />
-            </Switch>
-            <SeccionInferior />
-          </main>
-        </div> :
+        <Switch>
+          <Route path="/casos" exact component={AppMapaCasos} />
+          <Route path="/">
+            <div className="App__contenedor_poscarga">
+              <section className="App_contenedor_header">
+                <Header />
+              </section>
+              <main className="App__contenedor">
+                <Switch>
+                  <Route path="/" exact component={Mapa} />
+                  <Route path="/:division/:codigo" component={Mapa} />
+                </Switch>
+                <SeccionInferior />
+              </main>
+            </div>
+          </Route>
+        </Switch> :
         <div className="App__contenedor_precarga">
           <Loader />
           <div style={{ color: 'white' }}>{mensaje}</div>
