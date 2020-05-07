@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
-import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice, fijarVerCuarentenas, interpolarComunas } from '../../../redux/actions'
+import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice, fijarVerCuarentenas, interpolarComunas, normalizarPor100000Habitantes } from '../../../redux/actions'
 import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE, CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS } from '../../../redux/reducers/series'
 import { useHistory, useParams } from 'react-router-dom'
 import { FaQuestionCircle as IconoAyuda } from 'react-icons/fa'
@@ -10,7 +10,7 @@ import texture from '../../../assets/black-twill-sm.png'
 
 const CodigoColor = () => {
 
-  const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle, verCuarentenas, comunasInterpoladas } = useSelector(state => state.series)
+  const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle, datosNormalizadosPor100000Habitantes, comunasInterpoladas } = useSelector(state => state.series)
   const { fecha } = subserieSeleccionada.datos[posicion]
   const { escala, indiceDestacado } = useSelector(state => state.colores)
 
@@ -146,6 +146,14 @@ const CodigoColor = () => {
             >
               {comunasInterpoladas ? 'Días sin datos se interpolan' : 'Días sin datos se promedian'}
             </button>
+            {/* <button
+              className="CodigoColor__boton_interpolar"
+              onClick={() => {
+                dispatch(normalizarPor100000Habitantes(!datosNormalizadosPor100000Habitantes))
+              }}
+            >
+              cambiar normalizacion {datosNormalizadosPor100000Habitantes ? 'SI' : 'NO'}
+            </button> */}
             {/* <button
               className="CodigoColor__boton_cuarentenas"
               onMouseOver={e => e.stopPropagation()}

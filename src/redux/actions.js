@@ -6,7 +6,8 @@ import { SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, ACTUALIZAR_SERIE,
   DESTACAR_INDICE,
   ACTIVAR_ANIMACIONES,
   INTERPOLAR_COMUNAS,
-  EXPANDIR_RANKING} from './actionTypes'
+  EXPANDIR_RANKING,
+  NORMALIZAR_POR_100000_HABITANTES} from './actionTypes'
 
 export const actualizarSerie = (id, propiedad, valor) => ({
   type: ACTUALIZAR_SERIE,
@@ -93,4 +94,9 @@ export const interpolarComunas = interp => ({
 export const expandirRanking = expandir => ({
   type: EXPANDIR_RANKING,
   payload: expandir
+})
+
+export const normalizarPor100000Habitantes = normalizar => ({
+  type: NORMALIZAR_POR_100000_HABITANTES,
+  payload: normalizar
 })

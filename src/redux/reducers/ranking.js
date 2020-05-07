@@ -7,7 +7,6 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case EXPANDIR_RANKING: {
-      console.log(action.payload)
       return {
         ...state,
         rankingExpandido: action.payload
