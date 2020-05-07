@@ -125,22 +125,15 @@ const Mapa = () => {
     }
   }, [subserieSeleccionada])
 
-  const geoJSONFiltrado = useMemo(() => ({
+  const geoJSONFiltrado = serie.geoJSON
+  const geoJSONTapa = useMemo(() => ({
     ...serie.geoJSON,
     features: serie.geoJSON.features
-      .map(f => {
+      .filter(f => {
         let valor = f.properties[`v${posicion}`]
         let codigoRegion = f.properties.codigoRegion
-        if (filtroValor(valor) && filtroRegion(codigoRegion)) {
-          return f
-        }
-        let properties = Object.keys(f.properties)
-          .reduce((prev, k) => ({
-            ...prev,
-            [k]: k.startsWith('v') ? -1 : f.properties[k]
-          }), {})
-        return {...f, properties}
-      })
+        return !filtroValor(valor) || !filtroRegion(codigoRegion)
+    }),
   }), [filtroValor, filtroRegion, posicion])
 
   const clickEnPoligono = e => {
@@ -254,6 +247,24 @@ const Mapa = () => {
             }}
           />
         </Source>
+        <Source id="capa-tapa" type="geojson" data={geoJSONTapa}>
+          <Layer
+            id="tapa-opaco"
+            type="fill"
+            paint={{
+              'fill-color': colorApagado,
+              'fill-opacity': 1
+            }}
+          />
+          <Layer
+            id="tapa-lineas"
+            type="line"
+            paint={{
+              'line-color': 'rgba(0, 0, 0, 0.5)',
+              'line-width': 1
+            }}
+          />
+        </Source>
         {division === 'comuna' && verCuarentenas &&
           <Source id="capa-cuarentenas" type="geojson" data={geoJSONCuarentenasActivas}>
             <Layer
@@ -272,7 +283,8 @@ const Mapa = () => {
               id="data-poligono-fill"
               type="fill"
               paint={{
-                'fill-color': 'rgba(255, 255, 255, .0)'
+                'fill-color': 'rgb(255, 255, 255)',
+                'fill-opacity': .05
               }}
             />
             <Layer
