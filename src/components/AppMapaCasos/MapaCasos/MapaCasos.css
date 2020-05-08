@@ -1,6 +1,7 @@
 .MapaCasos {
   flex: 1;
   display: flex;
+  height: 100vh;
 }
 
 .MapaCasos__marcador_nombre_comuna {
@@ -20,8 +21,19 @@
 }
 
 .MapaCasos__marcador_caso {
-  width: .1em;
-  height: .1em;
-  background-color: red;
+  width: .35em;
+  height: .15em;
   border-radius: 100%;
+  animation: aparece-marcador .5s ease-in-out both;
+}
+
+@keyframes aparece-marcador {
+  0% {
+    opacity: 0;
+    transform: scaleY(2);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
 }
