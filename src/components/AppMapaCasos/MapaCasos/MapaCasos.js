@@ -20,6 +20,7 @@ const MapaCasos = () => {
   const mapCasos = useRef()
 
   const [posicion, setPosicion] = useState(0)
+  const [recuperacion, setRecuperacion] = useState(14)
 
   const geoJSONFiltrado = useMemo(() => {
     const featuresRegion = geoJSON
@@ -80,18 +81,19 @@ const MapaCasos = () => {
             .find(d => d.codigo === feature.properties.codigo)
             .datos[posicion]
             .valor
-          const recuperados = posicion < 14 ? 0 : datosComunas
+          const recuperados = posicion < recuperacion ? 0 : datosComunas
             .find(d => d.codigo === feature.properties.codigo)
-            .datos[posicion - 14]
+            .datos[posicion - recuperacion]
             .valor
           return casosComuna > 0 ? randomPointsOnPolygon(casosComuna - recuperados, turf.polygon(feature.geometry.coordinates)) : []
         }).flat()
     }
-  }, [posicion])
+  }, [posicion, recuperacion])
 
   return (
     <div className="MapaCasos">
       <div>Fecha: {datosComunas[0].datos[posicion].fecha.format('DD/MM')}</div>
+      <input type="number" value={recuperacion} onChange={e => setRecuperacion(Number(e.target.value))} />
       <input value={posicion} type="range" min="0" max={datosComunas[0].datos.length - 1} onChange={e => setPosicion(e.target.value)} />
       <ReactMapGL
         {...viewport}
@@ -109,32 +111,22 @@ const MapaCasos = () => {
             id="data-puntitos"
             type="circle"
             paint={{
-              "circle-color": "#ff0000",
-              "circle-radius": 2,
-              "circle-stroke-color": "#ff0000",
-              "circle-stroke-opacity": 1,
+              "circle-color": "#D32F2F",
+              "circle-radius": 2
             }}
           />
         </Source>
         <Source
-          id="capa-datos-regiones"
+          id="capa-datos-regiones-2"
           type="geojson"
           data={geoJSONFiltrado}
         >
           <Layer
-            id="data2"
-            type="fill"
-            paint={{
-              'fill-color': 'white',
-              'fill-opacity': 0
-            }}
-          />
-          <Layer
             id="data2-poligono-stroke"
             type="line"
             paint={{
-              'line-color': 'rgba(0, 0, 0, 0.5)',
-              'line-width': 2
+              'line-color': 'rgba(255, 255, 255, 0.5)',
+              'line-width': 1.5
             }}
           />
         </Source>
