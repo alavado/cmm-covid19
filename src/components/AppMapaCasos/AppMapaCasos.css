@@ -1,11 +1,12 @@
 .AppMapaCasos {
-  background-color: black;
+  background-color: transparent;
   display: flex;
   flex-direction: row;
 }
 
 .AppMapaCasos__lateral {
-  width: 12em;
+  position: absolute;
+  width: 20vw;
   padding: 1em;
   border-right: 1px solid black;
 }

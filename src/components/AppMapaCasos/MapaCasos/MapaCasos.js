@@ -19,7 +19,7 @@ const MapaCasos = () => {
   const { datos: datosComunas, geoJSON } = series.find(({ id }) => id === CASOS_COMUNALES_INTERPOLADOS)
   const mapCasos = useRef()
 
-  const [posicion, setPosicion] = useState(0)
+  const [posicion, setPosicion] = useState(30)
   const [recuperacion, setRecuperacion] = useState(14)
 
   const geoJSONFiltrado = useMemo(() => {
@@ -72,29 +72,36 @@ const MapaCasos = () => {
     }))
   }
 
+  const hashComunas = useMemo(() => datosComunas.reduce((obj, comuna) => ({
+    ...obj,
+    [comuna.codigo]: comuna
+  }), {}), [])
+
   const geoJSONInfectados = useMemo(() => {
     return {
       type: 'FeatureCollection',
       features: geoJSONFiltrado.features
         .map(feature => {
-          const casosComuna = datosComunas
-            .find(d => d.codigo === feature.properties.codigo)
-            .datos[posicion]
-            .valor
-          const recuperados = posicion < recuperacion ? 0 : datosComunas
-            .find(d => d.codigo === feature.properties.codigo)
-            .datos[posicion - recuperacion]
-            .valor
-          return casosComuna > 0 ? randomPointsOnPolygon(casosComuna - recuperados, turf.polygon(feature.geometry.coordinates)) : []
+          const serieComuna = hashComunas[feature.properties.codigo]
+          const casosComuna = serieComuna.datos[posicion].valor
+          const recuperados = posicion < recuperacion ? 0 : serieComuna.datos[posicion - recuperacion].valor
+          return casosComuna > 0 ?
+            randomPointsOnPolygon(casosComuna - recuperados, turf.polygon(feature.geometry.coordinates))
+              :
+            []
         }).flat()
     }
   }, [posicion, recuperacion])
 
+  console.log({geoJSONInfectados})
+
   return (
     <div className="MapaCasos">
-      <div>Fecha: {datosComunas[0].datos[posicion].fecha.format('DD/MM')}</div>
-      <input type="number" value={recuperacion} onChange={e => setRecuperacion(Number(e.target.value))} />
-      <input value={posicion} type="range" min="0" max={datosComunas[0].datos.length - 1} onChange={e => setPosicion(e.target.value)} />
+      <div className="MapaCasos__lateral">
+        <div>Fecha: {datosComunas[0].datos[posicion].fecha.format('DD/MM')}</div>
+        <input type="number" value={recuperacion} onChange={e => setRecuperacion(Number(e.target.value))} />
+        <input value={posicion} type="range" min={26} max={datosComunas[0].datos.length - 1} onChange={e => setPosicion(e.target.value)} />
+      </div>
       <ReactMapGL
         {...viewport}
         mapStyle={mapStyle}
