@@ -3,11 +3,12 @@ import ReactMapGL, { Source, Layer, Marker } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import './MapaCasos.css'
 import { useSelector } from 'react-redux'
-import { CASOS_COMUNALES } from '../../../redux/reducers/series'
+import { CASOS_COMUNALES_INTERPOLADOS, CASOS_COMUNALES } from '../../../redux/reducers/series'
 import polylabel from 'polylabel'
-import marcador from './marker-icon.png'
+import randomPointsOnPolygon from 'random-points-on-polygon'
+import turf from 'turf'
 
-const calcularPoloDeInaccesibilidad = ({ coordinates: puntos }) => {
+const calcularPoloDeInaccesibilidad = puntos => {
   const [longitude, latitude] = polylabel(puntos)
   return { longitude: longitude, latitude: latitude }
 }
@@ -15,8 +16,10 @@ const calcularPoloDeInaccesibilidad = ({ coordinates: puntos }) => {
 const MapaCasos = () => {
 
   const { series } = useSelector(state => state.series)
-  const { geoJSON } = series.find(({ id }) => id === CASOS_COMUNALES)
+  const { datos: datosComunas, geoJSON } = series.find(({ id }) => id === CASOS_COMUNALES_INTERPOLADOS)
   const mapCasos = useRef()
+
+  const [posicion, setPosicion] = useState(0)
 
   const geoJSONFiltrado = useMemo(() => {
     const featuresRegion = geoJSON
@@ -26,7 +29,7 @@ const MapaCasos = () => {
         ...feature,
         properties: {
           ...feature.properties,
-          centro: calcularPoloDeInaccesibilidad(feature.geometry)
+          centro: calcularPoloDeInaccesibilidad(feature.geometry.coordinates)
         }
       }))
     return {
@@ -68,47 +71,28 @@ const MapaCasos = () => {
     }))
   }
 
-  // const marcadores = useMemo(() => Array.from(Array(1000).keys()).map(n => (
-  //   <Marker
-  //     className="MapaCasos__marcador_nombre_comuna"
-  //     latitude={-34 + Math.random() * 1}
-  //     longitude={-71 + Math.random() * 1}
-  //     key={`marker-feature-${n + Math.random()}`}
-  //   >
-  //     <div className="MapaCasos__marcador_caso">
-        
-  //     </div>
-  //   </Marker>
-  // )), [viewport])
-  
-  useEffect(() => mapCasos.current.getMap()
-  .loadImage(marcador, (err, image) => {
-    mapCasos.current.getMap().addImage('marcador', image)
-  }), [])
-
-  const generarGeoJSON = () => {
+  const geoJSONInfectados = useMemo(() => {
     return {
-      'type': 'geojson',
-      'data': {
-        'type': 'FeatureCollection',
-        'features': Array.from(Array(10000).keys()).map(n => (
-          {
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [
-                -71 + Math.random() * 1,
-                -34 + Math.random() * 1
-              ]
-            }
-          }
-        ))
-      }
+      type: 'FeatureCollection',
+      features: geoJSONFiltrado.features
+        .map(feature => {
+          const casosComuna = datosComunas
+            .find(d => d.codigo === feature.properties.codigo)
+            .datos[posicion]
+            .valor
+          const recuperados = posicion < 14 ? 0 : datosComunas
+            .find(d => d.codigo === feature.properties.codigo)
+            .datos[posicion - 14]
+            .valor
+          return casosComuna > 0 ? randomPointsOnPolygon(casosComuna - recuperados, turf.polygon(feature.geometry.coordinates)) : []
+        }).flat()
     }
-  }
+  }, [posicion])
 
   return (
     <div className="MapaCasos">
+      <div>Fecha: {datosComunas[0].datos[posicion].fecha.format('DD/MM')}</div>
+      <input value={posicion} type="range" min="0" max={datosComunas[0].datos.length - 1} onChange={e => setPosicion(e.target.value)} />
       <ReactMapGL
         {...viewport}
         mapStyle={mapStyle}
@@ -116,6 +100,22 @@ const MapaCasos = () => {
         ref={mapCasos}
       >
         {nombresComunas}
+        <Source
+          id="puntitos"
+          type="geojson"
+          data={geoJSONInfectados}
+        >
+          <Layer
+            id="data-puntitos"
+            type="circle"
+            paint={{
+              "circle-color": "#ff0000",
+              "circle-radius": 2,
+              "circle-stroke-color": "#ff0000",
+              "circle-stroke-opacity": 1,
+            }}
+          />
+        </Source>
         <Source
           id="capa-datos-regiones"
           type="geojson"
@@ -126,7 +126,7 @@ const MapaCasos = () => {
             type="fill"
             paint={{
               'fill-color': 'white',
-              'fill-opacity': .9
+              'fill-opacity': 0
             }}
           />
           <Layer
@@ -134,23 +134,7 @@ const MapaCasos = () => {
             type="line"
             paint={{
               'line-color': 'rgba(0, 0, 0, 0.5)',
-              'line-width': 1
-            }}
-          />
-        </Source>
-        <Source
-          id="puntitos"
-          type="geojson"
-          data={generarGeoJSON().data}
-        >
-          <Layer
-            id="data-puntitos"
-            type="circle"
-            paint={{
-              "circle-color": "#ff0000",
-              "circle-radius": 1.5,
-              "circle-stroke-color": "#ff0000",
-              "circle-stroke-opacity": 1
+              'line-width': 2
             }}
           />
         </Source>

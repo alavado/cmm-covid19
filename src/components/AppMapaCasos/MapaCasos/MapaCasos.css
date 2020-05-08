@@ -2,6 +2,7 @@
   flex: 1;
   display: flex;
   height: 100vh;
+  flex-direction: column-reverse;
 }
 
 .MapaCasos__marcador_nombre_comuna {
