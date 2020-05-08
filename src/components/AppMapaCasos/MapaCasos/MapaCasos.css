@@ -1,0 +1,27 @@
+.MapaCasos {
+  flex: 1;
+  display: flex;
+}
+
+.MapaCasos__marcador_nombre_comuna {
+  pointer-events: none;
+}
+
+.MapaCasos__marcador_nombre_comuna_contenido {
+  margin-left: -50%;
+  margin-top: -.3em;
+  opacity: 1;
+  text-transform: uppercase;
+  font-size: .6em;
+  color: #BDBDBD;
+  line-height: 1.15;
+  width: 5em;
+  text-align: center;
+}
+
+.MapaCasos__marcador_caso {
+  width: .1em;
+  height: .1em;
+  background-color: red;
+  border-radius: 100%;
+}
