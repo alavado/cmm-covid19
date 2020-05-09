@@ -2,11 +2,20 @@
   background-color: transparent;
   display: flex;
   flex-direction: row;
+  overflow: hidden;
 }
 
 .AppMapaCasos__lateral {
   position: absolute;
+  background-color: transparent;
   width: 20vw;
   padding: 1em;
   border-right: 1px solid black;
+}
+
+.AppMapaCasos__boton_doble {
+  position: absolute;
+  right: .5em;
+  top: .5em;
+  z-index: 2;
 }
