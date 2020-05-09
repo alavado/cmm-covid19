@@ -118,12 +118,23 @@ const MapaCasos = props => {
       <div className="MapaCasos__lateral">
       {/* {!props.secundario && <h1>Simulador de "casos activos"</h1>} */}
         <label>
-          Días de recuperación posexamen:
-          <input type="number" value={recuperacion} onChange={e => setRecuperacion(Number(e.target.value))} />
+          Días de infección posexamen:
+          <input
+            type="number"
+            min={0}
+            value={recuperacion}
+            onChange={e => setRecuperacion(Number(e.target.value))}
+          />
         </label><br />
         <label>
           Casos no detectados por cada detección:
-          <input type="number" value={multiplicador} onChange={e => setMultiplicador(Number(e.target.value))} />
+          <input
+            type="number"
+            min={0}
+            max={10}
+            value={multiplicador}
+            onChange={e => setMultiplicador(Number(e.target.value))}
+          />
         </label>
         {!props.secundario &&
           <>
