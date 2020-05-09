@@ -38,13 +38,13 @@
 }
 
 .MiniReporte__diferencia {
-  font-size: .7em;
+  font-size: .65em;
   align-self: flex-start;
   display: flex;
   align-items: center;
   margin-top: .25em;
   margin-bottom: .25em;
-  line-height: 1.15;
+  line-height: 1.25;
 }
 
 .MiniReporte__diferencia_icono {

@@ -11,9 +11,9 @@
 }
 
 .Mapa__actualizacion_contenido {
-  font-size: .6em;
+  font-size: .75em;
   color: rgba(255, 255, 255, .85);
-  line-height: 1.5;
+  line-height: 1.15;
   text-align: right;
 }
 

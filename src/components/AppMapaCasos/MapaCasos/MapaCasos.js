@@ -41,16 +41,7 @@ const MapaCasos = props => {
     }
   }, [])
 
-  const [viewport, setViewport] = useState({
-    width: '100%',
-    height: '100vh',
-    bearing: 10.9609308669604,
-    latitude: -33.537375678675765,
-    longitude: -70.81966493085949,
-    pitch: 10.01281704404148,
-    zoom: 8.3,
-    altitude: 1.5,
-  })
+  const [viewport, setViewport] = useState(props.vpMapaPrincipal)
 
   const hashComunas = useMemo(() => datosComunas.reduce((obj, comuna) => ({
     ...obj,
@@ -75,16 +66,10 @@ const MapaCasos = props => {
   }), [posicion, recuperacion, multiplicador])
 
   useEffect(() => {
-    if (props.secundario) {
-      setViewport(props.vpMapaPrincipal)
-      setPosicion(props.posicionMapaPrincipal)
-    }
-  }, [props.vpMapaPrincipal, props.posicionMapaPrincipal])
+    setViewport(props.vpMapaPrincipal)
+  }, [props.vpMapaPrincipal.latitude])
 
   const cambioEnElViewport = vp => {
-    if (props.secundario) {
-      return
-    }
     setViewport(prev => {
       const nuevoVP = {
         ...prev,
@@ -92,9 +77,7 @@ const MapaCasos = props => {
         width: '100%',
         height: '100vh'
       }
-      if (!props.secundario) {
-        props.setVpMapaPrincipal(nuevoVP)
-      }
+      props.setVpMapaPrincipal(nuevoVP)
       return nuevoVP
     })
   }
@@ -116,7 +99,6 @@ const MapaCasos = props => {
   return (
     <div className="MapaCasos">
       <div className="MapaCasos__lateral">
-      {/* {!props.secundario && <h1>Simulador de "casos activos"</h1>} */}
         <label>
           Días de infección posexamen:
           <input
@@ -136,23 +118,11 @@ const MapaCasos = props => {
             onChange={e => setMultiplicador(Number(e.target.value))}
           />
         </label>
-        {!props.secundario &&
-          <>
-            <div>Fecha: {datosComunas[0].datos[posicion].fecha.format('DD/MM')}</div>
-            <input
-              value={posicion}
-              type="range"
-              min={posicionInicial}
-              max={datosComunas[0].datos.length - 1}
-              onChange={e => {
-                setPosicion(e.target.value)
-                if (!props.secundario) {
-                  props.setPosicionMapaPrincipal(e.target.value)
-                }
-              }}
-            />
-          </>
-        }
+        <div className="MapaCasos__fecha">
+          <button onClick={() => setPosicion(Math.max(0, posicion - 1))}>-</button>
+          <div>{datosComunas[0].datos[posicion].fecha.format('DD/MM')}</div>
+          <button onClick={() => setPosicion(Math.min(datosComunas[0].datos.length, posicion + 1))}>+</button>
+        </div>
       </div>
       <ReactMapGL
         {...viewport}

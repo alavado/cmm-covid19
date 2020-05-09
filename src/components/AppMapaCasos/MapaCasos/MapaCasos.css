@@ -39,3 +39,7 @@
   border-radius: 100%;
   animation: aparece-marcador .5s ease-in-out both;
 }
+
+.MapaCasos__fecha {
+  display: flex;
+}
