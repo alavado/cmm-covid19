@@ -2,7 +2,18 @@
   background-color: transparent;
   display: flex;
   flex-direction: row;
-  overflow: hidden;
+}
+
+.AppMapaCasos__titulo {
+  position: absolute;
+  z-index: 2;
+  color: rgba(255, 255, 255, .9);
+  padding: .5em;
+  font-size: 1em;
+  background-color: #B71C1C;
+  width: 100%;
+  font-weight: bold;
+  height: 2em;
 }
 
 .AppMapaCasos__lateral {

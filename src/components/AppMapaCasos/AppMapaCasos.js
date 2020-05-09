@@ -12,12 +12,13 @@ const AppMapaCasos = () => {
     latitude: -33.537375678675765,
     longitude: -70.81966493085949,
     pitch: 10.01281704404148,
-    zoom: 8.3,
+    zoom: 11,
     altitude: 1.5,
   })
 
   return (
     <div className="AppMapaCasos">
+      <h1 className="AppMapaCasos__titulo">Simulador de casos activos de COVID-19 en la RM</h1>
       <button className="AppMapaCasos__boton_doble" onClick={() => setDoble(!doble)}>Dobble</button>
       <MapaCasos
         vpMapaPrincipal={vpMapaPrincipal}

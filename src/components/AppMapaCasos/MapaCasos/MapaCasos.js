@@ -19,7 +19,7 @@ const MapaCasos = props => {
   const { datos: datosComunas, geoJSON } = series.find(({ id }) => id === CASOS_COMUNALES_INTERPOLADOS)
   const mapCasos = useRef()
 
-  const [posicion, setPosicion] = useState(30)
+  const [posicion, setPosicion] = useState(datosComunas[0].datos.length - 1)
   const [recuperacion, setRecuperacion] = useState(14)
   const [multiplicador, setMultiplicador] = useState(0)
   const posicionInicial = 27
@@ -99,29 +99,33 @@ const MapaCasos = props => {
   return (
     <div className="MapaCasos">
       <div className="MapaCasos__lateral">
-        <label>
-          Días de infección posexamen:
+        <label className="MapaCasos__lateral_label">
+          Luego del examen, la enfermedad dura
           <input
             type="number"
             min={0}
             value={recuperacion}
             onChange={e => setRecuperacion(Number(e.target.value))}
+            className="MapaCasos__lateral_input_recuperacion"
           />
+          días
         </label><br />
-        <label>
-          Casos no detectados por cada detección:
+        <label className="MapaCasos__lateral_label">
+          Por cada caso detectado, hay
           <input
             type="number"
             min={0}
             max={10}
             value={multiplicador}
             onChange={e => setMultiplicador(Number(e.target.value))}
+            className="MapaCasos__lateral_input_multiplicador"
           />
+          casos no detectados
         </label>
         <div className="MapaCasos__fecha">
           <button onClick={() => setPosicion(Math.max(0, posicion - 1))}>-</button>
           <div>{datosComunas[0].datos[posicion].fecha.format('DD/MM')}</div>
-          <button onClick={() => setPosicion(Math.min(datosComunas[0].datos.length, posicion + 1))}>+</button>
+          <button onClick={() => setPosicion(Math.min(datosComunas[0].datos.length - 1, posicion + 1))}>+</button>
         </div>
       </div>
       <ReactMapGL

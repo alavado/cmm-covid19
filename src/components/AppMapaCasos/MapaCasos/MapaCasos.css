@@ -6,7 +6,7 @@
 }
 
 .MapaCasos:not(:last-child) {
-  border-right: .15em solid #0288D1;
+  border-right: .5em solid #0C0C0C;
 }
 
 .MapaCasos__marcador_nombre_comuna {
@@ -19,6 +19,15 @@
   z-index: 2;
   color: rgba(255, 255, 255, .9);
   padding: .5em;
+  margin-top: 2em;
+  background-color: rgba(0, 0, 0, .5);
+  flex: 1;
+}
+
+.MapaCasos__lateral_label {
+  font-size: .8em;
+  display: flex;
+  align-items: center;
 }
 
 .MapaCasos__marcador_nombre_comuna_contenido {
@@ -42,4 +51,24 @@
 
 .MapaCasos__fecha {
   display: flex;
+}
+
+.MapaCasos__lateral_input_recuperacion {
+  width: 2.5em;
+  font-size: 1.25em;
+  font-weight: bold;
+  margin: 0 .25em;
+  text-align: center;
+  border-radius: .25em;
+  border: none;
+}
+
+.MapaCasos__lateral_input_multiplicador {
+  width: 2.5em;
+  font-size: 1.25em;
+  font-weight: bold;
+  margin: 0 .25em;
+  text-align: center;
+  border-radius: .25em;
+  border: none;
 }
