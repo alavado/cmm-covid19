@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import './AppMapaCasos.css'
 import MapaCasos from './MapaCasos'
+import { FaClone, FaExpand, FaCompress } from 'react-icons/fa'
 
 const AppMapaCasos = () => {
 
   const [doble, setDoble] = useState(false)
+  const [pantallaCompleta, setPantallaCompleta] = useState(false)
   const [vpMapaPrincipal, setVpMapaPrincipal] = useState({
     width: '100%',
-    height: '100vh',
+    height: 'calc(100vh -2em)',
     bearing: 10.9609308669604,
     latitude: -33.537375678675765,
     longitude: -70.81966493085949,
@@ -18,18 +20,46 @@ const AppMapaCasos = () => {
 
   return (
     <div className="AppMapaCasos">
-      <h1 className="AppMapaCasos__titulo">Simulador de casos activos de COVID-19 en la RM</h1>
-      <button className="AppMapaCasos__boton_doble" onClick={() => setDoble(!doble)}>Dobble</button>
-      <MapaCasos
-        vpMapaPrincipal={vpMapaPrincipal}
-        setVpMapaPrincipal={setVpMapaPrincipal}
-      />
-      {doble &&
+      <div className="AppMapaCasos__barra">
+        <h1 className="AppMapaCasos__titulo">Simulador de casos activos de COVID-19 en la RM</h1>
+        <div className="AppMapaCasos__botones">
+          <button
+            className="AppMapaCasos__boton_doble"
+            onClick={() => setDoble(!doble)}
+            title="Comparar dos escenarios"
+          >
+            <FaClone />
+          </button>
+          <button
+            className="AppMapaCasos__boton_doble"
+            onClick={() => {
+              if (document.fullscreenElement) {
+                document.exitFullscreen()
+                setPantallaCompleta(false)
+              }
+              else {
+                document.getElementById('root').requestFullscreen()
+                setPantallaCompleta(true)
+              }
+            }}
+            title={pantallaCompleta ? 'Pantalla completa' : 'Salir de pantalla completa'}
+          >
+            {pantallaCompleta ? <FaCompress /> : <FaExpand />}
+          </button>
+        </div>
+      </div>
+      <div className="AppMapaCasos__mapas">
         <MapaCasos
           vpMapaPrincipal={vpMapaPrincipal}
           setVpMapaPrincipal={setVpMapaPrincipal}
         />
-      }
+        {doble &&
+          <MapaCasos
+            vpMapaPrincipal={vpMapaPrincipal}
+            setVpMapaPrincipal={setVpMapaPrincipal}
+          />
+        }
+      </div>
     </div>
   )
 }

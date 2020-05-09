@@ -1,32 +1,46 @@
 .AppMapaCasos {
-  background-color: transparent;
+  background-color: black;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+}
+
+.AppMapaCasos__barra {
+  background-color: #B71C1C;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  height: 2em;
+  padding: 0 .5em;
+  align-items: center;
 }
 
 .AppMapaCasos__titulo {
-  position: absolute;
   z-index: 2;
   color: rgba(255, 255, 255, .9);
-  padding: .5em;
   font-size: 1em;
-  background-color: #B71C1C;
-  width: 100%;
   font-weight: bold;
-  height: 2em;
 }
 
-.AppMapaCasos__lateral {
-  position: absolute;
-  background-color: transparent;
-  width: 20vw;
-  padding: 1em;
-  border-right: 1px solid black;
+.AppMapaCasos__botones {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-items: center;
+  gap: .35em;
 }
 
 .AppMapaCasos__boton_doble {
-  position: absolute;
   right: .5em;
   top: .5em;
   z-index: 2;
+  background-color: transparent;
+  border: none;
+  color: rgba(255, 255, 255, .9);
+  cursor: pointer;
+  font-size: 1em;
+  display: grid;
+}
+
+.AppMapaCasos__mapas {
+  display: flex;
 }

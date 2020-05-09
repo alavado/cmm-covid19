@@ -7,6 +7,7 @@ import { CASOS_COMUNALES_INTERPOLADOS, CASOS_COMUNALES } from '../../../redux/re
 import polylabel from 'polylabel'
 import randomPointsOnPolygon from 'random-points-on-polygon'
 import turf from 'turf'
+import { FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 
 const calcularPoloDeInaccesibilidad = puntos => {
   const [longitude, latitude] = polylabel(puntos)
@@ -21,7 +22,7 @@ const MapaCasos = props => {
 
   const [posicion, setPosicion] = useState(datosComunas[0].datos.length - 1)
   const [recuperacion, setRecuperacion] = useState(14)
-  const [multiplicador, setMultiplicador] = useState(0)
+  const [multiplicador, setMultiplicador] = useState(2)
   const posicionInicial = 27
 
   const geoJSONFiltrado = useMemo(() => {
@@ -43,12 +44,16 @@ const MapaCasos = props => {
 
   const [viewport, setViewport] = useState(props.vpMapaPrincipal)
 
+  useEffect(() => {
+    setViewport(props.vpMapaPrincipal)
+  }, [props.vpMapaPrincipal.latitude])
+
   const hashComunas = useMemo(() => datosComunas.reduce((obj, comuna) => ({
     ...obj,
     [comuna.codigo]: comuna
   }), {}), [])
 
-  const nombresComunas = useMemo(() => geoJSONFiltrado.features.map((feature, i) => {
+  const labelsComunas = useMemo(() => geoJSONFiltrado.features.map((feature, i) => {
     const serieComuna = hashComunas[feature.properties.codigo]
     const casosComuna = serieComuna.datos[posicion].valor
     const recuperados = (posicion - recuperacion) < posicionInicial ? 0 : serieComuna.datos[posicion - recuperacion].valor
@@ -65,23 +70,6 @@ const MapaCasos = props => {
     </Marker>
   }), [posicion, recuperacion, multiplicador])
 
-  useEffect(() => {
-    setViewport(props.vpMapaPrincipal)
-  }, [props.vpMapaPrincipal.latitude])
-
-  const cambioEnElViewport = vp => {
-    setViewport(prev => {
-      const nuevoVP = {
-        ...prev,
-        ...vp,
-        width: '100%',
-        height: '100vh'
-      }
-      props.setVpMapaPrincipal(nuevoVP)
-      return nuevoVP
-    })
-  }
-
   const geoJSONInfectados = useMemo(() => {
     return {
       type: 'FeatureCollection',
@@ -89,43 +77,78 @@ const MapaCasos = props => {
         .map(feature => {
           const serieComuna = hashComunas[feature.properties.codigo]
           const casosComuna = serieComuna.datos[posicion].valor
-          const recuperados = (posicion - recuperacion < posicionInicial) ? 0 : serieComuna.datos[posicion - recuperacion - posicionInicial].valor
+          const recuperados = (posicion - recuperacion) < posicionInicial ? 0 : serieComuna.datos[posicion - recuperacion].valor
           return casosComuna ? randomPointsOnPolygon((1 + multiplicador) * (casosComuna - recuperados), turf.polygon(feature.geometry.coordinates)) : []
         })
         .flat()
     }
   }, [posicion, recuperacion, multiplicador])
 
+  const cambioEnElViewport = vp => {
+    setViewport(prev => {
+      const nuevoVP = {
+        ...prev,
+        ...vp,
+        width: '100%',
+        height: 'calc(100vh -2em)'
+      }
+      props.setVpMapaPrincipal(nuevoVP)
+      return nuevoVP
+    })
+  }
+
   return (
     <div className="MapaCasos">
       <div className="MapaCasos__lateral">
-        <label className="MapaCasos__lateral_label">
-          Luego del examen, la enfermedad dura
-          <input
-            type="number"
-            min={0}
-            value={recuperacion}
-            onChange={e => setRecuperacion(Number(e.target.value))}
-            className="MapaCasos__lateral_input_recuperacion"
-          />
-          días
-        </label><br />
-        <label className="MapaCasos__lateral_label">
-          Por cada caso detectado, hay
-          <input
-            type="number"
-            min={0}
-            max={10}
-            value={multiplicador}
-            onChange={e => setMultiplicador(Number(e.target.value))}
-            className="MapaCasos__lateral_input_multiplicador"
-          />
-          casos no detectados
-        </label>
         <div className="MapaCasos__fecha">
-          <button onClick={() => setPosicion(Math.max(0, posicion - 1))}>-</button>
-          <div>{datosComunas[0].datos[posicion].fecha.format('DD/MM')}</div>
-          <button onClick={() => setPosicion(Math.min(datosComunas[0].datos.length - 1, posicion + 1))}>+</button>
+          <button
+            onClick={() => setPosicion(Math.max(posicionInicial, posicion - 1))}
+            className="MapaCasos__fecha_boton"
+          >
+            <FaCaretLeft />
+          </button>
+          <div className="MapaCasos__calendario">
+            <div className="MapaCasos__calendario_mes">
+              {datosComunas[0].datos[posicion].fecha.format('MMMM')}
+            </div>
+            <div className="MapaCasos__calendario_dia">
+              {datosComunas[0].datos[posicion].fecha.format('DD')}
+              <div className="MapaCasos__calendario_nombre_dia">
+                {datosComunas[0].datos[posicion].fecha.format('dddd')}
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setPosicion(Math.min(datosComunas[0].datos.length - 1, posicion + 1))}
+            className="MapaCasos__fecha_boton"
+          >
+            <FaCaretRight />
+          </button>
+        </div>
+        <div className="MapaCasos__parametros">
+          <label className="MapaCasos__lateral_label">
+            La enfermedad dura
+            <input
+              type="number"
+              min={0}
+              value={recuperacion}
+              onChange={e => setRecuperacion(Number(e.target.value))}
+              className="MapaCasos__lateral_input_recuperacion"
+            />
+            {recuperacion === 1 ? 'día' : 'días'} luego del examen positivo
+          </label>
+          <label className="MapaCasos__lateral_label">
+            Hay
+            <input
+              type="number"
+              min={0}
+              max={50}
+              value={multiplicador}
+              onChange={e => setMultiplicador(Number(e.target.value))}
+              className="MapaCasos__lateral_input_multiplicador"
+            />
+            {multiplicador === 1 ? 'caso no detectado' : 'casos no detectados'} por cada examen positivo
+          </label>
         </div>
       </div>
       <ReactMapGL
@@ -134,7 +157,7 @@ const MapaCasos = props => {
         onViewportChange={cambioEnElViewport}
         ref={mapCasos}
       >
-        {viewport.zoom > 10 && nombresComunas}
+        {viewport.zoom > 10 && labelsComunas}
         <Source
           id="puntitos"
           type="geojson"
