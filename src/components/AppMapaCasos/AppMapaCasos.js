@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './AppMapaCasos.css'
 import MapaCasos from './MapaCasos'
 import { FaClone, FaExpand, FaCompress } from 'react-icons/fa'
+import axios from 'axios'
 
 const AppMapaCasos = () => {
 
@@ -17,6 +18,17 @@ const AppMapaCasos = () => {
     zoom: 11,
     altitude: 1.5,
   })
+
+  const [poligonos, setPoligonos] = useState(null)
+
+  useEffect(() => {
+    const poligonos = axios.get('https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/otros/hashSorteoDemografico.json')
+      .then(res => setPoligonos(JSON.parse(res.data)))
+  }, [])
+
+  if (!poligonos) {
+    return 'Cargando...'
+  }
 
   return (
     <div className="AppMapaCasos">
@@ -52,11 +64,13 @@ const AppMapaCasos = () => {
         <MapaCasos
           vp={vp}
           setVp={setVp}
+          poligonosComunas={poligonos}
         />
         {doble &&
           <MapaCasos
             vp={vp}
             setVp={setVp}
+            poligonosComunas={poligonos}
           />
         }
       </div>

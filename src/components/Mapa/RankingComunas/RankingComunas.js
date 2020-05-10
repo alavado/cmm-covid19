@@ -35,7 +35,7 @@ const RankingComunas = () => {
   const { codigo } = useParams()
   const dispatch = useDispatch()
 
-  if (!comunasInterpoladas || serieCasos.datos.find(c => c.codigo === Number(codigo)).datos[posicion].fecha.diff(moment('2020-04-01'), 'days') <= 0) {
+  if (!comunasInterpoladas || serieCasos.datos.find(c => c.codigo === Number(codigo)).datos[posicion].fecha.diff(moment('2020-04-01'), 'days') < 0) {
     return null
   }
 

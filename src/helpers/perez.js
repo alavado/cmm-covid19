@@ -222,7 +222,6 @@ export const interpolarComunas = async (datosComunales, datosRegionales, geoJSON
         valor: i > 0 ? Math.max(d.valor - arr[i - 1].valor, 0) : 0
       }))
   }))
-  console.log({datosComunales})
   datosComunales = datosComunales.map(comuna => {
     const aumentoRegion = aumentoRegional.find(({ codigo }) => codigo === comuna.codigoRegion)
     return {

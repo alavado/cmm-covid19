@@ -3,13 +3,11 @@ import ReactMapGL, { Source, Layer, Marker } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import './MapaCasos.css'
 import { useSelector } from 'react-redux'
-import { CASOS_COMUNALES_INTERPOLADOS, CASOS_COMUNALES } from '../../../redux/reducers/series'
+import { CASOS_COMUNALES_INTERPOLADOS } from '../../../redux/reducers/series'
 import polylabel from 'polylabel'
 import randomPointsOnPolygon from 'random-points-on-polygon'
 import turf from 'turf'
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa'
-import geoJSONINE from '../../../data/geojsons/ine.json'
-import magic from '../../../data/test.json'
 import { Line } from 'react-chartjs-2'
 
 const calcularPoloDeInaccesibilidad = puntos => {
@@ -57,9 +55,8 @@ const MapaCasos = props => {
   const labelsComunas = useMemo(() => geoJSONFiltrado.features.map((feature, i) => {
     const serieComuna = hashComunas[feature.properties.codigo]
     const casosComuna = serieComuna.datos[posicion].valor
-    console.log({serieComuna})
     const serieActivos = serieComuna.datos.map((x, i) => x.valor - serieComuna.datos[Math.max(0, i - recuperacion)].valor)
-    const recuperados = (posicion - recuperacion) < posicionInicial ? 0 : serieComuna.datos[posicion - recuperacion].valor
+    const recuperados = (posicion - recuperacion) < 0 ? 0 : serieComuna.datos[posicion - recuperacion].valor
     const maximoActivos = serieActivos.reduce((x, y) => Math.max(x, y))
     return (
       <Marker
@@ -76,7 +73,7 @@ const MapaCasos = props => {
                 .map((x, i) => i),
               datasets: [
                 {
-                  key: `lineas-dia-grafiquito-${feature.properties.codigo}`,
+                  key: `lineas-dia-grafiquito-${feature.properties.codigo}-${posicion}`,
                   data: serieActivos
                     .slice(posicionInicial)
                     .map(x => x),
@@ -86,7 +83,7 @@ const MapaCasos = props => {
                 },
                 {
                   type: 'bar',
-                  key: `barras-dia-grafiquito-${feature.properties.codigo}`,
+                  key: `barras-dia-grafiquito-${feature.properties.codigo}-${posicion}`,
                   data: serieActivos
                     .slice(posicionInicial)
                     .map((x, i) => i === (posicion - posicionInicial) ? maximoActivos : 0),
@@ -107,7 +104,7 @@ const MapaCasos = props => {
                   },
                   gridLines: {
                     display: false
-                  },
+                  }
                 }],
                 xAxes: [{
                   display: false,
@@ -142,9 +139,8 @@ const MapaCasos = props => {
           if (!casosComuna) {
             return []
           }
-          const recuperados = (posicion - recuperacion) < posicionInicial ? 0 : serieComuna.datos[posicion - recuperacion].valor
-          const barriosComuna = magic
-            .poligonosComunas
+          const recuperados = (posicion - recuperacion) < 0 ? 0 : serieComuna.datos[posicion - recuperacion].valor
+          const barriosComuna = props.poligonosComunas
             .find(({ codigo }) => codigo === feature.properties.codigo)
           if (barriosComuna) {
             let puntos = []
