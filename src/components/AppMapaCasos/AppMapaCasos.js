@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import './AppMapaCasos.css'
 import MapaCasos from './MapaCasos'
-import { FaClone, FaExpand, FaCompress } from 'react-icons/fa'
+import { FaClone, FaExpand, FaCompress, FaChartLine } from 'react-icons/fa'
 import axios from 'axios'
+import logo from '../../assets/logo.svg'
 
 const AppMapaCasos = () => {
 
   const [doble, setDoble] = useState(false)
+  const [verGraficos, setVerGraficos] = useState(false)
   const [pantallaCompleta, setPantallaCompleta] = useState(false)
   const [vp, setVp] = useState({
     width: '100%',
     height: 'calc(100vh -2em)',
-    bearing: 10.9609308669604,
+    bearing: 0.8438348482250375,
+    pitch: 8.966012003230043,
     latitude: -33.537375678675765,
     longitude: -70.81966493085949,
-    pitch: 10.01281704404148,
     zoom: 11,
     altitude: 1.5,
   })
@@ -22,28 +24,40 @@ const AppMapaCasos = () => {
   const [poligonos, setPoligonos] = useState(null)
 
   useEffect(() => {
-    const poligonos = axios.get('https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/otros/hashSorteoDemografico.json')
-      .then(res => setPoligonos(JSON.parse(res.data)))
+    axios.get('https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/otros/hashSorteoDemografico.json')
+      .then(res => {
+        setPoligonos(res.data.poligonosComunas)
+      })
   }, [])
 
   if (!poligonos) {
-    return 'Cargando...'
+    return <div style={{ width: '100vw', height: '100vh', backgroundColor: 'black' }} />
   }
 
   return (
     <div className="AppMapaCasos">
       <div className="AppMapaCasos__barra">
-        <h1 className="AppMapaCasos__titulo">Simulador de casos activos de COVID-19 en la RM</h1>
+        <div className="AppMapaCasos__barra_izquierda">
+          <img className="Header__logo" src={logo} alt="Logo COVID-19 en Chile" />
+          <h1 className="AppMapaCasos__titulo">Simulador de casos activos de COVID-19 en la RM</h1>
+        </div>
         <div className="AppMapaCasos__botones">
           <button
-            className="AppMapaCasos__boton_doble"
+            className="AppMapaCasos__boton"
+            onClick={() => setVerGraficos(!verGraficos)}
+            title={doble ? 'Ver gráfico' : 'Ocultar gráficos'}
+          >
+            <FaChartLine />
+          </button>
+          <button
+            className="AppMapaCasos__boton"
             onClick={() => setDoble(!doble)}
             title={doble ? 'Ver solo un escenario' : 'Comparar dos escenarios'}
           >
             <FaClone />
           </button>
           <button
-            className="AppMapaCasos__boton_doble"
+            className="AppMapaCasos__boton"
             onClick={() => {
               if (document.fullscreenElement) {
                 document.exitFullscreen()
@@ -65,12 +79,14 @@ const AppMapaCasos = () => {
           vp={vp}
           setVp={setVp}
           poligonosComunas={poligonos}
+          verGraficos={verGraficos}
         />
         {doble &&
           <MapaCasos
             vp={vp}
             setVp={setVp}
             poligonosComunas={poligonos}
+            verGraficos={verGraficos}
           />
         }
       </div>

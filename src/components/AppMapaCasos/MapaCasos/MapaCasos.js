@@ -65,7 +65,13 @@ const MapaCasos = props => {
         longitude={feature.properties.centro.longitude}
         key={`marker-feature-${i}`}
       >
-        <div className="MapaCasos__marcador_contenedor_mini_grafico">
+        <div
+          className="MapaCasos__marcador_contenedor_mini_grafico"
+          style={{
+            opacity: props.vp.zoom > 10 && props.verGraficos ? 1 : 0,
+            transform: props.vp.zoom > 10 && props.verGraficos ? 'translateY(-.25em)' : 'translateY(0)',
+          }}
+        >
           <Line
             data={{
               labels: serieActivos
@@ -73,7 +79,7 @@ const MapaCasos = props => {
                 .map((x, i) => i),
               datasets: [
                 {
-                  key: `lineas-dia-grafiquito-${feature.properties.codigo}-${posicion}`,
+                  label: `lineas-dia-grafiquito-${feature.properties.codigo}-${posicion}`,
                   data: serieActivos
                     .slice(posicionInicial)
                     .map(x => x),
@@ -83,7 +89,7 @@ const MapaCasos = props => {
                 },
                 {
                   type: 'bar',
-                  key: `barras-dia-grafiquito-${feature.properties.codigo}-${posicion}`,
+                  label: `barras-dia-grafiquito-${feature.properties.codigo}-${posicion}`,
                   data: serieActivos
                     .slice(posicionInicial)
                     .map((x, i) => i === (posicion - posicionInicial) ? maximoActivos : 0),
@@ -109,17 +115,23 @@ const MapaCasos = props => {
                 xAxes: [{
                   display: false,
                   ticks: {
-                    display: false
+                    suggestedMin: 0
                   },
                   gridLines: {
                     display: false
-                  }
+                  },
                 }],
               }
             }}
           />
         </div>
-        <div className="MapaCasos__marcador_nombre_comuna_contenido">
+        <div
+          className="MapaCasos__marcador_nombre_comuna_contenido"
+          style={{
+            opacity: props.vp.zoom > 10 ? 1 : 0,
+            transform: props.vp.zoom > 10 ? 'translateY(-.25em)' : 'translateY(0)',
+          }}
+        >
           {feature.properties.NOM_COM}<br />
           <span style={{ fontWeight: 'bold', fontSize: '1.15em' }}>
             {Math.round((1 + multiplicador) * (casosComuna - recuperados))}
@@ -127,7 +139,7 @@ const MapaCasos = props => {
         </div>
       </Marker>
     )
-  }), [posicion, recuperacion, multiplicador])
+  }), [posicion, recuperacion, multiplicador, props.vp.zoom, props.verGraficos])
 
   const geoJSONInfectados = useMemo(() => {
     return {
@@ -238,7 +250,7 @@ const MapaCasos = props => {
         onViewportChange={cambioEnElViewport}
         ref={mapCasos}
       >
-        {props.vp.zoom > 10 && labelsComunas}
+        {labelsComunas}
         <Source
           id="puntitos"
           type="geojson"
