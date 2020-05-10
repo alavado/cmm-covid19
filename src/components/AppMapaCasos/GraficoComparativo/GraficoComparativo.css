@@ -1,0 +1,11 @@
+.GraficoComparativo {
+  position: fixed;
+  width: 50vw;
+  height: 16em;
+  background-color: rgba(0, 0, 0, 1);
+  bottom: 0;
+  border-top: .1em solid rgba(255, 255, 255, .5);
+  border-right: .1em solid rgba(255, 255, 255, .5);
+  border-top-right-radius: 1em;
+  padding: .5em;
+}

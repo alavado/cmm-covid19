@@ -10,7 +10,7 @@
 }
 
 .MapaCasos__marcador_nombre_comuna {
-  /* pointer-events: none; */
+  pointer-events: none;
 }
 
 .MapaCasos__lateral {
@@ -125,7 +125,7 @@
 }
 
 .MapaCasos__lateral_input_recuperacion {
-  width: 2.5em;
+  width: 3em;
   font-size: 1.25em;
   font-weight: bold;
   margin: 0 .35em;
@@ -142,7 +142,7 @@
 }
 
 .MapaCasos__lateral_input_multiplicador {
-  width: 2.5em;
+  width: 3em;
   font-size: 1.25em;
   font-weight: bold;
   margin: 0 .35em;

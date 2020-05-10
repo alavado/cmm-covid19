@@ -9,6 +9,7 @@ import randomPointsOnPolygon from 'random-points-on-polygon'
 import turf from 'turf'
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 import { Line } from 'react-chartjs-2'
+import GraficoComparativo from '../GraficoComparativo'
 
 const calcularPoloDeInaccesibilidad = puntos => {
   const [longitude, latitude] = polylabel(puntos)
@@ -22,8 +23,8 @@ const MapaCasos = props => {
   const mapCasos = useRef()
 
   const [posicion, setPosicion] = useState(datosComunas[0].datos.length - 1)
-  const [recuperacion, setRecuperacion] = useState(14)
-  const [multiplicador, setMultiplicador] = useState(2)
+  const [recuperacion, setRecuperacion] = useState(20)
+  const [multiplicador, setMultiplicador] = useState(3.4)
   const posicionInicial = 25
 
   const geoJSONFiltrado = useMemo(() => {
@@ -55,9 +56,18 @@ const MapaCasos = props => {
   const labelsComunas = useMemo(() => geoJSONFiltrado.features.map((feature, i) => {
     const serieComuna = hashComunas[feature.properties.codigo]
     const casosComuna = serieComuna.datos[posicion].valor
-    const serieActivos = serieComuna.datos.map((x, i) => x.valor - serieComuna.datos[Math.max(0, i - recuperacion)].valor)
     const recuperados = (posicion - recuperacion) < 0 ? 0 : serieComuna.datos[posicion - recuperacion].valor
-    const maximoActivos = serieActivos.reduce((x, y) => Math.max(x, y))
+    const serieActivos = serieComuna.datos.map((x, i) => x.valor - serieComuna.datos[Math.max(0, i - recuperacion)].valor)
+    const activosDesdeDiaInicial = serieActivos
+      .reduce((prev, v, i, arr) => {
+        let sum = 0
+        for (let j = i; j >= 0 && j > i - 7; j--) {
+          sum += arr[j]
+        }
+        return [...prev, sum / Math.min(i + 1, 7)]
+      }, [])
+      .slice(posicionInicial)
+    const maximoActivos = activosDesdeDiaInicial.reduce((x, y) => Math.max(x, y))
     return (
       <Marker
         className="MapaCasos__marcador_nombre_comuna"
@@ -76,25 +86,20 @@ const MapaCasos = props => {
         >
           <Line
             data={{
-              labels: serieActivos
-                .slice(posicionInicial)
-                .map((x, i) => i),
+              labels: activosDesdeDiaInicial.map((x, i) => i),
               datasets: [
                 {
                   label: `lineas-dia-grafiquito-${feature.properties.codigo}-${posicion}`,
-                  data: serieActivos
-                    .slice(posicionInicial)
-                    .map(x => x),
+                  data: activosDesdeDiaInicial,
                   borderColor: '#ffffff',
                   pointRadius: 0,
-                  borderWidth: 2
+                  borderWidth: 2,
+                  pointHoverRadius: 0
                 },
                 {
                   type: 'bar',
                   label: `barras-dia-grafiquito-${feature.properties.codigo}-${posicion}`,
-                  data: serieActivos
-                    .slice(posicionInicial)
-                    .map((x, i) => i === (posicion - posicionInicial) ? maximoActivos : 0),
+                  data: activosDesdeDiaInicial.map((x, i) => i === (posicion - posicionInicial) ? maximoActivos : 0),
                   backgroundColor: 'rgba(255, 255, 255, .35)',
                 }
               ]
@@ -105,6 +110,9 @@ const MapaCasos = props => {
                 display: false
               },
               animation: false,
+              tooltips: {
+                enabled: false
+              },
               scales: {
                 yAxes: [{
                   ticks: {
@@ -135,8 +143,8 @@ const MapaCasos = props => {
           }}
         >
           {feature.properties.NOM_COM}<br />
-          <span style={{ fontWeight: 'bold', fontSize: '1.15em' }}>
-            {Math.round((1 + multiplicador) * (casosComuna - recuperados))}
+          <span style={{ fontWeight: 'bold', fontSize: '1.5em', pointerEvents: 'none' }}>
+            {Math.round((1 + multiplicador) * (casosComuna - recuperados)).toLocaleString('de-DE')}
           </span>
         </div>
       </Marker>
@@ -226,8 +234,9 @@ const MapaCasos = props => {
             <input
               type="number"
               min={0}
+              step={1}
               value={recuperacion}
-              onChange={e => setRecuperacion(Number(e.target.value))}
+              onChange={e => setRecuperacion(Number(Math.round(e.target.value)))}
               className="MapaCasos__lateral_input_recuperacion"
             />
             {recuperacion === 1 ? 'día' : 'días'} luego del examen positivo
@@ -237,7 +246,8 @@ const MapaCasos = props => {
             <input
               type="number"
               min={0}
-              max={50}
+              max={10}
+              step={0.1}
               value={multiplicador}
               onChange={e => setMultiplicador(Number(e.target.value))}
               className="MapaCasos__lateral_input_multiplicador"
@@ -283,6 +293,7 @@ const MapaCasos = props => {
           />
         </Source>
       </ReactMapGL>
+      <GraficoComparativo />
     </div>
   )
 }
