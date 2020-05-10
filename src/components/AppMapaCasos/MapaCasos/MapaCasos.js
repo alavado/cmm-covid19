@@ -166,15 +166,18 @@ const MapaCasos = props => {
             .find(({ codigo }) => codigo === feature.properties.codigo)
           if (barriosComuna) {
             let puntos = []
+            let puntosPorPoligono = Array.from(Array(barriosComuna.features.length)).map(() => 0)
             for (let i = 0; i < (1 + multiplicador) * (casosComuna - recuperados); i++) {
-              let poligono
-              let intentos = 0
-              do {
-                const indice = Math.floor(Math.random() * barriosComuna.poblacion)
-                poligono = barriosComuna.features[barriosComuna.arrayMagico[indice]]
-              } while(poligono.geometry.coordinates[0].length <= 3 || intentos++ < 3)
-              puntos.push(randomPointsOnPolygon(1, turf.polygon(poligono.geometry.coordinates)))
+              let indice = Math.floor(Math.random() * barriosComuna.poblacion)
+              if (barriosComuna.features[barriosComuna.arrayMagico[indice]].geometry.coordinates[0].length > 3) {
+                puntosPorPoligono[barriosComuna.arrayMagico[indice]]++
+              }
             }
+            puntosPorPoligono.forEach((n, i) => {
+              if (n > 0) {
+                puntos.push(randomPointsOnPolygon(n, turf.polygon(barriosComuna.features[i].geometry.coordinates)))
+              }
+            })
             return puntos.flat()
           }
           else {
