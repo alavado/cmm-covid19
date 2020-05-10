@@ -70,7 +70,9 @@ const MapaCasos = props => {
           style={{
             opacity: props.vp.zoom > 10 && props.verGraficos ? 1 : 0,
             transform: props.vp.zoom > 10 && props.verGraficos ? 'translateY(-.25em)' : 'translateY(0)',
+            pointerEvents: props.vp.zoom > 10 && props.verGraficos ? 'all' : 'none'
           }}
+          onClick={() => console.log('x')}
         >
           <Line
             data={{

@@ -10,7 +10,7 @@
 }
 
 .MapaCasos__marcador_nombre_comuna {
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .MapaCasos__lateral {
@@ -47,6 +47,7 @@
   width: 10em;
   text-align: center;
   transition: all .25s ease-in-out;
+  pointer-events: none;
 }
 
 .MapaCasos__marcador_caso {
@@ -65,6 +66,10 @@
   transition: all .25s ease-in-out;
   cursor: pointer;
   z-index: 3;
+}
+
+.MapaCasos__marcador_contenedor_mini_grafico:hover {
+  background-color: rgba(255, 255, 255, .5);
 }
 
 .MapaCasos__fecha {
