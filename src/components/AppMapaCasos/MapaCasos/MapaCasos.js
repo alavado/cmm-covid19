@@ -26,7 +26,7 @@ const MapaCasos = props => {
   const [posicion, setPosicion] = useState(datosComunas[0].datos.length - 1)
   const [recuperacion, setRecuperacion] = useState(14)
   const [multiplicador, setMultiplicador] = useState(2)
-  const posicionInicial = 23
+  const posicionInicial = 25
 
   const geoJSONFiltrado = useMemo(() => {
     const featuresRegion = geoJSON
@@ -57,6 +57,7 @@ const MapaCasos = props => {
   const labelsComunas = useMemo(() => geoJSONFiltrado.features.map((feature, i) => {
     const serieComuna = hashComunas[feature.properties.codigo]
     const casosComuna = serieComuna.datos[posicion].valor
+    console.log({serieComuna})
     const serieActivos = serieComuna.datos.map((x, i) => x.valor - serieComuna.datos[Math.max(0, i - recuperacion)].valor)
     const recuperados = (posicion - recuperacion) < posicionInicial ? 0 : serieComuna.datos[posicion - recuperacion].valor
     const maximoActivos = serieActivos.reduce((x, y) => Math.max(x, y))

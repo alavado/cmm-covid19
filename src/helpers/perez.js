@@ -202,6 +202,16 @@ export const procesarComunas = async (csv, geoJSON) => {
 }
 
 export const interpolarComunas = async (datosComunales, datosRegionales, geoJSONComunas) => {
+  datosComunales = datosComunales.map(comuna => ({
+    ...comuna,
+    datos: [
+      {
+        fecha: datosRegionales[0].datos[0].fecha.clone(),
+        valor: 0
+      },
+      ...comuna.datos
+    ]
+  }))
   const fechasDatosComunas = datosComunales[0].datos.map(d => d.fecha)
   const aumentoRegional = datosRegionales.map(region => ({
     ...region,
@@ -212,6 +222,7 @@ export const interpolarComunas = async (datosComunales, datosRegionales, geoJSON
         valor: i > 0 ? Math.max(d.valor - arr[i - 1].valor, 0) : 0
       }))
   }))
+  console.log({datosComunales})
   datosComunales = datosComunales.map(comuna => {
     const aumentoRegion = aumentoRegional.find(({ codigo }) => codigo === comuna.codigoRegion)
     return {
