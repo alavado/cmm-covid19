@@ -19,7 +19,8 @@
   z-index: 2;
   color: rgba(255, 255, 255, .9);
   padding: .5em .75em .5em 0;
-  background-color: #263238;
+  /* background-color: #263238; */
+  background-color: rgba(0, 0, 0, .75);
   flex: 1;
   display: flex;
   align-items: center;
@@ -53,6 +54,14 @@
   height: .15em;
   border-radius: 100%;
   animation: aparece-marcador .5s ease-in-out both;
+}
+
+.MapaCasos__marcador_contenedor_mini_grafico {
+  width: 4em;
+  height: 2em;
+  position: absolute;
+  left: -2.25em;
+  top: -2.75em;
 }
 
 .MapaCasos__fecha {

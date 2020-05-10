@@ -44,3 +44,9 @@
 .AppMapaCasos__mapas {
   display: flex;
 }
+
+@media (orientation: portrait) {
+  .AppMapaCasos__botones {
+    display: none;
+  }
+}

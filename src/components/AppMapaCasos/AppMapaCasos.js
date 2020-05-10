@@ -7,7 +7,7 @@ const AppMapaCasos = () => {
 
   const [doble, setDoble] = useState(false)
   const [pantallaCompleta, setPantallaCompleta] = useState(false)
-  const [vpMapaPrincipal, setVpMapaPrincipal] = useState({
+  const [vp, setVp] = useState({
     width: '100%',
     height: 'calc(100vh -2em)',
     bearing: 10.9609308669604,
@@ -26,7 +26,7 @@ const AppMapaCasos = () => {
           <button
             className="AppMapaCasos__boton_doble"
             onClick={() => setDoble(!doble)}
-            title="Comparar dos escenarios"
+            title={doble ? 'Ver solo un escenario' : 'Comparar dos escenarios'}
           >
             <FaClone />
           </button>
@@ -50,13 +50,13 @@ const AppMapaCasos = () => {
       </div>
       <div className="AppMapaCasos__mapas">
         <MapaCasos
-          vpMapaPrincipal={vpMapaPrincipal}
-          setVpMapaPrincipal={setVpMapaPrincipal}
+          vp={vp}
+          setVp={setVp}
         />
         {doble &&
           <MapaCasos
-            vpMapaPrincipal={vpMapaPrincipal}
-            setVpMapaPrincipal={setVpMapaPrincipal}
+            vp={vp}
+            setVp={setVp}
           />
         }
       </div>

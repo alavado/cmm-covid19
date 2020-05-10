@@ -8,6 +8,9 @@ import polylabel from 'polylabel'
 import randomPointsOnPolygon from 'random-points-on-polygon'
 import turf from 'turf'
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa'
+import geoJSONINE from '../../../data/geojsons/ine.json'
+import magic from '../../../data/test.json'
+import { Line } from 'react-chartjs-2'
 
 const calcularPoloDeInaccesibilidad = puntos => {
   const [longitude, latitude] = polylabel(puntos)
@@ -23,7 +26,7 @@ const MapaCasos = props => {
   const [posicion, setPosicion] = useState(datosComunas[0].datos.length - 1)
   const [recuperacion, setRecuperacion] = useState(14)
   const [multiplicador, setMultiplicador] = useState(2)
-  const posicionInicial = 27
+  const posicionInicial = 23
 
   const geoJSONFiltrado = useMemo(() => {
     const featuresRegion = geoJSON
@@ -42,11 +45,9 @@ const MapaCasos = props => {
     }
   }, [])
 
-  const [viewport, setViewport] = useState(props.vpMapaPrincipal)
-
   useEffect(() => {
-    setViewport(props.vpMapaPrincipal)
-  }, [props.vpMapaPrincipal.latitude])
+    props.setVp(props.vp)
+  }, [props.vp.latitude])
 
   const hashComunas = useMemo(() => datosComunas.reduce((obj, comuna) => ({
     ...obj,
@@ -56,18 +57,78 @@ const MapaCasos = props => {
   const labelsComunas = useMemo(() => geoJSONFiltrado.features.map((feature, i) => {
     const serieComuna = hashComunas[feature.properties.codigo]
     const casosComuna = serieComuna.datos[posicion].valor
+    const serieActivos = serieComuna.datos.map((x, i) => x.valor - serieComuna.datos[Math.max(0, i - recuperacion)].valor)
     const recuperados = (posicion - recuperacion) < posicionInicial ? 0 : serieComuna.datos[posicion - recuperacion].valor
-    return <Marker
-      className="MapaCasos__marcador_nombre_comuna"
-      latitude={feature.properties.centro.latitude}
-      longitude={feature.properties.centro.longitude}
-      key={`marker-feature-${i}`}
-    >
-      <div className="MapaCasos__marcador_nombre_comuna_contenido">
-        {feature.properties.NOM_COM}<br />
-        <span style={{ fontWeight: 'bold', fontSize: '1.15em' }}>{Math.round((1 + multiplicador) * (casosComuna - recuperados))}</span>
-      </div>
-    </Marker>
+    const maximoActivos = serieActivos.reduce((x, y) => Math.max(x, y))
+    return (
+      <Marker
+        className="MapaCasos__marcador_nombre_comuna"
+        latitude={feature.properties.centro.latitude}
+        longitude={feature.properties.centro.longitude}
+        key={`marker-feature-${i}`}
+      >
+        <div className="MapaCasos__marcador_contenedor_mini_grafico">
+          <Line
+            data={{
+              labels: serieActivos
+                .slice(posicionInicial)
+                .map((x, i) => i),
+              datasets: [
+                {
+                  key: `lineas-dia-grafiquito-${feature.properties.codigo}`,
+                  data: serieActivos
+                    .slice(posicionInicial)
+                    .map(x => x),
+                  borderColor: '#ffffff',
+                  pointRadius: 0,
+                  borderWidth: 2
+                },
+                {
+                  type: 'bar',
+                  key: `barras-dia-grafiquito-${feature.properties.codigo}`,
+                  data: serieActivos
+                    .slice(posicionInicial)
+                    .map((x, i) => i === (posicion - posicionInicial) ? maximoActivos : 0),
+                  backgroundColor: 'rgba(255, 255, 255, .35)',
+                }
+              ]
+            }}
+            options={{
+              maintainAspectRatio: false,
+              legend: {
+                display: false
+              },
+              animation: false,
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    display: false
+                  },
+                  gridLines: {
+                    display: false
+                  },
+                }],
+                xAxes: [{
+                  display: false,
+                  ticks: {
+                    display: false
+                  },
+                  gridLines: {
+                    display: false
+                  }
+                }],
+              }
+            }}
+          />
+        </div>
+        <div className="MapaCasos__marcador_nombre_comuna_contenido">
+          {feature.properties.NOM_COM}<br />
+          <span style={{ fontWeight: 'bold', fontSize: '1.15em' }}>
+            {Math.round((1 + multiplicador) * (casosComuna - recuperados))}
+          </span>
+        </div>
+      </Marker>
+    )
   }), [posicion, recuperacion, multiplicador])
 
   const geoJSONInfectados = useMemo(() => {
@@ -77,22 +138,43 @@ const MapaCasos = props => {
         .map(feature => {
           const serieComuna = hashComunas[feature.properties.codigo]
           const casosComuna = serieComuna.datos[posicion].valor
+          if (!casosComuna) {
+            return []
+          }
           const recuperados = (posicion - recuperacion) < posicionInicial ? 0 : serieComuna.datos[posicion - recuperacion].valor
-          return casosComuna ? randomPointsOnPolygon((1 + multiplicador) * (casosComuna - recuperados), turf.polygon(feature.geometry.coordinates)) : []
+          const barriosComuna = magic
+            .poligonosComunas
+            .find(({ codigo }) => codigo === feature.properties.codigo)
+          if (barriosComuna) {
+            let puntos = []
+            for (let i = 0; i < (1 + multiplicador) * (casosComuna - recuperados); i++) {
+              let poligono
+              let intentos = 0
+              do {
+                const indice = Math.floor(Math.random() * barriosComuna.poblacion)
+                poligono = barriosComuna.features[barriosComuna.arrayMagico[indice]]
+              } while(poligono.geometry.coordinates[0].length <= 3 || intentos++ < 3)
+              puntos.push(randomPointsOnPolygon(1, turf.polygon(poligono.geometry.coordinates)))
+            }
+            return puntos.flat()
+          }
+          else {
+            return randomPointsOnPolygon((1 + multiplicador) * (casosComuna - recuperados), turf.polygon(feature.geometry.coordinates))
+          }
         })
         .flat()
     }
   }, [posicion, recuperacion, multiplicador])
 
   const cambioEnElViewport = vp => {
-    setViewport(prev => {
+    props.setVp(prev => {
       const nuevoVP = {
         ...prev,
         ...vp,
         width: '100%',
         height: 'calc(100vh -2em)'
       }
-      props.setVpMapaPrincipal(nuevoVP)
+      props.setVp(nuevoVP)
       return nuevoVP
     })
   }
@@ -104,6 +186,7 @@ const MapaCasos = props => {
           <button
             onClick={() => setPosicion(Math.max(posicionInicial, posicion - 1))}
             className="MapaCasos__fecha_boton"
+            style={{ opacity: posicion === posicionInicial ? 0 : 1 }}
           >
             <FaCaretLeft />
           </button>
@@ -121,6 +204,7 @@ const MapaCasos = props => {
           <button
             onClick={() => setPosicion(Math.min(datosComunas[0].datos.length - 1, posicion + 1))}
             className="MapaCasos__fecha_boton"
+            style={{ opacity: posicion === datosComunas[0].datos.length - 1 ? 0 : 1 }}
           >
             <FaCaretRight />
           </button>
@@ -152,12 +236,12 @@ const MapaCasos = props => {
         </div>
       </div>
       <ReactMapGL
-        {...viewport}
+        {...props.vp}
         mapStyle={mapStyle}
         onViewportChange={cambioEnElViewport}
         ref={mapCasos}
       >
-        {viewport.zoom > 10 && labelsComunas}
+        {props.vp.zoom > 10 && labelsComunas}
         <Source
           id="puntitos"
           type="geojson"
@@ -168,8 +252,8 @@ const MapaCasos = props => {
             type="circle"
             paint={{
               "circle-color": "#C62828",
-              "circle-radius": 2,
-              "circle-opacity": .75
+              "circle-radius": 1.5,
+              "circle-opacity": .5
             }}
           />
         </Source>
@@ -183,7 +267,7 @@ const MapaCasos = props => {
             type="line"
             paint={{
               'line-color': 'rgba(190, 190, 190, 1)',
-              'line-width': 1.5
+              'line-width': 1
             }}
           />
         </Source>
