@@ -25,6 +25,8 @@ const MapaCasos = props => {
   const [posicion, setPosicion] = useState(datosComunas[0].datos.length - 1)
   const [recuperacion, setRecuperacion] = useState(20)
   const [multiplicador, setMultiplicador] = useState(3.4)
+  const [mostrarGrafico, setMostrarGrafico] = useState(false)
+  const [datosGrafico, setDatosGrafico] = useState([])
   const posicionInicial = 25
 
   const geoJSONFiltrado = useMemo(() => {
@@ -82,7 +84,14 @@ const MapaCasos = props => {
             transform: props.vp.zoom > 10 && props.verGraficos ? 'translateY(-.25em)' : 'translateY(0)',
             pointerEvents: props.vp.zoom > 10 && props.verGraficos ? 'all' : 'none'
           }}
-          onClick={() => console.log('x')}
+          onClick={() => {
+            setMostrarGrafico(true)
+            setDatosGrafico(prev => [...prev, {
+              label: feature.properties.nombre,
+              data: activosDesdeDiaInicial,
+              borderColor: 'white'
+            }])
+          }}
         >
           <Line
             data={{
@@ -96,12 +105,12 @@ const MapaCasos = props => {
                   borderWidth: 2,
                   pointHoverRadius: 0
                 },
-                {
-                  type: 'bar',
-                  label: `barras-dia-grafiquito-${feature.properties.codigo}-${posicion}`,
-                  data: activosDesdeDiaInicial.map((x, i) => i === (posicion - posicionInicial) ? maximoActivos : 0),
-                  backgroundColor: 'rgba(255, 255, 255, .35)',
-                }
+                // {
+                //   type: 'bar',
+                //   label: `barras-dia-grafiquito-${feature.properties.codigo}-${posicion}`,
+                //   data: activosDesdeDiaInicial.map((x, i) => i === (posicion - posicionInicial) ? maximoActivos : 0),
+                //   backgroundColor: 'rgba(255, 255, 255, .35)',
+                // }
               ]
             }}
             options={{
@@ -204,7 +213,7 @@ const MapaCasos = props => {
   return (
     <div className="MapaCasos">
       <div className="MapaCasos__lateral">
-        <div className="MapaCasos__fecha">
+        {/* <div className="MapaCasos__fecha">
           <button
             onClick={() => setPosicion(Math.max(posicionInicial, posicion - 1))}
             className="MapaCasos__fecha_boton"
@@ -230,8 +239,9 @@ const MapaCasos = props => {
           >
             <FaCaretRight />
           </button>
-        </div>
+        </div> */}
         <div className="MapaCasos__parametros">
+          <h1 className="MapaCasos__lateral_titulo">Supuestos</h1>
           <label className="MapaCasos__lateral_label">
             La enfermedad dura
             <input
@@ -296,7 +306,11 @@ const MapaCasos = props => {
           />
         </Source>
       </ReactMapGL>
-      <GraficoComparativo />
+      <GraficoComparativo
+        visible={mostrarGrafico}
+        setVisible={setMostrarGrafico}
+        datos={datosGrafico}
+      />
     </div>
   )
 }

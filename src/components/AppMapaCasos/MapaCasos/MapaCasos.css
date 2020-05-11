@@ -23,11 +23,16 @@
   flex: 1;
   display: flex;
   align-items: center;
+  padding-left: .5em;
 }
 
 .MapaCasos__parametros {
   display: grid;
   gap: .35em;
+}
+
+.MapaCasos__lateral_titulo {
+  font-size: .75em;
 }
 
 .MapaCasos__lateral_label {
