@@ -94,7 +94,11 @@ const MiniReporte = () => {
         <div className="MiniReporte__diferencia_icono">
           <FaChartBar />
         </div>
-        <div>{Number(datosExtra.casos).toLocaleString('de-DE')} caso{Number(datosExtra.casos) !== 1 ? 's' : ''} <span title="Para estimar los casos en los días sin datos por comuna, los nuevos casos de cada región se reparten entre sus comunas siguiendo la misma proporción de aumento observada entre los dos informes más cercanos." style={{ fontWeight: 'bold', textDecoration: 'underline', cursor: 'help' }}>{datosExtra.interpolado ? `estimado${Number(datosExtra.casos) !== 1 ? 's' : ''}` : 'informados'}</span> hasta el {fecha.format('dddd D [de] MMMM')}</div>
+        <div
+          title="Para estimar los casos en los días sin datos por comuna, los nuevos casos de cada región se reparten entre sus comunas siguiendo la misma proporción de aumento observada entre los dos informes más cercanos en el tiempo."
+          style={{ cursor: 'help' }}
+        >
+          {division === 'comuna' && '*'} {Number(datosExtra.casos).toLocaleString('de-DE')} caso{Number(datosExtra.casos) !== 1 ? 's' : ''} <span style={{ fontWeight: 'bold', textDecoration: 'underline', cursor: 'help' }}>{datosExtra.interpolado ? `estimado${Number(datosExtra.casos) !== 1 ? 's' : ''}` : 'informados'}</span> hasta el {fecha.format('dddd D [de] MMMM')}</div>
       </div>
       <div className="MiniReporte__diferencia">
         <div className="MiniReporte__diferencia_icono">

@@ -55,7 +55,7 @@ const CodigoColor = () => {
   return (
     <div className="CodigoColor">
       <div className="CodigoColor__titulo">
-        {serieSeleccionada.nombre}
+        {serieSeleccionada.nombre} {division === 'comuna' && '*'}
       </div>
       <div
         className={`

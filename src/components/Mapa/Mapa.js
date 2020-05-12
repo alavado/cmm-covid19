@@ -18,13 +18,13 @@ import { easeCubic } from 'd3-ease'
 import polylabel from 'polylabel'
 import area from '@turf/area'
 import { polygon } from 'turf'
+import MiniGrafico from './MiniGrafico'
 
 const calcularPoloDeInaccesibilidad = feature => {
   let poligono = feature.geometry.coordinates
   if (feature.geometry.type === 'MultiPolygon') {
-    poligono = feature.geometry.coordinates.reduce((prev, p) => {
-      return area(polygon(p)) > area(polygon(prev)) ? p : prev
-    })
+    poligono = feature.geometry.coordinates
+      .reduce((x, y) => area(polygon(x)) > area(polygon(y)) ? x : y)
   }
   const [longitude, latitude] = polylabel(poligono)
   return { longitude: longitude, latitude: latitude }
@@ -166,22 +166,13 @@ const Mapa = () => {
         .find(vp => vp.codigo === codigoRegion)
         .vp.zoomMinimoParaMostrarMarkerComunas
       return (
-        <Marker
-          className="Mapa__marcador_nombre_comuna"
-          latitude={centroVisual.latitude}
-          longitude={centroVisual.longitude}
-          key={`marker-feature-${i}`}
-        >
-          <div
-            className="Mapa__marcador_nombre_comuna_contenido"
-            style={{
-              opacity: viewport.zoom > zoomRegion ? .9 : 0,
-              transform: viewport.zoom > zoomRegion ? 'translateY(0em)' : 'translateY(.25em)',
-            }}
-          >
-            {feature.properties.NOM_COM}
-          </div>
-        </Marker>
+        <MiniGrafico
+          key={`minigrafico-${feature.properties.codigo}`}
+          lat={centroVisual.latitude}
+          lng={centroVisual.longitude}
+          nombreComuna={feature.properties.NOM_COM}
+          mostrar={viewport.zoom > zoomRegion}
+        />
       )
     })
   }, [division, codigo, viewport.zoom])

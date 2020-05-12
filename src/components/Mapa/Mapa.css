@@ -17,25 +17,6 @@
   text-align: right;
 }
 
-.Mapa__marcador_nombre_comuna {
-  pointer-events: none;
-  z-index: 2;
-}
-
-.Mapa__marcador_nombre_comuna_contenido {
-  margin-left: -50%;
-  margin-top: -.95em;
-  opacity: 1;
-  text-transform: uppercase;
-  font-size: .6em;
-  color: #E0E0E0;
-  line-height: 1.15;
-  width: 10em;
-  text-align: center;
-  transition: all .25s ease-in-out;
-  pointer-events: none;
-}
-
 .Contacto {
   text-decoration: underline;
 }
