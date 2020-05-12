@@ -140,7 +140,7 @@ const RankingComunas = () => {
         </h1>
         <h1
           className="RankingComunas__contenido_encabezado"
-          title="Casos comunales por 100.000 habitantes estimados según el último reporte regional"
+          title="Nuevos casos confirmados por 100.000 habitantes en la comuna. El número de casos confirmados es menor que el número real de casos, porque no se les toma el examen a todos los habitantes."
           onClick={() => dispatch(cambiarOrdenRanking(RANKING_NUEVOS_CASOS_POR_100000_HABITANTES))}
         >
           Nuevos casos<br />x 100.000 hab.
@@ -151,7 +151,7 @@ const RankingComunas = () => {
         </h1>
         <h1
           className="RankingComunas__contenido_encabezado"
-          title="Casos comunales estimados según el último reporte regional"
+          title="Nuevos casos confirmados en la comuna. El número de casos confirmados es menor que el número real de casos, porque no se les toma el examen a todos los habitantes."
           onClick={() => dispatch(cambiarOrdenRanking(RANKING_NUEVOS_CASOS))}
         >
           Nuevos<br />casos
@@ -162,7 +162,7 @@ const RankingComunas = () => {
         </h1>
         <h1
           className="RankingComunas__contenido_encabezado"
-          title="Total de casos en la comuna"
+          title="Total de casos confirmados en la comuna. El número de casos confirmados es menor que el número real de casos, porque no se les toma el examen a todos los habitantes."
           onClick={() => dispatch(cambiarOrdenRanking(RANKING_CASOS_TOTALES))}
         >
           Casos<br />totales
@@ -173,7 +173,7 @@ const RankingComunas = () => {
         </h1>
         <h1
           className="RankingComunas__contenido_encabezado"
-          title="Promedio de nuevos casos de los últimos 7 días en relación a los 7 días anteriores"
+          title="Porcentaje de aumento o disminución de nuevos casos confirmados en la comuna. Este se calcula como el promedio de nuevos casos confirmados durante los últimos 7 días en relación al de los 7 días anteriores."
           onClick={() => dispatch(cambiarOrdenRanking(RANKING_VARIACION_SEMANAL))}
         >
           Variación<br/>semanal

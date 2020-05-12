@@ -55,6 +55,7 @@
 .RankingComunas__icono_ordenar {
   color: white;
   font-size: 1.5em;
+  cursor: pointer;
 }
 
 .RankingComunas__contenido_encabezado {
@@ -67,7 +68,7 @@
   width: 12em;
   padding-right: 1.75em;
   color: rgba(255, 255, 255, .85);
-  cursor: pointer;
+  cursor: help;
 }
 
 .RankingComunas__contenido_encabezado {

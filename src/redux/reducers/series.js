@@ -21,31 +21,31 @@ const initialState = {
       id: CONTAGIOS_REGIONALES_POR_100000_HABITANTES,
       datos: [],
       geoJSON: null,
-      nombre: 'Nuevos casos por 100.000 habitantes'
+      nombre: 'Nuevos casos confirmados por 100.000 habitantes'
     },
     {
       id: NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES,
       datos: [],
       geoJSON: null,
-      nombre: 'Nuevos casos por 100.000 habitantes'
+      nombre: 'Nuevos casos confirmados por 100.000 habitantes'
     },
     {
       id: NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS,
       datos: [],
       geoJSON: null,
-      nombre: 'Nuevos casos por 100.000 habitantes'
+      nombre: 'Nuevos casos confirmados por 100.000 habitantes'
     },
     {
       id: CASOS_COMUNALES,
       datos: [],
       geoJSON: null,
-      nombre: 'Nuevos casos por comuna'
+      nombre: 'Nuevos casos confirmados por comuna'
     },
     {
       id: CASOS_COMUNALES_INTERPOLADOS,
       datos: [],
       geoJSON: null,
-      nombre: 'Nuevos casos por comuna'
+      nombre: 'Nuevos casos confirmados por comuna'
     },
     {
       id: CASOS_REGIONALES,
