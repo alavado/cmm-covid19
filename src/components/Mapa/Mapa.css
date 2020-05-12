@@ -19,6 +19,7 @@
 
 .Mapa__marcador_nombre_comuna {
   pointer-events: none;
+  z-index: 2;
 }
 
 .Mapa__marcador_nombre_comuna_contenido {

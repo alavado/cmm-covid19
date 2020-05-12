@@ -173,7 +173,7 @@ const Mapa = () => {
             className="Mapa__marcador_nombre_comuna_contenido"
             style={{
               opacity: viewport.zoom > 10 ? .9 : 0,
-              // transform: viewport.zoom > 10 ? 'translateY(-.25em)' : 'translateY(0)',
+              transform: viewport.zoom > 10 ? 'translateY(0em)' : 'translateY(.25em)',
             }}
           >
             {feature.properties.NOM_COM}
@@ -245,7 +245,7 @@ const Mapa = () => {
   const actualizacion = useMemo(() => (
     <div className="Mapa__actualizacion">
       <div className="Mapa__actualizacion_contenido">
-        Última actualizacion: 11/05<br />
+        Última actualizacion: 12/05<br />
         <a target="_blank" href="https://twitter.com/alavado_desu"><span className="Contacto">Contacto</span></a>
       </div>
     </div>

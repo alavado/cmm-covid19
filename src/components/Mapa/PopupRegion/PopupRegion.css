@@ -1,5 +1,6 @@
 .PopupRegion {
   opacity: .9;
+  z-index: 3;
 }
 
 .PopupRegion__contenido {
