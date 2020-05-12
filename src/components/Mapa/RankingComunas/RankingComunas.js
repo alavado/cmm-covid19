@@ -10,7 +10,8 @@ import {
   FaWindowMaximize as IconoMasDetalle,
   FaCaretDown,
   FaSort,
-  FaChartLine
+  FaChartLine,
+  FaChartArea
 } from 'react-icons/fa'
 import moment from 'moment'
 import {
@@ -145,7 +146,7 @@ const RankingComunas = () => {
             className="RankingComunas__boton_mostrar_mini_graficos"
             onClick={() => dispatch(mostrarMiniGraficos(!mostrandoMiniGraficos))}
           >
-            <FaChartLine />
+            <FaChartArea />
           </button>
         </div>
         <div

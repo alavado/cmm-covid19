@@ -80,7 +80,7 @@ const viewports = [
       bearing: 37.00658923737197,
       pitch: 39.87063737473478,
       altitude: 1.5,
-      zoomMinimoParaMostrarMarkerComunas: 8
+      zoomMinimoParaMostrarMarkerComunas: 7
     }
   },
   {
@@ -92,7 +92,7 @@ const viewports = [
       bearing: 45.72533923737197,
       pitch: 46.7471277125583,
       altitude: 1.5,
-      zoomMinimoParaMostrarMarkerComunas: 8
+      zoomMinimoParaMostrarMarkerComunas: 7
     }
   },
   {
@@ -116,7 +116,7 @@ const viewports = [
       bearing: 49.38158923737197,
       pitch: 48.685930732611965,
       altitude: 1.5,
-      zoomMinimoParaMostrarMarkerComunas: 8
+      zoomMinimoParaMostrarMarkerComunas: 7
     }
   },
   {

@@ -1,7 +1,7 @@
 import { MOSTRAR_MINI_GRAFICOS } from '../actionTypes'
 
 const initialState = {
-  mostrandoMiniGraficos: false
+  mostrandoMiniGraficos: true
 }
 
 export default function(state = initialState, action) {

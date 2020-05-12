@@ -160,6 +160,25 @@ const Mapa = () => {
     }),
   }), [filtroValor, filtroRegion, posicion])
 
+  const maximoComunas = useMemo(() => {
+    if (division !== 'comuna') {
+      return 20
+    }
+    const codigoRegion = Number(demograficosComunas.find(c => c.codigo === codigo).region)
+    return series
+      .find(({ id }) => id === NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS).datos
+      .filter(comuna => comuna.codigoRegion === codigoRegion)
+      .reduce((comuna1, comuna2) => {
+        const max1 = comuna1.datos.reduce((d1, d2) => d1.valor > d2.valor ? d1 : d2).valor
+        const max2 = comuna2.datos.reduce((d1, d2) => d1.valor > d2.valor ? d1 : d2).valor
+        return max1 > max2 ? comuna1 : comuna2
+      })
+      .datos
+      .reduce((d1, d2) => d1.valor > d2.valor ? d1 : d2).valor
+  }, [codigo])
+
+  console.log(maximoComunas)
+
   const labelsComunas = useMemo(() => {
     if (division !== 'comuna') {
       return []
@@ -197,6 +216,7 @@ const Mapa = () => {
           nombreComuna={feature.properties.NOM_COM}
           mostrar={viewport.zoom > zoomRegion}
           data={datos}
+          suggestedMax={maximoComunas}
         />
       )
     })

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 const MiniGrafico = props => {
 
   const { mostrandoMiniGraficos } = useSelector(state => state.comparacion)
-  const { lat, lng, mostrar, nombreComuna, data } = props
+  const { lat, lng, mostrar, nombreComuna, data, suggestedMax } = props
  
   return (
     <Marker
@@ -62,6 +62,9 @@ const MiniGrafico = props => {
                   gridLines: {
                     display: false
                   },
+                  ticks: {
+                    suggestedMax: suggestedMax * .6
+                  }
                 }]
               },
               legend: {
