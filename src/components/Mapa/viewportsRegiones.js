@@ -8,7 +8,8 @@ const viewports = [
       bearing: 41.84181085091779,
       pitch: 45.579169912095246,
       altitude: 1.5,
-    }
+      zoomMinimoParaMostrarMarkerComunas: 6
+    },
   },
   {
     codigo: 2,
@@ -19,7 +20,8 @@ const viewports = [
       bearing: 49.57618585091779,
       pitch: 52.119158434103774,
       altitude: 1.5,
-    }
+      zoomMinimoParaMostrarMarkerComunas: 6
+    },
   },
   {
     codigo: 3,
@@ -29,7 +31,8 @@ const viewports = [
       zoom: 6.373558849107084,
       bearing: 57.59181085091779,
       pitch: 57.7328061076866,
-      altitude: 1.5
+      altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 6
     }
   },
   {
@@ -40,7 +43,8 @@ const viewports = [
       zoom: 6.864144171210695,
       bearing: 57.00185816167476,
       pitch: 48.06040861118314,
-      altitude: 1.5
+      altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 6
     }
   },
   {
@@ -51,7 +55,8 @@ const viewports = [
       zoom: 6.864144171210695,
       bearing: 56.86123316167476,
       pitch: 33.91574546701256,
-      altitude: 1.5
+      altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 8
     }
   },
   {
@@ -63,6 +68,7 @@ const viewports = [
       pitch: 8.966012003230043,
       zoom: 7.3,
       altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 10
     }
   },
   {
@@ -73,7 +79,8 @@ const viewports = [
       zoom: 7.354729493314306,
       bearing: 37.00658923737197,
       pitch: 39.87063737473478,
-      altitude: 1.5
+      altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 8
     }
   },
   {
@@ -84,7 +91,8 @@ const viewports = [
       zoom: 7.135892752732824,
       bearing: 45.72533923737197,
       pitch: 46.7471277125583,
-      altitude: 1.5
+      altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 8
     }
   },
   {
@@ -96,7 +104,8 @@ const viewports = [
       bearing: 52.61596423737197,
       pitch: 46.375354510022106,
       altitude: 1.5,
-    }
+      zoomMinimoParaMostrarMarkerComunas: 8
+    },
   },
   {
     codigo: 9,
@@ -106,7 +115,8 @@ const viewports = [
       zoom: 7.135892752732824,
       bearing: 49.38158923737197,
       pitch: 48.685930732611965,
-      altitude: 1.5
+      altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 8
     }
   },
   {
@@ -117,7 +127,8 @@ const viewports = [
       zoom: 6.426470690047731,
       bearing: 54.58471423737197,
       pitch: 47.25516052332704,
-      altitude: 1.5
+      altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 6
     }
   },
   {
@@ -128,7 +139,8 @@ const viewports = [
       zoom: 5.768211886781156,
       bearing: 54.02221423737197,
       pitch: 50.83964662614131,
-      altitude: 1.5
+      altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 5
     }
   },
   {
@@ -139,7 +151,8 @@ const viewports = [
       zoom: 5.418844125370185,
       bearing: 41.84181085091779,
       pitch: 45.579169912095246,
-      altitude: 1.5
+      altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 5
     }
   },
   {
@@ -150,7 +163,8 @@ const viewports = [
       zoom: 7.432348673203147,
       bearing: 39.39721423737197,
       pitch: 46.16666105954593,
-      altitude: 1.5
+      altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 6
     }
   },
   {
@@ -161,7 +175,8 @@ const viewports = [
       zoom: 7.677641334254953,
       bearing: 21.39721423737197,
       pitch: 52.767784836326044,
-      altitude: 1.5
+      altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 6
     }
   },
   {
@@ -172,7 +187,8 @@ const viewports = [
       zoom: 7.677641334254954,
       bearing: 48.18506284294966,
       pitch: 47.070815742893544,
-      altitude: 1.5
+      altitude: 1.5,
+      zoomMinimoParaMostrarMarkerComunas: 8
     }
   }
 ]

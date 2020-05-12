@@ -117,7 +117,7 @@
 }
 
 .RankingComunas__comuna--seleccionada {
-   filter: brightness(95%);
+  filter: brightness(95%);
 }
 
 .RankingComunas__nombre_comuna {

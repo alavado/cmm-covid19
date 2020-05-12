@@ -162,6 +162,9 @@ const Mapa = () => {
       .filter(f => f.properties.codigoRegion === Number(codigoRegion))
     return poligonosRegion.map((feature, i) => {
       const centroVisual = calcularPoloDeInaccesibilidad(feature)
+      const zoomRegion = viewportRegiones
+        .find(vp => vp.codigo === codigoRegion)
+        .vp.zoomMinimoParaMostrarMarkerComunas
       return (
         <Marker
           className="Mapa__marcador_nombre_comuna"
@@ -172,8 +175,8 @@ const Mapa = () => {
           <div
             className="Mapa__marcador_nombre_comuna_contenido"
             style={{
-              opacity: viewport.zoom > 10 ? .9 : 0,
-              transform: viewport.zoom > 10 ? 'translateY(0em)' : 'translateY(.25em)',
+              opacity: viewport.zoom > zoomRegion ? .9 : 0,
+              transform: viewport.zoom > zoomRegion ? 'translateY(0em)' : 'translateY(.25em)',
             }}
           >
             {feature.properties.NOM_COM}
