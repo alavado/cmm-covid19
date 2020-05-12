@@ -134,19 +134,22 @@ const RankingComunas = () => {
       <div className="RankingComunas__titulo">
         <div className="RankingComunas__botones">
           <button
+            title={!rankingExpandido ? 'Ver más indicadores' : 'Minimizar'}
             className="RankingComunas__boton_detalle"
             onClick={() => dispatch(expandirRanking(!rankingExpandido))}
           >
             {rankingExpandido ? <IconoMenosDetalle /> : <IconoMasDetalle />}
           </button>
           <button
+            style={{ display: 'none' }}
+            title={!mostrandoMiniGraficos ? 'Ver gráficos por comuna' : 'Ocultar gráficos por comuna'}
             className="RankingComunas__boton_mostrar_mini_graficos"
             onClick={() => dispatch(mostrarMiniGraficos(!mostrandoMiniGraficos))}
           >
             <FaChartLine />
           </button>
         </div>
-        <h1
+        <div
           className="RankingComunas__contenido_encabezado"
           title="Nuevos casos confirmados por 100.000 habitantes en la comuna. El número de casos confirmados es menor que el número real de casos, porque no se les toma el examen a todos los habitantes."
           onClick={() => dispatch(cambiarOrdenRanking(RANKING_NUEVOS_CASOS_POR_100000_HABITANTES))}
@@ -156,8 +159,8 @@ const RankingComunas = () => {
             <FaCaretDown className="RankingComunas__icono_ordenar" /> :
             <FaSort className="RankingComunas__icono_ordenar" />
           }
-        </h1>
-        <h1
+        </div>
+        <div
           className="RankingComunas__contenido_encabezado"
           title="Nuevos casos confirmados en la comuna. El número de casos confirmados es menor que el número real de casos, porque no se les toma el examen a todos los habitantes."
           onClick={() => dispatch(cambiarOrdenRanking(RANKING_NUEVOS_CASOS))}
@@ -167,8 +170,8 @@ const RankingComunas = () => {
             <FaCaretDown className="RankingComunas__icono_ordenar" /> :
             <FaSort className="RankingComunas__icono_ordenar" />
           }
-        </h1>
-        <h1
+        </div>
+        <div
           className="RankingComunas__contenido_encabezado"
           title="Total de casos confirmados en la comuna. El número de casos confirmados es menor que el número real de casos, porque no se les toma el examen a todos los habitantes."
           onClick={() => dispatch(cambiarOrdenRanking(RANKING_CASOS_TOTALES))}
@@ -178,8 +181,8 @@ const RankingComunas = () => {
             <FaCaretDown className="RankingComunas__icono_ordenar" /> :
             <FaSort className="RankingComunas__icono_ordenar" />
           }
-        </h1>
-        <h1
+        </div>
+        <div
           className="RankingComunas__contenido_encabezado"
           title="Porcentaje de aumento o disminución de nuevos casos confirmados en la comuna. Este se calcula como el promedio de nuevos casos confirmados durante los últimos 7 días en relación al de los 7 días anteriores."
           onClick={() => dispatch(cambiarOrdenRanking(RANKING_VARIACION_SEMANAL))}
@@ -189,7 +192,7 @@ const RankingComunas = () => {
             <FaCaretDown className="RankingComunas__icono_ordenar" /> :
             <FaSort className="RankingComunas__icono_ordenar" />
           }
-        </h1>
+        </div>
       </div>
     </div>
   )
