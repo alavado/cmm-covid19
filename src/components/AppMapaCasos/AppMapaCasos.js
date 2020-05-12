@@ -39,7 +39,7 @@ const AppMapaCasos = () => {
       <div className="AppMapaCasos__barra">
         <div className="AppMapaCasos__barra_izquierda">
           <img className="Header__logo" src={logo} alt="Logo COVID-19 en Chile" />
-          <h1 className="AppMapaCasos__titulo">Simulador de casos activos de COVID-19 en la RM</h1>
+          <h1 className="AppMapaCasos__titulo">Simulador simplón de casos activos de COVID-19 en la RM</h1>
         </div>
         <div className="AppMapaCasos__botones">
           <button

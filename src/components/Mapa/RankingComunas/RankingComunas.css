@@ -40,12 +40,16 @@
 
 .RankingComunas__boton_detalle {
   background-color: transparent;
-  color: #0288D1;
+  color: rgba(255, 255, 255, .8);
   border: none;
   cursor: pointer;
   font-size: .7em;
   display: flex;
   align-items: center;
+}
+
+.RankingComunas--expandido .RankingComunas__boton_detalle {
+  color: #0288D1;
 }
 
 .RankingComunas__icono_ordenar {

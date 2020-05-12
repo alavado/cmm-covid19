@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react'
-import ReactMapGL, { Source, Layer, FlyToInterpolator } from 'react-map-gl'
+import ReactMapGL, { Source, Layer, FlyToInterpolator, Marker } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import './Mapa.css'
 import { useSelector, useDispatch } from 'react-redux'
@@ -8,13 +8,27 @@ import PopupRegion from './PopupRegion'
 import viewportRegiones from './viewportsRegiones'
 import { useHistory, useParams } from 'react-router-dom'
 import { seleccionarSubserie, filtrarGeoJSONPorRegion, limpiarFiltros, seleccionarSerie } from '../../redux/actions'
-import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../redux/reducers/series'
+import { CODIGO_CHILE, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS, CASOS_REGIONALES } from '../../redux/reducers/series'
 import { esMovil } from '../../helpers/responsive'
 import demograficosComunas from '../../data/demografia/comunas.json'
 import Ayuda from './Ayuda'
 import texture from '../../assets/black-twill-sm.png'
 import RankingComunas from './RankingComunas'
 import { easeCubic } from 'd3-ease'
+import polylabel from 'polylabel'
+import area from '@turf/area'
+import { polygon } from 'turf'
+
+const calcularPoloDeInaccesibilidad = feature => {
+  let poligono = feature.geometry.coordinates
+  if (feature.geometry.type === 'MultiPolygon') {
+    poligono = feature.geometry.coordinates.reduce((prev, p) => {
+      return area(polygon(p)) > area(polygon(prev)) ? p : prev
+    })
+  }
+  const [longitude, latitude] = polylabel(poligono)
+  return { longitude: longitude, latitude: latitude }
+}
 
 const vpInicialLandscape = {
   width: '100%',
@@ -38,7 +52,7 @@ const vpInicialPortrait = {
 
 const Mapa = () => {
 
-  const { serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenasActivas, verCuarentenas, comunasInterpoladas } = useSelector(state => state.series)
+  const { series, serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenasActivas, verCuarentenas, comunasInterpoladas } = useSelector(state => state.series)
   const { escala, colorApagado, animaciones } = useSelector(state => state.colores)
   const { filtroValor, filtroRegion } = serie
   const vpInicial = window.innerWidth < 600 ?
@@ -135,6 +149,39 @@ const Mapa = () => {
         return !filtroValor(valor) || !filtroRegion(codigoRegion)
     }),
   }), [filtroValor, filtroRegion, posicion])
+
+  const labelsComunas = useMemo(() => {
+    if (division !== 'comuna') {
+      return []
+    }
+    const codigoRegion = Number(demograficosComunas.find(c => c.codigo === codigo).region)
+    const poligonosRegion = series
+      .find(({ id }) => id === NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS)
+      .geoJSON
+      .features
+      .filter(f => f.properties.codigoRegion === Number(codigoRegion))
+    return poligonosRegion.map((feature, i) => {
+      const centroVisual = calcularPoloDeInaccesibilidad(feature)
+      return (
+        <Marker
+          className="Mapa__marcador_nombre_comuna"
+          latitude={centroVisual.latitude}
+          longitude={centroVisual.longitude}
+          key={`marker-feature-${i}`}
+        >
+          <div
+            className="Mapa__marcador_nombre_comuna_contenido"
+            style={{
+              opacity: viewport.zoom > 10 ? .9 : 0,
+              // transform: viewport.zoom > 10 ? 'translateY(-.25em)' : 'translateY(0)',
+            }}
+          >
+            {feature.properties.NOM_COM}
+          </div>
+        </Marker>
+      )
+    })
+  }, [division, codigo, viewport.zoom])
 
   const clickEnPoligono = e => {
     const featurePoligono = e.features && e.features.find(f => f.source === 'capa-datos-regiones')
@@ -235,7 +282,7 @@ const Mapa = () => {
                   ), [])
                 ]
               },
-              'fill-opacity': .7
+              'fill-opacity': .8
             }}
           />
           <Layer
@@ -284,20 +331,21 @@ const Mapa = () => {
               type="fill"
               paint={{
                 'fill-color': 'rgb(255, 255, 255)',
-                'fill-opacity': .05
+                'fill-opacity': .025
               }}
             />
             <Layer
               id="data-poligono-stroke"
               type="line"
               paint={{
-                'line-color': 'rgba(0, 0, 0, 0.5)',
+                'line-color': 'rgba(0, 0, 0, 0.75)',
                 'line-width': 3
               }}
             />
           </Source>
         }
         {actualizacion}
+        {division === 'comuna' && labelsComunas}
       </ReactMapGL>
       {codigoColor}
       {division === 'comuna' && rankingComunas}

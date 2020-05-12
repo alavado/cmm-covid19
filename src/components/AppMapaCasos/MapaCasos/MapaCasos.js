@@ -4,12 +4,12 @@ import mapStyle from './mapStyle.json'
 import './MapaCasos.css'
 import { useSelector } from 'react-redux'
 import { CASOS_COMUNALES_INTERPOLADOS } from '../../../redux/reducers/series'
-import polylabel from 'polylabel'
 import randomPointsOnPolygon from 'random-points-on-polygon'
 import turf from 'turf'
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 import { Line } from 'react-chartjs-2'
 import GraficoComparativo from '../GraficoComparativo'
+import polylabel from 'polylabel'
 
 const calcularPoloDeInaccesibilidad = puntos => {
   const [longitude, latitude] = polylabel(puntos)
@@ -59,7 +59,7 @@ const MapaCasos = props => {
     const serieComuna = hashComunas[feature.properties.codigo]
     const casosComuna = serieComuna.datos[posicion].valor
     const recuperados = (posicion - recuperacion) < 0 ? 0 : serieComuna.datos[posicion - recuperacion].valor
-    const serieActivos = serieComuna.datos.map((x, i) => x.valor - serieComuna.datos[Math.max(0, i - recuperacion)].valor)
+    const serieActivos = serieComuna.datos.map((x, i) => multiplicador * (x.valor - serieComuna.datos[Math.max(0, i - recuperacion)].valor))
     const activosDesdeDiaInicial = serieActivos
       .reduce((prev, v, i, arr) => {
         let sum = 0
@@ -190,7 +190,7 @@ const MapaCasos = props => {
             return puntos.flat()
           }
           else {
-            return randomPointsOnPolygon((1 + multiplicador) * (casosComuna - recuperados), turf.polygon(feature.geometry.coordinates))
+            return randomPointsOnPolygon(/*(1 + multiplicador) * (casosComuna - recuperados)*/0, turf.polygon(feature.geometry.coordinates))
           }
         })
         .flat()
@@ -203,7 +203,8 @@ const MapaCasos = props => {
         ...prev,
         ...vp,
         width: '100%',
-        height: 'calc(100vh -2em)'
+        height: 'calc(100vh -2em)',
+        zoom: Math.min(11.5, vp.zoom)
       }
       props.setVp(nuevoVP)
       return nuevoVP
@@ -241,9 +242,13 @@ const MapaCasos = props => {
           </button>
         </div> */}
         <div className="MapaCasos__parametros">
-          <h1 className="MapaCasos__lateral_titulo">Supuestos</h1>
+          <p className="MapaCasos__explicacion">
+            Los puntos rojos se ubican <span style={{ fontWeight: 'bold' }}>al azar</span>, según las <a target="_blank" rel="noopener noreferer" href="http://geoine-ine-chile.opendata.arcgis.com/datasets/4de21bbed6e94b6ead48cf83d88fcac9_6?geometry=-70.721%2C-33.433%2C-70.613%2C-33.408">densidades de población urbana del 2017</a>.
+          </p>
+          <p className="MapaCasos__explicacion">Cada punto rojo simula un caso activo en la comuna.</p>
+          <h1 className="MapaCasos__explicacion">El número de casos activos se calcula a partir de las cifras oficiales de casos acumulados,<br />suponiendo además que:</h1>
           <label className="MapaCasos__lateral_label">
-            La enfermedad dura
+            {`1) la enfermedad dura`}
             <input
               type="number"
               min={0}
@@ -252,10 +257,10 @@ const MapaCasos = props => {
               onChange={e => setRecuperacion(Number(Math.round(e.target.value)))}
               className="MapaCasos__lateral_input_recuperacion"
             />
-            {recuperacion === 1 ? 'día' : 'días'} luego del examen positivo
+            {recuperacion === 1 ? 'día' : 'días'} luego del examen positivo, y
           </label>
           <label className="MapaCasos__lateral_label">
-            Hay
+            {`2) hay`}
             <input
               type="number"
               min={0}
@@ -265,8 +270,9 @@ const MapaCasos = props => {
               onChange={e => setMultiplicador(Number(e.target.value))}
               className="MapaCasos__lateral_input_multiplicador"
             />
-            {multiplicador === 1 ? 'caso no detectado' : 'casos no detectados'} por cada examen positivo
+            {multiplicador === 1 ? 'caso no detectado' : 'casos no detectados'} por cada examen positivo.
           </label>
+          <p className="MapaCasos__explicacion">Los puntos rojos se redistribuyen si recargas la página o cambias los parámetros.</p>
         </div>
       </div>
       <ReactMapGL
@@ -286,7 +292,7 @@ const MapaCasos = props => {
             type="circle"
             paint={{
               "circle-color": "#C62828",
-              "circle-radius": 1.5,
+              "circle-radius": 2,
               "circle-opacity": .5
             }}
           />
