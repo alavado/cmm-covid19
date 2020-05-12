@@ -294,7 +294,7 @@ export const interpolarComunas = async (datosComunales, datosRegionales, geoJSON
       ...comuna,
       datos: comuna.datos.map(d => ({
         ...d,
-        valorNormalizado: d.valor * 1e5 / poblacion
+        valorNormalizado: Math.round(d.valor) * 1e5 / poblacion
       }))
     }
   })

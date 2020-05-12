@@ -30,7 +30,7 @@ const MiniGrafico = props => {
             transform: mostrandoMiniGraficos ? 'translateY(0em)' : 'translateY(.25em)',
           }}
         >
-          <Line
+          {mostrandoMiniGraficos && <Line
             data={{
               labels: data.map((x, i) => i),
               datasets: [{
@@ -40,7 +40,7 @@ const MiniGrafico = props => {
                 pointHitRadius: 0,
                 borderColor: 'rgba(255, 255, 255, 1)',
                 borderWidth: .75,
-                backgroundColor: 'rgba(255, 255, 255, .5)',
+                backgroundColor: 'rgba(255, 255, 255, .5)'
               }]
             }}
             options={{
@@ -61,14 +61,14 @@ const MiniGrafico = props => {
                   display: false,
                   gridLines: {
                     display: false
-                  }
+                  },
                 }]
               },
               legend: {
                 display: false
               }
             }}
-          />
+          />}
         </div>
       </div>
     </Marker>
