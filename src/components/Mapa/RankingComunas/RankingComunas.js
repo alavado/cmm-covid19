@@ -141,7 +141,6 @@ const RankingComunas = () => {
             {rankingExpandido ? <IconoMenosDetalle /> : <IconoMasDetalle />}
           </button>
           <button
-            style={{ display: 'none' }}
             title={!mostrandoMiniGraficos ? 'Ver gráficos por comuna' : 'Ocultar gráficos por comuna'}
             className="RankingComunas__boton_mostrar_mini_graficos"
             onClick={() => dispatch(mostrarMiniGraficos(!mostrandoMiniGraficos))}

@@ -1,6 +1,7 @@
 .MiniGrafico__nombre_comuna {
   pointer-events: none;
   z-index: 2;
+  height: 3em;
 }
 
 .MiniGrafico__nombre_comuna_contenido {
@@ -15,4 +16,11 @@
   text-align: center;
   transition: all .25s ease-in-out;
   pointer-events: none;
+}
+
+.MiniGrafico__contenedor_grafico {
+  display: flex;
+  width: 10em;
+  height: 2em;
+  transition: all .25s ease-in-out;
 }

@@ -165,6 +165,12 @@ const Mapa = () => {
       return []
     }
     const codigoRegion = Number(demograficosComunas.find(c => c.codigo === codigo).region)
+    const zoomRegion = viewportRegiones
+      .find(vp => vp.codigo === codigoRegion)
+      .vp.zoomMinimoParaMostrarMarkerComunas
+    if (viewport.zoom < zoomRegion) {
+      return []
+    }
     const poligonosRegion = series
       .find(({ id }) => id === NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS)
       .geoJSON
@@ -172,9 +178,17 @@ const Mapa = () => {
       .filter(f => f.properties.codigoRegion === Number(codigoRegion))
     return poligonosRegion.map((feature, i) => {
       const centroVisual = calcularPoloDeInaccesibilidad(feature)
-      const zoomRegion = viewportRegiones
-        .find(vp => vp.codigo === codigoRegion)
-        .vp.zoomMinimoParaMostrarMarkerComunas
+      const datos = series
+        .find(({ id }) => id === NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS).datos
+        .find(comuna => comuna.codigo === feature.properties.codigo).datos
+        .map(d => d.valor)
+        .reduce((prev, v, i, arr) => {
+          let sum = 0
+          for (let j = i; j >= 0 && j > i - 2; j--) {
+            sum += arr[j]
+          }
+          return [...prev, sum / Math.min(i + 1, 2)]
+        }, [])
       return (
         <MiniGrafico
           key={`minigrafico-${feature.properties.codigo}`}
@@ -182,6 +196,7 @@ const Mapa = () => {
           lng={centroVisual.longitude}
           nombreComuna={feature.properties.NOM_COM}
           mostrar={viewport.zoom > zoomRegion}
+          data={datos}
         />
       )
     })
@@ -343,7 +358,7 @@ const Mapa = () => {
               type="line"
               paint={{
                 'line-color': 'rgba(0, 0, 0, 0.75)',
-                'line-width': 3
+                'line-width': 2
               }}
             />
           </Source>
