@@ -58,6 +58,7 @@ const CodigoColor = () => {
         {serieSeleccionada.nombre} {division === 'comuna' && '*'}
       </div>
       <div
+        title={`Datos de casos confirmados a nivel regional extraídos del reporte diario MINSAL con fecha ${fecha.format('DD/MM')}.`}
         className={`
           CodigoColor__fecha
           CodigoColor__fecha--${avanza ? 'avanza' : 'retrocede'}-${vecesAnimada % 2 + 1}`}

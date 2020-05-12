@@ -48,6 +48,16 @@
   align-items: center;
 }
 
+.RankingComunas__boton_mostrar_mini_graficos {
+  background-color: transparent;
+  color: rgba(255, 255, 255, .8);
+  border: none;
+  cursor: pointer;
+  font-size: .7em;
+  display: flex;
+  align-items: center;
+}
+
 .RankingComunas--expandido .RankingComunas__boton_detalle {
   color: #0288D1;
 }
@@ -151,9 +161,6 @@
     top: auto;
     right: auto;
     left: .75em;
-    display: none;
-  }
-  .RankingComunas__boton_detalle {
     display: none;
   }
 }

@@ -3,13 +3,14 @@ import './RankingComunas.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CODIGO_CHILE, CASOS_COMUNALES_INTERPOLADOS, CASOS_COMUNALES } from '../../../redux/reducers/series'
 import { useParams, Link } from 'react-router-dom'
-import { expandirRanking, cambiarOrdenRanking } from '../../../redux/actions'
+import { expandirRanking, cambiarOrdenRanking, mostrarMiniGraficos } from '../../../redux/actions'
 import { obtenerDemograficosComuna } from '../../../helpers/demograficos'
 import {
   FaWindowMinimize as IconoMenosDetalle,
   FaWindowMaximize as IconoMasDetalle,
   FaCaretDown,
-  FaSort
+  FaSort,
+  FaChartLine
 } from 'react-icons/fa'
 import moment from 'moment'
 import {
@@ -21,7 +22,8 @@ import {
 
 const RankingComunas = () => {
 
-  const { series, posicion, comunasInterpoladas, datosNormalizadosPor100000Habitantes } = useSelector(state => state.series)
+  const { series, posicion, comunasInterpoladas } = useSelector(state => state.series)
+  const { mostrandoMiniGraficos } = useSelector(state => state.comparacion)
   const { escala } = useSelector(state => state.colores)
   const { rankingExpandido, ordenRanking } = useSelector(state => state.ranking)
   const serieNormalizada = series.find(({ id }) => {
@@ -130,14 +132,20 @@ const RankingComunas = () => {
         </Link>
       ))}
       <div className="RankingComunas__titulo">
-        <h1 className="RankingComunas__botones">
+        <div className="RankingComunas__botones">
           <button
             className="RankingComunas__boton_detalle"
             onClick={() => dispatch(expandirRanking(!rankingExpandido))}
           >
             {rankingExpandido ? <IconoMenosDetalle /> : <IconoMasDetalle />}
           </button>
-        </h1>
+          <button
+            className="RankingComunas__boton_mostrar_mini_graficos"
+            onClick={() => dispatch(mostrarMiniGraficos(!mostrandoMiniGraficos))}
+          >
+            <FaChartLine />
+          </button>
+        </div>
         <h1
           className="RankingComunas__contenido_encabezado"
           title="Nuevos casos confirmados por 100.000 habitantes en la comuna. El número de casos confirmados es menor que el número real de casos, porque no se les toma el examen a todos los habitantes."

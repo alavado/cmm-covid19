@@ -49,7 +49,7 @@
 }
 
 .CodigoColor__titulo {
-  font-size: 1.15em;
+  font-size: .95em;
   pointer-events: none;
   user-select: none;
 }
@@ -60,7 +60,8 @@
   font-weight: bold;
   display: flex;
   align-items: center;
-  pointer-events: none;
+  pointer-events: all;
+  cursor: help;
   user-select: none;
 }
 
