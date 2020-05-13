@@ -242,6 +242,7 @@ const AppGraficosSimples = () => {
           />
         </div>
         <Link style={{ textDecoration: 'underline' }} to={`/comuna/${codigoComuna}`}>Ver esta comuna en el mapa (cuidado: cambia mucho la página)</Link>
+        <p className="AppGraficosSimples__aviso">Para estimar los nuevos casos en los días sin datos por comuna, los nuevos casos de cada región se reparten entre sus comunas siguiendo la misma proporción de aumento observada entre los dos informes más cercanos en el tiempo.</p>
       </div>
     </div>
   )
