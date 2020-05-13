@@ -25,6 +25,7 @@ const AppGraficosSimples = () => {
   const datos = serieComunas.datos
     .find(comuna => comuna.codigo === codigoComuna)
     .datos
+    .map(d => ({ ...d, valor: d.valor > 1 ? Math.round(d.valor) : 0}))
 
   const fechas = datos.map(d => d.fecha).slice(15)
   const valores = datos.map(d => d.valor)
@@ -56,6 +57,8 @@ const AppGraficosSimples = () => {
     }
     return cuarentenas.filter(r => !r.eliminar)
   }, [comuna])
+
+  console.log({datos})
 
   useEffect(() => {
     setAnnotation({
@@ -123,7 +126,7 @@ const AppGraficosSimples = () => {
         <div className="AppGraficosSimples__contenedor_encabezado">
           <div className="AppGraficosSimples__contenedor_encabezado_izquierda">
             <h1 className="AppGraficosSimples__nombre_comuna">{serieComunas.datos.find(c => c.codigo === codigoComuna).nombre}</h1>
-            <h2 className="AppGraficosSimples__casos_totales">{Math.round(serieComunas.datos.find(comuna => comuna.codigo === codigoComuna).datos.slice(-1)[0].valor)} Casos Totales</h2>
+            <h2 className="AppGraficosSimples__casos_totales">{datos.slice(-1)[0].valor} Casos Totales</h2>
           </div>
           <div>
           <div className="AppGraficosSimples__contenedor_encabezado_derecha">
