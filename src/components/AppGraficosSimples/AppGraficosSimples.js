@@ -33,23 +33,28 @@ const AppGraficosSimples = () => {
       return [...prev, sum / Math.min(i + 1, 7)]
     }, [])
   
-  const rangosCuarentenas = geoJSONCuarentenas.features
+  let rangosCuarentenas = geoJSONCuarentenas.features
     .map(({ properties: { Cut_Com, FInicio, FTermino } }) => ({
       codigo: Cut_Com,
       inicio: moment(FInicio, 'YYYY/MM/DD'),
       fin: moment(FTermino, 'YYYY/MM/DD').add(-1, 'days')
     }))
 
-  const cuarentenasComuna = rangosCuarentenas
+  let cuarentenasComuna = rangosCuarentenas
     .filter(({ codigo }) => codigo === codigoComuna)
-
-  console.log({cuarentenasComuna})
-  console.log({fechas})
+  
+  for (let i = 0; i < cuarentenasComuna.length - 1; i++) {
+    let j = i + 1
+    while (j < cuarentenasComuna.length - 1 && Math.abs(cuarentenasComuna[i].fin.diff(cuarentenasComuna[j].inicio, 'days')) <= 2) {
+      cuarentenasComuna[i].fin = cuarentenasComuna[j].fin.clone()
+      cuarentenasComuna[j].eliminar = true
+    }
+  }
+  cuarentenasComuna = cuarentenasComuna.filter(r => !r.eliminar)
 
   return (
     <div className="AppGraficosSimples">
       <div className="AppGraficosSimples__contenedor">
-        <h1>Gráficos estilo Jorge Pérez</h1>
         <label className="AppGraficosSimples__label_selector">Comuna:
           <select onChange={e => history.push(`/graficos/comuna/${e.target.value}`)}>
             {serieComunas.datos
@@ -96,8 +101,8 @@ const AppGraficosSimples = () => {
                     display: true,
                     lineWidth: fechas.map(f => cuarentenasComuna.some(({ inicio, fin }) => {
                       return (f.diff(inicio, 'days') === 0 || f.diff(fin, 'days') === 0)
-                    }) ? 4 : .5),
-                    borderDash: [12, 4],
+                    }) ? 4 : 1),
+                    borderDash: [15, 12],
                     color: '#C3C3C3'
                   },
                   ticks: {
@@ -128,13 +133,18 @@ const AppGraficosSimples = () => {
                   }
                 }]
               },
+              tooltips: {
+                callbacks: {
+                  label: item => `Nuevos casos: ${Math.round(Number(item.value))}`
+                }
+              },
               legend: {
                 display: false
               }
             }}
           />
         </div>
-        <Link to={`/comuna/${codigoComuna}`}>Ver esta comuna en el mapa</Link>
+        <Link style={{ textDecoration: 'underline' }} to={`/comuna/${codigoComuna}`}>Ver esta comuna en el mapa</Link>
       </div>
     </div>
   )
