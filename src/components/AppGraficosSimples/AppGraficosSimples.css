@@ -12,7 +12,7 @@
 .AppGraficosSimples__label_selector {
   display: grid;
   gap: .25em;
-  max-width: 25%;
+  max-width: 40%;
 }
 
 .AppGraficosSimples__nombre_comuna {

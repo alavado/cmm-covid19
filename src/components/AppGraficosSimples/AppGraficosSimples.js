@@ -13,6 +13,8 @@ const AppGraficosSimples = () => {
   const [annotation, setAnnotation] = useState({})
   const { comuna } = useParams()
   const history = useHistory()
+  const minimosCasos = 100
+  const omitirPrimeros = 15
 
   let codigoComuna = Number(comuna)
   if (!comuna) {
@@ -27,15 +29,18 @@ const AppGraficosSimples = () => {
     .datos
     .map(d => ({ ...d, valor: d.valor > 1 ? Math.round(d.valor) : 0}))
 
-  const fechas = datos.map(d => d.fecha).slice(15)
+  const fechas = datos
+    .map(d => d.fecha)
+    .slice(omitirPrimeros)
   const valores = datos.map(d => d.valor)
     .reduce((prev, v, i, arr) => {
       let sum = 0
       for (let j = i; j > 0 && j > i - 7; j--) {
         sum += arr[j] - arr[j - 1]
       }
-      return [...prev, sum / Math.min(i + 1, 7)]
-    }, []).slice(15)
+      return [...prev, sum]
+    }, [])
+    .slice(omitirPrimeros)
 
   const cuarentenasComuna = useMemo(() => {
     const rangosCuarentenas = geoJSONCuarentenas.features
@@ -57,8 +62,6 @@ const AppGraficosSimples = () => {
     }
     return cuarentenas.filter(r => !r.eliminar)
   }, [comuna])
-
-  console.log({datos})
 
   useEffect(() => {
     setAnnotation({
@@ -141,10 +144,12 @@ const AppGraficosSimples = () => {
   return (
     <div className="AppGraficosSimples">
       <div className="AppGraficosSimples__contenedor">
-        <label className="AppGraficosSimples__label_selector">Comuna:
-          <select onChange={e => history.push(`/graficos/comuna/${e.target.value}`)}>
+        <label className="AppGraficosSimples__label_selector">
+          {`Comunas con más de ${minimosCasos} casos:`}
+          <select defaultValue={codigoComuna} onChange={e => history.push(`/graficos/comuna/${e.target.value}`)}>
             {serieComunas.datos
-              .sort((c1, c2) => c1.nombre > c2.nombre ? 1 : -1)
+              .filter(c => c.datos.slice(-1)[0].valor >= minimosCasos)
+              .sort((c1, c2) => c1.nombre.localeCompare(c2.nombre))
               .map(comuna => (
                 <option key={`perez-${comuna.codigo}`} value={comuna.codigo}>
                   {comuna.nombre}
@@ -225,7 +230,7 @@ const AppGraficosSimples = () => {
               },
               tooltips: {
                 callbacks: {
-                  afterTitle: item => `${Math.round(valores[item[0].index])} nuevos casos`,
+                  afterTitle: item => `${Math.round(valores[item[0].index])} ${Math.round(valores[item[0].index]) === 1 ? 'nuevo caso' : 'nuevos casos'} en los últimos 7 días`,
                   label: item => ''//`${Math.round(valores.slice(item.index - 6, item.index + 1).reduce((sum, x) => sum + x))} nuevos casos en los últimos 7 días`
                 }
               },
