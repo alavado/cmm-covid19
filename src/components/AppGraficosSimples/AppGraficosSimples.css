@@ -43,7 +43,14 @@
 
 .AppGraficosSimples__contenedor_encabezado_derecha {
   text-align: right;
-  font-size: .75em;
+  font-size: .8em;
   font-weight: bold;
   line-height: 1.15;
+}
+
+@media (orientation: portrait) {
+  .AppGraficosSimples__contenedor {
+    max-width: 100vw;
+    overflow: scroll;
+  }
 }
