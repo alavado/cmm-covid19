@@ -64,34 +64,64 @@ const AppGraficosSimples = () => {
     setAnnotation({
       drawTime: 'afterDatasetsDraw',
       annotations: [
-        ...cuarentenasComuna.map(cuarentena => {
-          const { inicio, fin } = cuarentena
-          let indiceInicio = fechas.findIndex(f => Math.abs(f.diff(inicio, 'days')) <= .5)
-          let indiceFin = fechas.findIndex(f => Math.abs(f.diff(fin, 'days')) <= .5)
-          if (indiceInicio < 0) {
-            indiceInicio = fechas.length - 1
-          }
-          if (indiceFin < 0) {
-            indiceFin = fechas.length - 1
-          }
-          return { i: (indiceFin + indiceInicio) / 2, dif: indiceFin - indiceInicio, indiceInicio, indiceFin }
-        }).map(({ i, dif, indiceInicio, indiceFin }) => ({
-          type: 'line',
-          mode: 'vertical',
-          scaleID: 'eje-x', 
-          borderColor: 'transparent',
-          value: i,
-          borderWidth: 2,
-          label: {
-            backgroundColor: 'transparent',
-            content: 'cuarentena',
-            fontColor: '#5E5E5E',
-            fontSize: 18 - Math.max(12 - dif, 0),
-            fontStyle: 'bold',
-            enabled: true,
-            yAdjust: -120
-          }
-      })),
+        ...cuarentenasComuna
+          .map(cuarentena => {
+            const { inicio, fin } = cuarentena
+            let indiceInicio = fechas.findIndex(f => Math.abs(f.diff(inicio, 'days')) <= .5)
+            let indiceFin = fechas.findIndex(f => Math.abs(f.diff(fin, 'days')) <= .5)
+            if (indiceInicio < 0) {
+              indiceInicio = fechas.length - 1
+            }
+            if (indiceFin < 0) {
+              indiceFin = fechas.length - 1
+            }
+            const max = valores.slice(indiceInicio, indiceFin + 1).reduce((x, y) => Math.max(x, y))
+            return {
+              i: (indiceFin + indiceInicio) / 2,
+              dif: indiceFin - indiceInicio,
+              indiceInicio,
+              indiceFin,
+              max,
+              indiceMax: valores.findIndex(x => x === max)
+            }
+          })
+          .map(({ i, dif, indiceInicio, indiceFin, max, indiceMax }) => [
+            {
+              type: 'line',
+              mode: 'vertical',
+              scaleID: 'eje-x', 
+              borderColor: 'transparent',
+              value: i,
+              borderWidth: 2,
+              label: {
+                backgroundColor: 'transparent',
+                content: 'cuarentena',
+                fontColor: '#5E5E5E',
+                fontSize: 18 - Math.max(12 - dif, 0),
+                fontStyle: 'bold',
+                enabled: true,
+                yAdjust: -120
+              }
+            },
+            {
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'eje-y', 
+              borderColor: 'transparent',
+              value: max,
+              borderWidth: 2,
+              label: {
+                backgroundColor: 'transparent',
+                content: `${Math.round(valores.slice(indiceMax - 6, indiceMax + 1).reduce((sum, x) => sum + x))} casos`,
+                fontColor: 'transparent',//'#C6C6C6',
+                fontSize: 12,
+                fontStyle: 'bold',
+                enabled: true,
+                yAdjust: -38,
+                xAdjust: (indiceMax - valores.length / 2) * 10.8
+              }
+            }
+          ]).flat(),
       ...fechas.map((f, i) => f.date() === 1 ? i : -1).filter(i => i >= 0).map(i => ({
         type: 'box',
         xScaleID: 'eje-x',
@@ -195,7 +225,8 @@ const AppGraficosSimples = () => {
               },
               tooltips: {
                 callbacks: {
-                  label: item => `${Math.round(item.value)} nuevos casos`
+                  afterTitle: item => `${Math.round(valores[item[0].index])} nuevos casos`,
+                  label: item => ''//`${Math.round(valores.slice(item.index - 6, item.index + 1).reduce((sum, x) => sum + x))} nuevos casos en los últimos 7 días`
                 }
               },
               legend: {
