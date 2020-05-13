@@ -13,6 +13,7 @@
   display: grid;
   gap: .25em;
   max-width: 40%;
+  font-size: .8em;
 }
 
 .AppGraficosSimples__nombre_comuna {
@@ -20,6 +21,13 @@
   color: #6D6D6D;
   margin-top: 1em;
   font-size: 1.4em;
+}
+
+.AppGraficosSimples__selector {
+  font-size: 1.2em;
+  font-family: 'Open Sans';
+  border-radius: .25em;
+  padding: .25em;
 }
 
 .AppGraficosSimples__casos_totales {

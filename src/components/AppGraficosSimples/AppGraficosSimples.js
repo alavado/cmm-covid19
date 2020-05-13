@@ -145,8 +145,12 @@ const AppGraficosSimples = () => {
     <div className="AppGraficosSimples">
       <div className="AppGraficosSimples__contenedor">
         <label className="AppGraficosSimples__label_selector">
-          {`Comunas con más de ${minimosCasos} casos:`}
-          <select defaultValue={codigoComuna} onChange={e => history.push(`/graficos/comuna/${e.target.value}`)}>
+          {`Comunas con más de ${minimosCasos} casos`}
+          <select
+            className="AppGraficosSimples__selector"
+            defaultValue={codigoComuna}
+            onChange={e => history.push(`/graficos/comuna/${e.target.value}`)}
+          >
             {serieComunas.datos
               .filter(c => c.datos.slice(-1)[0].valor >= minimosCasos)
               .sort((c1, c2) => c1.nombre.localeCompare(c2.nombre))
