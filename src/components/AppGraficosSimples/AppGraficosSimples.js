@@ -36,7 +36,7 @@ const AppGraficosSimples = () => {
     .reduce((prev, v, i, arr) => {
       let sum = 0
       for (let j = i; j > 0 && j > i - 7; j--) {
-        sum += arr[j] - arr[j - 1]
+        sum += Math.max(0, arr[j] - arr[j - 1])
       }
       return [...prev, sum]
     }, [])
