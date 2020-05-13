@@ -1,0 +1,46 @@
+.AppGraficosSimples {
+  background-color: white;
+}
+
+.AppGraficosSimples__contenedor {
+  display: flex;
+  flex-direction: column;
+  padding: 1em 0 0 1em;
+  width: 45em;
+}
+
+.AppGraficosSimples__label_selector {
+  margin-top: 1em;
+  display: grid;
+  gap: .25em;
+  max-width: 25%;
+}
+
+.AppGraficosSimples__nombre_comuna {
+  font-weight: bold;
+  color: #6D6D6D;
+  margin-top: 1em;
+  font-size: 1.4em;
+}
+
+.AppGraficosSimples__casos_totales {
+  color: #AAAAAA;
+  margin-top: .75em;
+  font-size: .9em;
+}
+
+.AppGraficosSimples__contenedor_grafico {
+  width: 45em;
+  height: 20em;
+}
+
+.AppGraficosSimples__contenedor_encabezado {
+  display: flex;
+  justify-content: space-between;
+}
+
+.AppGraficosSimples__contenedor_encabezado_derecha {
+  text-align: right;
+  font-size: .75em;
+  font-weight: bold;
+}

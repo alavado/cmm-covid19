@@ -138,13 +138,15 @@ const Mapa = () => {
         const poligono = serie.geoJSON.features.find(f => f.properties.codigo === codigo)
         setPoligonoDestacado(poligono)
         const { latitude, longitude } = calcularPoloDeInaccesibilidad(poligono)
-        setViewport({ ...viewport,
-          longitude,
-          latitude,
-          transitionDuration: animaciones ? 1500 : 0,
-          transitionInterpolator: new FlyToInterpolator(),
-          transitionEasing: easeCubic
-        })
+        if (division) {
+          setViewport({ ...viewport,
+            longitude,
+            latitude,
+            transitionDuration: animaciones ? 1500 : 0,
+            transitionInterpolator: new FlyToInterpolator(),
+            transitionEasing: easeCubic
+          })
+        }
       }
     }
   }, [subserieSeleccionada])
@@ -176,8 +178,6 @@ const Mapa = () => {
       .datos
       .reduce((d1, d2) => d1.valor > d2.valor ? d1 : d2).valor
   }, [codigo])
-
-  console.log(maximoComunas)
 
   const labelsComunas = useMemo(() => {
     if (division !== 'comuna') {
@@ -284,7 +284,7 @@ const Mapa = () => {
   const actualizacion = useMemo(() => (
     <div className="Mapa__actualizacion">
       <div className="Mapa__actualizacion_contenido">
-        Última actualización: 12/05<br />
+        Última actualización: 13/05<br />
         <a target="_blank" href="https://twitter.com/alavado_desu"><span className="Contacto">Contacto</span></a>
       </div>
     </div>
