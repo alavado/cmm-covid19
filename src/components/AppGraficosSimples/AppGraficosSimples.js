@@ -13,7 +13,7 @@ const AppGraficosSimples = () => {
   const [annotation, setAnnotation] = useState({})
   const { comuna } = useParams()
   const history = useHistory()
-  const minimosCasos = 100
+  const minimosCasos = 50
   const omitirPrimeros = 15
 
   let codigoComuna = Number(comuna)
