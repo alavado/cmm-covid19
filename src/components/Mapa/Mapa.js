@@ -139,7 +139,8 @@ const Mapa = () => {
         setPoligonoDestacado(poligono)
         const { latitude, longitude } = calcularPoloDeInaccesibilidad(poligono)
         if (division) {
-          setViewport({ ...viewport,
+          setViewport({
+            ...viewport,
             longitude,
             latitude,
             transitionDuration: animaciones ? 1500 : 0,

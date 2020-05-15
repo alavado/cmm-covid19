@@ -126,13 +126,22 @@ const CodigoColor = () => {
           </button>
         }
         {!division &&
-          <button
-            onClick={toggleRegiones}
-            className="CodigoColor__boton_cambio"
-            onMouseOver={e => e.stopPropagation()}
-          >
-            {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? 'Ver comunas' : 'Ver regiones'}
-          </button>
+          <>
+            <button
+              onClick={toggleRegiones}
+              className="CodigoColor__boton_cambio"
+              onMouseOver={e => e.stopPropagation()}
+            >
+              {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? 'Ver comunas' : 'Ver regiones'}
+            </button>
+            <button
+              onClick={() => history.push('/graficos')}
+              className="CodigoColor__boton_cambio"
+              onMouseOver={e => e.stopPropagation()}
+            >
+              Ver gráficos limpios
+            </button>
+          </>
         }
         {division === 'comuna' &&
           <>
