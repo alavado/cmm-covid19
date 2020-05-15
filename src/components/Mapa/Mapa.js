@@ -285,7 +285,7 @@ const Mapa = () => {
   const actualizacion = useMemo(() => (
     <div className="Mapa__actualizacion">
       <div className="Mapa__actualizacion_contenido">
-        Última actualización: 13/05<br />
+        Última actualización: 15/05<br />
         <a target="_blank" href="https://twitter.com/alavado_desu"><span className="Contacto">Contacto</span></a>
       </div>
     </div>
