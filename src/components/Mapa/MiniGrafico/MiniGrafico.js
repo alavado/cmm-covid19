@@ -18,8 +18,8 @@ const MiniGrafico = props => {
       <div
         className="MiniGrafico__nombre_comuna_contenido"
         style={{
-          opacity: mostrar ? .9 : 0,
-          transform: mostrar ? 'translateY(0em)' : 'translateY(.25em)',
+          // opacity: mostrar ? .9 : 0,
+          // transform: mostrar ? 'translateY(0em)' : 'translateY(.25em)',
         }}
       >
         {nombreComuna}
