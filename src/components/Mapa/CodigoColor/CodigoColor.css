@@ -115,6 +115,25 @@
   pointer-events: all;
 }
 
+.CodigoColor__boton_graficos {
+  width: 12em;
+  cursor: pointer;
+  border: none;
+  color: rgba(255, 255, 255, .9);
+  background-color: #0288D1;
+  padding: 1em;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: .65em;
+  box-shadow: 0 .25em .25em rgba(0, 0, 0, .25);
+  letter-spacing: .5px;
+  transition: all .25s ease-in-out;
+  z-index: 5;
+  animation: aparece-boton-molesto .25s ease-in-out both;
+  user-select: none;
+  pointer-events: all;
+}
+
 .CodigoColor__boton_cambio:hover {
   filter: brightness(120%);
 }

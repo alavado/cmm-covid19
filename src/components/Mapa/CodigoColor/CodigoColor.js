@@ -136,7 +136,7 @@ const CodigoColor = () => {
             </button>
             <button
               onClick={() => history.push('/graficos')}
-              className="CodigoColor__boton_cambio"
+              className="CodigoColor__boton_graficos"
               onMouseOver={e => e.stopPropagation()}
               title="Ir a interfaz con gráficos sencillos por comuna"
             >
