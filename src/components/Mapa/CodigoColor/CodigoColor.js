@@ -138,6 +138,7 @@ const CodigoColor = () => {
               onClick={() => history.push('/graficos')}
               className="CodigoColor__boton_cambio"
               onMouseOver={e => e.stopPropagation()}
+              title="Ir a interfaz con gráficos sencillos por comuna"
             >
               Ver gráficos limpios
             </button>

@@ -184,7 +184,7 @@ const RankingComunas = () => {
         </div>
         <div
           className="RankingComunas__contenido_encabezado"
-          title="Porcentaje de aumento o disminución de nuevos casos confirmados en la comuna. Este se calcula como el promedio de nuevos casos confirmados durante los últimos 7 días en relación al de los 7 días anteriores."
+          title="Porcentaje de aumento o disminución de nuevos casos confirmados en la comuna. Este se calcula como el total de nuevos casos confirmados durante los últimos 7 días en relación a los 7 días anteriores."
           onClick={() => dispatch(cambiarOrdenRanking(RANKING_VARIACION_SEMANAL))}
         >
           Variación<br/>semanal
