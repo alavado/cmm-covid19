@@ -1,6 +1,6 @@
 .AppGraficosSimples {
   background-color: white;
-  overflow: scroll;
+  overflow: auto;
   padding-bottom: 2em;
 }
 
