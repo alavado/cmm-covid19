@@ -238,14 +238,15 @@ export const interpolarComunas = async (datosComunales, datosRegionales, geoJSON
       })
     }
   })
+  const hashRegiones = datosRegionales.reduce((obj, r) => ({ ...obj, [r.codigo]: r }), {})
+  console.log('interp')
+  const ti = Date.now()
   const datosComunalesInterpolados = datosComunales.map(comuna => ({
     ...comuna,
-    datos: datosRegionales
-      .find(({ codigo }) => codigo === comuna.codigoRegion)
+    datos: hashRegiones[comuna.codigoRegion]
       .datos
       .reduce(({ indiceDatosComunales: idc, datos: prev, acum }, { fecha }, i) => {
-        const datosRegion = datosRegionales
-            .find(({ codigo }) => codigo === comuna.codigoRegion)
+        const datosRegion = hashRegiones[comuna.codigoRegion]
         const aumentoRegion = datosRegion.datos[i].valor - datosRegion.datos[Math.max(0, i - 1)].valor
         if (idc < comuna.datos.length && comuna.datos[idc].fecha.diff(fecha, 'days') === 0) {
           return {
@@ -288,6 +289,7 @@ export const interpolarComunas = async (datosComunales, datosRegionales, geoJSON
         }
       }, { indiceDatosComunales: 0, acum: 0, datos: [] }).datos
   }))
+  console.log('fin interp', Date.now() - ti)
   const datosComunalesInterpoladosNormalizados = datosComunalesInterpolados.map(comuna => {
     const { poblacion } = demografiaComunas.find(c => Number(c.codigo) === comuna.codigo)
     return {
