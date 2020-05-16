@@ -1,0 +1,15 @@
+.AppUCI {
+  background-color: white;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.AppUCI__contenedor_mapa {
+  flex: 1;
+  display: flex;
+  width: 100%;
+}

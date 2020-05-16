@@ -1,0 +1,11 @@
+{
+  "bearing":0,
+  "center":[-122.41877447993727,37.7977350127602],
+  "glyphs":"https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=9sVe3g7n8Rv4JJBJXlbK",
+  "id":"toner",
+  "layers":[],
+  "metadata":{"mapbox:autocomposite":false,"mapbox:type":"template","openmaptiles:mapbox:owner":"openmaptiles","openmaptiles:mapbox:source:url":"mapbox://openmaptiles.4qljc88t","openmaptiles:version":"3.x"},"name":"Toner","pitch":0,"sources":{"openmaptiles":{"type":"vector","url":"https://api.maptiler.com/tiles/v3/tiles.json?key=9sVe3g7n8Rv4JJBJXlbK"}},
+  "sprite":"https://api.maptiler.com/maps/toner/sprite",
+  "version":8,
+  "zoom":10.426085190067841
+}

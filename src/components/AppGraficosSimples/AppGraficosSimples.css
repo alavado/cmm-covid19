@@ -1,5 +1,7 @@
 .AppGraficosSimples {
   background-color: white;
+  overflow: scroll;
+  padding-bottom: 2em;
 }
 
 .AppGraficosSimples__contenedor {

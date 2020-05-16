@@ -19,6 +19,7 @@ import Loader from './Loader'
 import geoJSONCuarentenas from '../../data/geojsons/cuarentenas.json'
 import AppMapaCasos from '../AppMapaCasos'
 import AppGraficosSimples from '../AppGraficosSimples'
+import AppUCI from '../AppUCI'
 
 const urlDatosRegiones = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/contagios/regiones.csv'
 const urlDatosComunas = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/contagios/comunas.csv'
@@ -92,6 +93,7 @@ const App = () => {
     <div className="App">
       {inicializada ?
         <Switch>
+          <Route path="/uci" exact component={AppUCI} />
           <Route path="/casos" exact component={AppMapaCasos} />
           <Route path="/graficos/comuna/:comuna" component={AppGraficosSimples} />
           <Route path="/graficos" component={AppGraficosSimples} />
