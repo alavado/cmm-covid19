@@ -24,7 +24,7 @@
     "openmaptiles": {
       "type": "vector",
       "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=9sVe3g7n8Rv4JJBJXlbK",
-      "attribution": "Fuente de datos: <a target='_blank' href='https://docs.google.com/spreadsheets/d/1mLx2L8nMaRZu0Sy4lyFniDewl6jDcgnxB_d0lHG-boc/edit#gid=0'>Planilla del profesor Jorge Pérez | <a href='http://openmaptiles.org/' target='_blank'>© OpenMapTiles</a> <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>"
+      "attribution": "Fuente de datos: <a target='_blank' href='https://docs.google.com/spreadsheets/d/1mLx2L8nMaRZu0Sy4lyFniDewl6jDcgnxB_d0lHG-boc/edit#gid=0'>Planilla del profesor Jorge Pérez | <a href='https://www.maptiler.com/copyright/' target='_blank' rel='noopener noreferrer'>© MapTiler</a> <a href='https://www.openstreetmap.org/copyright'>© OpenStreetMap contributors</a>"
     }
   },
   "sprite": "https://openmaptiles.github.io/dark-matter-gl-style/sprite",
