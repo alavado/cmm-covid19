@@ -53,15 +53,15 @@ const RankingComunas = () => {
       .filter(c => c.codigoRegion === codigoRegion)
       .map(({ codigo, nombre, datos }) => {
         const serieOriginal = serieCasos.datos.find(c => c.codigo === codigo)
-        const promedioSemanal = serieOriginal.datos.slice(posicion - 6, posicion + 1).reduce((sum, x) => sum + x.valor, 0) / 7
-        const promedioSemanalAnterior = serieOriginal.datos.slice(posicion - 13, posicion - 6).reduce((sum, x) => sum + x.valor, 0) / 7
+        const totalSemanal = serieOriginal.datos.slice(posicion - 6, posicion + 1).reduce((sum, x) => sum + x.valor, 0)
+        const totalSemanalAnterior = serieOriginal.datos.slice(posicion - 13, posicion - 6).reduce((sum, x) => sum + x.valor, 0)
         return {
           nombre,
           codigo,
           valorNormalizado: datos[posicion].valor,
           valorOriginal: serieOriginal.datos[posicion].valor - serieOriginal.datos[Math.max(0, posicion - 1)].valor,
           total: serieOriginal.datos[posicion].valor,
-          variacionSemanal: promedioSemanalAnterior === 0 ? -1 : (100 * (promedioSemanal / promedioSemanalAnterior - 1))
+          variacionSemanal: (100 * (totalSemanal - totalSemanalAnterior) / totalSemanalAnterior)
         }
       })
   }
@@ -121,7 +121,7 @@ const RankingComunas = () => {
             {c.total.toLocaleString('de-DE', { maximumFractionDigits: 0, minimumFractionDigits: 0 })}
           </div>
           <div className="RankingComunas__casos_comuna">
-            {c.variacionSemanal <= 0 ?
+            {c.variacionSemanal <= 0 || isNaN(c.variacionSemanal) || !isFinite(c.variacionSemanal) ?
               '-' :
               <>
                 {c.variacionSemanal > 0 && '+' }
