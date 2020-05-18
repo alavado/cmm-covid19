@@ -85,6 +85,7 @@ const CodigoColor = () => {
                 filter: indiceDestacado === i ? `brightness(80%) drop-shadow(0 0 .25em ${v[1]})` : 'brightness(80%)'
                }}
               onMouseEnter={e => {
+                return
                 if (indiceDestacado < 0) {
                   dispatch(toggleFiltro(false))
                   dispatch(filtrarGeoJSONPorValor(x => x >= v[0] && i < escala.length - 1 && x < escala[i + 1][0]))
@@ -92,10 +93,16 @@ const CodigoColor = () => {
               }}
               onMouseLeave={() => !filtroToggle && dispatch(filtrarGeoJSONPorValor(() => true))}
               onClick={() => {
+                return
                 if (indiceDestacado >= 0 && indiceDestacado === i) {
                   dispatch(destacarIndice(-1))
                   dispatch(toggleFiltro(false))
                   dispatch(filtrarGeoJSONPorValor(() => true))
+                }
+                else if (indiceDestacado === escala.length - 1) {
+                  dispatch(destacarIndice(i))
+                  dispatch(filtrarGeoJSONPorValor(x => x >= escala[i]))
+                  dispatch(toggleFiltro(true))
                 }
                 else {
                   dispatch(destacarIndice(i))
