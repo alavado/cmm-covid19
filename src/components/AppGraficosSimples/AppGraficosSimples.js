@@ -3,7 +3,7 @@ import './AppGraficosSimples.css'
 import { Line } from 'react-chartjs-2'
 import { useParams, useHistory, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { CASOS_COMUNALES_INTERPOLADOS } from '../../redux/reducers/series'
+import { CASOS_COMUNALES_INTERPOLADOS, CASOS_COMUNALES } from '../../redux/reducers/series'
 import moment from 'moment'
 import 'chartjs-plugin-annotation'
 
@@ -21,12 +21,23 @@ const AppGraficosSimples = () => {
     codigoComuna = 13101
   }
 
+  const serieComunasReales = series
+    .find(({ id }) => id === CASOS_COMUNALES)
+
   const serieComunas = series
     .find(({ id }) => id === CASOS_COMUNALES_INTERPOLADOS)
 
   const datos = serieComunas.datos
     .find(comuna => comuna.codigo === codigoComuna)
     .datos
+    .filter(d => {
+      const ultimaFechaConDatosReales = serieComunasReales
+        .datos
+        .find(comuna => comuna.codigo === codigoComuna)
+        .datos
+        .slice(-1)[0].fecha
+      return d.fecha.diff(ultimaFechaConDatosReales, 'days') <= 0
+    })
     .map(d => ({ ...d, valor: d.valor > 1 ? Math.round(d.valor) : 0}))
 
   const fechas = datos
