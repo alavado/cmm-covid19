@@ -6,8 +6,7 @@ const initialState = {
   colorApagado,
   daltonicos: false,
   animaciones: true,
-  indiceDestacado: -1,
-  casosPor100000Habitantes: true
+  indiceDestacado: -1
 }
 
 export default function(state = initialState, action) {
@@ -40,14 +39,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         animaciones: action.payload
-      }
-    }
-    case NORMALIZAR_POR_100000_HABITANTES: {
-      const normalizar = action.payload
-      return {
-        ...state,
-        casosPor100000Habitantes: normalizar,
-        escala: normalizar ? escala : escalaAbsoluta
       }
     }
     default:

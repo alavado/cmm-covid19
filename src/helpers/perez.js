@@ -239,8 +239,6 @@ export const interpolarComunas = async (datosComunales, datosRegionales, geoJSON
     }
   })
   const hashRegiones = datosRegionales.reduce((obj, r) => ({ ...obj, [r.codigo]: r }), {})
-  console.log('interp')
-  const ti = Date.now()
   const datosComunalesInterpolados = datosComunales.map(comuna => ({
     ...comuna,
     datos: hashRegiones[comuna.codigoRegion]
@@ -283,7 +281,6 @@ export const interpolarComunas = async (datosComunales, datosRegionales, geoJSON
         }
       }, { indiceDatosComunales: 0, acum: 0, datos: [] }).datos
   }))
-  console.log('fin interp', Date.now() - ti)
   const datosComunalesInterpoladosNormalizados = datosComunalesInterpolados.map(comuna => {
     const { poblacion } = demografiaComunas.find(c => Number(c.codigo) === comuna.codigo)
     return {

@@ -1,9 +1,7 @@
 import {
   ACTUALIZAR_SERIE, AVANZAR_EN_SERIE, RETROCEDER_EN_SERIE, FIJAR_POSICION_SERIE,
   SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, FILTRAR_GEOJSON_POR_VALOR, FILTRAR_GEOJSON_POR_REGION,
-  TOGGLE_FILTRO, LIMPIAR_FILTROS, FIJAR_GEOJSON_CUARENTENAS, VER_CUARENTENAS,
-  INTERPOLAR_COMUNAS,
-  NORMALIZAR_POR_100000_HABITANTES
+  TOGGLE_FILTRO, LIMPIAR_FILTROS, FIJAR_GEOJSON_CUARENTENAS, VER_CUARENTENAS
 } from '../actionTypes'
 import { obtenerCuarentenasActivas } from '../../helpers/cuarentenas'
 
@@ -64,8 +62,7 @@ const initialState = {
   geoJSONCuarentenas: null,
   verCuarentenas: true,
   posicion: 0,
-  comunasInterpoladas: true,
-  datosNormalizadosPor100000Habitantes: true
+  comunasInterpoladas: true
 }
 
 export default function(state = initialState, action) {
@@ -116,13 +113,6 @@ export default function(state = initialState, action) {
     }
     case SELECCIONAR_SERIE: {
       let idSerie = action.payload
-      if (!state.datosNormalizadosPor100000Habitantes) {
-        switch (idSerie) {
-          case NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS:
-            idSerie = CASOS_COMUNALES_INTERPOLADOS
-            break
-        }
-      }
       const nuevaSerieSeleccionada = state.series.find(s => s.id === idSerie)
       const subserieEquivalente = state.subserieSeleccionada && nuevaSerieSeleccionada.datos.find(d => d.codigo === state.subserieSeleccionada.codigo)
       return {
@@ -203,27 +193,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         verCuarentenas: action.payload
-      }
-    }
-    case INTERPOLAR_COMUNAS: {
-      return {
-        ...state,
-        comunasInterpoladas: action.payload
-      }
-    }
-    case NORMALIZAR_POR_100000_HABITANTES: {
-      console.log(action.payload)
-      if (action.payload) {
-        return {
-          ...state,
-          datosNormalizadosPor100000Habitantes: action.payload
-        }
-      }
-      else {
-        return {
-          ...state,
-          datosNormalizadosPor100000Habitantes: action.payload
-        }
       }
     }
     default:

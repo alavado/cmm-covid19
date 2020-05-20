@@ -16,7 +16,7 @@ const diasDispositivoPequeño = 42
 const Grafico = () => {
 
   const { escala } = useSelector(state => state.colores)
-  const { subserieSeleccionada: ss, series, posicion, geoJSONCuarentenas, verCuarentenas, comunasInterpoladas } = useSelector(state => state.series)
+  const { subserieSeleccionada: ss, series, posicion, geoJSONCuarentenas, comunasInterpoladas } = useSelector(state => state.series)
   const [datos, setDatos] = useState({})
   const { fecha } = ss.datos[posicion]
   const params = useParams()
@@ -231,7 +231,7 @@ const Grafico = () => {
       },
       ...data.datasets.slice(1),
     ]
-    if (division === 'comuna' && verCuarentenas) {
+    if (division === 'comuna') {
 
       const rangosCuarentenas = geoJSONCuarentenas.features.map(({ properties: { Cut_Com, FInicio, FTermino } }) => ({
         codigo: Cut_Com,
@@ -259,7 +259,7 @@ const Grafico = () => {
       }
     }
     setDatos(data)
-  }, [posicion, division, codigo, escala, verCuarentenas, comunasInterpoladas, ss])
+  }, [posicion, division, codigo, escala, comunasInterpoladas, ss])
 
   return (
     <div className="Grafico">

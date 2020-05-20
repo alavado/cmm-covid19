@@ -3,7 +3,7 @@ import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice, fijarVerCuarentenas, interpolarComunas, normalizarPor100000Habitantes } from '../../../redux/actions'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS } from '../../../redux/reducers/series'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS, CASOS_REGIONALES } from '../../../redux/reducers/series'
 import { useHistory, useParams } from 'react-router-dom'
 import { FaQuestionCircle as IconoAyuda } from 'react-icons/fa'
 import texture from '../../../assets/black-twill-sm.png'
@@ -55,7 +55,11 @@ const CodigoColor = () => {
   return (
     <div className="CodigoColor">
       <div className="CodigoColor__titulo">
-        {serieSeleccionada.nombre} {division === 'comuna' && '*'}
+        <select onChange={e => dispatch(seleccionarSerie(e.target.value))} className="CodigoColor__titulo_selector">
+          <option value={division === 'comuna' ? NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : CONTAGIOS_REGIONALES_POR_100000_HABITANTES}>Nuevos casos confirmados por 100.000 habitantes</option>
+          <option value={division === 'comuna' ? CASOS_COMUNALES_INTERPOLADOS : CASOS_REGIONALES}>Total de casos confirmados hasta la fecha</option>
+        </select>
+        {/* {serieSeleccionada.nombre} {division === 'comuna' && '*'} */}
       </div>
       <div
         title={`Datos de casos confirmados a nivel regional extraídos del reporte diario MINSAL con fecha ${fecha.format('DD/MM')}.`}

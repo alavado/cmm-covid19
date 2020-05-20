@@ -51,8 +51,35 @@
 
 .CodigoColor__titulo {
   font-size: .95em;
-  pointer-events: none;
+  pointer-events: all;
   user-select: none;
+  display: flex;
+  align-items: baseline;
+}
+
+.CodigoColor__titulo_selector {
+  background-color: transparent;
+  border: none;
+  color: rgba(255, 255, 255, .95);
+  text-transform: uppercase;
+  font-size: 1.1em;
+  font-family: 'Open Sans', sans-serif;
+  transform: translateX(-4px);
+  margin-top: -4px;
+  margin-bottom: -3px;
+  cursor: pointer;
+}
+
+.CodigoColor__titulo_selector > option {
+  color: rgba(255, 255, 255, .95);
+  background-color: black;
+  border: none;
+  transform: all .25s ease-in-out;
+  cursor: pointer;
+}
+
+.CodigoColor__titulo_selector option:hover {
+  background-color: #0288D1;
 }
 
 .CodigoColor__fecha {
