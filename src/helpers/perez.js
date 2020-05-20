@@ -262,11 +262,7 @@ export const interpolarComunas = async (datosComunales, datosRegionales, geoJSON
           return {
             indiceDatosComunales: idc,
             acum: acum + aumentoRegion,
-            datos: [...prev, {
-              fecha,
-              valor: comuna.datos[idc - 1].valor + (acum + aumentoRegion) * comuna.datos[idc - 1].factorFecha,
-              interpolado: true
-            }]
+            datos: prev
           }
         }
         else {
