@@ -23,7 +23,7 @@ import {
 
 const RankingComunas = () => {
 
-  const { series, posicion, comunasInterpoladas } = useSelector(state => state.series)
+  const { series, posicion: p, comunasInterpoladas } = useSelector(state => state.series)
   const { mostrandoMiniGraficos } = useSelector(state => state.comparacion)
   const { escala } = useSelector(state => state.colores)
   const { rankingExpandido, ordenRanking } = useSelector(state => state.ranking)
@@ -37,6 +37,8 @@ const RankingComunas = () => {
   
   const { codigo } = useParams()
   const dispatch = useDispatch()
+
+  const posicion = Math.min(p, serieCasos.datos.find(c => c.codigo === Number(codigo)).datos.length - 1)
 
   if (!comunasInterpoladas || serieCasos.datos.find(c => c.codigo === Number(codigo)).datos[posicion].fecha.diff(moment('2020-04-01'), 'days') < 0) {
     return null
