@@ -7,7 +7,8 @@ import { SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, ACTUALIZAR_SERIE,
   ACTIVAR_ANIMACIONES,
   EXPANDIR_RANKING,
   CAMBIAR_ORDEN_RANKING,
-  MOSTRAR_MINI_GRAFICOS
+  MOSTRAR_MINI_GRAFICOS,
+  AGREGAR_DATASET
 } from './actionTypes'
 
 export const actualizarSerie = (id, propiedad, valor) => ({
@@ -100,4 +101,15 @@ export const cambiarOrdenRanking = normalizar => ({
 export const mostrarMiniGraficos = mostrar => ({
   type: MOSTRAR_MINI_GRAFICOS,
   payload: mostrar
+})
+
+export const agregarDataset = (nombre, escala, serieChile, seriesRegiones, seriesComunas) => ({
+  type: AGREGAR_DATASET,
+  payload: {
+    nombre,
+    escala,
+    chile: serieChile,
+    regiones: seriesRegiones,
+    comunas: seriesComunas
+  }
 })

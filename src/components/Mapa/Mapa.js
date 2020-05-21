@@ -282,14 +282,6 @@ const Mapa = () => {
 
   const codigoColor = useMemo(() => <CodigoColor />, [])
   const rankingComunas = useMemo(() => <RankingComunas />, [])
-  const actualizacion = useMemo(() => (
-    <div className="Mapa__actualizacion">
-      <div className="Mapa__actualizacion_contenido">
-        Última actualización: 20/05<br />
-        <a target="_blank" href="https://twitter.com/alavado_desu"><span className="Contacto">Contacto</span></a>
-      </div>
-    </div>
-  ), [])
 
   return (
     <div

@@ -7,7 +7,7 @@ import { Switch, Route } from 'react-router-dom'
 import axios from 'axios'
 import { procesarRegiones, procesarComunas, interpolarComunas } from '../../helpers/perez'
 import { useDispatch } from 'react-redux'
-import { actualizarSerie, seleccionarSerie, seleccionarSubserie, avanzarEnSerie, retrocederEnSerie, fijarGeoJSONCuarentenas } from '../../redux/actions'
+import { agregarDataset, actualizarSerie, seleccionarSerie, seleccionarSubserie, avanzarEnSerie, retrocederEnSerie, fijarGeoJSONCuarentenas } from '../../redux/actions'
 import { procesarCuarentenas } from '../../helpers/cuarentenas'
 import {
   CASOS_COMUNALES, CASOS_REGIONALES,
@@ -20,6 +20,7 @@ import geoJSONCuarentenas from '../../data/geojsons/cuarentenas.json'
 import AppMapaCasos from '../AppMapaCasos'
 import AppGraficosSimples from '../AppGraficosSimples'
 import AppUCI from '../AppUCI'
+import { procesarCSVRegiones, procesarCSVComunas } from '../../helpers/preprocesamiento'
 
 const urlDatosRegiones = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/contagios/regiones.csv'
 const urlDatosComunas = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/contagios/comunas.csv'
@@ -67,6 +68,17 @@ const App = () => {
       dispatch(actualizarSerie(NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'datos', datosComunalesInterpolados))
       dispatch(actualizarSerie(CASOS_COMUNALES_INTERPOLADOS, 'datos', datosComunalesOriginalesInterpolados))
       dispatch(actualizarSerie(CASOS_COMUNALES_INTERPOLADOS, 'geoJSON', geoJSONInterpolado))
+
+      // const [serieChile, seriesRegiones] = procesarCSVRegiones(datosCSVRegiones)
+      // const seriesComunas = procesarCSVComunas(datosCSVComunas, seriesRegiones)
+      // console.log({serieChile}, {seriesRegiones}, {seriesComunas})
+      // dispatch(agregarDataset(
+      //   'Total de casos confirnmados',
+      //   [0, 10, 100, 500, 1000, 5000, 1000],
+      //   serieChile,
+      //   seriesRegiones,
+      //   seriesComunas
+      // ))
 
       setInicializada(true)
     }
