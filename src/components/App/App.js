@@ -69,16 +69,15 @@ const App = () => {
       dispatch(actualizarSerie(CASOS_COMUNALES_INTERPOLADOS, 'datos', datosComunalesOriginalesInterpolados))
       dispatch(actualizarSerie(CASOS_COMUNALES_INTERPOLADOS, 'geoJSON', geoJSONInterpolado))
 
-      // const [serieChile, seriesRegiones] = procesarCSVRegiones(datosCSVRegiones)
-      // const seriesComunas = procesarCSVComunas(datosCSVComunas, seriesRegiones)
-      // console.log({serieChile}, {seriesRegiones}, {seriesComunas})
-      // dispatch(agregarDataset(
-      //   'Total de casos confirnmados',
-      //   [0, 10, 100, 500, 1000, 5000, 1000],
-      //   serieChile,
-      //   seriesRegiones,
-      //   seriesComunas
-      // ))
+      const [serieChile, seriesRegiones] = procesarCSVRegiones(datosCSVRegiones)
+      const seriesComunas = procesarCSVComunas(datosCSVComunas, seriesRegiones)
+      dispatch(agregarDataset(
+        'Total de casos confirnmados',
+        [0, 10, 100, 500, 1000, 5000, 1000],
+        serieChile,
+        { series: seriesRegiones, geoJSON: geoJSONRegiones },
+        { series: seriesComunas, geoJSON: geoJSONComunas }
+      ))
 
       setInicializada(true)
     }

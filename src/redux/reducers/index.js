@@ -4,11 +4,13 @@ import ayuda from './ayuda'
 import colores from './colores'
 import ranking from './ranking'
 import comparacion from './comparacion'
+import datasets from './datasets'
 
 export default combineReducers({
   series,
   ayuda,
   colores,
   ranking,
-  comparacion
+  comparacion,
+  datasets
 })
