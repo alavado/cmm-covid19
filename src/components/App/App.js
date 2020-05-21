@@ -12,7 +12,7 @@ import { procesarCuarentenas } from '../../helpers/cuarentenas'
 import {
   CASOS_COMUNALES, CASOS_REGIONALES,
   CONTAGIOS_REGIONALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES,
-  CODIGO_CHILE, CUARENTENAS, CASOS_COMUNALES_INTERPOLADOS,
+  CODIGO_CHILE, CASOS_COMUNALES_INTERPOLADOS,
   NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS
 } from '../../redux/reducers/series'
 import Loader from './Loader'
@@ -83,6 +83,7 @@ const App = () => {
         case 'PageUp':
           dispatch(retrocederEnSerie())
           break
+        default:
       }
     })
   }, [dispatch])

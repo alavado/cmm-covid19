@@ -2,15 +2,12 @@ import React, { useEffect, useState } from 'react'
 import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
-import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice } from '../../../redux/actions'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS, CASOS_REGIONALES } from '../../../redux/reducers/series'
+import { filtrarGeoJSONPorValor, toggleFiltro, destacarIndice } from '../../../redux/actions'
 import { useHistory, useParams } from 'react-router-dom'
-import { FaQuestionCircle as IconoAyuda } from 'react-icons/fa'
-import texture from '../../../assets/black-twill-sm.png'
 
 const CodigoColor = () => {
 
-  const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle } = useSelector(state => state.series)
+  const { serieSeleccionada, subserieSeleccionada, posicion } = useSelector(state => state.series)
   const { fecha } = subserieSeleccionada.datos[posicion]
   const { escala, indiceDestacado } = useSelector(state => state.colores)
 
@@ -31,18 +28,6 @@ const CodigoColor = () => {
         ${fecha.format('MMMM') !== subserieSeleccionada.datos[posicion - 1].fecha.format('MMMM') ? subserieSeleccionada.datos[posicion - 1].fecha.format('MMMM') : ''}
         –
         ${fecha.format('D [de] MMMM')}`
-    }
-  }
-
-  const toggleRegiones = e => {
-    e.stopPropagation()
-    if (serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
-      dispatch(seleccionarSerie(NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS))
-    }
-    else {
-      dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
-      dispatch(seleccionarSubserie(CODIGO_CHILE))
-      history.push(`/`)
     }
   }
 
@@ -68,13 +53,6 @@ const CodigoColor = () => {
           CodigoColor__fecha--${avanza ? 'avanza' : 'retrocede'}-${vecesAnimada % 2 + 1}`}
       >
         {etiqueta}
-        {posicion > 0 && division === 'comuna' && false &&
-          <IconoAyuda
-            className="CodigoColor__icono_ayuda"
-            title="¿Qué es esto?"
-            onClick={() => dispatch(mostrarAyuda(true))}
-          />
-        }
       </div>
       <div className="CodigoColor__espectro">
         {escala.map((v, i) => (
@@ -88,32 +66,6 @@ const CodigoColor = () => {
                 backgroundColor: indiceDestacado < 0 || indiceDestacado === i ? v[1] : '#999',
                 filter: indiceDestacado === i ? `brightness(80%) drop-shadow(0 0 .25em ${v[1]})` : 'brightness(80%)'
                }}
-              onMouseEnter={e => {
-                return
-                if (indiceDestacado < 0) {
-                  dispatch(toggleFiltro(false))
-                  dispatch(filtrarGeoJSONPorValor(x => x >= v[0] && i < escala.length - 1 && x < escala[i + 1][0]))
-                }
-              }}
-              onMouseLeave={() => !filtroToggle && dispatch(filtrarGeoJSONPorValor(() => true))}
-              onClick={() => {
-                return
-                if (indiceDestacado >= 0 && indiceDestacado === i) {
-                  dispatch(destacarIndice(-1))
-                  dispatch(toggleFiltro(false))
-                  dispatch(filtrarGeoJSONPorValor(() => true))
-                }
-                else if (indiceDestacado === escala.length - 1) {
-                  dispatch(destacarIndice(i))
-                  dispatch(filtrarGeoJSONPorValor(x => x >= escala[i]))
-                  dispatch(toggleFiltro(true))
-                }
-                else {
-                  dispatch(destacarIndice(i))
-                  dispatch(filtrarGeoJSONPorValor(x => x >= v[0] && i < escala.length - 1 && x < escala[i + 1][0]))
-                  dispatch(toggleFiltro(true))
-                }
-              }}
               title={i < escala.length - 1 ? `Entre ${v[0].toLocaleString()} y ${escala[i + 1][0].toLocaleString()} casos` : `Más de ${escala.slice(-1)[0][0]} casos`}
             />
             <div className="CodigoColor__fraccion_limite">
@@ -138,13 +90,6 @@ const CodigoColor = () => {
         }
         {!division &&
           <>
-            {/* <button
-              onClick={toggleRegiones}
-              className="CodigoColor__boton_cambio"
-              onMouseOver={e => e.stopPropagation()}
-            >
-              {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES ? 'Ver comunas' : 'Ver regiones'}
-            </button> */}
             <button
               onClick={() => history.push('/graficos')}
               className="CodigoColor__boton_graficos"
