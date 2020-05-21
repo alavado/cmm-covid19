@@ -20,7 +20,7 @@ import geoJSONCuarentenas from '../../data/geojsons/cuarentenas.json'
 import AppMapaCasos from '../AppMapaCasos'
 import AppGraficosSimples from '../AppGraficosSimples'
 import AppUCI from '../AppUCI'
-import { procesarCSVRegiones, procesarCSVComunas } from '../../helpers/preprocesamiento'
+import { procesarCSVRegiones, procesarCSVComunas, calcularNuevosCasos, calcularNuevosCasosChile } from '../../helpers/preprocesamiento'
 
 const urlDatosRegiones = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/contagios/regiones.csv'
 const urlDatosComunas = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/contagios/comunas.csv'
@@ -72,11 +72,32 @@ const App = () => {
       const [serieChile, seriesRegiones] = procesarCSVRegiones(datosCSVRegiones)
       const seriesComunas = procesarCSVComunas(datosCSVComunas, seriesRegiones)
       dispatch(agregarDataset(
-        'Total de casos confirnmados',
-        [0, 10, 100, 500, 1000, 5000, 1000],
+        'Total de casos confirmados hasta la fecha',
+        [0, 10, 100, 500, 1000, 5000, 10000],
         serieChile,
         { series: seriesRegiones, geoJSON: geoJSONRegiones },
         { series: seriesComunas, geoJSON: geoJSONComunas }
+      ))
+      dispatch(agregarDataset(
+        'Nuevos casos confirmados',
+        [0, 1, 10, 50, 100, 500, 1000],
+        calcularNuevosCasosChile(serieChile),
+        { series: calcularNuevosCasos(seriesRegiones), geoJSON: geoJSONRegiones },
+        { series: calcularNuevosCasos(seriesComunas), geoJSON: geoJSONComunas }
+      ))
+      dispatch(agregarDataset(
+        'Nuevos casos confirmados por 100.000 habitantes',
+        [0, .5, 1, 2.5, 5, 10, 50],
+        calcularNuevosCasosChile(serieChile, { habitantes: 100000, redondear: false }),
+        { series: calcularNuevosCasos(seriesRegiones, { habitantes: 100000, redondear: false }), geoJSON: geoJSONRegiones },
+        { series: calcularNuevosCasos(seriesComunas, { habitantes: 100000, redondear: false }), geoJSON: geoJSONComunas }
+      ))
+      dispatch(agregarDataset(
+        'Casos confirmados en los últimos 7 días',
+        [0, 7, 70, 350, 700, 3500, 7000],
+        calcularNuevosCasosChile(serieChile, { dias: 7 }),
+        { series: calcularNuevosCasos(seriesRegiones, { dias: 7 }), geoJSON: geoJSONRegiones },
+        { series: calcularNuevosCasos(seriesComunas, { dias: 7 }), geoJSON: geoJSONComunas }
       ))
 
       setInicializada(true)

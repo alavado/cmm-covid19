@@ -1,4 +1,6 @@
 import moment from 'moment/min/moment-with-locales'
+import demografiaRegiones from '../data/demografia/regiones.json'
+import demografiaComunas from '../data/demografia/comunas.json'
 
 const separarCSVEnFilas = csv => {
   let filas = csv.split('\n')
@@ -33,7 +35,6 @@ export const procesarCSVRegiones = csv => {
 }
 
 export const procesarCSVComunas = (csv, seriesRegiones) => {
-  const ti = Date.now()
   const [encabezados, datos] = separarCSVEnFilas(csv)
   const fechaInicial = moment(seriesRegiones[0].serie[0].fecha, 'DD/MM')
   const fechasComunas = [fechaInicial, ...encabezados.slice(4).map(f => moment(f, 'MM/DD/YYYY'))]
@@ -71,6 +72,44 @@ export const procesarCSVComunas = (csv, seriesRegiones) => {
       }, [])
     }
   })
-  console.log('tf new', Date.now() - ti)
   return seriesComunas
 }
+
+export const calcularNuevosCasosChile = (serie, opciones = { redondear: true, dias: 1 }) => {
+  let factor = 1
+  if (opciones.habitantes) {
+    const poblacion = demografiaRegiones.reduce((sum, r) => sum + Number(r.poblacion), 0)
+    factor = opciones.habitantes / poblacion
+  }
+  const { redondear, dias } = opciones
+  return serie.map((dato, i, arr) => {
+    const nuevosCasos = factor * (dato.valor - arr[Math.max(0, i - (dias ? dias : 1))].valor)
+    return {
+      ...dato,
+      valor: i > 0 ? (redondear ? Math.round(nuevosCasos) : nuevosCasos): 0
+    }
+  })
+}
+
+export const calcularNuevosCasos = (series, opciones = { redondear: true, dias: 1 }) => {
+  return series.map(serie => {
+    let factor = 1
+    if (opciones.habitantes) {
+      let demografia = demografiaComunas.find(comuna => serie.codigo === Number(comuna.codigo))
+      if (!demografia) {
+        demografia = demografiaRegiones.find(region => serie.codigo === Number(region.codigo))
+      }
+      factor = opciones.habitantes / Math.max(1, Number(demografia.poblacion))
+    }
+    const { redondear, dias } = opciones
+    return {
+      ...serie,
+      serie: serie.serie.map((dato, i, arr) => ({
+        ...dato,
+        valor: i > 0 ?
+          (redondear ? Math.round(factor * (dato.valor - arr[Math.max(0, i - (dias ? dias : 1))].valor)) :
+          (factor * (dato.valor - arr[Math.max(0, i - (dias ? dias : 1))].valor))): 0
+      }))
+    }
+  })
+} 

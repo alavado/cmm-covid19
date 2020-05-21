@@ -8,7 +8,8 @@ import { SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, ACTUALIZAR_SERIE,
   EXPANDIR_RANKING,
   CAMBIAR_ORDEN_RANKING,
   MOSTRAR_MINI_GRAFICOS,
-  AGREGAR_DATASET
+  AGREGAR_DATASET,
+  SELECCIONAR_DATASET
 } from './actionTypes'
 
 export const actualizarSerie = (id, propiedad, valor) => ({
@@ -112,4 +113,9 @@ export const agregarDataset = (nombre, escala, serieChile, seriesRegiones, serie
     regiones: seriesRegiones,
     comunas: seriesComunas
   }
+})
+
+export const seleccionarDataset = i => ({
+  type: SELECCIONAR_DATASET,
+  payload: i
 })

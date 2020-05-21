@@ -56,20 +56,31 @@ const construirVPInicial = animaciones => {
     {...vpInicialLandscape, transitionDuration: animaciones ? 'auto' : 0}
 }
 
+const obtenerColor = (valor, escala, colores) => {
+  const indiceLimite = escala.findIndex(limite => limite > valor)
+  return indiceLimite >= 0 ? colores[indiceLimite - 1][1] : colores.slice(-1)[0][1]
+}
+
 const Mapa = () => {
 
-  const { datasets } = useSelector(state => state.datasets)
+  const { datasets, indice } = useSelector(state => state.datasets)
   const { animaciones, escala } = useSelector(state => state.colores)
   const [viewport, setViewport] = useState(construirVPInicial(animaciones))
   const { posicion } = useSelector(state => state.series)
+  const { division } = useParams()
+  const history = useHistory()
+  const [popupRegion, setPopupRegion] = useState({
+    mostrando: false,
+    latitude: 0,
+    longitude: 0,
+    titulo: ''
+  })
+  const codigoColor = useMemo(() => <CodigoColor />, [])
 
-  console.log(datasets[0])
-
-  const ti = Date.now()
   const geoJSON = useMemo(() => ({
-    ...datasets[0].comunas.geoJSON,
-    features: datasets[0].comunas.geoJSON.features.map(f => {
-      const serieComuna = datasets[0].comunas.series.find(({ codigo }) => codigo === Number(f.properties.COD_COMUNA))
+    ...datasets[indice].regiones.geoJSON,
+    features: datasets[indice].regiones.geoJSON.features.map(f => {
+      const serieComuna = datasets[indice].regiones.series.find(({ codigo }) => codigo === Number(f.properties.codregion))//COD_COMUNA))
       if (!serieComuna) {
         return false
       }
@@ -77,14 +88,43 @@ const Mapa = () => {
         ...f,
         properties: {
           ...f.properties,
-          valores: serieComuna.serie.map(d => [255 * Math.random(), 255 * Math.random(), 255 * Math.random()])
+          valores: serieComuna.serie.map(d => d.valor),
+          colores: serieComuna.serie.map(d => obtenerColor(d.valor, datasets[indice].escala, escala))
         }
       }
     }).filter(f => f !== false)
-  }), [posicion])
+  }), [indice])
 
-  console.log('tf geojson', Date.now() - ti)
-  console.log({geoJSON})
+  const clickEnPoligono = e => {
+    const featurePoligono = e.features && e.features.find(f => f.source === 'capa-datos-regiones')
+    if (!featurePoligono) {
+      return
+    }
+    if (division !== 'comuna') {
+      history.push(`/region/${featurePoligono.properties.codregion}`)
+    }
+  }
+
+  const actualizarPopupChico = e => {
+    const featurePoligono = e.features && e.features.find(f => f.source === 'capa-datos-regiones')
+    if (!featurePoligono) {
+      setPopupRegion({
+        ...popupRegion,
+        mostrando: false
+      })
+      return
+    }
+    const serieRegion = datasets[indice].regiones.series.find(s => s.codigo === featurePoligono.properties.codregion)
+    if (serieRegion) {
+      setPopupRegion({
+        mostrando: true,
+        latitude: e.lngLat[1],
+        longitude: e.lngLat[0],
+        titulo: serieRegion.nombre,
+        valor: serieRegion.serie[posicion].valor
+      })
+    }
+  }
 
   const cambioEnElViewport = vp => {
     setViewport({
@@ -100,14 +140,18 @@ const Mapa = () => {
         {...viewport}
         mapStyle={mapStyle}
         onViewportChange={cambioEnElViewport}
+        onHover={actualizarPopupChico}
+        getCursor={() => 'pointer'}
+        onClick={clickEnPoligono}
       >
+        {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
         <Source id="capa-datos-regiones" type="geojson" data={geoJSON}>
           <Layer
             id="data2"
             type="fill"
             paint={{
-              "fill-color": ['to-color', ['at', 72, ['get', 'valores']]],
-              'fill-opacity': 1
+              "fill-color": ['to-color', ['at', posicion, ['get', 'colores']]],
+              'fill-opacity': .8
             }}
           />
           <Layer
@@ -120,6 +164,7 @@ const Mapa = () => {
           />
         </Source>
       </ReactMapGL>
+      {codigoColor}
     </div>
   )
 

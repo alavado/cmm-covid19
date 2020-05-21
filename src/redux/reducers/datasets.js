@@ -1,7 +1,8 @@
-import { AGREGAR_DATASET } from '../actionTypes'
+import { AGREGAR_DATASET, SELECCIONAR_DATASET } from '../actionTypes'
 
 const initialState = {
-  datasets: []
+  datasets: [],
+  indice: -1
 }
 
 export default function(state = initialState, action) {
@@ -9,10 +10,17 @@ export default function(state = initialState, action) {
     case AGREGAR_DATASET: {
       return {
         ...state,
+        indice: 0,
         datasets: [
           ...state.datasets,
           action.payload
         ]
+      }
+    }
+    case SELECCIONAR_DATASET: {
+      return {
+        ...state,
+        indice: action.payload
       }
     }
     default:

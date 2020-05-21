@@ -11,6 +11,7 @@ import pattern from 'patternomaly'
 
 Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
 const diasDispositivoPequeño = 42
+const esDispositivoPequeño = window.innerWidth < 600
 
 const Grafico = () => {
 
@@ -19,7 +20,8 @@ const Grafico = () => {
   const [datos, setDatos] = useState({})
   const { fecha } = ss.datos[posicion]
   const params = useParams()
-  const esDispositivoPequeño = window.innerWidth < 600 
+  const { datasets, indice } = useSelector(state => state.datasets)
+  const dataset = datasets[indice]
 
   const { division, codigo } = params
 
@@ -103,6 +105,8 @@ const Grafico = () => {
     return f.diff(fecha, 'days') <= 0
   }
 
+  console.log(dataset)
+
   useEffect(() => {
     let data = {
       labels: {},
@@ -111,12 +115,12 @@ const Grafico = () => {
     let puntosRegion, puntosComuna
     let todosLosValores = [...serieChile.filter(v => fechaEsAntesDeFechaPosicionSelecionada(v.fecha))]
     if (!division) {
-      data.labels = serieChile.map(d => d.fecha).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
+      data.labels = dataset.chile.slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0).map(d => d.fecha)
       data.datasets = [
         {
           ...estiloLineaPrincipal,
           label: 'Chile',
-          data: serieChile.map((d, i) => fechaEsAntesDeFechaPosicionSelecionada(d.fecha) ? d.valor : null).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
+          data: dataset.chile.slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0).map(d => d.valor)
         }
       ]
     }
@@ -248,7 +252,7 @@ const Grafico = () => {
       }
     }
     setDatos(data)
-  }, [posicion, division, codigo, escala, ss])
+  }, [posicion, division, codigo, escala, ss, indice])
 
   return (
     <div className="Grafico">
