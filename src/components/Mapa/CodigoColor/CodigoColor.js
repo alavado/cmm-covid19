@@ -41,11 +41,11 @@ const CodigoColor = () => {
   return (
     <div className="CodigoColor">
       <div className="CodigoColor__titulo">
-        <select onChange={e => dispatch(seleccionarSerie(e.target.value))} className="CodigoColor__titulo_selector">
+        {/* <select onChange={e => dispatch(seleccionarSerie(e.target.value))} className="CodigoColor__titulo_selector">
           <option value={division === 'comuna' ? NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : CONTAGIOS_REGIONALES_POR_100000_HABITANTES}>Nuevos casos confirmados por 100.000 habitantes</option>
           <option value={division === 'comuna' ? CASOS_COMUNALES_INTERPOLADOS : CASOS_REGIONALES}>Total de casos confirmados hasta la fecha</option>
-        </select>
-        {/* {serieSeleccionada.nombre} {division === 'comuna' && '*'} */}
+        </select> */}
+        {serieSeleccionada.nombre} {division === 'comuna' && '*'}
       </div>
       <div
         title={`Datos de casos confirmados a nivel regional extraídos del reporte diario MINSAL con fecha ${fecha.format('DD/MM')}.`}

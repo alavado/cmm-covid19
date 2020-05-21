@@ -18,8 +18,10 @@ const AppGraficosSimples = () => {
 
   let codigoComuna = Number(comuna)
   if (!comuna) {
-    codigoComuna = 13101
+    codigoComuna = localStorage.getItem('comuna') ? Number(localStorage.getItem('comuna')) : 13101
   }
+
+  localStorage.setItem('comuna', codigoComuna)
 
   const serieComunasReales = series
     .find(({ id }) => id === CASOS_COMUNALES)
