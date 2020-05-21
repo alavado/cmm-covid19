@@ -152,8 +152,6 @@ const Mapa = () => {
     }
   }, [subserieSeleccionada])
 
-  console.log(serie)
-
   const geoJSONFiltrado = serie.geoJSON
   const geoJSONTapa = useMemo(() => ({
     ...serie.geoJSON,

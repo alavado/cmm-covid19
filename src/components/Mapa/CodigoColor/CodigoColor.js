@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
-import { filtrarGeoJSONPorValor, toggleFiltro, destacarIndice } from '../../../redux/actions'
+import { filtrarGeoJSONPorValor, toggleFiltro, destacarIndice, seleccionarSerie } from '../../../redux/actions'
 import { useHistory, useParams } from 'react-router-dom'
+import { NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS, CASOS_REGIONALES, CONTAGIOS_REGIONALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
 
 const CodigoColor = () => {
 
@@ -40,11 +41,11 @@ const CodigoColor = () => {
   return (
     <div className="CodigoColor">
       <div className="CodigoColor__titulo">
-        {/* <select onChange={e => dispatch(seleccionarSerie(e.target.value))} className="CodigoColor__titulo_selector">
+        <select onChange={e => dispatch(seleccionarSerie(e.target.value))} className="CodigoColor__titulo_selector">
           <option value={division === 'comuna' ? NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : CONTAGIOS_REGIONALES_POR_100000_HABITANTES}>Nuevos casos confirmados por 100.000 habitantes</option>
           <option value={division === 'comuna' ? CASOS_COMUNALES_INTERPOLADOS : CASOS_REGIONALES}>Total de casos confirmados hasta la fecha</option>
-        </select> */}
-        {serieSeleccionada.nombre} {division === 'comuna' && '*'}
+        </select>
+        {/* {serieSeleccionada.nombre} {division === 'comuna' && '*'} */}
       </div>
       <div
         title={`Datos de casos confirmados a nivel regional extraídos del reporte diario MINSAL con fecha ${fecha.format('DD/MM')}.`}

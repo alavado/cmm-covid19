@@ -46,7 +46,7 @@ export default function(state = initialState, action) {
       const id = action.payload
       return {
         ...state,
-        escala: id === CASOS_COMUNALES || id === CASOS_REGIONALES ? escalaAbsoluta : escala
+        escala: id === CASOS_COMUNALES || id === CASOS_REGIONALES ? (escalaAbsoluta) : (state.daltonicos ? escalaDaltonica : escala)
       }
     }
     default:
