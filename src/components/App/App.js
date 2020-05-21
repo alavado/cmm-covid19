@@ -54,6 +54,7 @@ const App = () => {
       dispatch(actualizarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES, 'datos', casosRegionalesPor100000Habitantes))
       dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
       dispatch(actualizarSerie(CASOS_REGIONALES, 'datos', datosRegionalesOriginales))
+      dispatch(actualizarSerie(CASOS_REGIONALES, 'geoJSON', geoJSONRegionesConDatos))
       dispatch(seleccionarSubserie(CODIGO_CHILE))
       dispatch(actualizarSerie(NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, 'geoJSON', geoJSONComunalConDatos))
       dispatch(actualizarSerie(NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, 'datos', casosComunalesPor100000Habitantes))

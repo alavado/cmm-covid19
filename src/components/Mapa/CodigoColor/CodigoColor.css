@@ -58,7 +58,9 @@
 }
 
 .CodigoColor__titulo_selector {
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0);
+  transition: all .25s ease-in-out;
+  border-radius: .25em;
   border: none;
   color: rgba(255, 255, 255, .95);
   text-transform: uppercase;
@@ -68,6 +70,14 @@
   margin-top: -4px;
   margin-bottom: -3px;
   cursor: pointer;
+}
+
+.CodigoColor__titulo_selector::after {
+  display: none;
+}
+
+.CodigoColor__titulo_selector:hover {
+  background-color: rgba(0, 0, 0, .25);
 }
 
 .CodigoColor__titulo_selector > option {

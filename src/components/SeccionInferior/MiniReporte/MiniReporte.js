@@ -8,7 +8,7 @@ import { obtenerDemograficosComuna, obtenerDemograficosRegion } from '../../../h
 
 const MiniReporte = () => {
 
-  const { subserieSeleccionada: ss, series, posicion, comunasInterpoladas } = useSelector(state => state.series)
+  const { subserieSeleccionada: ss, series, posicion } = useSelector(state => state.series)
   const { division, codigo } = useParams()
   const { escala } = useSelector(state => state.colores)
 
@@ -23,7 +23,7 @@ const MiniReporte = () => {
     nombre: ''
   }
   if (division === 'comuna') {
-    const datosComuna = series.find(s => s.id === (comunasInterpoladas ? CASOS_COMUNALES_INTERPOLADOS : CASOS_COMUNALES))
+    const datosComuna = series.find(s => s.id === CASOS_COMUNALES_INTERPOLADOS)
       .datos
       .find(d => Number(d.codigo) === Number(codigo))
     if (datosComuna.datos[posicion]) {
@@ -87,7 +87,7 @@ const MiniReporte = () => {
             }
           </div>
           {diferenciaDiaAnterior >= 0 && '+'}
-          {diferenciaDiaAnterior.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })} casos por 100.000 habitantes respecto {comunasInterpoladas ? 'a la estimación' : 'al reporte'} anterior ({fecha.diff(ss.datos[posicion - 1].fecha, 'days')} {fecha.diff(ss.datos[posicion - 1].fecha, 'days') > 1 ? 'días' : 'día'} antes)
+          {diferenciaDiaAnterior.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })} casos por 100.000 habitantes respecto a la estimación anterior ({fecha.diff(ss.datos[posicion - 1].fecha, 'days')} {fecha.diff(ss.datos[posicion - 1].fecha, 'days') > 1 ? 'días' : 'día'} antes)
         </div>
       }
       <div className="MiniReporte__diferencia">

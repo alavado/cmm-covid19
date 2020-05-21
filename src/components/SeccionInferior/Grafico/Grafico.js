@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Chart, Line } from 'react-chartjs-2'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
-import { fijarPosicionSerie } from '../../../redux/actions'
 import './Grafico.css'
 import { useParams } from 'react-router-dom'
 import demograficosComunas from '../../../data/demografia/comunas.json'
 import demograficosRegiones from '../../../data/demografia/regiones.json'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
 import pattern from 'patternomaly'
 
 Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
@@ -16,7 +15,7 @@ const diasDispositivoPequeño = 42
 const Grafico = () => {
 
   const { escala } = useSelector(state => state.colores)
-  const { subserieSeleccionada: ss, series, posicion, geoJSONCuarentenas, comunasInterpoladas } = useSelector(state => state.series)
+  const { subserieSeleccionada: ss, series, posicion, geoJSONCuarentenas } = useSelector(state => state.series)
   const [datos, setDatos] = useState({})
   const { fecha } = ss.datos[posicion]
   const params = useParams()
@@ -41,9 +40,9 @@ const Grafico = () => {
     return obtenerSerieRegion(codigoRegion)
   }
 
-  const obtenerSerieComuna = (codigo, interp) => {
+  const obtenerSerieComuna = codigo => {
     return series
-      .find(s => s.id === (interp ? NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES)).datos
+      .find(s => s.id === NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS).datos
       .find(d => d.codigo === Number(codigo)).datos
   }
 
@@ -143,7 +142,7 @@ const Grafico = () => {
     }
     else if (division === 'comuna') {
       puntosRegion = obtenerSerieRegionComuna(codigo)
-      puntosComuna = obtenerSerieComuna(codigo, comunasInterpoladas)
+      puntosComuna = obtenerSerieComuna(codigo)
       todosLosValores = [
         ...todosLosValores,
         ...puntosRegion,
@@ -154,22 +153,12 @@ const Grafico = () => {
         ...puntosComuna
       ]
       const ultimaFechaChile = serieChile.slice(-1)[0].fecha
-      const ultimaFechaComuna = puntosComuna.slice(-1)[0].fecha
-      if (ultimaFechaComuna.diff(ultimaFechaChile, 'days') !== 0) {
-        puntosConDatos.push({ fecha: ultimaFechaChile.clone(), valor: null })
+      let ultimaFechaComuna = puntosComuna.slice(-1)[0].fecha.clone()
+      while (ultimaFechaComuna.diff(ultimaFechaChile, 'days') !== 0) {
+        ultimaFechaComuna.add(1, 'days')
+        puntosConDatos.push({ fecha: ultimaFechaComuna.clone(), valor: null })
       }
-      const puntosRellenados = comunasInterpoladas ?
-        puntosConDatos.slice(2) :
-        puntosConDatos.reduce((prev, p, i, arr) => {
-          let otros = []
-          if (i > 0) {
-            let fechaAnterior = arr[i - 1].fecha.clone()
-            while (fechaAnterior.add(1, 'days').diff(p.fecha, 'days') !== 0) {
-              otros.push({ fecha: fechaAnterior.clone(), valor: null })
-            }
-          }
-        return [...prev, ...otros, p]
-        }, [])
+      const puntosRellenados = puntosConDatos.slice(2)
       data.labels = puntosRellenados.map(d => d.fecha).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
       const datosComuna = demograficosComunas.find(c => c.codigo === codigo)
       data.datasets = [
@@ -178,7 +167,7 @@ const Grafico = () => {
           label: datosComuna.nombre,
           data: puntosRellenados.map((d, i) => d.valor).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0),
           spanGaps: true,
-          borderDash: comunasInterpoladas ? [3, 1] : [3, 1],
+          borderDash: [3, 1],
           pointStyle: puntosRellenados.map(d => d.interpolado ? 'star' : 'dot'),
           borderWidth: 2
         },
@@ -259,7 +248,7 @@ const Grafico = () => {
       }
     }
     setDatos(data)
-  }, [posicion, division, codigo, escala, comunasInterpoladas, ss])
+  }, [posicion, division, codigo, escala, ss])
 
   return (
     <div className="Grafico">
@@ -296,7 +285,7 @@ const Grafico = () => {
                   if (f.diff(moment(), 'days') === 0) {
                     return 'Hoy'
                   }
-                  else if (f.weekday() === 0) {
+                  else if (f.weekday() === 0 && moment().diff(f, 'days') > 2) {
                     return f.format('D[ ]MMM').slice(0, -1)
                   }
                   else if (f.diff(fecha, 'days') === 0) {

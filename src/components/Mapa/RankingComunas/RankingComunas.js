@@ -1,16 +1,14 @@
 import React from 'react'
 import './RankingComunas.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CODIGO_CHILE, CASOS_COMUNALES_INTERPOLADOS, CASOS_COMUNALES } from '../../../redux/reducers/series'
+import { NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS } from '../../../redux/reducers/series'
 import { useParams, Link } from 'react-router-dom'
 import { expandirRanking, cambiarOrdenRanking, mostrarMiniGraficos } from '../../../redux/actions'
-import { obtenerDemograficosComuna } from '../../../helpers/demograficos'
 import {
   FaWindowMinimize as IconoMenosDetalle,
   FaWindowMaximize as IconoMasDetalle,
   FaCaretDown,
   FaSort,
-  FaChartLine,
   FaChartArea
 } from 'react-icons/fa'
 import moment from 'moment'
@@ -23,24 +21,21 @@ import {
 
 const RankingComunas = () => {
 
-  const { series, posicion: p, comunasInterpoladas } = useSelector(state => state.series)
+  const { series, posicion: p } = useSelector(state => state.series)
   const { mostrandoMiniGraficos } = useSelector(state => state.comparacion)
   const { escala } = useSelector(state => state.colores)
   const { rankingExpandido, ordenRanking } = useSelector(state => state.ranking)
   const serieNormalizada = series.find(({ id }) => {
-    return id === (comunasInterpoladas ?
-      NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS :
-      NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES
-    )
+    return id === NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS
   })
-  const serieCasos = series.find(({ id }) => id === (comunasInterpoladas ? CASOS_COMUNALES_INTERPOLADOS: CASOS_COMUNALES))
+  const serieCasos = series.find(({ id }) => id === CASOS_COMUNALES_INTERPOLADOS)
   
   const { codigo } = useParams()
   const dispatch = useDispatch()
 
   const posicion = Math.min(p, serieCasos.datos.find(c => c.codigo === Number(codigo)).datos.length - 1)
 
-  if (!comunasInterpoladas || serieCasos.datos.find(c => c.codigo === Number(codigo)).datos[posicion].fecha.diff(moment('2020-04-01'), 'days') < 0) {
+  if (serieCasos.datos.find(c => c.codigo === Number(codigo)).datos[posicion].fecha.diff(moment('2020-04-01'), 'days') < 0) {
     return null
   }
 

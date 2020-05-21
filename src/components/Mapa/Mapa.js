@@ -52,7 +52,7 @@ const vpInicialPortrait = {
 
 const Mapa = () => {
 
-  const { series, serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenasActivas, verCuarentenas, comunasInterpoladas } = useSelector(state => state.series)
+  const { series, serieSeleccionada: serie, posicion, subserieSeleccionada, geoJSONCuarentenasActivas, verCuarentenas } = useSelector(state => state.series)
   const { escala, colorApagado, animaciones } = useSelector(state => state.colores)
   const { filtroValor, filtroRegion } = serie
   const vpInicial = window.innerWidth < 600 ?
@@ -108,7 +108,7 @@ const Mapa = () => {
         }
         dispatch(filtrarGeoJSONPorRegion(c => c === Number(codigoRegion)))
         if (divisionPrevia !== division) {
-          dispatch(seleccionarSerie(comunasInterpoladas ? NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES))
+          dispatch(seleccionarSerie(NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS))
         }
         dispatch(seleccionarSubserie(Number(codigo)))
         setRegionPrevia(codigoRegion)
@@ -151,6 +151,8 @@ const Mapa = () => {
       }
     }
   }, [subserieSeleccionada])
+
+  console.log(serie)
 
   const geoJSONFiltrado = serie.geoJSON
   const geoJSONTapa = useMemo(() => ({

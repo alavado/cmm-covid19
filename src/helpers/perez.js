@@ -1,12 +1,6 @@
 import demografiaRegiones from '../data/demografia/regiones.json'
 import demografiaComunas from '../data/demografia/comunas.json'
 import moment from 'moment/min/moment-with-locales'
-import polylabel from 'polylabel'
-
-const calcularPoloDeInaccesibilidad = ({ coordinates: puntos }) => {
-  const [longitude, latitude] = polylabel(puntos)
-  return { longitude: longitude, latitude: latitude }
-}
 
 const formatearDatosRegion = csv => {
   let filas = csv.split('\n')
@@ -103,7 +97,8 @@ export const procesarRegiones = async (csv, geoJSON) => {
       }
     })
   }
-  return [casosPor100000Habitantes, geoJSONConDatos, formatearDatosOriginalesRegiones(csv)]
+  const serieDatosOriginales = formatearDatosOriginalesRegiones(csv)
+  return [casosPor100000Habitantes, geoJSONConDatos, serieDatosOriginales]
 }
 
 //.map((val, i) => ({ fecha: fechas[i], valor: isNaN(val) ? -1 : Number(val) }))

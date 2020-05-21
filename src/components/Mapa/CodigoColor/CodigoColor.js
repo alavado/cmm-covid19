@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react'
 import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
-import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice, fijarVerCuarentenas, interpolarComunas, normalizarPor100000Habitantes } from '../../../redux/actions'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, CODIGO_CHILE, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS, CASOS_REGIONALES } from '../../../redux/reducers/series'
+import { filtrarGeoJSONPorValor, toggleFiltro, seleccionarSerie, mostrarAyuda, seleccionarSubserie, destacarIndice } from '../../../redux/actions'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS, CASOS_REGIONALES } from '../../../redux/reducers/series'
 import { useHistory, useParams } from 'react-router-dom'
 import { FaQuestionCircle as IconoAyuda } from 'react-icons/fa'
 import texture from '../../../assets/black-twill-sm.png'
 
 const CodigoColor = () => {
 
-  const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle, datosNormalizadosPor100000Habitantes, comunasInterpoladas } = useSelector(state => state.series)
+  const { serieSeleccionada, subserieSeleccionada, posicion, filtroToggle } = useSelector(state => state.series)
   const { fecha } = subserieSeleccionada.datos[posicion]
   const { escala, indiceDestacado } = useSelector(state => state.colores)
 
@@ -37,7 +37,7 @@ const CodigoColor = () => {
   const toggleRegiones = e => {
     e.stopPropagation()
     if (serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
-      dispatch(seleccionarSerie(comunasInterpoladas ? NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES))
+      dispatch(seleccionarSerie(NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS))
     }
     else {
       dispatch(seleccionarSerie(CONTAGIOS_REGIONALES_POR_100000_HABITANTES))
@@ -55,11 +55,11 @@ const CodigoColor = () => {
   return (
     <div className="CodigoColor">
       <div className="CodigoColor__titulo">
-        <select onChange={e => dispatch(seleccionarSerie(e.target.value))} className="CodigoColor__titulo_selector">
+        {/* <select onChange={e => dispatch(seleccionarSerie(e.target.value))} className="CodigoColor__titulo_selector">
           <option value={division === 'comuna' ? NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : CONTAGIOS_REGIONALES_POR_100000_HABITANTES}>Nuevos casos confirmados por 100.000 habitantes</option>
           <option value={division === 'comuna' ? CASOS_COMUNALES_INTERPOLADOS : CASOS_REGIONALES}>Total de casos confirmados hasta la fecha</option>
-        </select>
-        {/* {serieSeleccionada.nombre} {division === 'comuna' && '*'} */}
+        </select> */}
+        {serieSeleccionada.nombre} {division === 'comuna' && '*'}
       </div>
       <div
         title={`Datos de casos confirmados a nivel regional extraídos del reporte diario MINSAL con fecha ${fecha.format('DD/MM')}.`}
@@ -68,7 +68,7 @@ const CodigoColor = () => {
           CodigoColor__fecha--${avanza ? 'avanza' : 'retrocede'}-${vecesAnimada % 2 + 1}`}
       >
         {etiqueta}
-        {posicion > 0 && division === 'comuna' && !comunasInterpoladas &&
+        {posicion > 0 && division === 'comuna' && false &&
           <IconoAyuda
             className="CodigoColor__icono_ayuda"
             title="¿Qué es esto?"
@@ -161,12 +161,11 @@ const CodigoColor = () => {
               className="CodigoColor__boton_interpolar"
               onClick={e => {
                 e.stopPropagation()
-                dispatch(seleccionarSerie(comunasInterpoladas ? CASOS_COMUNALES_POR_100000_HABITANTES : CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS))
-                dispatch(interpolarComunas(!comunasInterpoladas))
+                dispatch(seleccionarSerie(CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS))
               }}
               title="Cambiar tratamiento de días sin datos"
             >
-              {comunasInterpoladas ? 'Días sin datos se interpolan' : 'Días sin datos se promedian'}
+              {'Días sin datos se interpolan'}
             </button> */}
             {/* <button
               className="CodigoColor__boton_interpolar"

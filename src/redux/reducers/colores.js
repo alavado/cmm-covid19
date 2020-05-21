@@ -1,5 +1,6 @@
-import { ACTIVAR_DALTONISMO, DESTACAR_INDICE, ACTIVAR_ANIMACIONES, NORMALIZAR_POR_100000_HABITANTES } from '../actionTypes'
+import { ACTIVAR_DALTONISMO, DESTACAR_INDICE, ACTIVAR_ANIMACIONES, NORMALIZAR_POR_100000_HABITANTES, SELECCIONAR_SERIE } from '../actionTypes'
 import { escala, colorApagado, escalaDaltonica, colorApagadoDaltonico, escalaAbsoluta } from '../../helpers/escala'
+import { CASOS_COMUNALES, CASOS_REGIONALES } from './series'
 
 const initialState = {
   escala,
@@ -39,6 +40,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         animaciones: action.payload
+      }
+    }
+    case SELECCIONAR_SERIE: {
+      const id = action.payload
+      return {
+        ...state,
+        escala: id === CASOS_COMUNALES || id === CASOS_REGIONALES ? escalaAbsoluta : escala
       }
     }
     default:

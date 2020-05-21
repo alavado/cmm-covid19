@@ -61,8 +61,7 @@ const initialState = {
   geoJSONCuarentenasActivas: null,
   geoJSONCuarentenas: null,
   verCuarentenas: true,
-  posicion: 0,
-  comunasInterpoladas: true
+  posicion: 0
 }
 
 export default function(state = initialState, action) {

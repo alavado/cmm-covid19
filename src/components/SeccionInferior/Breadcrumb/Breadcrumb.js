@@ -11,7 +11,7 @@ import { NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, CONTAGIOS_REGIONALES_POR_
 const Breadcrumb = () => {
   
   const [links, setLinks] = useState('Chile')
-  const { serieSeleccionada, comunasInterpoladas } = useSelector(state => state.series)
+  const { serieSeleccionada } = useSelector(state => state.series)
   const dispatch = useDispatch()
   const params = useParams()
   const history = useHistory()
@@ -20,7 +20,7 @@ const Breadcrumb = () => {
     e.stopPropagation()
     e.preventDefault()
     if (serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
-      dispatch(seleccionarSerie(comunasInterpoladas ? NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS : NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES))
+      dispatch(seleccionarSerie(NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS))
       const comunasRegion = demograficosComunas.filter(c => c.region === params.codigo)
       history.push(`/comuna/${comunasRegion[Math.floor(Math.random() * comunasRegion.length)].codigo}`)
     }
