@@ -19,7 +19,6 @@ const SelectorFecha = () => {
   const dataset = datasets[indice]
   const diferencia = serie.datos[Math.max(0, posicionDS - 1)].fecha.diff(moment(), 'days')
   const rangoDias = (division === 'comuna' ? dataset.comunas.series[0].serie.length : dataset.regiones.series[0].serie.length) - 1
-  console.log({rangoDias})
 
   useEffect(() => {dispatch(fijarPosicionDatasets(rangoDias))}, [division])
 

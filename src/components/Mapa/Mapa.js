@@ -22,6 +22,7 @@ import MiniGrafico from './MiniGrafico'
 import { obtenerCuarentenasActivas } from '../../helpers/cuarentenas'
 import geoJSONCuarentenas from '../../data/geojsons/cuarentenas.json'
 import { obtenerDemograficosComuna, obtenerDemograficosRegion } from '../../helpers/demograficos'
+import { obtenerColor } from '../../helpers/escala'
 
 const calcularPoloDeInaccesibilidad = feature => {
   let poligono = feature.geometry.coordinates
@@ -57,11 +58,6 @@ const construirVPInicial = animaciones => {
   return window.innerWidth < 600 ?
     {...vpInicialLandscape, ...vpInicialPortrait, transitionDuration: animaciones ? 'auto' : 0} :
     {...vpInicialLandscape, transitionDuration: animaciones ? 'auto' : 0}
-}
-
-const obtenerColor = (valor, escala, colores) => {
-  const indiceLimite = escala.findIndex(limite => limite > valor)
-  return indiceLimite >= 0 ? colores[Math.max(0, indiceLimite - 1)][1] : colores.slice(-1)[0][1]
 }
 
 const Mapa = () => {
@@ -180,7 +176,7 @@ const Mapa = () => {
         }
       }
     }).filter(f => f !== false)
-  }), [indice, division])
+  }), [indice, division, escala])
 
   const geoJSONTapa = useMemo(() => ({
     ...geoJSON,
@@ -219,7 +215,7 @@ const Mapa = () => {
         }, [])
       return (
         <MiniGrafico
-          key={`minigrafico-${feature.properties.codigo}`}
+          key={`minigrafico-${feature.properties.COD_COMUNA}`}
           lat={centroVisual.latitude}
           lng={centroVisual.longitude}
           nombreComuna={feature.properties.NOM_COM}
@@ -252,15 +248,29 @@ const Mapa = () => {
       })
       return
     }
-    const serieRegion = datasets[indice].regiones.series.find(s => s.codigo === featurePoligono.properties.codregion)
-    if (serieRegion) {
-      setPopupRegion({
-        mostrando: true,
-        latitude: e.lngLat[1],
-        longitude: e.lngLat[0],
-        titulo: serieRegion.nombre,
-        valor: serieRegion.serie[posicion].valor
-      })
+    if (division === 'comuna') {
+      const serieComuna = datasets[indice].comunas.series.find(s => s.codigo === Number(featurePoligono.properties.COD_COMUNA))
+      if (serieComuna) {
+        setPopupRegion({
+          mostrando: true,
+          latitude: e.lngLat[1],
+          longitude: e.lngLat[0],
+          titulo: serieComuna.nombre,
+          valor: serieComuna.serie[posicion].valor
+        })
+      }
+    }
+    else {
+      const serieRegion = datasets[indice].regiones.series.find(s => s.codigo === featurePoligono.properties.codregion)
+      if (serieRegion) {
+        setPopupRegion({
+          mostrando: true,
+          latitude: e.lngLat[1],
+          longitude: e.lngLat[0],
+          titulo: serieRegion.nombre,
+          valor: serieRegion.serie[posicion].valor
+        })
+      }
     }
   }
 
@@ -280,6 +290,7 @@ const Mapa = () => {
         mapStyle={mapStyle}
         onViewportChange={cambioEnElViewport}
         onHover={actualizarPopupChico}
+        onMouseOut={() => setPopupRegion({ ...popupRegion, mostrando: false })}
         getCursor={() => 'pointer'}
         onClick={clickEnPoligono}
       >

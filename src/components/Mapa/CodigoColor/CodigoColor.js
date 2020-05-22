@@ -37,8 +37,9 @@ const CodigoColor = () => {
         <select
           onChange={e => dispatch(seleccionarDataset(e.target.value))}
           className="CodigoColor__titulo_selector"
+          value={indice}
         >
-          {datasets.map((dataset, i) => <option value={i}>{dataset.nombre}</option>)}
+          {datasets.map((dataset, i) => <option key={`option-dataset-${i}`} value={i}>{dataset.nombre}</option>)}
         </select>
       </div>
       <div

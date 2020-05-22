@@ -63,11 +63,6 @@ const estiloLineaRegion = {
   fill: false
 }
 
-const obtenerColor = (valor, escala, colores) => {
-  const indiceLimite = escala.findIndex(limite => limite > valor)
-  return indiceLimite >= 0 ? colores[indiceLimite - 1][1] : colores.slice(-1)[0][1]
-}
-
 const Grafico = () => {
 
   const { escala } = useSelector(state => state.colores)
@@ -242,10 +237,10 @@ const Grafico = () => {
           tooltips: {
             callbacks: {
               label: ({ yLabel: v, datasetIndex }) => {
-                if (datos.datasets[datasetIndex].label) {
+                if (datos.datasets[datasetIndex].label.endsWith('parcial')) {
                   return ''
                 }
-                return `${dataset.nombre}: ${v.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}`
+                return `${dataset.nombre}: ${v.toLocaleString('de-DE', { maximumFractionDigits: 1 })}`
               },
               title: ([{ xLabel: fecha }]) => {
                 return `${moment(fecha, 'DD/MM').format('dddd D [de] MMMM')}`

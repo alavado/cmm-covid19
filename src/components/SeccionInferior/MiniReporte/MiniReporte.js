@@ -5,6 +5,7 @@ import { FaArrowCircleUp, FaArrowCircleDown, FaUserFriends, FaChartBar } from 'r
 import { useParams } from 'react-router-dom'
 import { CASOS_COMUNALES, CASOS_REGIONALES, CODIGO_CHILE, CASOS_COMUNALES_INTERPOLADOS, CONTAGIOS_REGIONALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
 import { obtenerDemograficosComuna, obtenerDemograficosRegion } from '../../../helpers/demograficos'
+import { obtenerColor } from '../../../helpers/escala'
 
 const MiniReporte = () => {
 
@@ -16,7 +17,6 @@ const MiniReporte = () => {
 
   let { valor: valorPosicion, fecha } = ss.datos[posicion]
   const diferenciaDiaAnterior = posicion > 0 && (valorPosicion - ss.datos[posicion - 1].valor)
-  let backgroundColor = escala.find((e, i) => i === escala.length - 1 || escala[i + 1][0] > valorPosicion)[1]
 
   let datosExtra = {
     casos: 0,
@@ -57,7 +57,6 @@ const MiniReporte = () => {
       .datos
       .find(d => d.codigo === CODIGO_CHILE).datos
     valorPosicion = serieChile[Math.min(posicion, serieChile.length - 1)].valor
-    backgroundColor = escala.find((e, i) => i === escala.length - 1 || escala[i + 1][0] > valorPosicion)[1]
   }
   let valorFecha
   if (division === 'comuna') {
@@ -71,6 +70,7 @@ const MiniReporte = () => {
   else {
     valorFecha = dataset.chile[posicionDS].valor
   }
+  let backgroundColor = obtenerColor(valorFecha, dataset.escala, escala)
 
   return (
     <div className="MiniReporte">
