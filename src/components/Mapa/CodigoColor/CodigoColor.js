@@ -66,18 +66,14 @@ const CodigoColor = () => {
         ))}
       </div>
       <div className="CodigoColor__botones">
-        {!division &&
-          <>
-            <button
-              onClick={() => history.push('/graficos')}
-              className="CodigoColor__boton_graficos"
-              onMouseOver={e => e.stopPropagation()}
-              title="Ir a interfaz con gráficos sencillos por comuna"
-            >
-              Ver gráficos limpios
-            </button>
-          </>
-        }
+        <button
+          onClick={() => history.push('/graficos')}
+          className="CodigoColor__boton_graficos"
+          onMouseOver={e => e.stopPropagation()}
+          title="Ir a interfaz con gráficos sencillos por comuna"
+        >
+          Ver gráficos limpios
+        </button>
       </div>
     </div>
   )

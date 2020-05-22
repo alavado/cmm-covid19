@@ -17,11 +17,12 @@ const SelectorFecha = () => {
   const [ancho, setAncho] = useState(window.innerWidth)
   const { datasets, indice, posicion: posicionDS } = useSelector(state => state.datasets)
   const dataset = datasets[indice]
-  console.log({dataset})
   const diferencia = serie.datos[Math.max(0, posicionDS - 1)].fecha.diff(moment(), 'days')
   const rangoDias = (division === 'comuna' ? dataset.comunas.series[0].serie.length : dataset.regiones.series[0].serie.length) - 1
   
-  console.log({rangoDias, division})
+  useEffect(() => {
+    dispatch(fijarPosicionDatasets(Math.min(posicionDS, rangoDias)))
+  }, [division])
 
   useEffect(() => {
     const fecha = document.getElementsByClassName('SelectorFecha__contenedor_fecha')[0]

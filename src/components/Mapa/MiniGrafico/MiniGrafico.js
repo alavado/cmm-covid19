@@ -63,7 +63,7 @@ const MiniGrafico = props => {
                     display: false
                   },
                   ticks: {
-                    suggestedMax: suggestedMax * .6
+                    //suggestedMax: suggestedMax * .6
                   }
                 }]
               },

@@ -19,6 +19,9 @@ import polylabel from 'polylabel'
 import area from '@turf/area'
 import { polygon } from 'turf'
 import MiniGrafico from './MiniGrafico'
+import { obtenerCuarentenasActivas } from '../../helpers/cuarentenas'
+import geoJSONCuarentenas from '../../data/geojsons/cuarentenas.json'
+import { obtenerDemograficosComuna, obtenerDemograficosRegion } from '../../helpers/demograficos'
 
 const calcularPoloDeInaccesibilidad = feature => {
   let poligono = feature.geometry.coordinates
@@ -58,14 +61,13 @@ const construirVPInicial = animaciones => {
 
 const obtenerColor = (valor, escala, colores) => {
   const indiceLimite = escala.findIndex(limite => limite > valor)
-  return indiceLimite >= 0 ? colores[indiceLimite - 1][1] : colores.slice(-1)[0][1]
+  return indiceLimite >= 0 ? colores[Math.max(0, indiceLimite - 1)][1] : colores.slice(-1)[0][1]
 }
 
 const Mapa = () => {
 
   const { datasets, indice, posicion } = useSelector(state => state.datasets)
   const { animaciones, escala } = useSelector(state => state.colores)
-  // const { posicion } = useSelector(state => state.series)
   const [viewport, setViewport] = useState(construirVPInicial(animaciones))
   const [regionPrevia, setRegionPrevia] = useState('')
   const [divisionPrevia, setDivisionPrevia] = useState('')
@@ -77,8 +79,15 @@ const Mapa = () => {
     longitude: 0,
     titulo: ''
   })
+  const [poligonoDestacado, setPoligonoDestacado] = useState(null)
   const codigoColor = useMemo(() => <CodigoColor />, [division])
   const mapa = useRef()
+
+  const geoJSONCuarentenasActivas = useMemo(() => (
+    obtenerCuarentenasActivas(
+      geoJSONCuarentenas,
+      datasets[indice].comunas.series[0].serie[Math.min(datasets[indice].comunas.series[0].serie.length - 1, posicion)].fecha
+  )), [indice, posicion])
 
   useEffect(() => {
     setViewport(v => ({ ...v, transitionDuration: animaciones ? animaciones ? 1500 : 0 : 0 }))
@@ -98,7 +107,7 @@ const Mapa = () => {
         setRegionPrevia(codigo)
       }
       else if (division === 'comuna') {
-        const codigoRegion = demograficosComunas.find(c => c.codigo === codigo).region
+        const codigoRegion = demograficosComunas.find(c => Number(c.codigo) === Number(codigo)).region
         if (codigoRegion !== regionPrevia) {
           const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigoRegion))
           setViewport(v => ({
@@ -125,6 +134,34 @@ const Mapa = () => {
     setDivisionPrevia(division)
   }, [division, codigo])
 
+  useEffect(() => {
+    if (division === 'comuna') {
+      const poligono = geoJSON.features.find(f => Number(f.properties.COD_COMUNA) === Number(codigo))
+      if (poligono) {
+        setPoligonoDestacado(poligono)
+        const { latitude, longitude } = calcularPoloDeInaccesibilidad(poligono)
+        if (division) {
+          setViewport(v => ({
+            ...v,
+            longitude,
+            latitude,
+            transitionDuration: animaciones ? 1500 : 0,
+            transitionInterpolator: new FlyToInterpolator(),
+            transitionEasing: easeCubic
+          }))
+        }
+      }
+    }
+    else {
+      setPoligonoDestacado(null)
+    }
+  }, [division, codigo])
+
+  useEffect(() => mapa.current.getMap()
+    .loadImage(texture, (err, image) => {
+      mapa.current.getMap().addImage('texturaCuarentenas', image)
+  }), [])
+
   const llaveDataset = (!division || division === 'region') ? 'regiones' : 'comunas'
 
   const geoJSON = useMemo(() => ({
@@ -145,6 +182,56 @@ const Mapa = () => {
     }).filter(f => f !== false)
   }), [indice, division])
 
+  const geoJSONTapa = useMemo(() => ({
+    ...geoJSON,
+    features: geoJSON.features
+      .filter(f => {
+        return false
+    }),
+  }), [geoJSON])
+
+  console.log(datasets[indice])
+    
+  const labelsComunas = useMemo(() => {
+    if (division !== 'comuna') {
+      return []
+    }
+    const codigoRegion = Number(demograficosComunas.find(c => Number(c.codigo) === Number(codigo)).region)
+    const zoomRegion = viewportRegiones
+      .find(vp => vp.codigo === codigoRegion)
+      .vp.zoomMinimoParaMostrarMarkerComunas
+    if (viewport.zoom < zoomRegion) {
+      return []
+    }
+    const poligonosRegion = datasets[indice].comunas
+      .geoJSON
+      .features
+      .filter(f => Number(demograficosComunas.find(c => Number(c.codigo) === Number(f.properties.COD_COMUNA)).region) === Number(codigoRegion))
+    return poligonosRegion.map((feature, i) => {
+      const centroVisual = calcularPoloDeInaccesibilidad(feature)
+      const datos = datasets[indice].comunas.series
+        .find(comuna => comuna.codigo === Number(feature.properties.COD_COMUNA)).serie
+        .map(d => d.valor)
+        .reduce((prev, v, i, arr) => {
+          let sum = 0
+          for (let j = i; j >= 0 && j > i - 2; j--) {
+            sum += arr[j]
+          }
+          return [...prev, sum / Math.min(i + 1, 2)]
+        }, [])
+      return (
+        <MiniGrafico
+          key={`minigrafico-${feature.properties.codigo}`}
+          lat={centroVisual.latitude}
+          lng={centroVisual.longitude}
+          nombreComuna={feature.properties.NOM_COM}
+          mostrar={viewport.zoom > zoomRegion}
+          data={datos}
+        />
+      )
+    })
+  }, [division, codigo, viewport.zoom])
+
   const clickEnPoligono = e => {
     const featurePoligono = e.features && e.features.find(f => f.source === 'capa-datos-regiones')
     if (!featurePoligono) {
@@ -152,6 +239,9 @@ const Mapa = () => {
     }
     if (division !== 'comuna') {
       history.push(`/region/${featurePoligono.properties.codregion}`)
+    }
+    else {
+      history.push(`/comuna/${featurePoligono.properties.COD_COMUNA}`)
     }
   }
 
@@ -214,6 +304,57 @@ const Mapa = () => {
             }}
           />
         </Source>
+        {/* <Source id="capa-tapa" type="geojson" data={geoJSONTapa}>
+          <Layer
+            id="tapa-opaco"
+            type="fill"
+            paint={{
+              'fill-color': '#424242',
+              'fill-opacity': 1
+            }}
+          />
+          <Layer
+            id="tapa-lineas"
+            type="line"
+            paint={{
+              'line-color': 'rgba(0, 0, 0, 0.5)',
+              'line-width': 1
+            }}
+          />
+        </Source> */}
+        {division === 'comuna' &&
+          <Source id="capa-cuarentenas" type="geojson" data={geoJSONCuarentenasActivas}>
+            <Layer
+              id="dataCuarentenas"
+              type="fill"
+              paint={{
+                'fill-pattern': 'texturaCuarentenas',
+                'fill-opacity': 1
+              }}
+            />
+          </Source>
+        }
+        {poligonoDestacado &&
+          <Source id="capa-poligono-destacado" type="geojson" data={poligonoDestacado}>
+            <Layer
+              id="data-poligono-fill"
+              type="fill"
+              paint={{
+                'fill-color': 'rgb(255, 255, 255)',
+                'fill-opacity': .025
+              }}
+            />
+            <Layer
+              id="data-poligono-stroke"
+              type="line"
+              paint={{
+                'line-color': 'rgba(0, 0, 0, 0.75)',
+                'line-width': 3
+              }}
+            />
+          </Source>
+        }
+        {division === 'comuna' && labelsComunas}
       </ReactMapGL>
       {codigoColor}
     </div>

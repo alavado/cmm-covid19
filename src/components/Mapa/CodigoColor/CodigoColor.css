@@ -59,7 +59,7 @@
 }
 
 .CodigoColor__titulo_selector {
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, .15);
   transition: all .25s ease-in-out;
   border-radius: .25em;
   border: none;
@@ -78,7 +78,7 @@
 }
 
 .CodigoColor__titulo_selector:hover {
-  background-color: rgba(0, 0, 0, .25);
+  background-color: rgba(0, 0, 0, .5);
 }
 
 .CodigoColor__titulo_selector > option {

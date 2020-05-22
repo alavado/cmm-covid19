@@ -68,7 +68,7 @@ const viewports = [
       pitch: 8.966012003230043,
       zoom: 7.3,
       altitude: 1.5,
-      zoomMinimoParaMostrarMarkerComunas: 10
+      zoomMinimoParaMostrarMarkerComunas: 9.5
     }
   },
   {

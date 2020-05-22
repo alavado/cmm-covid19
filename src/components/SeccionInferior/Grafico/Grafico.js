@@ -80,7 +80,6 @@ const Grafico = () => {
   const { division, codigo } = params
 
   const eliminarCola = esDispositivoPequeño ? -diasDispositivoPequeño : 0
-  console.log(dataset)
 
   useEffect(() => {
     let data = {
@@ -120,7 +119,8 @@ const Grafico = () => {
       data.datasets = [
         {
           ...estiloLineaPrincipal,
-          data: puntosComuna.map((d, i) => i <= posicion ? d.valor : null).slice(eliminarCola),
+          label: datosComuna.nombre,
+          data: puntosComuna.map((d, i) => i <= posicion ? d.valor : null).slice(eliminarCola)
         },
       ]
     }
@@ -192,7 +192,7 @@ const Grafico = () => {
               display: true,
               scaleLabel: {
                 display: true,
-                labelString: dataset.nombre,
+                labelString: 'Casos',//dataset.nombre,
                 fontColor: 'rgba(255, 255, 255, 0.75)',
                 fontSize: 10
               },

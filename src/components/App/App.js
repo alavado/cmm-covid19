@@ -80,7 +80,7 @@ const App = () => {
       ))
       dispatch(agregarDataset(
         'Nuevos casos confirmados',
-        [0, 10, 50, 100, 500, 1000, 5000],
+        [0, 5, 10, 50, 100, 500, 1000],
         calcularNuevosCasosChile(serieChile),
         { series: calcularNuevosCasos(seriesRegiones), geoJSON: geoJSONRegiones },
         { series: calcularNuevosCasos(seriesComunas), geoJSON: geoJSONComunas }
@@ -93,8 +93,8 @@ const App = () => {
         { series: calcularNuevosCasos(seriesComunas, { habitantes: 100000, redondear: false }), geoJSON: geoJSONComunas }
       ))
       dispatch(agregarDataset(
-        'Casos confirmados en los últimos 7 días',
-        [0, 10, 100, 500, 1000, 5000, 10000],
+        'Nuevos casos confirmados en los últimos 7 días',
+        [0, 5, 10, 100, 500, 1000, 5000],
         calcularNuevosCasosChile(serieChile, { dias: 7 }),
         { series: calcularNuevosCasos(seriesRegiones, { dias: 7 }), geoJSON: geoJSONRegiones },
         { series: calcularNuevosCasos(seriesComunas, { dias: 7 }), geoJSON: geoJSONComunas }

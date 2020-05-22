@@ -42,7 +42,7 @@ const Breadcrumb = () => {
         )
       }
       else {
-        const { nombre: nombreComuna, region } = demograficosComunas.find(r => r.codigo === codigo)
+        const { nombre: nombreComuna, region } = demograficosComunas.find(r => Number(r.codigo) === Number(codigo))
         const { nombre: nombreRegion, codigo: codigoRegion } = demograficosRegiones.find(r => Number(r.codigo) === Number(region))
         setLinks(
           <div className="Breadcrumb__links">

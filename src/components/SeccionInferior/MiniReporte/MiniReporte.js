@@ -11,6 +11,8 @@ const MiniReporte = () => {
   const { subserieSeleccionada: ss, series, posicion } = useSelector(state => state.series)
   const { division, codigo } = useParams()
   const { escala } = useSelector(state => state.colores)
+  // const { datasets, indice, posicion } = useSelector(state => state.datasets)
+  // const dataset = datasets[indice]
 
   let { valor: valorPosicion, fecha } = ss.datos[posicion]
   const diferenciaDiaAnterior = posicion > 0 && (valorPosicion - ss.datos[posicion - 1].valor)

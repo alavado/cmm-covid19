@@ -3,7 +3,7 @@ import { AGREGAR_DATASET, SELECCIONAR_DATASET, FIJAR_POSICION_DATASETS } from '.
 const initialState = {
   datasets: [],
   indice: -1,
-  posicion: 20
+  posicion: 0
 }
 
 export default function(state = initialState, action) {
