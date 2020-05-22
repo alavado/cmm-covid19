@@ -135,7 +135,10 @@ const App = () => {
           <Route path="/">
             <div className="App__contenedor_poscarga">
               <section className="App_contenedor_header">
-                <Header />
+                <Switch>
+                  <Route path="/" exact component={Header} />
+                  <Route path="/:division/:codigo" component={Header} />
+                </Switch>
               </section>
               <main className="App__contenedor">
                 <Switch>

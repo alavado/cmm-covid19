@@ -8,9 +8,8 @@ import { NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNA
 
 const CodigoColor = () => {
 
-  const { serieSeleccionada, subserieSeleccionada, posicion } = useSelector(state => state.series)
-  const { fecha } = subserieSeleccionada.datos[posicion]
-  const { datasets, indice } = useSelector(state => state.datasets)
+  const { serieSeleccionada, subserieSeleccionada } = useSelector(state => state.series)
+  const { datasets, indice, posicion } = useSelector(state => state.datasets)
   const { escala: colores } = useSelector(state => state.colores)
 
   const [vecesAnimada, setVecesAnimada] = useState(0)
@@ -20,6 +19,7 @@ const CodigoColor = () => {
   const dispatch = useDispatch()
   const { division } = useParams()
 
+  const fecha = moment(datasets[indice].chile[posicion].fecha, 'DD/MM')
   const diferencia = fecha.diff(moment(), 'days')
   let etiqueta = `${diferencia === 0 ? 'Hoy, ' : (diferencia === -1 ? 'Ayer, ' : '')} ${fecha.format('dddd D [de] MMMM')}`
 
@@ -56,7 +56,7 @@ const CodigoColor = () => {
           >
             <div
               className="CodigoColor__fraccion_color"
-              style={{ backgroundColor: colores[i][1], opacity: .8 }}
+              style={{ backgroundColor: colores[i][1], opacity: 1 }}
               title={i < escala.length - 1 ? `Entre ${v.toLocaleString()} y ${escala[i + 1].toLocaleString()} casos` : `Más de ${escala.slice(-1)[0]} casos`}
             />
             <div className="CodigoColor__fraccion_limite">

@@ -39,6 +39,7 @@
   cursor: pointer;
   pointer-events: all;
   transition: all .25s ease-in-out;
+  filter: brightness(.8);
   height: .35em;
 }
 

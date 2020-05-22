@@ -6,24 +6,20 @@ import demograficosRegiones from '../../../data/demografia/regiones.json'
 import demograficosComunas from '../../../data/demografia/comunas.json'
 import { useDispatch, useSelector } from 'react-redux'
 import { seleccionarSerie } from '../../../redux/actions'
-import { NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES, CONTAGIOS_REGIONALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
+import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
 
 const Breadcrumb = () => {
   
   const [links, setLinks] = useState('Chile')
   const { serieSeleccionada } = useSelector(state => state.series)
-  const dispatch = useDispatch()
   const params = useParams()
   const history = useHistory()
 
   const verComunas = e => {
     e.stopPropagation()
     e.preventDefault()
-    if (serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES) {
-      dispatch(seleccionarSerie(NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS))
-      const comunasRegion = demograficosComunas.filter(c => c.region === params.codigo)
-      history.push(`/comuna/${comunasRegion[Math.floor(Math.random() * comunasRegion.length)].codigo}`)
-    }
+    const comunasRegion = demograficosComunas.filter(c => c.region === params.codigo)
+    history.push(`/comuna/${comunasRegion[Math.floor(Math.random() * comunasRegion.length)].codigo}`)
   }
   
   useEffect(() => {
@@ -36,14 +32,12 @@ const Breadcrumb = () => {
             <Link to="/" className="Breadcrumb__link">Chile</Link>
             <FaCaretRight className="Breadcrumb__separador" />
             <div className="Breadcrumb__destino">{nombreRegion}</div>
-            {serieSeleccionada.id === CONTAGIOS_REGIONALES_POR_100000_HABITANTES &&
-              <>
-                <FaCaretRight className="Breadcrumb__separador" />
-                <button onClick={verComunas} className="Breadcrumb__boton_comunas">
-                  Ver comunas
-                </button>
-              </>
-            }
+            <>
+              <FaCaretRight className="Breadcrumb__separador" />
+              <button onClick={verComunas} className="Breadcrumb__boton_comunas">
+                Ver comunas
+              </button>
+            </>
           </div>
         )
       }

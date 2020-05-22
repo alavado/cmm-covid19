@@ -63,9 +63,9 @@ const obtenerColor = (valor, escala, colores) => {
 
 const Mapa = () => {
 
-  const { datasets, indice } = useSelector(state => state.datasets)
+  const { datasets, indice, posicion } = useSelector(state => state.datasets)
   const { animaciones, escala } = useSelector(state => state.colores)
-  const { posicion } = useSelector(state => state.series)
+  // const { posicion } = useSelector(state => state.series)
   const [viewport, setViewport] = useState(construirVPInicial(animaciones))
   const [regionPrevia, setRegionPrevia] = useState('')
   const [divisionPrevia, setDivisionPrevia] = useState('')
@@ -77,7 +77,7 @@ const Mapa = () => {
     longitude: 0,
     titulo: ''
   })
-  const codigoColor = useMemo(() => <CodigoColor />, [])
+  const codigoColor = useMemo(() => <CodigoColor />, [division])
   const mapa = useRef()
 
   useEffect(() => {
@@ -125,23 +125,25 @@ const Mapa = () => {
     setDivisionPrevia(division)
   }, [division, codigo])
 
+  const llaveDataset = (!division || division === 'region') ? 'regiones' : 'comunas'
+
   const geoJSON = useMemo(() => ({
-    ...datasets[indice].regiones.geoJSON,
-    features: datasets[indice].regiones.geoJSON.features.map(f => {
-      const serieComuna = datasets[indice].regiones.series.find(({ codigo }) => codigo === Number(f.properties.codregion))//COD_COMUNA))
-      if (!serieComuna) {
+    ...datasets[indice][llaveDataset].geoJSON,
+    features: datasets[indice][llaveDataset].geoJSON.features.map(f => {
+      const serie = datasets[indice][llaveDataset].series.find(({ codigo }) => codigo === Number(f.properties[!division || division === 'region' ? 'codregion' : 'COD_COMUNA']))
+      if (!serie) {
         return false
       }
       return {
         ...f,
         properties: {
           ...f.properties,
-          valores: serieComuna.serie.map(d => d.valor),
-          colores: serieComuna.serie.map(d => obtenerColor(d.valor, datasets[indice].escala, escala))
+          valores: serie.serie.map(d => d.valor),
+          colores: serie.serie.map(d => obtenerColor(d.valor, datasets[indice].escala, escala))
         }
       }
     }).filter(f => f !== false)
-  }), [indice])
+  }), [indice, division])
 
   const clickEnPoligono = e => {
     const featurePoligono = e.features && e.features.find(f => f.source === 'capa-datos-regiones')

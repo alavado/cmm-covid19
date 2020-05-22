@@ -21,9 +21,9 @@ const estiloLineaPrincipal = {
   pointHighlightStroke: 'rgba(220,220,220,1)',
   borderDash: [0, 0],
   lineTension: .2,
-  pointRadius: esDispositivoPequeño ? 2 : 3,
-  pointBorderWidth: 1,
-  borderWidth: 2,
+  pointRadius: esDispositivoPequeño ? 1 : 2,
+  pointBorderWidth: 0,
+  borderWidth: 2.5,
   fill: false
 }
 
@@ -71,21 +71,16 @@ const obtenerColor = (valor, escala, colores) => {
 const Grafico = () => {
 
   const { escala } = useSelector(state => state.colores)
-  const { subserieSeleccionada: ss, series, posicion, geoJSONCuarentenas } = useSelector(state => state.series)
+  const { subserieSeleccionada: ss, series, geoJSONCuarentenas } = useSelector(state => state.series)
   const [datos, setDatos] = useState({})
-  const { fecha } = ss.datos[posicion]
+  // const { fecha } = ss.datos[posicion]
   const params = useParams()
-  const { datasets, indice } = useSelector(state => state.datasets)
+  const { datasets, indice, posicion } = useSelector(state => state.datasets)
   const dataset = datasets[indice]
   const { division, codigo } = params
 
-  const fechaEsAntesDeFechaPosicionSelecionada = f => {
-    return f.diff(fecha, 'days') <= 0
-  }
-
-  console.log(dataset)
-
   const eliminarCola = esDispositivoPequeño ? -diasDispositivoPequeño : 0
+  console.log(dataset)
 
   useEffect(() => {
     let data = {
@@ -93,85 +88,47 @@ const Grafico = () => {
       datasets: []
     }
     let puntosRegion, puntosComuna
-    let todosLosValores = dataset.chile
+    let todosLosValores = dataset.chile.filter((v, i) => i <= posicion)
     if (!division) {
       data.labels = dataset.chile.map(d => d.fecha).slice(eliminarCola)
       data.datasets = [
         {
           ...estiloLineaPrincipal,
           label: 'Chile',
-          data: dataset.chile.map(d => d.valor).slice(eliminarCola)
+          data: dataset.chile.map((d, i) => i <= posicion ? d.valor : null).slice(eliminarCola)
         }
       ]
     }
     else if (division === 'region') {
       puntosRegion = dataset.regiones.series.find(s => s.codigo === Number(codigo)).serie
-      todosLosValores = [
-        // ...todosLosValores,
-        ...puntosRegion.filter((v, i) => i <= posicion)
-      ]
+      todosLosValores = puntosRegion.filter((v, i) => i <= posicion)
       data.labels = puntosRegion.map(d => d.fecha).slice(eliminarCola)
       data.datasets = [
         {
           ...estiloLineaPrincipal,
           label: demograficosRegiones.find(c => c.codigo === codigo).nombre,
           data: puntosRegion.map((d, i) => i <= posicion ? d.valor : null).slice(eliminarCola),
-        },
-        // {
-        //   ...estiloLineaChile,
-        //   label: 'Chile',
-        //   data: dataset.chile.map(d => d.valor).slice(eliminarCola)
-        // }
+        }
       ]
     }
-    // else if (division === 'comuna') {
-    //   puntosRegion = obtenerSerieRegionComuna(codigo)
-    //   puntosComuna = obtenerSerieComuna(codigo)
-    //   todosLosValores = [
-    //     ...todosLosValores,
-    //     ...puntosRegion,
-    //     ...puntosComuna
-    //   ]
-    //   let puntosConDatos = [
-    //     { fecha: serieChile[0].fecha.clone(), valor: null },
-    //     ...puntosComuna
-    //   ]
-    //   const ultimaFechaChile = serieChile.slice(-1)[0].fecha
-    //   let ultimaFechaComuna = puntosComuna.slice(-1)[0].fecha.clone()
-    //   while (ultimaFechaComuna.diff(ultimaFechaChile, 'days') !== 0) {
-    //     ultimaFechaComuna.add(1, 'days')
-    //     puntosConDatos.push({ fecha: ultimaFechaComuna.clone(), valor: null })
-    //   }
-    //   const puntosRellenados = puntosConDatos.slice(2)
-    //   data.labels = puntosRellenados.map(d => d.fecha).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
-    //   const datosComuna = demograficosComunas.find(c => c.codigo === codigo)
-    //   data.datasets = [
-    //     {
-    //       ...estiloLineaPrincipal,
-    //       label: datosComuna.nombre,
-    //       data: puntosRellenados.map((d, i) => d.valor).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0),
-    //       spanGaps: true,
-    //       borderDash: [3, 1],
-    //       pointStyle: puntosRellenados.map(d => d.interpolado ? 'star' : 'dot'),
-    //       borderWidth: 2
-    //     },
-    //     {
-    //       ...estiloLineaRegion,
-    //       label: demograficosRegiones.find(c => c.codigo === datosComuna.region).nombre,
-    //       data: puntosRegion.map((d, i) => d.valor).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
-    //     },
-    //     {
-    //       ...estiloLineaChile,
-    //       label: 'Chile',
-    //       data: serieChile.map((d, i) => d.valor).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0)
-    //     },
-    //   ]
-    // }
+    else if (division === 'comuna') {
+      const datosComuna = dataset.comunas.series.find(s => s.codigo === Number(codigo))
+      puntosRegion = dataset.regiones.series.find(s => s.codigo === datosComuna.codigoRegion).serie
+      puntosComuna = datosComuna.serie
+      todosLosValores = puntosComuna.filter((v, i) => i <= posicion)
+      data.labels = puntosComuna.map(d => d.fecha).slice(eliminarCola)
+      data.datasets = [
+        {
+          ...estiloLineaPrincipal,
+          data: puntosComuna.map((d, i) => i <= posicion ? d.valor : null).slice(eliminarCola),
+        },
+      ]
+    }
     const canvas = document.getElementById('Grafico')
     const ctx = canvas.getContext('2d')
     const gradientStroke = ctx.createLinearGradient(0, canvas.getBoundingClientRect().height - 28, 0, 0)
-    const maximo = todosLosValores.reduce((prev, d) => Math.max(prev, d.valor), 0)
-    let limiteEspectro = Math.max(10, (maximo / 2) * Math.floor((maximo + (maximo / 2)) / (maximo / 2)))
+    const maximo = todosLosValores.reduce((prev, d) => Math.max(prev, d.valor), 1)
+    let limiteEspectro = maximo//Math.max(10, (maximo / 2) * Math.floor((maximo + (maximo / 2)) / (maximo / 2)))
     dataset.escala.forEach((v, i) => {
       if (v / limiteEspectro > 1) {
         return
@@ -194,33 +151,32 @@ const Grafico = () => {
       },
       ...data.datasets.slice(1),
     ]
-    // if (division === 'comuna') {
-
-    //   const rangosCuarentenas = geoJSONCuarentenas.features.map(({ properties: { Cut_Com, FInicio, FTermino } }) => ({
-    //     codigo: Cut_Com,
-    //     inicio: moment(FInicio, 'YYYY/MM/DD hh:mm:ss'),
-    //     fin: moment(FTermino, 'YYYY/MM/DD hh:mm:ss')
-    //   }))
+    if (division === 'comuna') {
+      const rangosCuarentenas = geoJSONCuarentenas.features.map(({ properties: { Cut_Com, FInicio, FTermino } }) => ({
+        codigo: Cut_Com,
+        inicio: moment(FInicio, 'YYYY/MM/DD hh:mm:ss'),
+        fin: moment(FTermino, 'YYYY/MM/DD hh:mm:ss')
+      }))
     
-    //   const cuarentenasComuna = rangosCuarentenas.filter(({ codigo: codigoComuna }) => codigoComuna === Number(codigo))
-    //   if (cuarentenasComuna) {
-    //     data.datasets = [
-    //       ...data.datasets,
-    //       {
-    //         type: 'bar',
-    //         key: 'Barras-cuarentenas-totales',
-    //         label: 'Comuna en cuarentena total o parcial',
-    //         data: serieChile.map(({ fecha }) => {
-    //           return cuarentenasComuna.some(({ inicio, fin }) => (
-    //             fecha.diff(inicio, 'days') >= 0 && fecha.diff(fin, 'days') < 0
-    //           )) ? limiteEspectro : 0
-    //         }).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0),
-    //         backgroundColor: pattern.draw('diagonal-right-left', 'rgba(255, 255, 255, 0.1)', '#212121', 7.5),
-    //         barPercentage: 1.25
-    //       }
-    //     ]
-    //   }
-    // }
+      const cuarentenasComuna = rangosCuarentenas.filter(({ codigo: codigoComuna }) => codigoComuna === Number(codigo))
+      if (cuarentenasComuna) {
+        data.datasets = [
+          ...data.datasets,
+          {
+            type: 'bar',
+            key: 'Barras-cuarentenas-totales',
+            label: 'Comuna en cuarentena total o parcial',
+            data: puntosRegion.map(({ fecha }) => {
+              return cuarentenasComuna.some(({ inicio, fin }) => (
+                moment(fecha, 'DD/MM').diff(inicio, 'days') >= 0 && moment(fecha, 'DD/MM').diff(fin, 'days') < 0
+              )) ? limiteEspectro : 0
+            }).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0),
+            backgroundColor: pattern.draw('diagonal-right-left', 'rgba(255, 255, 255, 0.1)', '#212121', 7.5),
+            barPercentage: 1.25
+          }
+        ]
+      }
+    }
     setDatos(data)
   }, [posicion, division, codigo, escala, ss, indice])
 
@@ -279,7 +235,7 @@ const Grafico = () => {
           tooltips: {
             callbacks: {
               label: ({ yLabel: v, datasetIndex }) => {
-                if (datos.datasets[datasetIndex].label.endsWith('cuarentena total o parcial')) {
+                if (datos.datasets[datasetIndex].label) {
                   return ''
                 }
                 return `${dataset.nombre}: ${v.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}`

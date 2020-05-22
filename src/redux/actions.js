@@ -9,7 +9,8 @@ import { SELECCIONAR_SERIE, SELECCIONAR_SUBSERIE, ACTUALIZAR_SERIE,
   CAMBIAR_ORDEN_RANKING,
   MOSTRAR_MINI_GRAFICOS,
   AGREGAR_DATASET,
-  SELECCIONAR_DATASET
+  SELECCIONAR_DATASET,
+  FIJAR_POSICION_DATASETS
 } from './actionTypes'
 
 export const actualizarSerie = (id, propiedad, valor) => ({
@@ -118,4 +119,9 @@ export const agregarDataset = (nombre, escala, serieChile, seriesRegiones, serie
 export const seleccionarDataset = i => ({
   type: SELECCIONAR_DATASET,
   payload: i
+})
+
+export const fijarPosicionDatasets = posicion => ({
+  type: FIJAR_POSICION_DATASETS,
+  payload: Number(posicion)
 })
