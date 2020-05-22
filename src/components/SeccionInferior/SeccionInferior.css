@@ -16,7 +16,7 @@
 .SeccionInferior__inferior {
   display: flex;
   flex: 1;
-  padding-bottom: 1.5em;
+  padding-bottom: .5em;
 }
 
 .SeccionInferior__opciones {

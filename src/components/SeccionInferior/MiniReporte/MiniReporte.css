@@ -14,7 +14,7 @@
   border-radius: .25em;
   display: grid;
   grid-template-columns: auto auto;
-  gap: .75em;
+  gap: 1em;
   align-items: center;
   height: 4.5em;
 }
@@ -43,8 +43,8 @@
   align-self: flex-start;
   display: flex;
   align-items: center;
-  margin-top: .25em;
-  margin-bottom: .25em;
+  margin-top: .35em;
+  margin-bottom: .5em;
   line-height: 1.25;
 }
 

@@ -32,7 +32,7 @@ const calcularPoloDeInaccesibilidad = feature => {
 
 const vpInicialLandscape = {
   width: '100%',
-  height: 'calc(100vh - 15em)',
+  height: 'calc(100vh - 16em)',
   latitude: -39.204954641160536,
   longitude: -69.26430872363804,
   zoom: esMovil() ? 2.5 : 4,
@@ -65,9 +65,11 @@ const Mapa = () => {
 
   const { datasets, indice } = useSelector(state => state.datasets)
   const { animaciones, escala } = useSelector(state => state.colores)
-  const [viewport, setViewport] = useState(construirVPInicial(animaciones))
   const { posicion } = useSelector(state => state.series)
-  const { division } = useParams()
+  const [viewport, setViewport] = useState(construirVPInicial(animaciones))
+  const [regionPrevia, setRegionPrevia] = useState('')
+  const [divisionPrevia, setDivisionPrevia] = useState('')
+  const { division, codigo } = useParams()
   const history = useHistory()
   const [popupRegion, setPopupRegion] = useState({
     mostrando: false,
@@ -76,6 +78,52 @@ const Mapa = () => {
     titulo: ''
   })
   const codigoColor = useMemo(() => <CodigoColor />, [])
+  const mapa = useRef()
+
+  useEffect(() => {
+    setViewport(v => ({ ...v, transitionDuration: animaciones ? animaciones ? 1500 : 0 : 0 }))
+  }, [animaciones])
+
+  useEffect(() => {
+    if (division) {
+      if (division === 'region') {
+        const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigo))
+        setViewport(v => ({
+          ...v,
+          ...vpRegion,
+          transitionDuration: animaciones ? 1500 : 0,
+          transitionInterpolator: new FlyToInterpolator(),
+          transitionEasing: easeCubic
+        }))
+        setRegionPrevia(codigo)
+      }
+      else if (division === 'comuna') {
+        const codigoRegion = demograficosComunas.find(c => c.codigo === codigo).region
+        if (codigoRegion !== regionPrevia) {
+          const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigoRegion))
+          setViewport(v => ({
+            ...v,
+            ...vpRegion,
+            transitionDuration: animaciones ? 1500 : 0,
+            transitionInterpolator: new FlyToInterpolator(),
+            transitionEasing: easeCubic
+          }))
+        }
+        setRegionPrevia(codigoRegion)
+      }
+    }
+    else {
+      setViewport(v => ({
+        ...v,
+        ...construirVPInicial(animaciones),
+        transitionDuration: animaciones ? 1500 : 0,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: easeCubic
+      }))
+      setRegionPrevia(null)
+    }
+    setDivisionPrevia(division)
+  }, [division, codigo])
 
   const geoJSON = useMemo(() => ({
     ...datasets[indice].regiones.geoJSON,
@@ -130,13 +178,14 @@ const Mapa = () => {
     setViewport({
       ...vp,
       width: '100%',
-      height: 'calc(100vh - 15em)',
+      height: 'calc(100vh - 16em)',
     })
   }
 
   return (
     <div className="Mapa">
       <ReactMapGL
+        ref={mapa}
         {...viewport}
         mapStyle={mapStyle}
         onViewportChange={cambioEnElViewport}
@@ -392,7 +441,7 @@ const Mapa = () => {
   //   setViewport({
   //     ...vp,
   //     width: '100%',
-  //     height: 'calc(100vh - 15em)',
+  //     height: 'calc(100vh - 16em)',
   //   })
   // }
 
