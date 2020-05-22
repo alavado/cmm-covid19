@@ -19,10 +19,9 @@ const SelectorFecha = () => {
   const dataset = datasets[indice]
   const diferencia = serie.datos[Math.max(0, posicionDS - 1)].fecha.diff(moment(), 'days')
   const rangoDias = (division === 'comuna' ? dataset.comunas.series[0].serie.length : dataset.regiones.series[0].serie.length) - 1
-  
-  useEffect(() => {
-    dispatch(fijarPosicionDatasets(Math.min(posicionDS, rangoDias)))
-  }, [division])
+  console.log({rangoDias})
+
+  useEffect(() => {dispatch(fijarPosicionDatasets(rangoDias))}, [division])
 
   useEffect(() => {
     const fecha = document.getElementsByClassName('SelectorFecha__contenedor_fecha')[0]

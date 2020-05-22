@@ -20,8 +20,7 @@
 }
 
 .MiniReporte__casos {
-  width: 3em;
-  height: 2em;
+  height: 4em;
   border-radius: .15em;
   background-color: red;
   display: flex;
@@ -29,8 +28,13 @@
   justify-content: center;
   font-weight: bold;
   color: #212121;
-  font-size: 1.8em;
   transition: all .25s ease-in-out;
+  width: 6em;
+}
+
+.MiniReporte__casos_contenido {
+  font-size: 1.7em;
+  padding: .25em;
 }
 
 .MiniReporte__descripcion {

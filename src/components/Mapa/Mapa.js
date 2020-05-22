@@ -190,8 +190,6 @@ const Mapa = () => {
     }),
   }), [geoJSON])
 
-  console.log(datasets[indice])
-    
   const labelsComunas = useMemo(() => {
     if (division !== 'comuna') {
       return []
@@ -349,7 +347,7 @@ const Mapa = () => {
               type="line"
               paint={{
                 'line-color': 'rgba(0, 0, 0, 0.75)',
-                'line-width': 3
+                'line-width': 2.5
               }}
             />
           </Source>

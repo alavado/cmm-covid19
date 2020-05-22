@@ -78,6 +78,7 @@ const Grafico = () => {
   const { datasets, indice, posicion } = useSelector(state => state.datasets)
   const dataset = datasets[indice]
   const { division, codigo } = params
+  const [maximo, setMaximo] = useState(0)
 
   const eliminarCola = esDispositivoPequeño ? -diasDispositivoPequeño : 0
 
@@ -128,6 +129,7 @@ const Grafico = () => {
     const ctx = canvas.getContext('2d')
     const gradientStroke = ctx.createLinearGradient(0, canvas.getBoundingClientRect().height - 28, 0, 0)
     const maximo = todosLosValores.reduce((prev, d) => Math.max(prev, d.valor), 1)
+    setMaximo(maximo)
     let limiteEspectro = maximo//Math.max(10, (maximo / 2) * Math.floor((maximo + (maximo / 2)) / (maximo / 2)))
     dataset.escala.forEach((v, i) => {
       if (v / limiteEspectro > 1) {
@@ -192,19 +194,24 @@ const Grafico = () => {
               display: true,
               scaleLabel: {
                 display: true,
-                labelString: 'Casos',//dataset.nombre,
                 fontColor: 'rgba(255, 255, 255, 0.75)',
                 fontSize: 10
               },
               gridLines: {
                 display: false
               },
+              position: 'right',
               ticks: {
-                maxTicksLimit: 6,
+                maxTicksLimit: 7,
                 suggestedMin: 0,
-                suggestedMax: 10,
+                max: maximo,
                 fontColor: 'rgba(255, 255, 255, 0.75)',
-                callback: item => item.toLocaleString('de-DE')
+                callback: item => {
+                  if (item !== maximo && maximo - item < maximo / 7) {
+                    return null
+                  }
+                  return item.toLocaleString('de-DE', { maximumFractionDigits: 1 })
+                }
               }
             }],
             xAxes: [{

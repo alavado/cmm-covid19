@@ -11,8 +11,8 @@ const MiniReporte = () => {
   const { subserieSeleccionada: ss, series, posicion } = useSelector(state => state.series)
   const { division, codigo } = useParams()
   const { escala } = useSelector(state => state.colores)
-  // const { datasets, indice, posicion } = useSelector(state => state.datasets)
-  // const dataset = datasets[indice]
+  const { datasets, indice, posicion: posicionDS } = useSelector(state => state.datasets)
+  const dataset = datasets[indice]
 
   let { valor: valorPosicion, fecha } = ss.datos[posicion]
   const diferenciaDiaAnterior = posicion > 0 && (valorPosicion - ss.datos[posicion - 1].valor)
@@ -59,6 +59,18 @@ const MiniReporte = () => {
     valorPosicion = serieChile[Math.min(posicion, serieChile.length - 1)].valor
     backgroundColor = escala.find((e, i) => i === escala.length - 1 || escala[i + 1][0] > valorPosicion)[1]
   }
+  let valorFecha
+  if (division === 'comuna') {
+    const datos = dataset.comunas.series.find(s => s.codigo === Number(codigo))
+    valorFecha = datos.serie[Math.min(posicionDS, datos.serie.length - 1)].valor
+  }
+  else if (division === 'region') {
+    const datos = dataset.regiones.series.find(s => s.codigo === Number(codigo))
+    valorFecha = datos.serie[posicionDS].valor
+  }
+  else {
+    valorFecha = dataset.chile[posicionDS].valor
+  }
 
   return (
     <div className="MiniReporte">
@@ -67,9 +79,11 @@ const MiniReporte = () => {
           className="MiniReporte__casos"
           style={{ backgroundColor }}
         >
-          {valorPosicion.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })}
+          <div className="MiniReporte__casos_contenido">
+            {valorFecha.toLocaleString('de-DE', { maximumFractionDigits: 0, minimumFractionDigits: 0 })}
+          </div>
         </div>
-        <div className="MiniReporte__descripcion">Nuevos casos por 100.000 habitantes</div>
+        <div className="MiniReporte__descripcion">{dataset.nombre}</div>
       </div>
       {diferenciaDiaAnterior !== false &&
         <div className="MiniReporte__diferencia">
