@@ -243,7 +243,7 @@
 
 @media (orientation: portrait) {
   .CodigoColor {
-    top: 5em;
+    top: 4.5em;
     max-width: 90vw;
   }
 
@@ -252,7 +252,15 @@
   }
   
   .CodigoColor__fecha {
-    font-size: 1.25em;
+    font-size: 1em;
+  }
+
+  .CodigoColor__fraccion_color {
+    height: .2em;
+  }
+
+  .CodigoColor__fraccion_limite {
+    font-size: .45em;
   }
 
   .CodigoColor__boton_cambio {
@@ -264,13 +272,31 @@
   }
 
   .CodigoColor__titulo_selector {
-    font-size: 1em;
-    margin: 0 0 .25em 0;
+    font-size: .9em;
     max-width: 90vw;
   }
 
   .CodigoColor__boton_graficos {
-    font-size: .4em;
+    font-size: .5em;
+  }
+
+  .CodigoColor__botones {
+    margin-top: 1em;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .CodigoColor {
+    top: 2.25em;
+  }
+  .CodigoColor__fecha {
+    display: none;
+  }
+  .CodigoColor__boton_graficos {
+    display: none;
+  }
+  .CodigoColor__espectro {
+    display: none;
   }
 }
 

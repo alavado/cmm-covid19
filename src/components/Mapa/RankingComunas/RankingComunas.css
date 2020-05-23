@@ -119,16 +119,15 @@
   transition: all .5s ease-out;
   width: 100%;
   border-bottom: 1px solid rgba(0, 0, 0, .15);
-  filter: brightness(80%);
   padding-right: 1em;
 }
 
 .RankingComunas__comuna:hover {
-  filter: brightness(115%);
+  filter: brightness(120%);
 }
 
 .RankingComunas__comuna--seleccionada {
-  filter: brightness(95%);
+  filter: brightness(115%);
 }
 
 .RankingComunas__nombre_comuna {
@@ -164,6 +163,12 @@
     top: auto;
     right: auto;
     left: .75em;
+    display: none;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .RankingComunas {
     display: none;
   }
 }
