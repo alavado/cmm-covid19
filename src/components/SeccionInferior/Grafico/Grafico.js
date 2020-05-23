@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, } from 'react'
 import { Chart, Line } from 'react-chartjs-2'
 import { useSelector } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
 import './Grafico.css'
 import { useParams } from 'react-router-dom'
-import demograficosComunas from '../../../data/demografia/comunas.json'
 import demograficosRegiones from '../../../data/demografia/regiones.json'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
 import pattern from 'patternomaly'
 
 Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'

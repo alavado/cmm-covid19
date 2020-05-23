@@ -50,7 +50,7 @@ export const procesarCSVComunas = (csv, seriesRegiones) => {
       codigoRegion,
       region,
       serie: [0, ...serie].reduce((prev, valor, i, arr) => {
-        let secuencia = [{ fecha: fechasComunas[i].format('DD/MM'), valor }]
+        let secuencia = [{ fecha: fechasComunas[i].format('DD/MM'), valor, interpolado: false }]
         if (i > 0) {
           const indiceEnSerieRegional = fechasComunas[i].diff(fechaInicial, 'days')
           const indiceAnteriorEnSerieRegional = fechasComunas[i - 1].diff(fechaInicial, 'days')
@@ -63,7 +63,8 @@ export const procesarCSVComunas = (csv, seriesRegiones) => {
             secuencia = [
               {
                 fecha: fechaInicial.clone().add(j, 'days').format('DD/MM'),
-                valor: Math.round(arr[i - 1] + diferenciaComuna * (casosIntermedios - casosAnteriores) / diferenciaRegion)
+                valor: Math.round(arr[i - 1] + diferenciaComuna * (casosIntermedios - casosAnteriores) / diferenciaRegion),
+                interpolado: true
               },
               ...secuencia
             ]

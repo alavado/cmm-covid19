@@ -63,11 +63,11 @@ const App = () => {
       dispatch(actualizarSerie(CASOS_COMUNALES, 'geoJSON', geoJSONComunalConDatos))
 
       setMensaje('Interpolando los datos desconocidos...')
-      const [datosComunalesInterpolados, geoJSONInterpolado, datosComunalesOriginalesInterpolados] = await interpolarComunas(datosComunalesOriginales, datosRegionalesOriginales, geoJSONComunas)
-      dispatch(actualizarSerie(NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'geoJSON', geoJSONInterpolado))
-      dispatch(actualizarSerie(NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'datos', datosComunalesInterpolados))
-      dispatch(actualizarSerie(CASOS_COMUNALES_INTERPOLADOS, 'datos', datosComunalesOriginalesInterpolados))
-      dispatch(actualizarSerie(CASOS_COMUNALES_INTERPOLADOS, 'geoJSON', geoJSONInterpolado))
+      // const [datosComunalesInterpolados, geoJSONInterpolado, datosComunalesOriginalesInterpolados] = await interpolarComunas(datosComunalesOriginales, datosRegionalesOriginales, geoJSONComunas)
+      // dispatch(actualizarSerie(NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'geoJSON', geoJSONInterpolado))
+      // dispatch(actualizarSerie(NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, 'datos', datosComunalesInterpolados))
+      // dispatch(actualizarSerie(CASOS_COMUNALES_INTERPOLADOS, 'datos', datosComunalesOriginalesInterpolados))
+      // dispatch(actualizarSerie(CASOS_COMUNALES_INTERPOLADOS, 'geoJSON', geoJSONInterpolado))
 
       const geoJSONComunasFormateado = formatearGeoJSONComunas(geoJSONComunas)
 

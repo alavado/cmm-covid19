@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import './Breadcrumb.css'
 import { Link, useParams, useHistory } from 'react-router-dom'
-import { FaCaretRight, FaChartLine } from 'react-icons/fa'
+import { FaCaretRight } from 'react-icons/fa'
 import demograficosRegiones from '../../../data/demografia/regiones.json'
 import demograficosComunas from '../../../data/demografia/comunas.json'
-import { useDispatch, useSelector } from 'react-redux'
-import { seleccionarSerie } from '../../../redux/actions'
-import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS } from '../../../redux/reducers/series'
+import { useSelector } from 'react-redux'
 
 const Breadcrumb = () => {
   

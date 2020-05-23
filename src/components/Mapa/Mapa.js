@@ -177,13 +177,12 @@ const Mapa = () => {
   }), [indice, division, escala])
 
   const geoJSONTapa = useMemo(() => {
-    const codigoRegion = Number(obtenerDemograficosComuna(codigo).region)
-    console.log({codigoRegion})
+    const codigoRegion = obtenerDemograficosComuna(codigo)
     return {
       ...datasets[indice].comunas.geoJSON,
       features: datasets[indice].comunas.geoJSON.features
         .filter(f => {
-          return division === 'comuna' && f.properties.codigoRegion !== codigoRegion
+          return division === 'comuna' && f.properties.codigoRegion !== Number(codigoRegion.region)
       }),
     }
   }, [geoJSON, division, codigo])
