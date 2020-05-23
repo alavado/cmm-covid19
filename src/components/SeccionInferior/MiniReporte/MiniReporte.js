@@ -37,10 +37,8 @@ const MiniReporte = () => {
   }
   else if (division === 'region') {
     const datosRegion = dataset.regiones.series.find(s => s.codigo === Number(codigo))
-    console.log({datosRegion})
     if (datosRegion.serie[posicionDS]) {
       const demograficos = obtenerDemograficosRegion(codigo)
-      console.log(datosRegion.serie[posicionDS])
       datosExtra.casos = datosRegion.serie[posicionDS].valor
       datosExtra.poblacion = demograficos.poblacion
       datosExtra.nombre = demograficos.nombre
