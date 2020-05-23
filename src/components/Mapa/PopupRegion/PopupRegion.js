@@ -29,9 +29,6 @@ const PopupRegion = props => {
           >
             {valorFormateado}
           </div>
-          {/* <div className="PopupRegion__descripcion">
-            {`${valorFormateado !== '1' ? 'Nuevos casos' : 'Nuevo caso'}`}<br/>por 100.000 hab.
-          </div> */}
         </div>
       </div>
     </Popup>

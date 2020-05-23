@@ -39,8 +39,9 @@ const MiniGrafico = props => {
                 pointRadius: 0,
                 pointHitRadius: 0,
                 borderColor: 'rgba(255, 255, 255, 1)',
-                borderWidth: .75,
-                backgroundColor: 'rgba(255, 255, 255, .5)'
+                borderWidth: 1.5,
+                backgroundColor: 'rgba(255, 255, 255, .5)',
+                fill: false
               }]
             }}
             options={{

@@ -225,7 +225,7 @@ const Mapa = () => {
         />
       )
     })
-  }, [division, codigo, viewport.zoom])
+  }, [division, codigo, viewport.zoom, indice])
 
   const clickEnPoligono = e => {
     const featurePoligono = e.features && e.features.find(f => f.source === 'capa-datos-regiones')
