@@ -179,14 +179,16 @@ const Mapa = () => {
   }), [indice, division, escala])
 
   const geoJSONTapa = useMemo(() => {
+    const codigoRegion = Number(obtenerDemograficosComuna(codigo).region)
+    console.log({codigoRegion})
     return {
       ...datasets[indice].comunas.geoJSON,
       features: datasets[indice].comunas.geoJSON.features
         .filter(f => {
-          return division === 'comuna' && f.properties.NOM_REG !== 'Región Metropolitana de Santiago'
+          return division === 'comuna' && f.properties.codigoRegion !== codigoRegion
       }),
     }
-  }, [geoJSON, division])
+  }, [geoJSON, division, codigo])
 
   const labelsComunas = useMemo(() => {
     if (division !== 'comuna') {

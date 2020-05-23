@@ -1,6 +1,7 @@
 import moment from 'moment/min/moment-with-locales'
 import demografiaRegiones from '../data/demografia/regiones.json'
 import demografiaComunas from '../data/demografia/comunas.json'
+import { obtenerDemograficosComuna } from './demograficos'
 
 const separarCSVEnFilas = csv => {
   let filas = csv.split('\n')
@@ -112,4 +113,21 @@ export const calcularNuevosCasos = (series, opciones = { redondear: true, dias: 
       }))
     }
   })
-} 
+}
+
+export const formatearGeoJSONComunas = geoJSON => {
+  return {
+    ...geoJSON,
+    features: geoJSON.features.map(f => {
+      const codigoRegion = obtenerDemograficosComuna(f.properties.COD_COMUNA).region
+      return {
+        ...f,
+        properties: {
+          ...f.properties,
+          codigo: Number(f.properties.COD_COMUNA),
+          codigoRegion: Number(codigoRegion)
+        }
+      }
+    })
+  }
+}
