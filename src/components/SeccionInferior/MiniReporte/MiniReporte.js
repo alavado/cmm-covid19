@@ -23,7 +23,8 @@ const MiniReporte = () => {
     casos: 0,
     casosAnteriores: 0,
     poblacion: 0,
-    nombre: ''
+    nombre: '',
+    diferencia: 0
   }
   if (division === 'comuna') {
     const datosComuna = dataset.comunas.series.find(s => s.codigo === Number(codigo))
@@ -33,6 +34,7 @@ const MiniReporte = () => {
       datosExtra.poblacion = demograficos.poblacion
       datosExtra.nombre = demograficos.nombre
       datosExtra.interpolado = datosComuna.serie[posicionDS].interpolado
+      datosExtra.diferencia = datosComuna.serie[posicionDS].valor - datosComuna.serie[Math.max(0, posicionDS - 1)].valor
     }
   }
   else if (division === 'region') {
@@ -42,12 +44,14 @@ const MiniReporte = () => {
       datosExtra.casos = datosRegion.serie[posicionDS].valor
       datosExtra.poblacion = demograficos.poblacion
       datosExtra.nombre = demograficos.nombre
+      datosExtra.diferencia = datosRegion.serie[posicionDS].valor - datosRegion.serie[Math.max(0, posicionDS - 1)].valor
     }
   }
   else {
     datosExtra.casos = datasets[0].chile[posicionDS].valor
     datosExtra.poblacion = obtenerDemograficosRegion(CODIGO_CHILE).poblacion
     datosExtra.nombre = obtenerDemograficosRegion(CODIGO_CHILE).nombre
+    datosExtra.diferencia = datasets[0].chile[posicionDS].valor - datasets[0].chile[Math.max(0, posicionDS - 1)].valor
   }
   let valorFecha
   if (division === 'comuna') {
@@ -71,27 +75,25 @@ const MiniReporte = () => {
         </div>
         <div className="MiniReporte__descripcion">{dataset.nombre}</div>
       </div>
-      {/* {diferenciaDiaAnterior !== false &&
-        <div className="MiniReporte__diferencia">
-          <div
-            className="MiniReporte__diferencia_icono"
-            style={{ color: diferenciaDiaAnterior > 0 ? '#F44336' : '#43A047' }}
-          >
-            {diferenciaDiaAnterior > 0 ?
-              <FaArrowCircleUp
-                className="MiniReporte__diferencia_icono_sube"
-                style={{ color: escala.slice(-1)[0][1] }}
-              /> :
-              <FaArrowCircleDown
-                className="MiniReporte__diferencia_icono_baja"
-                style={{ color: escala[0][1] }}
-              />
-            }
-          </div>
-          {diferenciaDiaAnterior >= 0 && '+'}
-          {diferenciaDiaAnterior.toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })} casos por 100.000 habitantes respecto a la estimación anterior ({fecha.diff(ss.datos[posicion - 1].fecha, 'days')} {fecha.diff(ss.datos[posicion - 1].fecha, 'days') > 1 ? 'días' : 'día'} antes)
+      <div className="MiniReporte__diferencia">
+        <div
+          className="MiniReporte__diferencia_icono"
+          style={{ color: datosExtra.diferencia > 0 ? '#F44336' : '#43A047' }}
+        >
+          {datosExtra.diferencia > 0 ?
+            <FaArrowCircleUp
+              className="MiniReporte__diferencia_icono_sube"
+              style={{ color: escala.slice(-1)[0][1] }}
+            /> :
+            <FaArrowCircleDown
+              className="MiniReporte__diferencia_icono_baja"
+              style={{ color: escala[0][1] }}
+            />
+          }
         </div>
-      } */}
+        {datosExtra.diferencia >= 0 && '+'}
+        {datosExtra.diferencia.toLocaleString('de-DE', { maximumFractionDigits: 1 })} casos respecto al día anterior
+      </div>
       <div className="MiniReporte__diferencia">
         <div className="MiniReporte__diferencia_icono">
           <FaChartBar />
