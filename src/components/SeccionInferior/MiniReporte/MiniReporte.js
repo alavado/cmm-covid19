@@ -74,14 +74,9 @@ const MiniReporte = () => {
 
   return (
     <div className="MiniReporte">
-      <div className="MiniReporte__cuadro">
-        <div
-          className="MiniReporte__casos"
-          style={{ backgroundColor }}
-        >
-          <div className="MiniReporte__casos_contenido">
-            {valorFecha.toLocaleString('de-DE', { maximumFractionDigits: 0, minimumFractionDigits: 0 })}
-          </div>
+      <div className="MiniReporte__cuadro" style={{ backgroundColor }}>
+        <div className="MiniReporte__casos">
+          {valorFecha.toLocaleString('de-DE', { maximumFractionDigits: 0, minimumFractionDigits: 0 })}
         </div>
         <div className="MiniReporte__descripcion">{dataset.nombre}</div>
       </div>

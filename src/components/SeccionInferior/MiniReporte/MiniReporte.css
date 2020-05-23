@@ -10,37 +10,35 @@
 
 .MiniReporte__cuadro {
   color: white;
-  padding: 0 0 .5em 0;
   border-radius: .25em;
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: 1em;
+  width: 100%;
+  display: flex;
   align-items: center;
-  height: 4.5em;
+  margin-top: .25em;
+  min-height: 4.25em;
+  font-weight: bold;
+  text-shadow: .1em .1em .2em rgba(0, 0, 0, .75);
+  text-transform: uppercase;
+  margin-bottom: .6em;
 }
 
 .MiniReporte__casos {
-  height: 4em;
-  border-radius: .15em;
-  background-color: red;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: #212121;
   transition: all .25s ease-in-out;
-  width: 6em;
-}
-
-.MiniReporte__casos_contenido {
-  font-size: 1.7em;
+  font-size: 1.75em;
   padding: .25em;
+  flex: 1;
+  text-align: center;
 }
 
 .MiniReporte__descripcion {
-  font-size: .75em;
+  font-size: .6em;
   line-height: 1.25;
-  text-transform: uppercase;
+  letter-spacing: .5px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: .25em;
+  text-align: left;
 }
 
 .MiniReporte__diferencia {

@@ -178,13 +178,15 @@ const Mapa = () => {
     }).filter(f => f !== false)
   }), [indice, division, escala])
 
-  const geoJSONTapa = useMemo(() => ({
-    ...geoJSON,
-    features: geoJSON.features
-      .filter(f => {
-        return false
-    }),
-  }), [geoJSON])
+  const geoJSONTapa = useMemo(() => {
+    return {
+      ...datasets[indice].comunas.geoJSON,
+      features: datasets[indice].comunas.geoJSON.features
+        .filter(f => {
+          return division === 'comuna' && f.properties.NOM_REG !== 'Región Metropolitana de Santiago'
+      }),
+    }
+  }, [geoJSON, division])
 
   const labelsComunas = useMemo(() => {
     if (division !== 'comuna') {
@@ -301,7 +303,6 @@ const Mapa = () => {
             type="fill"
             paint={{
               "fill-color": ['to-color', ['at', posicion, ['get', 'colores']]],
-              'fill-opacity': .8
             }}
           />
           <Layer
@@ -313,24 +314,16 @@ const Mapa = () => {
             }}
           />
         </Source>
-        {/* <Source id="capa-tapa" type="geojson" data={geoJSONTapa}>
+        <Source id="capa-tapa" type="geojson" data={geoJSONTapa}>
           <Layer
             id="tapa-opaco"
             type="fill"
             paint={{
-              'fill-color': '#424242',
-              'fill-opacity': 1
+              'fill-color': '#212121',
+              'fill-opacity': .75
             }}
           />
-          <Layer
-            id="tapa-lineas"
-            type="line"
-            paint={{
-              'line-color': 'rgba(0, 0, 0, 0.5)',
-              'line-width': 1
-            }}
-          />
-        </Source> */}
+        </Source>
         {division === 'comuna' &&
           <Source id="capa-cuarentenas" type="geojson" data={geoJSONCuarentenasActivas}>
             <Layer

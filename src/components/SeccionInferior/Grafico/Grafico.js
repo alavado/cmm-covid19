@@ -10,7 +10,7 @@ import { CONTAGIOS_REGIONALES_POR_100000_HABITANTES, CODIGO_CHILE, NUEVOS_CASOS_
 import pattern from 'patternomaly'
 
 Chart.defaults.global.defaultFontColor = 'rgba(255, 255, 255, .9)'
-const diasDispositivoPequeño = 42
+const diasDispositivoPequeño = 30
 const esDispositivoPequeño = window.innerWidth < 600
 
 const estiloLineaPrincipal = {
