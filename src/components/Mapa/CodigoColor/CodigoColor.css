@@ -12,7 +12,6 @@
   max-width: 66vw;
   pointer-events: none;
   transition: all .25s ease-in-out;
-  overflow: hidden;
 }
 
 .CodigoColor__espectro {
@@ -70,13 +69,10 @@
   font-size: 1.1em;
   font-family: 'Open Sans', sans-serif;
   transform: translateX(-4px);
-  margin-top: -4px;
+  margin-top: -3px;
   margin-bottom: -3px;
   cursor: pointer;
-}
-
-.CodigoColor__titulo_selector::after {
-  display: none;
+  padding: .15em 0;
 }
 
 .CodigoColor__titulo_selector:hover {
@@ -269,7 +265,12 @@
 
   .CodigoColor__titulo_selector {
     font-size: 1em;
-    padding: 0 0 .25em 0;
+    margin: 0 0 .25em 0;
+    max-width: 90vw;
+  }
+
+  .CodigoColor__boton_graficos {
+    font-size: .4em;
   }
 }
 
