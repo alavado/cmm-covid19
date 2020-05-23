@@ -21,7 +21,7 @@ import {
 
 const RankingComunas = () => {
 
-  const { series, posicion: p } = useSelector(state => state.series)
+  const { series } = useSelector(state => state.series)
   const { mostrandoMiniGraficos } = useSelector(state => state.comparacion)
   const { escala } = useSelector(state => state.colores)
   const { rankingExpandido, ordenRanking } = useSelector(state => state.ranking)
@@ -29,6 +29,7 @@ const RankingComunas = () => {
     return id === NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS
   })
   const serieCasos = series.find(({ id }) => id === CASOS_COMUNALES_INTERPOLADOS)
+  const { posicion: p } = useSelector(state => state.datasets)
   
   const { codigo } = useParams()
   const dispatch = useDispatch()
@@ -58,7 +59,7 @@ const RankingComunas = () => {
           valorNormalizado: datos[posicion].valor,
           valorOriginal: serieOriginal.datos[posicion].valor - serieOriginal.datos[Math.max(0, posicion - 1)].valor,
           total: serieOriginal.datos[posicion].valor,
-          variacionSemanal: (100 * (totalSemanal - totalSemanalAnterior) / totalSemanalAnterior)
+          variacionSemanal: totalSemanalAnterior === 0 ? 100 : (100 * (totalSemanal - totalSemanalAnterior) / totalSemanalAnterior)
         }
       })
   }

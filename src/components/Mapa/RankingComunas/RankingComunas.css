@@ -79,6 +79,7 @@
   padding-right: 1.75em;
   color: rgba(255, 255, 255, .85);
   cursor: help;
+  user-select: none;
 }
 
 .RankingComunas__contenido_encabezado {
@@ -131,18 +132,20 @@
 }
 
 .RankingComunas__nombre_comuna {
-  font-size: .7em;
+  font-size: .65em;
   padding: .2em;
   padding-left: .5em;
   text-transform: uppercase;
   display: flex;
   align-items: center;
   font-weight: bold;
+  color: white;
 }
 
 .RankingComunas__casos_comuna {
-  font-size: .8em;
+  font-size: .65em;
   font-weight: bold;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: flex-start;

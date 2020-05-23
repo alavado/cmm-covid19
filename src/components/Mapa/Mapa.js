@@ -74,7 +74,7 @@ const Mapa = () => {
   })
   const [poligonoDestacado, setPoligonoDestacado] = useState(null)
   const codigoColor = useMemo(() => <CodigoColor />, [division])
-  // const rankingComunas = useMemo(() => <RankingComunas />, [])
+  const rankingComunas = useMemo(() => <RankingComunas />, [])
   const mapa = useRef()
 
   const geoJSONCuarentenasActivas = useMemo(() => (
@@ -358,7 +358,7 @@ const Mapa = () => {
         {division === 'comuna' && labelsComunas}
       </ReactMapGL>
       {codigoColor}
-     {/* {division === 'comuna' && rankingComunas} */}
+     {division === 'comuna' && rankingComunas}
     </div>
   )
 }

@@ -110,7 +110,7 @@ export const calcularNuevosCasos = (series, opciones = { redondear: true, dias: 
         ...dato,
         valor: i > 0 ?
           (redondear ? Math.round(factor * (dato.valor - arr[Math.max(0, i - (dias ? dias : 1))].valor)) :
-          (factor * (dato.valor - arr[Math.max(0, i - (dias ? dias : 1))].valor))): 0
+          (factor * (Math.max(0, dato.valor - arr[Math.max(0, i - (dias ? dias : 1))].valor)))): 0
       }))
     }
   })
