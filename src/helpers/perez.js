@@ -197,7 +197,6 @@ export const procesarComunas = async (csv, geoJSON) => {
 }
 
 export const interpolarComunas = async (datosComunales, datosRegionales, geoJSONComunas) => {
-  const ti = Date.now()
   datosComunales = datosComunales.map(comuna => ({
     ...comuna,
     datos: [
@@ -316,6 +315,5 @@ export const interpolarComunas = async (datosComunales, datosRegionales, geoJSON
       }
     })
   }
-  console.log('tf interp', Date.now() - ti)
   return [aumentoComunal, geoJSONConDatos, datosComunalesInterpolados]
 }

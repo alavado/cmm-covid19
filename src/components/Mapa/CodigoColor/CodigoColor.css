@@ -12,6 +12,7 @@
   max-width: 66vw;
   pointer-events: none;
   transition: all .25s ease-in-out;
+  overflow: hidden;
 }
 
 .CodigoColor__espectro {
@@ -264,6 +265,11 @@
 
   .CodigoColor__boton_cuarentenas {
     display: none;
+  }
+
+  .CodigoColor__titulo_selector {
+    font-size: 1em;
+    padding: 0 0 .25em 0;
   }
 }
 
