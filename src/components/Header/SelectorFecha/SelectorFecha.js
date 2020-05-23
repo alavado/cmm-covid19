@@ -17,7 +17,7 @@ const SelectorFecha = () => {
   const [ancho, setAncho] = useState(window.innerWidth)
   const { datasets, indice, posicion: posicionDS } = useSelector(state => state.datasets)
   const dataset = datasets[indice]
-  const diferencia = serie.datos[Math.max(0, posicionDS - 1)].fecha.diff(moment(), 'days')
+  const diferencia = serie.datos[Math.min(Math.max(0, posicionDS - 1), serie.datos.length - 1)].fecha.diff(moment(), 'days')
   const rangoDias = (division === 'comuna' ? dataset.comunas.series[0].serie.length : dataset.regiones.series[0].serie.length) - 1
 
   useEffect(() => {dispatch(fijarPosicionDatasets(rangoDias))}, [division])
@@ -31,6 +31,8 @@ const SelectorFecha = () => {
     document.getElementsByClassName('SelectorFecha')[0].style.overflow = posicionDS < rangoDias / 2 ? 'inherit' : 'hidden'
   }, [posicionDS, ancho])
 
+  const maximo = division === 'comuna' ? (dataset.comunas.series[0].serie.length - 1) : (dataset.chile.length - 1)
+
   useEffect(() => {
     const listener = window.addEventListener('resize', () => setAncho(window.innerWidth))
     return () => window.removeEventListener('resize', listener)
@@ -42,7 +44,7 @@ const SelectorFecha = () => {
         <div className="SelectorFecha__botones">
           <button
             className="SelectorFecha__boton_anterior"
-            onClick={e => dispatch(fijarPosicionDatasets(posicionDS - 1))}
+            onClick={e => dispatch(fijarPosicionDatasets(Math.max(0, posicionDS - 1)))}
             title="Ir a día anterior"
             aria-label={'Ir a día anterior'}
           >
@@ -50,7 +52,7 @@ const SelectorFecha = () => {
           </button>
           <button 
             className="SelectorFecha__boton_siguiente"
-            onClick={e => dispatch(fijarPosicionDatasets(posicionDS + 1))}
+            onClick={e => dispatch(fijarPosicionDatasets(Math.min(maximo, posicionDS + 1)))}
             title="Ir a día siguiente"
             aria-label={'Ir a día siguiente'}
           >
@@ -71,7 +73,7 @@ const SelectorFecha = () => {
         <div className="SelectorFecha__fecha">
           <button
             className="SelectorFecha__fecha_boton"
-            onClick={e => dispatch(retrocederEnSerie())}
+            onClick={e => dispatch(fijarPosicionDatasets(Math.max(0, posicionDS - 1)))}
             title="Ir a día anterior"
             aria-label={'Ir a día anterior'}
           >
@@ -82,7 +84,7 @@ const SelectorFecha = () => {
           </div>
           <button 
             className="SelectorFecha__fecha_boton"
-            onClick={e => dispatch(avanzarEnSerie())}
+            onClick={e => dispatch(fijarPosicionDatasets(Math.min(maximo, posicionDS + 1)))}
             title="Ir a día siguiente"
             aria-label={'Ir a día siguiente'}
           >

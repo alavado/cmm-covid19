@@ -17,7 +17,7 @@ const MiniReporte = () => {
 
   let { valor: valorPosicion } = ss.datos[posicion]
   const diferenciaDiaAnterior = posicion > 0 && (valorPosicion - ss.datos[posicion - 1].valor)
-  const fecha = dataset.chile[posicionDS].fecha
+  const fecha = dataset.chile[Math.min(Math.max(0, posicion - 1), datasets[indice].chile.length - 1)].fecha
 
   let datosExtra = {
     casos: 0,

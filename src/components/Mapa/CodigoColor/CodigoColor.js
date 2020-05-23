@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react'
 import './CodigoColor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment/min/moment-with-locales'
-import { filtrarGeoJSONPorValor, toggleFiltro, destacarIndice, seleccionarSerie, seleccionarDataset } from '../../../redux/actions'
+import { seleccionarDataset } from '../../../redux/actions'
 import { useHistory, useParams } from 'react-router-dom'
-import { NUEVOS_CASOS_COMUNALES_POR_100000_HABITANTES_INTERPOLADOS, CASOS_COMUNALES_INTERPOLADOS, CASOS_REGIONALES, CONTAGIOS_REGIONALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
 
 const CodigoColor = () => {
 
-  const { serieSeleccionada, subserieSeleccionada } = useSelector(state => state.series)
   const { datasets, indice, posicion } = useSelector(state => state.datasets)
   const { escala: colores } = useSelector(state => state.colores)
 
@@ -17,7 +15,6 @@ const CodigoColor = () => {
   const [posicionPrevia, setPosicionPrevia] = useState(posicion)
   const history = useHistory()
   const dispatch = useDispatch()
-  const { division } = useParams()
 
   const fecha = moment(datasets[indice].chile[posicion].fecha, 'DD/MM')
   const diferencia = fecha.diff(moment(), 'days')
