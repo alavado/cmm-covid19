@@ -161,6 +161,7 @@ const App = () => {
           <Route path="/casos" exact component={AppMapaCasos} />
           <Route path="/graficos/comuna/:comuna" component={AppGraficosSimples} />
           <Route path="/graficos" component={AppGraficosSimples} />
+          <Route path="/vmi" component={AppGraficosSimples} />
           <Route path="/">
             <div className="App__contenedor_poscarga">
               <section className="App_contenedor_header">

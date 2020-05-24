@@ -176,7 +176,7 @@ const Grafico = () => {
     }
     setDatos(data)
   }, [posicion, division, codigo, escala, ss, indice])
-
+  
   return (
     <div className="Grafico">
       <Line
@@ -185,7 +185,7 @@ const Grafico = () => {
         options={{
           maintainAspectRatio: false,
           animation: {
-            duration: 500
+            duration: 750
           },
           scales: {
             yAxes: [{
