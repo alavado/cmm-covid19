@@ -92,21 +92,21 @@ const Mapa = () => {
   }, [animaciones])
 
   useEffect(() => {
-    if (division) {
-      if (division === 'region' || !datasets[indice].comunas) {
-        const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigo))
-        // if (datasets[indice].comunas) {
-        //   setViewport(v => ({
-        //     ...v,
-        //     ...vpRegion,
-        //     transitionDuration: animaciones ? 1500 : 0,
-        //     transitionInterpolator: new FlyToInterpolator(),
-        //     transitionEasing: easeCubic
-        //   }))
-        // }
-        setRegionPrevia(codigo)
-      }
-      else if (division === 'comuna') {
+    // if (division) {
+      // if (division === 'region' || !datasets[indice].comunas) {
+      //   const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigo))
+      //   // if (datasets[indice].comunas) {
+      //   //   setViewport(v => ({
+      //   //     ...v,
+      //   //     ...vpRegion,
+      //   //     transitionDuration: animaciones ? 1500 : 0,
+      //   //     transitionInterpolator: new FlyToInterpolator(),
+      //   //     transitionEasing: easeCubic
+      //   //   }))
+      //   // }
+      //   setRegionPrevia(codigo)
+      // }
+      if (division === 'comuna' && datasets[indice].comunas) {
         const codigoRegion = demograficosComunas.find(c => Number(c.codigo) === Number(codigo)).region
         if (codigoRegion !== regionPrevia || division !== divisionPrevia) {
           const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigoRegion))
@@ -120,7 +120,7 @@ const Mapa = () => {
         }
         setRegionPrevia(codigoRegion)
       }
-    }
+    // }
     else {
       setViewport(v => ({
         ...v,

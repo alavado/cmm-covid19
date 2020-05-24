@@ -26,9 +26,10 @@ const MiniReporte = () => {
   }
   if (division === 'comuna' && dataset.comunas) {
     const datosComuna = dataset.comunas.series.find(s => s.codigo === Number(codigo))
+    const datosComunaTotal = datasets[1].comunas.series.find(s => s.codigo === Number(codigo))
     if (datosComuna.serie[posicion]) {
       const demograficos = obtenerDemograficosComuna(codigo)
-      datosExtra.casos = Math.round(datosComuna.serie[posicion].valor)
+      datosExtra.casos = datosComunaTotal.serie[posicion] && datosComunaTotal.serie[posicion].valor
       datosExtra.poblacion = demograficos.poblacion
       datosExtra.nombre = demograficos.nombre
       datosExtra.interpolado = datosComuna.serie[posicion].interpolado
@@ -100,7 +101,8 @@ const MiniReporte = () => {
           title="Para estimar los casos en los días sin datos por comuna, los nuevos casos de cada región se reparten entre sus comunas siguiendo la misma proporción de aumento observada entre los dos informes más cercanos en el tiempo."
           style={{ cursor: 'help' }}
         >
-          {Number(datosExtra.casos).toLocaleString('de-DE')} caso{Number(datosExtra.casos) !== 1 ? 's' : ''} <span style={{ fontWeight: 'bold', textDecoration: 'underline', cursor: 'help' }}>{datosExtra.interpolado ? `estimado${Number(datosExtra.casos) !== 1 ? 's' : ''}` : 'informados'}</span> hasta el {fecha.format('dddd D [de] MMMM')}</div>
+          {datosExtra.casos.toLocaleString('de-DE', { maximumFractionDigits: 1 })} caso{Number(datosExtra.casos) !== 1 ? 's' : ''} <span style={{ fontWeight: 'bold', textDecoration: 'underline', cursor: 'help' }}>{datosExtra.interpolado ? `estimado${Number(datosExtra.casos) !== 1 ? 's' : ''}` : 'informados'}</span> hasta el {fecha.format('dddd D [de] MMMM')}
+        </div>
       </div>
       <div className="MiniReporte__diferencia">
         <div className="MiniReporte__diferencia_icono">
