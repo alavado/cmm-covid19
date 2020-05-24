@@ -64,9 +64,8 @@ const estiloLineaRegion = {
 const Grafico = () => {
 
   const { escala } = useSelector(state => state.colores)
-  const { subserieSeleccionada: ss, series, geoJSONCuarentenas } = useSelector(state => state.series)
+  const { subserieSeleccionada: ss, geoJSONCuarentenas } = useSelector(state => state.series)
   const [datos, setDatos] = useState({})
-  // const { fecha } = ss.datos[posicion]
   const params = useParams()
   const { datasets, indice, posicion } = useSelector(state => state.datasets)
   const dataset = datasets[indice]
@@ -104,7 +103,7 @@ const Grafico = () => {
         }
       ]
     }
-    else if (division === 'comuna') {
+    else if (dataset.comunas && division === 'comuna') {
       const datosComuna = dataset.comunas.series.find(s => s.codigo === Number(codigo))
       puntosRegion = dataset.regiones.series.find(s => s.codigo === datosComuna.codigoRegion).serie
       puntosComuna = datosComuna.serie
@@ -127,7 +126,7 @@ const Grafico = () => {
       if (v / maximo > 1) {
         return
       }
-      gradientStroke.addColorStop(Math.max(0, v / maximo), escala[i * Math.ceil(escala.length / dataset.escala.length)][1])
+      gradientStroke.addColorStop(Math.max(0, v / maximo), escala[i * Math.floor(escala.length / (dataset.escala.length - 1))][1])
       if (i > 0) {
         const [, colorPrevio] = escala[i - 1]
         gradientStroke.addColorStop(Math.max(0, (v - 0.01) / maximo), colorPrevio)
@@ -145,7 +144,7 @@ const Grafico = () => {
       },
       ...data.datasets.slice(1),
     ]
-    if (division === 'comuna') {
+    if (dataset.comunas && division === 'comuna') {
       const rangosCuarentenas = geoJSONCuarentenas.features.map(({ properties: { Cut_Com, FInicio, FTermino } }) => ({
         codigo: Cut_Com,
         inicio: moment(FInicio, 'YYYY/MM/DD hh:mm:ss'),

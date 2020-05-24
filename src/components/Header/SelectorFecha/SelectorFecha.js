@@ -18,7 +18,7 @@ const SelectorFecha = () => {
   const { datasets, indice, posicion: posicionDS } = useSelector(state => state.datasets)
   const dataset = datasets[indice]
   const diferencia = serie.datos[Math.min(Math.max(0, posicionDS - 1), serie.datos.length - 1)].fecha.diff(moment(), 'days')
-  const rangoDias = (division === 'comuna' ? dataset.comunas.series[0].serie.length : dataset.regiones.series[0].serie.length) - 1
+  const rangoDias = (dataset.comunas && division === 'comuna' ? dataset.comunas.series[0].serie.length : dataset.regiones.series[0].serie.length) - 1
 
   useEffect(() => {dispatch(fijarPosicionDatasets(rangoDias))}, [division])
 
@@ -31,7 +31,7 @@ const SelectorFecha = () => {
     document.getElementsByClassName('SelectorFecha')[0].style.overflow = posicionDS < rangoDias / 2 ? 'inherit' : 'hidden'
   }, [posicionDS, ancho])
 
-  const maximo = division === 'comuna' ? (dataset.comunas.series[0].serie.length - 1) : (dataset.chile.length - 1)
+  const maximo = division === 'comuna' && dataset.comunas ? (dataset.comunas.series[0].serie.length - 1) : (dataset.chile.length - 1)
 
   useEffect(() => {
     const listener = window.addEventListener('resize', () => setAncho(window.innerWidth))

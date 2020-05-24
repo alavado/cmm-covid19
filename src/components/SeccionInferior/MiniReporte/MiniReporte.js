@@ -24,7 +24,7 @@ const MiniReporte = () => {
     nombre: '',
     diferencia: 0
   }
-  if (division === 'comuna') {
+  if (division === 'comuna' && dataset.comunas) {
     const datosComuna = dataset.comunas.series.find(s => s.codigo === Number(codigo))
     if (datosComuna.serie[posicion]) {
       const demograficos = obtenerDemograficosComuna(codigo)
@@ -52,7 +52,7 @@ const MiniReporte = () => {
     datosExtra.diferencia = datasets[indice].chile[posicion].valor - datasets[indice].chile[Math.max(0, posicion - 1)].valor
   }
   let valorFecha
-  if (division === 'comuna') {
+  if (dataset.comunas && division === 'comuna') {
     const datos = dataset.comunas.series.find(s => s.codigo === Number(codigo))
     valorFecha = datos.serie[Math.min(posicion, datos.serie.length - 1)].valor
   }

@@ -113,14 +113,14 @@ const App = () => {
       //   { series: seriePCRRegiones, geoJSON: geoJSONRegiones },
       //   null
       // ))
-      const [serieMuertesChile, seriesMuertesRegiones] = procesarCSVRegiones(datosMuertesRegiones)
-      dispatch(agregarDataset(
-        'Total de muertes a nivel regional',
-        [0, 1],
-        serieMuertesChile,
-        { series: seriesMuertesRegiones, geoJSON: geoJSONRegiones },
-        null
-      ))
+      // const [serieMuertesChile, seriesMuertesRegiones] = procesarCSVRegiones(datosMuertesRegiones)
+      // dispatch(agregarDataset(
+      //   'Total de muertes a nivel regional',
+      //   [0, 1],
+      //   serieMuertesChile,
+      //   { series: seriesMuertesRegiones, geoJSON: geoJSONRegiones },
+      //   null
+      // ))
       setInicializada(true)
     }
     inicializarDatos()

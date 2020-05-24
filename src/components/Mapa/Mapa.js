@@ -93,7 +93,7 @@ const Mapa = () => {
 
   useEffect(() => {
     if (division) {
-      if (division === 'region') {
+      if (division === 'region' || !datasets[indice].comunas) {
         const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigo))
         if (datasets[indice].comunas) {
           setViewport(v => ({
@@ -164,23 +164,28 @@ const Mapa = () => {
 
   const llaveDataset = division === 'comuna' ?  'comunas' : 'regiones'
 
-  const geoJSON = useMemo(() => ({
-    ...datasets[indice][llaveDataset].geoJSON,
-    features: datasets[indice][llaveDataset].geoJSON.features.map(f => {
-      const serie = datasets[indice][llaveDataset].series.find(({ codigo }) => codigo === Number(f.properties[!division || division === 'region' ? 'codregion' : 'COD_COMUNA']))
-      if (!serie) {
-        return false
-      }
-      return {
-        ...f,
-        properties: {
-          ...f.properties,
-          valores: serie.serie.map(d => d.valor),
-          colores: serie.serie.map(d => obtenerColor(d.valor, datasets[indice].escala, escala))
+  const geoJSON = useMemo(() => {
+    if (division === 'comuna' && !datasets[indice].comunas) {
+      return {}
+    }
+    return {
+      ...datasets[indice][llaveDataset].geoJSON,
+      features: datasets[indice][llaveDataset].geoJSON.features.map(f => {
+        const serie = datasets[indice][llaveDataset].series.find(({ codigo }) => codigo === Number(f.properties[!division || division === 'region' ? 'codregion' : 'COD_COMUNA']))
+        if (!serie) {
+          return false
         }
-      }
-    }).filter(f => f !== false)
-  }), [indice, division, escala])
+        return {
+          ...f,
+          properties: {
+            ...f.properties,
+            valores: serie.serie.map(d => d.valor),
+            colores: serie.serie.map(d => obtenerColor(d.valor, datasets[indice].escala, escala))
+          }
+        }
+      }).filter(f => f !== false)
+    }
+  }, [indice, division, escala])
 
   const geoJSONTapa = useMemo(() => {
     if (!datasets[indice].comunas) {
