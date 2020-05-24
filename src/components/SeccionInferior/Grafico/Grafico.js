@@ -184,6 +184,9 @@ const Grafico = () => {
         data={datos}
         options={{
           maintainAspectRatio: false,
+          animation: {
+            duration: 500
+          },
           scales: {
             yAxes: [{
               display: true,

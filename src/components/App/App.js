@@ -122,6 +122,13 @@ const App = () => {
         { series: seriesMuertesRegiones, geoJSON: geoJSONRegiones },
         null
       ))
+      dispatch(agregarDataset(
+        'Muertes en los últimos 7 días',
+        [0, 1, 10],
+        calcularNuevosCasosChile(serieMuertesChile, { dias: 7 }),
+        { series: calcularNuevosCasos(seriesMuertesRegiones, { dias: 7 }), geoJSON: geoJSONRegiones },
+        null
+      ))
       setInicializada(true)
     }
     inicializarDatos()
