@@ -11,7 +11,7 @@ const PopupRegion = props => {
   const { escala } = useSelector(state => state.colores)
   const { datasets, indice } = useSelector(state => state.datasets)
   const dataset = datasets[indice]
-  let backgroundColor = obtenerColor(valor, dataset.escala, escala)
+  let backgroundColor = obtenerColor(valor, dataset, escala)
 
   return (
     <Popup

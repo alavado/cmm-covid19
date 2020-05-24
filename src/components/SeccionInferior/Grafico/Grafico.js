@@ -126,9 +126,13 @@ const Grafico = () => {
       if (v / maximo > 1) {
         return
       }
-      gradientStroke.addColorStop(Math.max(0, v / maximo), escala[i * Math.floor((escala.length - 1) / (dataset.escala.length - 1))][1])
+      let indiceColor = i * Math.floor((escala.length - 1) / (dataset.escala.length - 1))
+      if (dataset.opciones.invertirColores) {
+        indiceColor = escala.length - 1 - indiceColor
+      }
+      gradientStroke.addColorStop(Math.max(0, v / maximo), escala[indiceColor][1])
       if (i > 0) {
-        const [, colorPrevio] = escala[i - 1]
+        const [, colorPrevio] = escala[indiceColor + (dataset.opciones.invertirColores ? 1 : -1)]
         gradientStroke.addColorStop(Math.max(0, (v - 0.01) / maximo), colorPrevio)
       }
     })

@@ -105,14 +105,15 @@ export const mostrarMiniGraficos = mostrar => ({
   payload: mostrar
 })
 
-export const agregarDataset = (nombre, escala, serieChile, seriesRegiones, seriesComunas) => ({
+export const agregarDataset = (nombre, escala, serieChile, seriesRegiones, seriesComunas, opciones = {}) => ({
   type: AGREGAR_DATASET,
   payload: {
     nombre,
     escala,
     chile: serieChile,
     regiones: seriesRegiones,
-    comunas: seriesComunas
+    comunas: seriesComunas,
+    opciones
   }
 })
 

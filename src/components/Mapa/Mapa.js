@@ -180,7 +180,7 @@ const Mapa = () => {
           properties: {
             ...f.properties,
             valores: serie.serie.map(d => d.valor),
-            colores: serie.serie.map(d => obtenerColor(d.valor, datasets[indice].escala, escala))
+            colores: serie.serie.map(d => obtenerColor(d.valor, datasets[indice], escala))
           }
         }
       }).filter(f => f !== false)
@@ -189,7 +189,6 @@ const Mapa = () => {
 
   const geoJSONTapa = useMemo(() => {
     const codigoRegion = division && (division === 'region' ? Number(codigo) : Number(obtenerDemograficosComuna(codigo).region))
-    console.log(datasets[indice].regiones.geoJSON)
     return {
       ...datasets[indice][division === 'comuna' ? 'comunas' : 'regiones'].geoJSON,
       features: datasets[indice][division === 'comuna' ? 'comunas' : 'regiones'].geoJSON.features

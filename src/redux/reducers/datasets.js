@@ -11,7 +11,7 @@ export default function(state = initialState, action) {
     case AGREGAR_DATASET: {
       return {
         ...state,
-        indice: 2,
+        indice: 3,
         datasets: [
           ...state.datasets,
           action.payload

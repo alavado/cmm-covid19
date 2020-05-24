@@ -48,21 +48,28 @@ const CodigoColor = () => {
         {etiqueta}
       </div>
       <div className="CodigoColor__espectro">
-        {escala.map((v, i) => (
-          <div
-            className="CodigoColor__fraccion"
-            key={`CodigoColor__fraccion_${i}`}
-          >
+        {escala.map((v, i) => {
+          let indiceColor = i * Math.floor((colores.length - 1) / (escala.length - 1))
+          if (datasets[indice].opciones.invertirColores) {
+            indiceColor = colores.length - 1 - indiceColor
+          }
+          const backgroundColor = colores[indiceColor][1]
+          return (
             <div
-              className="CodigoColor__fraccion_color"
-              style={{ backgroundColor: colores[i * Math.floor((colores.length - 1) / (escala.length - 1))][1], opacity: 1 }}
-              title={i < escala.length - 1 ? `Entre ${v.toLocaleString()} y ${escala[i + 1].toLocaleString()} casos` : `Más de ${escala.slice(-1)[0]} casos`}
-            />
-            <div className="CodigoColor__fraccion_limite">
-              {i === escala.length - 1 ? `${v.toLocaleString()}+` : v.toLocaleString()}
+              className="CodigoColor__fraccion"
+              key={`CodigoColor__fraccion_${i}`}
+            >
+              <div
+                className="CodigoColor__fraccion_color"
+                style={{ backgroundColor, opacity: 1 }}
+                title={i < escala.length - 1 ? `Entre ${v.toLocaleString()} y ${escala[i + 1].toLocaleString()} casos` : `Más de ${escala.slice(-1)[0]} casos`}
+              />
+              <div className="CodigoColor__fraccion_limite">
+                {i === escala.length - 1 ? `${v.toLocaleString()}+` : v.toLocaleString()}
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
       <div className="CodigoColor__botones">
         <button

@@ -20,9 +20,9 @@ import geoJSONCuarentenas from '../../data/geojsons/cuarentenas.json'
 import AppMapaCasos from '../AppMapaCasos'
 import AppGraficosSimples from '../AppGraficosSimples'
 import AppUCI from '../AppUCI'
-import { procesarCSVRegiones, procesarCSVComunas, calcularNuevosCasos, calcularNuevosCasosChile, formatearGeoJSONComunas } from '../../helpers/preprocesamiento'
+import { procesarCSVRegiones, procesarCSVComunas, calcularNuevosCasos, calcularNuevosCasosChile, formatearGeoJSONComunas, porHabitantes } from '../../helpers/preprocesamiento'
 
-const urlDatosRegiones = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/contagios/regiones.csv'
+const urlDatosRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'
 const urlDatosComunas = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/contagios/comunas.csv'
 const urlGeoJSONRegiones = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/geojsons/regiones.json'
 const urlGeoJSONComunas = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/geojsons/comunas.json'
@@ -75,6 +75,15 @@ const App = () => {
 
       const geoJSONComunasFormateado = formatearGeoJSONComunas(geoJSONComunas)
 
+      const [seriePCRChile, seriePCRRegiones] = procesarCSVRegiones(datosPCRRegiones)
+      dispatch(agregarDataset(
+        'Pruebas PCR por 100.000 habitantes',
+        [0, 5, 10, 50, 100, 500, 1000],
+        seriePCRChile.map(d => ({ ...d, valor: d.valor * 100000 / 19458310 })),
+        { series: porHabitantes(seriePCRRegiones), geoJSON: geoJSONRegiones },
+        null,
+        { invertirColores: true }
+      ))
       const [serieChile, seriesRegiones] = procesarCSVRegiones(datosCSVRegiones)
       const seriesComunas = procesarCSVComunas(datosCSVComunas, seriesRegiones)
       dispatch(agregarDataset(
@@ -105,14 +114,6 @@ const App = () => {
         { series: calcularNuevosCasos(seriesRegiones, { dias: 7 }), geoJSON: geoJSONRegiones },
         { series: calcularNuevosCasos(seriesComunas, { dias: 7 }), geoJSON: geoJSONComunasFormateado }
       ))
-      // const [seriePCRChile, seriePCRRegiones] = procesarCSVRegiones(datosPCRRegiones)
-      // dispatch(agregarDataset(
-      //   'Tests PCR por 100.000 habitantes a nivel regional',
-      //   [0, 5, 10, 25, 50, 100, 500],
-      //   seriePCRChile,
-      //   { series: seriePCRRegiones, geoJSON: geoJSONRegiones },
-      //   null
-      // ))
       const [serieMuertesChile, seriesMuertesRegiones] = procesarCSVRegiones(datosMuertesRegiones)
       dispatch(agregarDataset(
         'Total de muertes a nivel regional',

@@ -63,7 +63,7 @@ const MiniReporte = () => {
   else {
     valorFecha = dataset.chile[posicion].valor
   }
-  let backgroundColor = obtenerColor(valorFecha, dataset.escala, escala)
+  let backgroundColor = obtenerColor(valorFecha, dataset, escala)
 
   return (
     <div className="MiniReporte">

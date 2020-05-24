@@ -132,3 +132,17 @@ export const formatearGeoJSONComunas = geoJSON => {
     })
   }
 }
+
+export const porHabitantes = (series, habitantes = 100000) => {
+  return series.map(serie => {
+    const demografia = demografiaRegiones.find(region => serie.codigo === Number(region.codigo))
+    const factor = habitantes / Math.max(1, Number(demografia.poblacion))
+    return {
+      ...serie,
+      serie: serie.serie.map((dato, i, arr) => ({
+        ...dato,
+        valor: i > 0 ? (factor * dato.valor) : 0
+      }))
+    }
+  })
+}
