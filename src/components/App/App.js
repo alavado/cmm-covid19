@@ -26,6 +26,8 @@ const urlDatosRegiones = 'https://raw.githubusercontent.com/alavado/cmm-covid19/
 const urlDatosComunas = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/contagios/comunas.csv'
 const urlGeoJSONRegiones = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/geojsons/regiones.json'
 const urlGeoJSONComunas = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/geojsons/comunas.json'
+const urlMuertesRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/muertes.csv'
+const urlPCRRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/pcrs_region.csv'
 
 const App = () => {
 
@@ -39,6 +41,8 @@ const App = () => {
       setMensaje('Cargando datos regionales...')
       const { data: datosCSVRegiones } = await axios.get(urlDatosRegiones)
       const { data: geoJSONRegiones } = await axios.get(urlGeoJSONRegiones)
+      const { data: datosMuertesRegiones } = await axios.get(urlMuertesRegiones)
+      const { data: datosPCRRegiones } = await axios.get(urlPCRRegiones)
       setMensaje('Cargando datos comunales...')
       const { data: geoJSONComunas } = await axios.get(urlGeoJSONComunas)
       const { data: datosCSVComunas } = await axios.get(urlDatosComunas)
@@ -101,13 +105,28 @@ const App = () => {
         { series: calcularNuevosCasos(seriesRegiones, { dias: 7 }), geoJSON: geoJSONRegiones },
         { series: calcularNuevosCasos(seriesComunas, { dias: 7 }), geoJSON: geoJSONComunasFormateado }
       ))
-
+      // const [seriePCRChile, seriePCRRegiones] = procesarCSVRegiones(datosPCRRegiones)
+      // dispatch(agregarDataset(
+      //   'Tests PCR por 100.000 habitantes a nivel regional',
+      //   [0, 5, 10, 25, 50, 100, 500],
+      //   seriePCRChile,
+      //   { series: seriePCRRegiones, geoJSON: geoJSONRegiones },
+      //   null
+      // ))
+      const [serieMuertesChile, seriesMuertesRegiones] = procesarCSVRegiones(datosMuertesRegiones)
+      dispatch(agregarDataset(
+        'Total de muertes a nivel regional',
+        [0, 1],
+        serieMuertesChile,
+        { series: seriesMuertesRegiones, geoJSON: geoJSONRegiones },
+        null
+      ))
       setInicializada(true)
     }
     inicializarDatos()
       .catch(err => {
         console.log(err)
-        setErrorAlCargar('Ocurrió un error al obtener los datos. A veces pasa esto, pero se arregla en unos minutos.')
+        setErrorAlCargar('Ocurrió un error al obtener los datos.<br/>A veces pasa esto, pero como por arte de magia se soluciona en unos minutos.')
       })
     window.addEventListener('keydown', k => {
       switch (k.code) {

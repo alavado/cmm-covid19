@@ -12,6 +12,7 @@ const Breadcrumb = () => {
   const { serieSeleccionada } = useSelector(state => state.series)
   const params = useParams()
   const history = useHistory()
+  const { datasets, indice } = useSelector(state => state.datasets)
 
   const verComunas = e => {
     e.stopPropagation()
@@ -30,12 +31,12 @@ const Breadcrumb = () => {
             <Link to="/" className="Breadcrumb__link">Chile</Link>
             <FaCaretRight className="Breadcrumb__separador" />
             <div className="Breadcrumb__destino">{nombreRegion}</div>
-            <>
+            {datasets[indice].comunas && <>
               <FaCaretRight className="Breadcrumb__separador" />
               <button onClick={verComunas} className="Breadcrumb__boton_comunas">
                 Ver comunas
               </button>
-            </>
+            </>}
           </div>
         )
       }

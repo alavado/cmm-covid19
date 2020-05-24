@@ -77,11 +77,15 @@ const Mapa = () => {
   const rankingComunas = useMemo(() => <RankingComunas />, [])
   const mapa = useRef()
 
-  const geoJSONCuarentenasActivas = useMemo(() => (
-    obtenerCuarentenasActivas(
+  const geoJSONCuarentenasActivas = useMemo(() => {
+    if (!datasets[indice].comunas) {
+      return {}
+    }
+    return obtenerCuarentenasActivas(
       geoJSONCuarentenas,
       datasets[indice].comunas.series[0].serie[Math.min(datasets[indice].comunas.series[0].serie.length - 1, posicion)].fecha
-  )), [indice, posicion])
+    )
+  }, [indice, posicion])
 
   useEffect(() => {
     setViewport(v => ({ ...v, transitionDuration: animaciones ? animaciones ? 1500 : 0 : 0 }))
@@ -91,13 +95,15 @@ const Mapa = () => {
     if (division) {
       if (division === 'region') {
         const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigo))
-        setViewport(v => ({
-          ...v,
-          ...vpRegion,
-          transitionDuration: animaciones ? 1500 : 0,
-          transitionInterpolator: new FlyToInterpolator(),
-          transitionEasing: easeCubic
-        }))
+        if (datasets[indice].comunas) {
+          setViewport(v => ({
+            ...v,
+            ...vpRegion,
+            transitionDuration: animaciones ? 1500 : 0,
+            transitionInterpolator: new FlyToInterpolator(),
+            transitionEasing: easeCubic
+          }))
+        }
         setRegionPrevia(codigo)
       }
       else if (division === 'comuna') {
@@ -156,7 +162,7 @@ const Mapa = () => {
       mapa.current.getMap().addImage('texturaCuarentenas', image)
   }), [])
 
-  const llaveDataset = (!division || division === 'region') ? 'regiones' : 'comunas'
+  const llaveDataset = division === 'comuna' ?  'comunas' : 'regiones'
 
   const geoJSON = useMemo(() => ({
     ...datasets[indice][llaveDataset].geoJSON,
@@ -177,6 +183,9 @@ const Mapa = () => {
   }), [indice, division, escala])
 
   const geoJSONTapa = useMemo(() => {
+    if (!datasets[indice].comunas) {
+      return {}
+    }
     const codigoRegion = obtenerDemograficosComuna(codigo)
     return {
       ...datasets[indice].comunas.geoJSON,

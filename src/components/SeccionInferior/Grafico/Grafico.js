@@ -123,15 +123,14 @@ const Grafico = () => {
     const gradientStroke = ctx.createLinearGradient(0, canvas.getBoundingClientRect().height - 28, 0, 0)
     const maximo = todosLosValores.reduce((prev, d) => Math.max(prev, d.valor), 1)
     setMaximo(maximo)
-    let limiteEspectro = maximo//Math.max(10, (maximo / 2) * Math.floor((maximo + (maximo / 2)) / (maximo / 2)))
     dataset.escala.forEach((v, i) => {
-      if (v / limiteEspectro > 1) {
+      if (v / maximo > 1) {
         return
       }
-      gradientStroke.addColorStop(Math.max(0, v / limiteEspectro), escala[i][1])
+      gradientStroke.addColorStop(Math.max(0, v / maximo), escala[i * Math.ceil(escala.length / dataset.escala.length)][1])
       if (i > 0) {
         const [, colorPrevio] = escala[i - 1]
-        gradientStroke.addColorStop(Math.max(0, (v - 0.01) / limiteEspectro), colorPrevio)
+        gradientStroke.addColorStop(Math.max(0, (v - 0.01) / maximo), colorPrevio)
       }
     })
     data.datasets = [
@@ -164,7 +163,7 @@ const Grafico = () => {
             data: puntosRegion.map(({ fecha }) => {
               return cuarentenasComuna.some(({ inicio, fin }) => (
                 moment(fecha, 'DD/MM').diff(inicio, 'days') >= 0 && moment(fecha, 'DD/MM').diff(fin, 'days') < 0
-              )) ? limiteEspectro : 0
+              )) ? maximo : 0
             }).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0),
             backgroundColor: pattern.draw('diagonal-right-left', 'rgba(255, 255, 255, 0.1)', '#212121', 7.5),
             barPercentage: 1.25

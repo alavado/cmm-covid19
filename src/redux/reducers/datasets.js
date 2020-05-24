@@ -21,13 +21,14 @@ export default function(state = initialState, action) {
     case SELECCIONAR_DATASET: {
       return {
         ...state,
-        indice: action.payload
+        indice: action.payload,
+        posicion: Math.max(0, Math.min(state.posicion, state.datasets[action.payload].chile.length - 1))
       }
     }
     case FIJAR_POSICION_DATASETS: {
       return {
         ...state,
-        posicion: action.payload
+        posicion: Math.max(0, Math.min(action.payload, state.datasets[state.indice].chile.length - 1))
       }
     }
     default:

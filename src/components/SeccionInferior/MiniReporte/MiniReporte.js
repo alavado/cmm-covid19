@@ -3,21 +3,19 @@ import './MiniReporte.css'
 import { useSelector } from 'react-redux'
 import { FaArrowCircleUp, FaArrowCircleDown, FaUserFriends, FaChartBar } from 'react-icons/fa'
 import { useParams } from 'react-router-dom'
-import { CODIGO_CHILE, CASOS_COMUNALES_INTERPOLADOS, CONTAGIOS_REGIONALES_POR_100000_HABITANTES } from '../../../redux/reducers/series'
+import { CODIGO_CHILE } from '../../../redux/reducers/series'
 import { obtenerDemograficosComuna, obtenerDemograficosRegion } from '../../../helpers/demograficos'
 import { obtenerColor } from '../../../helpers/escala'
+import moment from 'moment'
 
 const MiniReporte = () => {
 
-  const { subserieSeleccionada: ss, posicion } = useSelector(state => state.series)
   const { division, codigo } = useParams()
   const { escala } = useSelector(state => state.colores)
-  const { datasets, indice, posicion: posicionDS } = useSelector(state => state.datasets)
+  const { datasets, indice, posicion } = useSelector(state => state.datasets)
   const dataset = datasets[indice]
 
-  let { valor: valorPosicion } = ss.datos[posicion]
-  const diferenciaDiaAnterior = posicion > 0 && (valorPosicion - ss.datos[posicion - 1].valor)
-  const fecha = dataset.chile[Math.min(Math.max(0, posicion - 1), datasets[indice].chile.length - 1)].fecha
+  const fecha = moment(dataset.chile[posicion].fecha, 'DD/MM')
 
   let datosExtra = {
     casos: 0,
@@ -28,42 +26,42 @@ const MiniReporte = () => {
   }
   if (division === 'comuna') {
     const datosComuna = dataset.comunas.series.find(s => s.codigo === Number(codigo))
-    if (datosComuna.serie[posicionDS]) {
+    if (datosComuna.serie[posicion]) {
       const demograficos = obtenerDemograficosComuna(codigo)
-      datosExtra.casos = Math.round(datosComuna.serie[posicionDS].valor)
+      datosExtra.casos = Math.round(datosComuna.serie[posicion].valor)
       datosExtra.poblacion = demograficos.poblacion
       datosExtra.nombre = demograficos.nombre
-      datosExtra.interpolado = datosComuna.serie[posicionDS].interpolado
-      datosExtra.diferencia = datosComuna.serie[posicionDS].valor - datosComuna.serie[Math.max(0, posicionDS - 1)].valor
+      datosExtra.interpolado = datosComuna.serie[posicion].interpolado
+      datosExtra.diferencia = datosComuna.serie[posicion].valor - datosComuna.serie[Math.max(0, posicion - 1)].valor
     }
   }
   else if (division === 'region') {
     const datosRegion = dataset.regiones.series.find(s => s.codigo === Number(codigo))
-    if (datosRegion.serie[posicionDS]) {
+    if (datosRegion.serie[posicion]) {
       const demograficos = obtenerDemograficosRegion(codigo)
-      datosExtra.casos = datosRegion.serie[posicionDS].valor
+      datosExtra.casos = datosRegion.serie[posicion].valor
       datosExtra.poblacion = demograficos.poblacion
       datosExtra.nombre = demograficos.nombre
-      datosExtra.diferencia = datosRegion.serie[posicionDS].valor - datosRegion.serie[Math.max(0, posicionDS - 1)].valor
+      datosExtra.diferencia = datosRegion.serie[posicion].valor - datosRegion.serie[Math.max(0, posicion - 1)].valor
     }
   }
   else {
-    datosExtra.casos = datasets[0].chile[posicionDS].valor
+    datosExtra.casos = datasets[indice].chile[posicion].valor
     datosExtra.poblacion = obtenerDemograficosRegion(CODIGO_CHILE).poblacion
     datosExtra.nombre = obtenerDemograficosRegion(CODIGO_CHILE).nombre
-    datosExtra.diferencia = datasets[0].chile[posicionDS].valor - datasets[0].chile[Math.max(0, posicionDS - 1)].valor
+    datosExtra.diferencia = datasets[indice].chile[posicion].valor - datasets[indice].chile[Math.max(0, posicion - 1)].valor
   }
   let valorFecha
   if (division === 'comuna') {
     const datos = dataset.comunas.series.find(s => s.codigo === Number(codigo))
-    valorFecha = datos.serie[Math.min(posicionDS, datos.serie.length - 1)].valor
+    valorFecha = datos.serie[Math.min(posicion, datos.serie.length - 1)].valor
   }
   else if (division === 'region') {
     const datos = dataset.regiones.series.find(s => s.codigo === Number(codigo))
-    valorFecha = datos.serie[posicionDS].valor
+    valorFecha = datos.serie[posicion].valor
   }
   else {
-    valorFecha = dataset.chile[posicionDS].valor
+    valorFecha = dataset.chile[posicion].valor
   }
   let backgroundColor = obtenerColor(valorFecha, dataset.escala, escala)
 
@@ -92,7 +90,7 @@ const MiniReporte = () => {
           }
         </div>
         {datosExtra.diferencia >= 0 && '+'}
-        {datosExtra.diferencia.toLocaleString('de-DE', { maximumFractionDigits: 1 })} casos respecto al día anterior
+        {datosExtra.diferencia.toLocaleString('de-DE', { maximumFractionDigits: 1 })} respecto al día anterior
       </div>
       <div className="MiniReporte__diferencia">
         <div className="MiniReporte__diferencia_icono">
