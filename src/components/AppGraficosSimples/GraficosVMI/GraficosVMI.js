@@ -27,41 +27,50 @@ const procesarFilaVMI = fila => {
   
 const filas = data.split('\n').slice(1, -1).map(d => d.trim())
 const fechas = filas[0].split(';').map(f => moment(f, 'DD-MMM').format('DD/MM'))
-const servicios = [
-  {
-    nombre: 'central',
-    serie: procesarFilaVMI(filas[1])
-  },
-  {
-    nombre: 'norte',
-    serie: procesarFilaVMI(filas[3])
-  },
-  {
-    nombre: 'occidente',
-    serie: procesarFilaVMI(filas[5])
-  },
-  {
-    nombre: 'oriente',
-    serie: procesarFilaVMI(filas[7])
-  },
-  {
-    nombre: 'sur',
-    serie: procesarFilaVMI(filas[9])
-  },
-  {
-    nombre: 'sur oriente',
-    serie: procesarFilaVMI(filas[11])
-  }
-]
 
 const GraficosVMI = () => {
+  const servicios = [
+    {
+      nombre: 'central',
+      serie: procesarFilaVMI(filas[1])
+    },
+    {
+      nombre: 'norte',
+      serie: procesarFilaVMI(filas[3])
+    },
+    {
+      nombre: 'occidente',
+      serie: procesarFilaVMI(filas[5])
+    },
+    {
+      nombre: 'oriente',
+      serie: procesarFilaVMI(filas[7])
+    },
+    {
+      nombre: 'sur',
+      serie: procesarFilaVMI(filas[9])
+    },
+    {
+      nombre: 'sur oriente',
+      serie: procesarFilaVMI(filas[11])
+    },
+    {
+      nombre: 'total RM',
+      serie: procesarFilaVMI(filas[13])
+    }
+  ]
 
   const [seleccion, setSeleccion] = useState('central')
 
   return (
     <div className="GraficosVMI">
       <div className="GraficosVMI__contenedor_selector">
-        <label htmlFor="selector-ss">Servicio de Salud</label>
+        <label
+          className="GraficosVMI__label_selector"
+          htmlFor="selector-ss"
+        >
+          Servicio de Salud
+        </label>
         <select
           id="selector-ss"
           className="GraficosVMI__selector"
@@ -132,7 +141,10 @@ const GraficosVMI = () => {
               }]
             },
             tooltips: {
+              displayColors: false,
               callbacks: {
+                title: item => moment(item[0].xLabel, 'DD/MM').format('D [de] MMMM'),
+                label: item => `${item.value}% de ventiladores ocupados`
                 // afterTitle: item => `${Math.round(valores[item[0].index])} ${Math.round(valores[item[0].index]) === 1 ? 'nuevo caso' : 'nuevos casos'} en los últimos 7 días`,
                 // label: item => ''//`${Math.round(valores.slice(item.index - 6, item.index + 1).reduce((sum, x) => sum + x))} nuevos casos en los últimos 7 días`
               }

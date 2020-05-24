@@ -4,15 +4,27 @@
   max-width: 40%;
 }
 
+.GraficosVMI__label_selector {
+  display: grid;
+  gap: .25em;
+  max-width: 40%;
+  font-size: .8em;
+  animation: aparece-elemento-graficos-simples .25s ease-in-out both;
+}
+
 .GraficosVMI__selector {
   font-size: 1em;
   font-family: 'Open Sans';
   border-radius: .25em;
   padding: .25em;
   text-transform: capitalize;
+  margin-bottom: 2em;
+  margin-top: .25em;
+  animation: aparece-elemento-graficos-simples .25s ease-in-out both;
 }
 
 .GraficosVMI__contenedor_grafico {
   width: 45em;
   height: 20em;
+  animation: aparece-elemento-graficos-simples .25s .35s ease-in-out both;
 }
