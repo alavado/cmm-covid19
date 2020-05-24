@@ -132,7 +132,7 @@ const Mapa = () => {
       setRegionPrevia(null)
     }
     setDivisionPrevia(division)
-  }, [division, codigo])
+  }, [division, codigo, indice])
 
   useEffect(() => {
     if (division === 'comuna') {

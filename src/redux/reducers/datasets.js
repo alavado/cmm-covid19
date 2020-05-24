@@ -19,10 +19,15 @@ export default function(state = initialState, action) {
       }
     }
     case SELECCIONAR_DATASET: {
+      const indice = action.payload
+      let posicion = Math.max(0, Math.min(state.posicion, state.datasets[indice].chile.length - 1))
+      if (state.posicion === state.datasets[state.indice].chile.length - 1) {
+        posicion = state.datasets[indice].chile.length - 1
+      }
       return {
         ...state,
-        indice: action.payload,
-        posicion: Math.max(0, Math.min(state.posicion, state.datasets[action.payload].chile.length - 1))
+        indice,
+        posicion
       }
     }
     case FIJAR_POSICION_DATASETS: {

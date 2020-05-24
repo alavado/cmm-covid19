@@ -57,7 +57,7 @@ const Breadcrumb = () => {
     else {
       setLinks('Chile')
     }
-  }, [params.codigo, serieSeleccionada.id])
+  }, [params.codigo, serieSeleccionada.id, indice])
 
   return (
     <div className="Breadcrumb">{links}</div>

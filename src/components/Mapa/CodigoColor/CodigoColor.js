@@ -13,6 +13,7 @@ const CodigoColor = () => {
   const [vecesAnimada, setVecesAnimada] = useState(0)
   const [avanza, setAvanza] = useState(false)
   const [posicionPrevia, setPosicionPrevia] = useState(posicion)
+  const { division } = useParams()
   const history = useHistory()
   const dispatch = useDispatch()
 
@@ -36,7 +37,7 @@ const CodigoColor = () => {
           className="CodigoColor__titulo_selector"
           value={indice}
         >
-          {datasets.map((dataset, i) => <option key={`option-dataset-${i}`} value={i}>{dataset.nombre}</option>)}
+          {datasets.filter(dataset => !(division === 'comuna' && !dataset.comunas)).map((dataset, i) => <option key={`option-dataset-${i}`} value={i}>{dataset.nombre}</option>)}
         </select>
       </div>
       <div
@@ -54,7 +55,7 @@ const CodigoColor = () => {
           >
             <div
               className="CodigoColor__fraccion_color"
-              style={{ backgroundColor: colores[i * Math.ceil(colores.length / escala.length)][1], opacity: 1 }}
+              style={{ backgroundColor: colores[i * Math.floor((colores.length - 1) / (escala.length - 1))][1], opacity: 1 }}
               title={i < escala.length - 1 ? `Entre ${v.toLocaleString()} y ${escala[i + 1].toLocaleString()} casos` : `Más de ${escala.slice(-1)[0]} casos`}
             />
             <div className="CodigoColor__fraccion_limite">
