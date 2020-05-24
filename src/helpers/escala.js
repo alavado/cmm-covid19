@@ -42,6 +42,7 @@ export const escalaAbsoluta = [
 export const colorApagadoDaltonico = '#333333'
 
 export const obtenerColor = (valor, escala, colores) => {
-  const indiceLimite = escala.findIndex(limite => limite > valor)
-  return indiceLimite >= 0 ? colores[Math.max(0, indiceLimite - 1)][1] : colores.slice(-1)[0][1]
+  let indiceLimite = escala.findIndex(limite => limite > valor) - 1
+  indiceLimite = indiceLimite * Math.ceil((colores.length - 1) / (escala.length - 1))
+  return indiceLimite >= 0 ? colores[Math.max(0, indiceLimite)][1] : colores.slice(-1)[0][1]
 }

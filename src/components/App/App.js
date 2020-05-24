@@ -116,7 +116,7 @@ const App = () => {
       const [serieMuertesChile, seriesMuertesRegiones] = procesarCSVRegiones(datosMuertesRegiones)
       dispatch(agregarDataset(
         'Total de muertes a nivel regional',
-        [0, 1],
+        [0, 1, 10],
         serieMuertesChile,
         { series: seriesMuertesRegiones, geoJSON: geoJSONRegiones },
         null

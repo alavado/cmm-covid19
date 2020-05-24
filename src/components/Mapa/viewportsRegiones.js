@@ -100,11 +100,11 @@ const viewports = [
     vp: {
       latitude: -37.61497225094276,
       longitude: -72.88766515741446,
-      zoom: 6.890600091681018,
+      zoom: 7,
       bearing: 52.61596423737197,
       pitch: 46.375354510022106,
       altitude: 1.5,
-      zoomMinimoParaMostrarMarkerComunas: 8
+      zoomMinimoParaMostrarMarkerComunas: 7
     },
   },
   {
@@ -188,7 +188,7 @@ const viewports = [
       bearing: 48.18506284294966,
       pitch: 47.070815742893544,
       altitude: 1.5,
-      zoomMinimoParaMostrarMarkerComunas: 8
+      zoomMinimoParaMostrarMarkerComunas: 7
     }
   }
 ]
