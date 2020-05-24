@@ -95,20 +95,20 @@ const Mapa = () => {
     if (division) {
       if (division === 'region' || !datasets[indice].comunas) {
         const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigo))
-        if (datasets[indice].comunas) {
-          setViewport(v => ({
-            ...v,
-            ...vpRegion,
-            transitionDuration: animaciones ? 1500 : 0,
-            transitionInterpolator: new FlyToInterpolator(),
-            transitionEasing: easeCubic
-          }))
-        }
+        // if (datasets[indice].comunas) {
+        //   setViewport(v => ({
+        //     ...v,
+        //     ...vpRegion,
+        //     transitionDuration: animaciones ? 1500 : 0,
+        //     transitionInterpolator: new FlyToInterpolator(),
+        //     transitionEasing: easeCubic
+        //   }))
+        // }
         setRegionPrevia(codigo)
       }
       else if (division === 'comuna') {
         const codigoRegion = demograficosComunas.find(c => Number(c.codigo) === Number(codigo)).region
-        if (codigoRegion !== regionPrevia) {
+        if (codigoRegion !== regionPrevia || division !== divisionPrevia) {
           const { vp: vpRegion } = viewportRegiones.find(vp => vp.codigo === Number(codigoRegion))
           setViewport(v => ({
             ...v,
@@ -188,16 +188,14 @@ const Mapa = () => {
   }, [indice, division, escala])
 
   const geoJSONTapa = useMemo(() => {
-    if (!datasets[indice].comunas) {
-      return {}
-    }
-    const codigoRegion = obtenerDemograficosComuna(codigo)
+    const codigoRegion = division && (division === 'region' ? Number(codigo) : Number(obtenerDemograficosComuna(codigo).region))
+    console.log(datasets[indice].regiones.geoJSON)
     return {
-      ...datasets[indice].comunas.geoJSON,
-      features: datasets[indice].comunas.geoJSON.features
+      ...datasets[indice][division === 'comuna' ? 'comunas' : 'regiones'].geoJSON,
+      features: datasets[indice][division === 'comuna' ? 'comunas' : 'regiones'].geoJSON.features
         .filter(f => {
-          return division === 'comuna' && f.properties.codigoRegion !== Number(codigoRegion.region)
-      }),
+          return division && f.properties[division === 'comuna' ? 'codigoRegion' : 'codregion'] !== codigoRegion
+      })
     }
   }, [geoJSON, division, codigo])
 
