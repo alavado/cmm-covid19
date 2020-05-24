@@ -37,7 +37,11 @@ const CodigoColor = () => {
           className="CodigoColor__titulo_selector"
           value={indice}
         >
-          {datasets.filter(dataset => !(division === 'comuna' && !dataset.comunas)).map((dataset, i) => <option key={`option-dataset-${i}`} value={i}>{dataset.nombre}</option>)}
+          {datasets
+            .map((dataset, i) => (
+              <option style={{ display: (division === 'comuna' && !dataset.comunas ? 'none' : 'block') }} key={`option-dataset-${i}`} value={i}>{dataset.nombre}</option>
+            ))
+          }
         </select>
       </div>
       <div
