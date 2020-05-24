@@ -20,7 +20,6 @@ const AppGraficosSimples = () => {
           to="/vmi"
           className="AppGraficosSimples__link_navegacion"
           activeClassName="AppGraficosSimples__link_navegacion--activo"
-          Ocupación VMI en la RM
         >
           Ocupación VMI en la RM
         </NavLink>

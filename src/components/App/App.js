@@ -134,7 +134,7 @@ const App = () => {
     inicializarDatos()
       .catch(err => {
         console.log(err)
-        setErrorAlCargar('Ocurrió un error al obtener los datos.<br/>A veces pasa esto, pero como por arte de magia se soluciona en unos minutos.')
+        setErrorAlCargar('Ocurrió un error al obtener los datos. A veces pasa esto, pero como por arte de magia se soluciona en unos minutos.')
       })
     window.addEventListener('keydown', k => {
       switch (k.code) {

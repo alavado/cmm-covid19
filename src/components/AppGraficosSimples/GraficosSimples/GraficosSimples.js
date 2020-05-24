@@ -240,7 +240,8 @@ const GraficosSimples = () => {
                 ticks: {
                   suggestedMin: 0,
                   beginAtZero: true
-                }
+                },
+                position: 'right'
               }]
             },
             tooltips: {
