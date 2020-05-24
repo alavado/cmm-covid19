@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 import { CODIGO_CHILE } from '../../../redux/reducers/series'
 import { obtenerDemograficosComuna, obtenerDemograficosRegion } from '../../../helpers/demograficos'
 import { obtenerColor } from '../../../helpers/escala'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 
 const MiniReporte = () => {
 
@@ -26,10 +26,10 @@ const MiniReporte = () => {
   }
   if (division === 'comuna' && dataset.comunas) {
     const datosComuna = dataset.comunas.series.find(s => s.codigo === Number(codigo))
-    const datosComunaTotal = datasets[1].comunas.series.find(s => s.codigo === Number(codigo))
     if (datosComuna.serie[posicion]) {
+      const datosComunaTotal = datasets[1].comunas.series.find(s => s.codigo === Number(codigo))
       const demograficos = obtenerDemograficosComuna(codigo)
-      datosExtra.casos = datosComunaTotal.serie[posicion] && datosComunaTotal.serie[posicion].valor
+      datosExtra.casos = datosComunaTotal.serie.find(d => d.fecha === datosComuna.serie[posicion].fecha).valor
       datosExtra.poblacion = demograficos.poblacion
       datosExtra.nombre = demograficos.nombre
       datosExtra.interpolado = datosComuna.serie[posicion].interpolado
@@ -40,14 +40,15 @@ const MiniReporte = () => {
     const datosRegion = dataset.regiones.series.find(s => s.codigo === Number(codigo))
     if (datosRegion.serie[posicion]) {
       const demograficos = obtenerDemograficosRegion(codigo)
-      datosExtra.casos = datosRegion.serie[posicion].valor
+      const datosRegionTotal = datasets[1].regiones.series.find(s => s.codigo === Number(codigo))
+      datosExtra.casos = datosRegionTotal.serie.find(d => d.fecha === datosRegion.serie[posicion].fecha).valor
       datosExtra.poblacion = demograficos.poblacion
       datosExtra.nombre = demograficos.nombre
       datosExtra.diferencia = datosRegion.serie[posicion].valor - datosRegion.serie[Math.max(0, posicion - 1)].valor
     }
   }
   else {
-    datosExtra.casos = datasets[indice].chile[posicion].valor
+    datosExtra.casos = datasets[1].chile.find(d => d.fecha === dataset.chile[posicion].fecha).valor
     datosExtra.poblacion = obtenerDemograficosRegion(CODIGO_CHILE).poblacion
     datosExtra.nombre = obtenerDemograficosRegion(CODIGO_CHILE).nombre
     datosExtra.diferencia = datasets[indice].chile[posicion].valor - datasets[indice].chile[Math.max(0, posicion - 1)].valor

@@ -16,7 +16,7 @@ const separarCSVEnFilas = csv => {
 export const procesarCSVRegiones = csv => {
   const [encabezados, datos] = separarCSVEnFilas(csv)
   const fechas = encabezados.slice(2).map(fecha => moment(fecha, 'MM/DD/YYYY'))
-  const serieChile = fechas.map(f => ({ valor: 0, fecha: f.clone() }))
+  const serieChile = fechas.map(f => ({ valor: 0, fecha: f.format('DD/MM') }))
   const seriesRegiones = datos
     .map(dato => {
       const [codigo, nombre, ...serie] = dato.map((v, i) => i !== 1 ? Number(v) : v)
