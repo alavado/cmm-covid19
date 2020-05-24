@@ -88,7 +88,9 @@
 .SelectorFecha__texto_fecha::first-letter {
   text-transform: uppercase;
 }
-
+.SelectorFecha__contenedor_fecha {
+  display: none;
+}
 .SelectorFecha__contenedor_fecha--oculto {
   display: none;
 }
