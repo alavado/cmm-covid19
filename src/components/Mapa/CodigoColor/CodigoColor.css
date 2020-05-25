@@ -285,7 +285,7 @@
   }
 }
 
-@media (orientation: landscape) and (max-height: 600px) {
+@media (orientation: landscape) and (max-height: 500px) {
   .CodigoColor {
     top: 2.25em;
   }
