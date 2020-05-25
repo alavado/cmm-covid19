@@ -1,3 +1,8 @@
+.GraficosVMI {
+  display: flex;
+  width: 100%;
+}
+
 .GraficosVMI__contenedor_selector {
   display: flex;
   flex-direction: column;
@@ -7,7 +12,6 @@
 .GraficosVMI__label_selector {
   display: grid;
   gap: .25em;
-  max-width: 40%;
   font-size: .8em;
   animation: aparece-elemento-graficos-simples .25s ease-in-out both;
 }
@@ -27,4 +31,15 @@
   width: 45em;
   height: 20em;
   animation: aparece-elemento-graficos-simples .25s .35s ease-in-out both;
+}
+
+.GraficosVMI__contenedor_mapa {
+  flex: 1;
+  display: flex;
+}
+
+@media(orientation: portrait) {
+  .GraficosVMI {
+    flex-direction: column;
+  }
 }

@@ -1,11 +1,11 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useRef } from 'react'
 import './AppUCI.css'
 import ReactMapGL, { Source, Layer, Marker } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import polylabel from 'polylabel'
 import { useSelector } from 'react-redux'
 import { Line } from 'react-chartjs-2'
-import { CASOS_COMUNALES_INTERPOLADOS } from '../../redux/reducers/series'
+import { CASOS_COMUNALES_INTERPOLADOS } from '../../../redux/reducers/series'
 
 const calcularPoloDeInaccesibilidad = puntos => {
   const [longitude, latitude] = polylabel(puntos)
@@ -14,8 +14,9 @@ const calcularPoloDeInaccesibilidad = puntos => {
 
 const AppUCI = () => {
 
+  const mapa = useRef()
   const { series } = useSelector(state => state.series)
-  const { datos: datosComunas, geoJSON } = series.find(({ id }) => id === CASOS_COMUNALES_INTERPOLADOS)
+  const { geoJSON } = series.find(({ id }) => id === CASOS_COMUNALES_INTERPOLADOS)
 
   const [viewport, setViewport] = useState({
     width: '100%',
@@ -78,16 +79,14 @@ const AppUCI = () => {
     })
   }
 
-  console.log(geoJSONFiltrado)
-
   return (
     <div className="AppUCI">
-      <div>Ocupación ventiladores mecánicos</div>
       <div className="AppUCI__contenedor_mapa">
         <ReactMapGL
           {...viewport}
           mapStyle={mapStyle}
           onViewportChange={cambioEnElViewport}
+          ref={mapa}
         >
           {/* {labelsComunas} */}
           <Source
@@ -99,7 +98,7 @@ const AppUCI = () => {
               id="data2-poligono-stroke"
               type="line"
               paint={{
-                'line-color': 'rgba(0, 0, 0, .75)',
+                'line-color': '#5E5E5E',
                 'line-width': 1
               }}
             />

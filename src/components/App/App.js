@@ -19,7 +19,7 @@ import Loader from './Loader'
 import geoJSONCuarentenas from '../../data/geojsons/cuarentenas.json'
 import AppMapaCasos from '../AppMapaCasos'
 import AppGraficosSimples from '../AppGraficosSimples'
-import AppUCI from '../AppUCI'
+import AppUCI from '../AppGraficosSimples/AppUCI'
 import { procesarCSVRegiones, procesarCSVComunas, calcularNuevosCasos, calcularNuevosCasosChile, formatearGeoJSONComunas, porHabitantes } from '../../helpers/preprocesamiento'
 
 const urlDatosRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'

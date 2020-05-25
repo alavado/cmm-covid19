@@ -210,7 +210,7 @@ const Grafico = () => {
                   }
                   return item.toLocaleString('de-DE', { maximumFractionDigits: 1 })
                 }
-              }
+              },
             }],
             xAxes: [{
               ticks: {
@@ -238,6 +238,7 @@ const Grafico = () => {
             display: false
           },
           tooltips: {
+            intersect: false,
             callbacks: {
               label: ({ yLabel: v, datasetIndex }) => {
                 if (datos.datasets[datasetIndex].label.endsWith('parcial')) {

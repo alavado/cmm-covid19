@@ -1,0 +1,5 @@
+.GraficosSimples {
+  display: flex;
+  flex-direction: column;
+  width: 45em;
+}

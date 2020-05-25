@@ -21,7 +21,7 @@ const AppGraficosSimples = () => {
           className="AppGraficosSimples__link_navegacion"
           activeClassName="AppGraficosSimples__link_navegacion--activo"
         >
-          Ventiladores mecánicos en la RM
+          Ocupación de ventiladores en la RM
         </NavLink>
       </nav>
       <div className="AppGraficosSimples__contenedor">

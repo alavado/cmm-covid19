@@ -1,7 +1,33 @@
 import React, { useState } from 'react'
 import moment from 'moment/min/moment-with-locales'
-import { Line } from 'react-chartjs-2'
+import { Line, Chart } from 'react-chartjs-2'
 import './GraficosVMI.css'
+import AppUCI from '../AppUCI'
+
+Chart.defaults.LineWithLine = Chart.defaults.line;
+Chart.controllers.LineWithLine = Chart.controllers.line.extend({
+   draw: function(ease) {
+      Chart.controllers.line.prototype.draw.call(this, ease);
+
+      if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
+         var activePoint = this.chart.tooltip._active[0],
+             ctx = this.chart.ctx,
+             x = activePoint.tooltipPosition().x,
+             topY = this.chart.legend.bottom,
+             bottomY = this.chart.chartArea.bottom;
+
+         // draw line
+         ctx.save();
+         ctx.beginPath();
+         ctx.moveTo(x, topY);
+         ctx.lineTo(x, bottomY);
+         ctx.lineWidth = 2;
+         ctx.strokeStyle = '#07C';
+         ctx.stroke();
+         ctx.restore();
+      }
+   }
+});
 
 const data = `
   16-abr;17-abr;18-abr;19-abr;20-abr;21-abr;22-abr;23-abr;24-abr;25-abr;26-abr;27-abr;28-abr;29-abr;30-abr;01-may;02-may;03-may;04-may;05-may;06-may;07-may;08-may;09-may;10-may;11-may;12-may;13-may;14-may;15-may;16-may;17-may;18-may;19-may;20-may;21-may;22-may;23-may
@@ -64,96 +90,102 @@ const GraficosVMI = () => {
 
   return (
     <div className="GraficosVMI">
-      <div className="GraficosVMI__contenedor_selector">
-        <label
-          className="GraficosVMI__label_selector"
-          htmlFor="selector-ss"
-        >
-          Servicio de Salud
-        </label>
-        <select
-          id="selector-ss"
-          className="GraficosVMI__selector"
-          value={seleccion}
-          onChange={e => setSeleccion(e.target.value)}
-        >
-          {servicios.map(s => <option key={s.nombre} value={s.nombre}>{s.nombre}</option>)}
-        </select>
-      </div>
-      <div className="GraficosVMI__contenedor_grafico">
-        <Line
-          data={{
-            labels: fechas,
-            datasets: [
-              {
-                data: servicios.find(s => s.nombre === seleccion).serie,
-                fill: false,
-                borderWidth: 8,
-                lineTension: 0.1,
-                borderColor: '#5E5E5E',
-                pointRadius: 0,
-                pointHitRadius: 10
-              }
-            ]
-          }}
-          options={{
-            maintainAspectRatio: false,
-            scales: {
-              xAxes: [{
-                id: 'eje-x',
-                display: true,
-                gridLines: {
-                  display: true,
-                  borderDash: [15, 12],
-                  color: '#C3C3C3',
-                  zeroLineWidth: 0,
-                  lineWidth: 0
-                },
-                ticks: {
-                  autoSkip: false,
-                  maxRotation: 0,
-                  minRotation: 0,
-                  display: true,
-                  fontSize: 18,
-                  fontStyle: 'bold',
-                  callback: function(v, i) {
-                    const fecha = moment(fechas[i], 'DD/MM')
-                    return fecha.date() === 1 ? fecha.format('D [de] MMMM') : null
-                  },
-                  fontColor: '#5E5E5E'
+      <div>
+        <div className="GraficosVMI__contenedor_selector">
+          <label
+            className="GraficosVMI__label_selector"
+            htmlFor="selector-ss"
+          >
+            Servicio de Salud
+          </label>
+          <select
+            id="selector-ss"
+            className="GraficosVMI__selector"
+            value={seleccion}
+            onChange={e => setSeleccion(e.target.value)}
+          >
+            {servicios.map(s => <option key={s.nombre} value={s.nombre}>{s.nombre}</option>)}
+          </select>
+        </div>
+        <div className="GraficosVMI__contenedor_grafico">
+          <Line
+            data={{
+              labels: fechas,
+              datasets: [
+                {
+                  data: servicios.find(s => s.nombre === seleccion).serie,
+                  fill: false,
+                  borderWidth: 8,
+                  lineTension: 0.1,
+                  borderColor: '#5E5E5E',
+                  pointRadius: 0,
+                  pointHitRadius: 10
                 }
+              ]
+            }}
+            options={{
+              maintainAspectRatio: false,
+              scales: {
+                xAxes: [{
+                  id: 'eje-x',
+                  display: true,
+                  gridLines: {
+                    display: true,
+                    borderDash: [15, 12],
+                    color: '#C3C3C3',
+                    zeroLineWidth: 0,
+                    lineWidth: 0
+                  },
+                  ticks: {
+                    autoSkip: false,
+                    maxRotation: 0,
+                    minRotation: 0,
+                    display: true,
+                    fontSize: 18,
+                    fontStyle: 'bold',
+                    callback: function(v, i) {
+                      const fecha = moment(fechas[i], 'DD/MM')
+                      return fecha.date() === 1 ? fecha.format('D [de] MMMM') : null
+                    },
+                    fontColor: '#5E5E5E'
+                  }
+                }
+              ],
+                yAxes: [{
+                  id: 'eje-y',
+                  gridLines: {
+                    zeroLineWidth: 3.5
+                  },
+                  ticks: {
+                    suggestedMin: 0,
+                    beginAtZero: true,
+                    suggestedMax: 100,
+                    callback: v => (v % 50 === 0) ? `${v}%` : null,
+                    fontColor: '#212121',
+                    fontStyle: 'bold'
+                  },
+                  position: 'right'
+                }]
+              },
+              tooltips: {
+                intersect: false,
+                displayColors: false,
+                callbacks: {
+                  title: item => moment(item[0].xLabel, 'DD/MM').format('D [de] MMMM'),
+                  label: item => `${Number(item.value).toLocaleString('de-DE')}% de los ventiladores mecánicos ocupados`
+                  // afterTitle: item => `${Math.round(valores[item[0].index])} ${Math.round(valores[item[0].index]) === 1 ? 'nuevo caso' : 'nuevos casos'} en los últimos 7 días`,
+                  // label: item => ''//`${Math.round(valores.slice(item.index - 6, item.index + 1).reduce((sum, x) => sum + x))} nuevos casos en los últimos 7 días`
+                }
+              },
+              legend: {
+                display: false
               }
-            ],
-              yAxes: [{
-                id: 'eje-y',
-                gridLines: {
-                  zeroLineWidth: 3.5
-                },
-                ticks: {
-                  suggestedMin: 0,
-                  beginAtZero: true,
-                  suggestedMax: 100,
-                  callback: v => (v % 50 === 0) ? `${v}%` : null,
-                  fontColor: '#212121',
-                  fontStyle: 'bold'
-                },
-                position: 'right'
-              }]
-            },
-            tooltips: {
-              displayColors: false,
-              callbacks: {
-                title: item => moment(item[0].xLabel, 'DD/MM').format('D [de] MMMM'),
-                label: item => `${Number(item.value).toLocaleString('de-DE')}% de los ventiladores ocupados`
-                // afterTitle: item => `${Math.round(valores[item[0].index])} ${Math.round(valores[item[0].index]) === 1 ? 'nuevo caso' : 'nuevos casos'} en los últimos 7 días`,
-                // label: item => ''//`${Math.round(valores.slice(item.index - 6, item.index + 1).reduce((sum, x) => sum + x))} nuevos casos en los últimos 7 días`
-              }
-            },
-            legend: {
-              display: false
-            }
-          }}
-        />
+            }}
+          />
+        </div>
+      </div>
+      <div className="GraficosVMI__contenedor_mapa">
+        <AppUCI />
       </div>
     </div>
   )
