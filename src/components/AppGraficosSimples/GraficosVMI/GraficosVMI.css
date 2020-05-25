@@ -22,9 +22,17 @@
   border-radius: .25em;
   padding: .25em;
   text-transform: capitalize;
-  margin-bottom: 2em;
   margin-top: .25em;
   animation: aparece-elemento-graficos-simples .25s ease-in-out both;
+}
+
+.GraficosVMI__nombre_comuna {
+  font-weight: bold;
+  color: #6D6D6D;
+  margin-top: 1em;
+  font-size: 1.15em;
+  line-height: 1.15;
+  animation: aparece-elemento-graficos-simples .25s .25s ease-in-out both;
 }
 
 .GraficosVMI__contenedor_grafico {

@@ -4,7 +4,6 @@ import ReactMapGL, { Source, Layer, Marker } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import polylabel from 'polylabel'
 import { useSelector } from 'react-redux'
-import { Line } from 'react-chartjs-2'
 import { CASOS_COMUNALES_INTERPOLADOS } from '../../../redux/reducers/series'
 
 const calcularPoloDeInaccesibilidad = puntos => {

@@ -1,33 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import moment from 'moment/min/moment-with-locales'
 import { Line, Chart } from 'react-chartjs-2'
 import './GraficosVMI.css'
 import AppUCI from '../AppUCI'
-
-Chart.defaults.LineWithLine = Chart.defaults.line;
-Chart.controllers.LineWithLine = Chart.controllers.line.extend({
-   draw: function(ease) {
-      Chart.controllers.line.prototype.draw.call(this, ease);
-
-      if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
-         var activePoint = this.chart.tooltip._active[0],
-             ctx = this.chart.ctx,
-             x = activePoint.tooltipPosition().x,
-             topY = this.chart.legend.bottom,
-             bottomY = this.chart.chartArea.bottom;
-
-         // draw line
-         ctx.save();
-         ctx.beginPath();
-         ctx.moveTo(x, topY);
-         ctx.lineTo(x, bottomY);
-         ctx.lineWidth = 2;
-         ctx.strokeStyle = '#07C';
-         ctx.stroke();
-         ctx.restore();
-      }
-   }
-});
+import 'chartjs-plugin-annotation'
 
 const data = `
   16-abr;17-abr;18-abr;19-abr;20-abr;21-abr;22-abr;23-abr;24-abr;25-abr;26-abr;27-abr;28-abr;29-abr;30-abr;01-may;02-may;03-may;04-may;05-may;06-may;07-may;08-may;09-may;10-may;11-may;12-may;13-may;14-may;15-may;16-may;17-may;18-may;19-may;20-may;21-may;22-may;23-may
@@ -87,6 +63,30 @@ const GraficosVMI = () => {
   ]
 
   const [seleccion, setSeleccion] = useState('central')
+  const [annotation, setAnnotation] = useState({})
+  const serie = servicios.find(s => s.nombre === seleccion).serie
+
+  useEffect(() => {
+    setAnnotation({
+      drawTime: 'afterDatasetsDraw',
+      annotations: [
+        ...fechas
+        .map((f, i) => moment(f, 'DD/MM').date() === 1 ? i : -1)
+        .filter(i => i >= 0).map(i => ({
+          type: 'box',
+          xScaleID: 'eje-x',
+          yScaleID: 'eje-y',
+          xMin: i - .1,
+          xMax: i + .1,
+          yMin: -serie.reduce((x, y) => Math.max(x, y)) * .03,
+          yMax: serie.reduce((x, y) => Math.max(x, y)) * .03,
+          borderWidth: 2,
+          borderColor: '#C5C5C5',
+          backgroundColor: '#C5C5C5',
+        }))
+      ]
+    })
+  }, [seleccion])
 
   return (
     <div className="GraficosVMI">
@@ -96,7 +96,7 @@ const GraficosVMI = () => {
             className="GraficosVMI__label_selector"
             htmlFor="selector-ss"
           >
-            Servicio de Salud
+            Servicio de Salud Metropolitano
           </label>
           <select
             id="selector-ss"
@@ -107,19 +107,29 @@ const GraficosVMI = () => {
             {servicios.map(s => <option key={s.nombre} value={s.nombre}>{s.nombre}</option>)}
           </select>
         </div>
+        <div className="AppGraficosSimples__contenedor_encabezado">
+          <div className="AppGraficosSimples__contenedor_encabezado_izquierda">
+            <h1 className="GraficosVMI__nombre_comuna">Servicio de Salud<br/>Metropolitano <span style={{ textTransform: 'capitalize' }}>{seleccion}</span></h1>
+          </div>
+          <div className="AppGraficosSimples__contenedor_encabezado_derecha">
+            <h1 className="AppGraficosSimples__nombre_comuna">Ocupación de<br/>ventiladores mecánicos</h1>
+          </div>
+        </div>
         <div className="GraficosVMI__contenedor_grafico">
           <Line
+          type="LineWithLine"
             data={{
               labels: fechas,
               datasets: [
                 {
-                  data: servicios.find(s => s.nombre === seleccion).serie,
+                  data: serie,
                   fill: false,
                   borderWidth: 8,
                   lineTension: 0.1,
                   borderColor: '#5E5E5E',
                   pointRadius: 0,
-                  pointHitRadius: 10
+                  pointHitRadius: 10,
+                  borderCapStyle: 'round'
                 }
               ]
             }}
@@ -162,13 +172,13 @@ const GraficosVMI = () => {
                     suggestedMax: 100,
                     callback: v => (v % 50 === 0) ? `${v}%` : null,
                     fontColor: '#212121',
-                    fontStyle: 'bold'
+                    fontStyle: 'bold',
+                    fontSize: 16
                   },
                   position: 'right'
                 }]
               },
               tooltips: {
-                intersect: false,
                 displayColors: false,
                 callbacks: {
                   title: item => moment(item[0].xLabel, 'DD/MM').format('D [de] MMMM'),
@@ -179,14 +189,15 @@ const GraficosVMI = () => {
               },
               legend: {
                 display: false
-              }
+              },
+              annotation
             }}
           />
         </div>
       </div>
-      <div className="GraficosVMI__contenedor_mapa">
+      {/* <div className="GraficosVMI__contenedor_mapa">
         <AppUCI />
-      </div>
+      </div> */}
     </div>
   )
 }

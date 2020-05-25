@@ -195,7 +195,8 @@ const GraficosSimples = () => {
               lineTension: 0.1,
               borderColor: '#5E5E5E',
               pointRadius: 0,
-              pointHitRadius: 10
+              pointHitRadius: 10,
+              borderCapStyle: 'round'
             }]
           }}
           options={{
@@ -245,7 +246,6 @@ const GraficosSimples = () => {
               }]
             },
             tooltips: {
-              intersect: false,
               callbacks: {
                 afterTitle: item => `${Math.round(valores[item[0].index])} ${Math.round(valores[item[0].index]) === 1 ? 'nuevo caso' : 'nuevos casos'} en los últimos 7 días`,
                 label: item => ''//`${Math.round(valores.slice(item.index - 6, item.index + 1).reduce((sum, x) => sum + x))} nuevos casos en los últimos 7 días`
