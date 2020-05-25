@@ -11,3 +11,9 @@
   display: flex;
   width: 100%;
 }
+
+@media (orientation: portrait) {
+  .AppUCI {
+    display: none;
+  }
+}

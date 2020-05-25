@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment/min/moment-with-locales'
-import { Line, Chart } from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2'
 import './GraficosVMI.css'
 import AppUCI from '../AppUCI'
 import 'chartjs-plugin-annotation'
@@ -29,38 +29,38 @@ const procesarFilaVMI = fila => {
   
 const filas = data.split('\n').slice(1, -1).map(d => d.trim())
 const fechas = filas[0].split(';').map(f => moment(f, 'DD-MMM').format('DD/MM'))
+const servicios = [
+  {
+    nombre: 'central',
+    serie: procesarFilaVMI(filas[1])
+  },
+  {
+    nombre: 'norte',
+    serie: procesarFilaVMI(filas[3])
+  },
+  {
+    nombre: 'occidente',
+    serie: procesarFilaVMI(filas[5])
+  },
+  {
+    nombre: 'oriente',
+    serie: procesarFilaVMI(filas[7])
+  },
+  {
+    nombre: 'sur',
+    serie: procesarFilaVMI(filas[9])
+  },
+  {
+    nombre: 'sur oriente',
+    serie: procesarFilaVMI(filas[11])
+  },
+  {
+    nombre: 'total RM',
+    serie: procesarFilaVMI(filas[13])
+  }
+]
 
 const GraficosVMI = () => {
-  const servicios = [
-    {
-      nombre: 'central',
-      serie: procesarFilaVMI(filas[1])
-    },
-    {
-      nombre: 'norte',
-      serie: procesarFilaVMI(filas[3])
-    },
-    {
-      nombre: 'occidente',
-      serie: procesarFilaVMI(filas[5])
-    },
-    {
-      nombre: 'oriente',
-      serie: procesarFilaVMI(filas[7])
-    },
-    {
-      nombre: 'sur',
-      serie: procesarFilaVMI(filas[9])
-    },
-    {
-      nombre: 'sur oriente',
-      serie: procesarFilaVMI(filas[11])
-    },
-    {
-      nombre: 'total RM',
-      serie: procesarFilaVMI(filas[13])
-    }
-  ]
 
   const [seleccion, setSeleccion] = useState('central')
   const [annotation, setAnnotation] = useState({})
@@ -90,114 +90,119 @@ const GraficosVMI = () => {
 
   return (
     <div className="GraficosVMI">
-      <div>
-        <div className="GraficosVMI__contenedor_selector">
-          <label
-            className="GraficosVMI__label_selector"
-            htmlFor="selector-ss"
-          >
-            Servicio de Salud Metropolitano
-          </label>
-          <select
-            id="selector-ss"
-            className="GraficosVMI__selector"
-            value={seleccion}
-            onChange={e => setSeleccion(e.target.value)}
-          >
-            {servicios.map(s => <option key={s.nombre} value={s.nombre}>{s.nombre}</option>)}
-          </select>
-        </div>
-        <div className="AppGraficosSimples__contenedor_encabezado">
-          <div className="AppGraficosSimples__contenedor_encabezado_izquierda">
-            <h1 className="GraficosVMI__nombre_comuna">Servicio de Salud<br/>Metropolitano <span style={{ textTransform: 'capitalize' }}>{seleccion}</span></h1>
+      <div className="GraficosVMI__contenedor_central">
+        <div>
+          <div className="GraficosVMI__contenedor_selector">
+            <label
+              className="GraficosVMI__label_selector"
+              htmlFor="selector-ss"
+            >
+              Servicio de Salud Metropolitano
+            </label>
+            <select
+              id="selector-ss"
+              className="GraficosVMI__selector"
+              value={seleccion}
+              onChange={e => setSeleccion(e.target.value)}
+            >
+              {servicios.map(s => <option key={s.nombre} value={s.nombre}>{s.nombre}</option>)}
+            </select>
           </div>
-          <div className="AppGraficosSimples__contenedor_encabezado_derecha">
-            <h1 className="AppGraficosSimples__nombre_comuna">Ocupación de<br/>ventiladores mecánicos</h1>
+          <div className="AppGraficosSimples__contenedor_encabezado">
+            <div className="AppGraficosSimples__contenedor_encabezado_izquierda">
+              <h1 className="GraficosVMI__nombre_comuna">{seleccion !== 'total RM' && <>Servicio de Salud<br/>Metropolitano</>} <span style={{ textTransform: 'capitalize' }}>{seleccion}</span></h1>
+            </div>
+            <div className="AppGraficosSimples__contenedor_encabezado_derecha">
+              <h1 className="AppGraficosSimples__nombre_comuna">Ocupación de<br/>ventiladores mecánicos</h1>
+            </div>
           </div>
-        </div>
-        <div className="GraficosVMI__contenedor_grafico">
-          <Line
-          type="LineWithLine"
-            data={{
-              labels: fechas,
-              datasets: [
-                {
-                  data: serie,
-                  fill: false,
-                  borderWidth: 8,
-                  lineTension: 0.1,
-                  borderColor: '#5E5E5E',
-                  pointRadius: 0,
-                  pointHitRadius: 10,
-                  borderCapStyle: 'round'
-                }
-              ]
-            }}
-            options={{
-              maintainAspectRatio: false,
-              scales: {
-                xAxes: [{
-                  id: 'eje-x',
-                  display: true,
-                  gridLines: {
-                    display: true,
-                    borderDash: [15, 12],
-                    color: '#C3C3C3',
-                    zeroLineWidth: 0,
-                    lineWidth: 0
-                  },
-                  ticks: {
-                    autoSkip: false,
-                    maxRotation: 0,
-                    minRotation: 0,
-                    display: true,
-                    fontSize: 18,
-                    fontStyle: 'bold',
-                    callback: function(v, i) {
-                      const fecha = moment(fechas[i], 'DD/MM')
-                      return fecha.date() === 1 ? fecha.format('D [de] MMMM') : null
-                    },
-                    fontColor: '#5E5E5E'
+          <div className="GraficosVMI__contenedor_grafico">
+            <Line
+            type="LineWithLine"
+              data={{
+                labels: fechas,
+                datasets: [
+                  {
+                    data: [...serie],
+                    fill: false,
+                    borderWidth: 8,
+                    lineTension: 0.1,
+                    borderColor: '#5E5E5E',
+                    pointRadius: 0,
+                    pointHitRadius: 10,
+                    borderCapStyle: 'round'
                   }
-                }
-              ],
-                yAxes: [{
-                  id: 'eje-y',
-                  gridLines: {
-                    zeroLineWidth: 3.5
-                  },
-                  ticks: {
-                    suggestedMin: 0,
-                    beginAtZero: true,
-                    suggestedMax: 100,
-                    callback: v => (v % 50 === 0) ? `${v}%` : null,
-                    fontColor: '#212121',
-                    fontStyle: 'bold',
-                    fontSize: 16
-                  },
-                  position: 'right'
-                }]
-              },
-              tooltips: {
-                displayColors: false,
-                callbacks: {
-                  title: item => moment(item[0].xLabel, 'DD/MM').format('D [de] MMMM'),
-                  label: item => `${Number(item.value).toLocaleString('de-DE')}% de los ventiladores mecánicos ocupados`
-                  // afterTitle: item => `${Math.round(valores[item[0].index])} ${Math.round(valores[item[0].index]) === 1 ? 'nuevo caso' : 'nuevos casos'} en los últimos 7 días`,
-                  // label: item => ''//`${Math.round(valores.slice(item.index - 6, item.index + 1).reduce((sum, x) => sum + x))} nuevos casos en los últimos 7 días`
-                }
-              },
-              legend: {
-                display: false
-              },
-              annotation
-            }}
-          />
+                ]
+              }}
+              options={{
+                maintainAspectRatio: false,
+                scales: {
+                  xAxes: [{
+                    id: 'eje-x',
+                    display: true,
+                    gridLines: {
+                      display: true,
+                      borderDash: [15, 12],
+                      color: '#C3C3C3',
+                      zeroLineWidth: 0,
+                      lineWidth: 0
+                    },
+                    ticks: {
+                      autoSkip: false,
+                      maxRotation: 0,
+                      minRotation: 0,
+                      display: true,
+                      fontSize: 18,
+                      fontStyle: 'bold',
+                      callback: function(v, i) {
+                        const fecha = moment(fechas[i], 'DD/MM')
+                        return fecha.date() === 1 ? fecha.format('D [de] MMMM') : null
+                      },
+                      fontColor: '#5E5E5E'
+                    }
+                  }
+                ],
+                  yAxes: [{
+                    id: 'eje-y',
+                    gridLines: {
+                      zeroLineWidth: 3.5
+                    },
+                    ticks: {
+                      suggestedMin: 0,
+                      beginAtZero: true,
+                      suggestedMax: 100,
+                      callback: v => (v % 50 === 0) ? `${v}%` : null,
+                      fontColor: '#212121',
+                      fontStyle: 'bold',
+                      fontSize: 16
+                    },
+                    position: 'right'
+                  }]
+                },
+                tooltips: {
+                  displayColors: false,
+                  callbacks: {
+                    title: item => moment(item[0].xLabel, 'DD/MM').format('D [de] MMMM'),
+                    label: item => `${Number(item.value).toLocaleString('de-DE')}% de los ventiladores mecánicos ocupados`
+                    // afterTitle: item => `${Math.round(valores[item[0].index])} ${Math.round(valores[item[0].index]) === 1 ? 'nuevo caso' : 'nuevos casos'} en los últimos 7 días`,
+                    // label: item => ''//`${Math.round(valores.slice(item.index - 6, item.index + 1).reduce((sum, x) => sum + x))} nuevos casos en los últimos 7 días`
+                  }
+                },
+                legend: {
+                  display: false
+                },
+                annotation
+              }}
+            />
+          </div>
         </div>
+        {/* <div className="GraficosVMI__contenedor_mapa">
+          <AppUCI />
+        </div> */}
       </div>
-      {/* <div className="GraficosVMI__contenedor_mapa">
-        <AppUCI />
-      </div> */}
+      <p className="AppGraficosSimples__aviso">
+        Fuente: <a href="https://www.medicina-intensiva.cl/site/post.php?id=1000328&sec=9" rel="noreferer noopener">Encuesta diaria realidad nacional de la Sociedad Chilena de Medicina Intensiva.</a>
+      </p>
     </div>
   )
 }

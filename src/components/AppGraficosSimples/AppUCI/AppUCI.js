@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import './AppUCI.css'
 import ReactMapGL, { Source, Layer, Marker } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
@@ -14,17 +14,17 @@ const calcularPoloDeInaccesibilidad = puntos => {
 const AppUCI = () => {
 
   const mapa = useRef()
-  const { series } = useSelector(state => state.series)
-  const { geoJSON } = series.find(({ id }) => id === CASOS_COMUNALES_INTERPOLADOS)
+  const { datasets } = useSelector(state => state.datasets)
+  const { geoJSON } = datasets[1].comunas
 
   const [viewport, setViewport] = useState({
     width: '100%',
-    height: 'calc(100vh -2em)',
+    height: '100%',
     bearing: 0.8438348482250375,
     pitch: 8.966012003230043,
-    latitude: -33.537375678675765,
-    longitude: -70.81966493085949,
-    zoom: 11,
+    latitude: -33.57,
+    longitude: -70.69,
+    zoom: 7.25,
     altitude: 1.5,
   })
 
@@ -32,50 +32,14 @@ const AppUCI = () => {
     const featuresRegion = geoJSON
       .features
       .filter(feature => feature.properties.codigoRegion === 13)
-      .map(feature => ({
-        ...feature,
-        properties: {
-          ...feature.properties,
-          centro: calcularPoloDeInaccesibilidad(feature.geometry.coordinates)
-        }
-      }))
     return {
       ...geoJSON,
       features: featuresRegion
     }
   }, [])
 
-  const labelsComunas = useMemo(() => geoJSONFiltrado.features.map((feature, i) => {
-    return (
-      <Marker
-        className="MapaCasos__marcador_nombre_comuna"
-        latitude={feature.properties.centro.latitude}
-        longitude={feature.properties.centro.longitude}
-        key={`marker-feature-${i}`}
-      >
-        <div
-          className="MapaCasos__marcador_nombre_comuna_contenido"
-          style={{
-            opacity: 1
-          }}
-        >
-          {feature.properties.NOM_COM}
-        </div>
-      </Marker>
-    )
-  }), [])
-
   const cambioEnElViewport = vp => {
-    setViewport(prev => {
-      const nuevoVP = {
-        ...prev,
-        ...vp,
-        width: '100%',
-        height: 'calc(100vh -2em)',
-        zoom: Math.min(11.5, vp.zoom)
-      }
-      return nuevoVP
-    })
+    setViewport(prev => prev)
   }
 
   return (
@@ -85,9 +49,9 @@ const AppUCI = () => {
           {...viewport}
           mapStyle={mapStyle}
           onViewportChange={cambioEnElViewport}
+          getCursor={() => 'default'}
           ref={mapa}
         >
-          {/* {labelsComunas} */}
           <Source
             id="capa-datos-regiones-2"
             type="geojson"
