@@ -144,7 +144,7 @@ const GraficosVMI = () => {
               displayColors: false,
               callbacks: {
                 title: item => moment(item[0].xLabel, 'DD/MM').format('D [de] MMMM'),
-                label: item => `${item.value}% de ventiladores ocupados`
+                label: item => `${Number(item.value).toLocaleString('de-DE')}% de los ventiladores ocupados`
                 // afterTitle: item => `${Math.round(valores[item[0].index])} ${Math.round(valores[item[0].index]) === 1 ? 'nuevo caso' : 'nuevos casos'} en los últimos 7 días`,
                 // label: item => ''//`${Math.round(valores.slice(item.index - 6, item.index + 1).reduce((sum, x) => sum + x))} nuevos casos en los últimos 7 días`
               }

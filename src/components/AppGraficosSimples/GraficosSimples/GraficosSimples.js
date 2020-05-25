@@ -192,7 +192,7 @@ const GraficosSimples = () => {
               data: valores.map(v => v + 2),
               fill: false,
               borderWidth: 8,
-              lineTension: 0,
+              lineTension: 0.1,
               borderColor: '#5E5E5E',
               pointRadius: 0,
               pointHitRadius: 10

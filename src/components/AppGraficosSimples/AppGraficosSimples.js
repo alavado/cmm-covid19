@@ -21,7 +21,7 @@ const AppGraficosSimples = () => {
           className="AppGraficosSimples__link_navegacion"
           activeClassName="AppGraficosSimples__link_navegacion--activo"
         >
-          Ocupación VMI en la RM
+          Ventiladores mecánicos en la RM
         </NavLink>
       </nav>
       <div className="AppGraficosSimples__contenedor">
