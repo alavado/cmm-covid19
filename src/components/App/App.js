@@ -77,10 +77,10 @@ const App = () => {
 
       const [seriePCRChile, seriePCRRegiones] = procesarCSVRegiones(datosPCRRegiones)
       dispatch(agregarDataset(
-        'Pruebas PCR por 100.000 habitantes',
-        [0, 5, 10, 50, 100, 500, 1000],
+        'Total de pruebas PCR',
+        [0, 50, 100, 500, 1000, 5000, 10000],
         seriePCRChile.map(d => ({ ...d, valor: d.valor * 100000 / 19458310 })),
-        { series: porHabitantes(seriePCRRegiones), geoJSON: geoJSONRegiones },
+        { series: seriePCRRegiones, geoJSON: geoJSONRegiones },
         null,
         { invertirColores: true }
       ))
