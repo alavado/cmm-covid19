@@ -79,7 +79,7 @@ const App = () => {
       dispatch(agregarDataset(
         'Total de pruebas PCR',
         [0, 50, 100, 500, 1000, 5000, 10000],
-        seriePCRChile.map(d => ({ ...d, valor: d.valor * 100000 / 19458310 })),
+        seriePCRChile,
         { series: seriePCRRegiones, geoJSON: geoJSONRegiones },
         null,
         { invertirColores: true }
