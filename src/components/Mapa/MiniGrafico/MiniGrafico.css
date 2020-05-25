@@ -11,12 +11,13 @@
   text-transform: uppercase;
   font-weight: bold;
   font-size: .6em;
-  color: #E0E0E0;
+  color: #fafafa;
   line-height: 1.15;
   width: 10em;
   text-align: center;
   transition: all .25s ease-in-out;
   pointer-events: none;
+  text-shadow: .05em .05em .025em rgba(0, 0, 0, .35);
 }
 
 .MiniGrafico__contenedor_grafico {
