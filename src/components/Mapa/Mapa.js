@@ -20,6 +20,7 @@ import { obtenerCuarentenasActivas } from '../../helpers/cuarentenas'
 import geoJSONCuarentenas from '../../data/geojsons/cuarentenas.json'
 import { obtenerDemograficosComuna } from '../../helpers/demograficos'
 import { obtenerColor } from '../../helpers/escala'
+import { FaKiwiBird } from 'react-icons/fa'
 
 const calcularPoloDeInaccesibilidad = feature => {
   let poligono = feature.geometry.coordinates
@@ -353,6 +354,11 @@ const Mapa = () => {
           </Source>
         }
         {division === 'comuna' && labelsComunas}
+        <div className="Mapa__contacto">
+          <a href="https://twitter.com/alavado_desu" rel="noopener noreferrer" target="_blank">
+            <FaKiwiBird className="Mapa__contacto_icono" /> Contacto
+          </a>
+        </div>
       </ReactMapGL>
       {codigoColor}
      {division === 'comuna' && rankingComunas}

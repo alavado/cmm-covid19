@@ -17,8 +17,18 @@
   text-align: right;
 }
 
-.Contacto {
-  text-decoration: underline;
+.Mapa__contacto_icono {
+  margin-right: .25em;
+}
+
+.Mapa__contacto {
+  position: absolute;
+  display: flex;
+  z-index: 3;
+  color: rgba(255, 255, 255, .85);
+  bottom: 2.5em;
+  right: 1em;
+  font-size: .7em;
 }
 
 @keyframes aparece-actualizacion {
@@ -44,5 +54,10 @@
     line-height: 1.15;
     text-align: left;
     font-size: .5em;
+  }
+
+  .Mapa__contacto {
+    bottom: 1em;
+    left: 1.25em;
   }
 }
