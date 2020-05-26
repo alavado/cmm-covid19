@@ -127,7 +127,7 @@ const AppUCI = props => {
     const labels = featuresSS.map((feature, i) => {
       const centroVisual = calcularPoloDeInaccesibilidad(feature.geometry.coordinates)
       return (
-        <div style={{ pointerEvents:'none' }}>
+        <div style={{ pointerEvents:'none' }} key={`marker-featuress-${i}`}>
           <Marker
             key={`minigrafico-dona-${i}`}
             latitude={centroVisual.latitude}
@@ -189,6 +189,7 @@ const AppUCI = props => {
           onClick={clickEnMapa}
           ref={mapa}
           doubleClickZoom={false}
+          touchAction="pan-y"
         >
           <Source
             id="capa-datos-regiones-2"

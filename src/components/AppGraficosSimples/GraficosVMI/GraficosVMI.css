@@ -55,4 +55,7 @@
   .GraficosVMI {
     flex-direction: column;
   }
+  .GraficosVMI__contenedor_central {
+    flex-direction: column;
+  }
 }

@@ -32,6 +32,9 @@
 
 @media (orientation: portrait) {
   .AppUCI {
-    display: none;
+    overflow: scroll;
+  }
+  .AppUCI__contenedor_mapa {
+    height: 22em;
   }
 }
