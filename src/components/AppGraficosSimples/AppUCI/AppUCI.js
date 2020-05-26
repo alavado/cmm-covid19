@@ -11,6 +11,10 @@ const calcularPoloDeInaccesibilidad = puntos => {
   return { longitude: longitude, latitude: latitude }
 }
 
+const comunas = {
+  'occidente': ['Cerro Navia', 'Pudahuel']
+}
+
 const AppUCI = () => {
 
   const mapa = useRef()

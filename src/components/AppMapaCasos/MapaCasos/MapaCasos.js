@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux'
 import { CASOS_COMUNALES_INTERPOLADOS } from '../../../redux/reducers/series'
 import randomPointsOnPolygon from 'random-points-on-polygon'
 import turf from 'turf'
-import { FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 import { Line } from 'react-chartjs-2'
 import GraficoComparativo from '../GraficoComparativo'
 import polylabel from 'polylabel'
@@ -243,7 +242,7 @@ const MapaCasos = props => {
         </div> */}
         <div className="MapaCasos__parametros">
           <p className="MapaCasos__explicacion">
-            Los puntos rojos se ubican <span style={{ fontWeight: 'bold' }}>al azar</span>, según las <a target="_blank" rel="noopener noreferer" href="http://geoine-ine-chile.opendata.arcgis.com/datasets/4de21bbed6e94b6ead48cf83d88fcac9_6?geometry=-70.721%2C-33.433%2C-70.613%2C-33.408">densidades de población urbana del 2017</a>.
+            Los puntos rojos se ubican <span style={{ fontWeight: 'bold' }}>al azar</span>, según las <a target="_blank" rel="noopener noreferrer" href="http://geoine-ine-chile.opendata.arcgis.com/datasets/4de21bbed6e94b6ead48cf83d88fcac9_6?geometry=-70.721%2C-33.433%2C-70.613%2C-33.408">densidades de población urbana del 2017</a>.
           </p>
           <p className="MapaCasos__explicacion">Cada punto rojo simula un caso activo en la comuna.</p>
           <h1 className="MapaCasos__explicacion">El número de casos activos se calcula a partir de las cifras oficiales de casos acumulados,<br />suponiendo además que:</h1>

@@ -196,9 +196,9 @@ const GraficosVMI = () => {
             />
           </div>
         </div>
-        {/* <div className="GraficosVMI__contenedor_mapa">
+        <div className="GraficosVMI__contenedor_mapa">
           <AppUCI />
-        </div> */}
+        </div>
       </div>
       <p className="AppGraficosSimples__aviso">
         Fuente: <a href="https://www.medicina-intensiva.cl/site/post.php?id=1000328&sec=9" rel="noreferer noopener">Encuesta diaria realidad nacional de la Sociedad Chilena de Medicina Intensiva.</a>
