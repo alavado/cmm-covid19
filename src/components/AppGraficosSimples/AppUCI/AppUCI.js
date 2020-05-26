@@ -172,6 +172,7 @@ const AppUCI = props => {
           getCursor={() => 'pointer'}
           onClick={clickEnMapa}
           ref={mapa}
+          doubleClickZoom={false}
         >
           <Source
             id="capa-datos-regiones-2"

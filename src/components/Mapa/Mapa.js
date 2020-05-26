@@ -290,6 +290,7 @@ const Mapa = () => {
         onMouseOut={() => setPopupRegion({ ...popupRegion, mostrando: false })}
         getCursor={() => 'pointer'}
         onClick={clickEnPoligono}
+        doubleClickZoom={false}
       >
         {popupRegion.mostrando && <PopupRegion config={popupRegion} />}
         <Source id="capa-datos-regiones" type="geojson" data={geoJSON}>
