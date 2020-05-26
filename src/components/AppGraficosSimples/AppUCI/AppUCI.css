@@ -4,6 +4,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  animation: aparece-elemento-graficos-simples .25s .55s ease-in-out both;
 }
 
 .AppUCI__contenedor_mapa {
@@ -19,6 +20,14 @@
   width: 75%;
   line-height: 1.5;
   text-align: center;
+}
+
+.AppUCI__porcentaje_en_mapa {
+  margin-left: -50%;
+  margin-top: -.5em;
+  font-size: .6em;
+  font-weight: bold;
+  pointer-events: none;
 }
 
 @media (orientation: portrait) {

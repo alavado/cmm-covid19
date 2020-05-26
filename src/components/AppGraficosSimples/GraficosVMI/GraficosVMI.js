@@ -199,7 +199,7 @@ const GraficosVMI = () => {
           </div>
         </div>
         <div className="GraficosVMI__contenedor_mapa">
-          <AppUCI ss={seleccion} fijarSS={setSeleccion} />
+          <AppUCI ss={seleccion} fijarSS={setSeleccion} datos={servicios} />
         </div>
       </div>
       <p className="AppGraficosSimples__aviso">

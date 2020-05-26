@@ -113,7 +113,7 @@ const AppUCI = props => {
     altitude: 1.5,
   })
 
-  const geoJSONSS = useMemo(() => {
+  const [labels, geoJSONSS] = useMemo(() => {
     const featuresRegion = geoJSON
       .features
       .filter(feature => feature.properties.codigoRegion === 13)
@@ -124,10 +124,26 @@ const AppUCI = props => {
         return turf.union(prev, turf.polygon(com.geometry.coordinates))
       }, turf.polygon(com1.geometry.coordinates, { servicio: nombre, color: props.ss === nombre ? 1 : 0 }))
     })
-    return {
+    const labels = featuresSS.map((feature, i) => {
+      const centroVisual = calcularPoloDeInaccesibilidad(feature.geometry.coordinates)
+      return (
+        <div style={{ pointerEvents:'none' }}>
+          <Marker
+            key={`minigrafico-dona-${i}`}
+            latitude={centroVisual.latitude}
+            longitude={centroVisual.longitude}
+          >
+            <div className="AppUCI__porcentaje_en_mapa">
+              {props.datos.find(d => d.nombre === feature.properties.servicio).serie.slice(-1)[0].toLocaleString('de-DE')}%
+            </div>
+          </Marker>
+        </div>
+      )
+    })
+    return [labels, {
       ...geoJSON,
       features: featuresSS
-    }
+    }]
   }, [geoJSON, props.ss])
 
   const cambioEnElViewport = vp => {
@@ -201,6 +217,7 @@ const AppUCI = props => {
               }}
             />
           </Source>
+          {labels}
         </ReactMapGL>
       </div>
       <div className="AppUCI__explicacion_comunas_ss">

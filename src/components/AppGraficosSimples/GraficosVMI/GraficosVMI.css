@@ -37,7 +37,7 @@
   margin-top: 1em;
   font-size: 1.15em;
   line-height: 1.15;
-  animation: aparece-elemento-graficos-simples .25s .25s ease-in-out both;
+  animation: aparece-elemento-graficos-simples .25s .15s ease-in-out both;
 }
 
 .GraficosVMI__contenedor_grafico {
