@@ -4,16 +4,97 @@ import ReactMapGL, { Source, Layer, Marker } from 'react-map-gl'
 import mapStyle from './mapStyle.json'
 import polylabel from 'polylabel'
 import { useSelector } from 'react-redux'
-import { CASOS_COMUNALES_INTERPOLADOS } from '../../../redux/reducers/series'
+import turf from 'turf'
 
 const calcularPoloDeInaccesibilidad = puntos => {
   const [longitude, latitude] = polylabel(puntos)
   return { longitude: longitude, latitude: latitude }
 }
 
-const comunas = {
-  'occidente': ['Cerro Navia', 'Pudahuel']
-}
+const comunasSS = [
+  {
+    nombre: 'Occidente',
+    comunas: [
+      'Pudahuel',
+      'Cerro Navia',
+      'Quinta Normal',
+      'Lo Prado',
+      'Renca',
+      'Melipilla',
+      'Alhué',
+      'María Pinto',
+      'San Pedro',
+      'Curacaví',
+      'Talagante',
+      'Peñaflor',
+      'El Monte',
+      'Padre Hurtado',
+      'Isla de Maipo'
+    ]
+  },
+  {
+    nombre: 'Oriente',
+    comunas: [
+      'Vitacura',
+      'Las Condes',
+      'La Reina',
+      'Lo Barnechea',
+      'Peñalolén',
+      'Macul',
+      'Ñuñoa',
+      'Providencia'
+    ]
+  },
+  {
+    nombre: 'Sur Oriente',
+    comunas: [
+      'Puente Alto',
+      'La Florida',
+      'La Pintana',
+      'San José de Maipo',
+      'San Ramón',
+      'Pirque'
+    ]
+  },
+  {
+    nombre: 'Central',
+    comunas: [
+      'Santiago',
+      'Estación Central',
+      'Cerrillos',
+      'Pedro Aguirre Cerda',
+      'Maipú'
+    ]
+  },
+  {
+    nombre: 'Norte',
+    comunas: [
+      'Tiltil',
+      'Colina',
+      'Lampa',
+      'Conchalí',
+      'Huechuraba',
+      'Independencia',
+      'Recoleta',
+      'Quilicura'
+    ]
+  },
+  {
+    nombre: 'Sur',
+    comunas: [
+      'San Joaquín',
+      'San Miguel',
+      'Lo Espejo',
+      'La Cisterna',
+      'La Granja',
+      'El Bosque',
+      'San Bernardo',
+      'Calera de Tango',
+      'Buin',
+      'Paine'
+    ]
+  }
+]
 
 const AppUCI = () => {
 
@@ -36,9 +117,16 @@ const AppUCI = () => {
     const featuresRegion = geoJSON
       .features
       .filter(feature => feature.properties.codigoRegion === 13)
+    const featuresSS = comunasSS.map(({ nombre, comunas }) => {
+      const com1 = featuresRegion.find(f => f.properties.NOM_COM === comunas[0])
+      return comunas.reduce((prev, comuna) => {
+        const com = featuresRegion.find(f => f.properties.NOM_COM === comuna)
+        return turf.union(prev, turf.polygon(com.geometry.coordinates))
+      }, turf.polygon(com1.geometry.coordinates, { servicio: nombre }))
+    })
     return {
       ...geoJSON,
-      features: featuresRegion
+      features: featuresSS
     }
   }, [])
 
