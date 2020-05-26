@@ -24,8 +24,8 @@
 
 .AppUCI__porcentaje_en_mapa {
   margin-left: -50%;
-  margin-top: -.5em;
-  font-size: .6em;
+  margin-top: -.45em;
+  font-size: .7em;
   font-weight: bold;
   pointer-events: none;
 }
