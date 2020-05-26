@@ -62,7 +62,7 @@ const comunasSS = [
       'Santiago',
       'Estación Central',
       'Cerrillos',
-      'Pedro Aguirre Cerda',
+      'Pedro Aguirre Cerda', // PAC norte
       'Maipú'
     ]
   },
@@ -86,7 +86,7 @@ const comunasSS = [
       'San Miguel',
       'Lo Espejo',
       'La Cisterna',
-      'La Granja',
+      'La Granja', // La Granja Sur
       'El Bosque',
       'San Bernardo',
       'Calera de Tango',
@@ -96,7 +96,7 @@ const comunasSS = [
   }
 ]
 
-const AppUCI = () => {
+const AppUCI = props => {
 
   const mapa = useRef()
   const { datasets } = useSelector(state => state.datasets)
@@ -113,7 +113,7 @@ const AppUCI = () => {
     altitude: 1.5,
   })
 
-  const geoJSONFiltrado = useMemo(() => {
+  const geoJSONSS = useMemo(() => {
     const featuresRegion = geoJSON
       .features
       .filter(feature => feature.properties.codigoRegion === 13)
@@ -122,16 +122,21 @@ const AppUCI = () => {
       return comunas.reduce((prev, comuna) => {
         const com = featuresRegion.find(f => f.properties.NOM_COM === comuna)
         return turf.union(prev, turf.polygon(com.geometry.coordinates))
-      }, turf.polygon(com1.geometry.coordinates, { servicio: nombre }))
+      }, turf.polygon(com1.geometry.coordinates, { servicio: nombre, color: props.ss === nombre ? 1 : 0 }))
     })
     return {
       ...geoJSON,
       features: featuresSS
     }
-  }, [])
+  }, [geoJSON, props.ss])
 
   const cambioEnElViewport = vp => {
     setViewport(prev => prev)
+  }
+
+  const clickEnMapa = e => {
+    console.log(e)
+    props.fijarSS(e.features[0].properties.servicio)
   }
 
   return (
@@ -141,14 +146,28 @@ const AppUCI = () => {
           {...viewport}
           mapStyle={mapStyle}
           onViewportChange={cambioEnElViewport}
-          getCursor={() => 'default'}
+          getCursor={() => 'pointer'}
+          onClick={clickEnMapa}
           ref={mapa}
         >
           <Source
             id="capa-datos-regiones-2"
             type="geojson"
-            data={geoJSONFiltrado}
+            data={geoJSONSS}
           >
+            <Layer
+              id="data2-poligono-fill"
+              type="fill"
+              paint={{
+                'fill-color': {
+                  property: 'color',
+                  stops: [
+                    [0, 'white'],
+                    [1, '#e0e0e0']
+                  ]
+                }
+              }}
+            />
             <Layer
               id="data2-poligono-stroke"
               type="line"

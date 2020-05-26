@@ -31,27 +31,27 @@ const filas = data.split('\n').slice(1, -1).map(d => d.trim())
 const fechas = filas[0].split(';').map(f => moment(f, 'DD-MMM').format('DD/MM'))
 const servicios = [
   {
-    nombre: 'central',
+    nombre: 'Central',
     serie: procesarFilaVMI(filas[1])
   },
   {
-    nombre: 'norte',
+    nombre: 'Norte',
     serie: procesarFilaVMI(filas[3])
   },
   {
-    nombre: 'occidente',
+    nombre: 'Occidente',
     serie: procesarFilaVMI(filas[5])
   },
   {
-    nombre: 'oriente',
+    nombre: 'Oriente',
     serie: procesarFilaVMI(filas[7])
   },
   {
-    nombre: 'sur',
+    nombre: 'Sur',
     serie: procesarFilaVMI(filas[9])
   },
   {
-    nombre: 'sur oriente',
+    nombre: 'Sur Oriente',
     serie: procesarFilaVMI(filas[11])
   },
   {
@@ -62,7 +62,7 @@ const servicios = [
 
 const GraficosVMI = () => {
 
-  const [seleccion, setSeleccion] = useState('central')
+  const [seleccion, setSeleccion] = useState('Central')
   const [annotation, setAnnotation] = useState({})
   const serie = servicios.find(s => s.nombre === seleccion).serie
 
@@ -110,7 +110,9 @@ const GraficosVMI = () => {
           </div>
           <div className="AppGraficosSimples__contenedor_encabezado">
             <div className="AppGraficosSimples__contenedor_encabezado_izquierda">
-              <h1 className="GraficosVMI__nombre_comuna">{seleccion !== 'total RM' && <>Servicio de Salud<br/>Metropolitano</>} <span style={{ textTransform: 'capitalize' }}>{seleccion}</span></h1>
+              <h1 className="GraficosVMI__nombre_comuna">
+                {seleccion !== 'total RM' && <>Servicio de Salud<br/> Metropolitano</>} {seleccion}
+              </h1>
             </div>
             <div className="AppGraficosSimples__contenedor_encabezado_derecha">
               <h1 className="AppGraficosSimples__nombre_comuna">Ocupación de<br/>ventiladores mecánicos</h1>
@@ -197,7 +199,7 @@ const GraficosVMI = () => {
           </div>
         </div>
         <div className="GraficosVMI__contenedor_mapa">
-          <AppUCI />
+          <AppUCI ss={seleccion} fijarSS={setSeleccion} />
         </div>
       </div>
       <p className="AppGraficosSimples__aviso">
