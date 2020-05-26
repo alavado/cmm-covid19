@@ -12,6 +12,15 @@
   width: 100%;
 }
 
+.AppUCI__explicacion_comunas_ss {
+  margin-top: 1em;
+  height: 5em;
+  font-size: .8em;
+  width: 75%;
+  line-height: 1.5;
+  text-align: center;
+}
+
 @media (orientation: portrait) {
   .AppUCI {
     display: none;

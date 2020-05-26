@@ -55,7 +55,7 @@ const servicios = [
     serie: procesarFilaVMI(filas[11])
   },
   {
-    nombre: 'total RM',
+    nombre: 'Total RM',
     serie: procesarFilaVMI(filas[13])
   }
 ]

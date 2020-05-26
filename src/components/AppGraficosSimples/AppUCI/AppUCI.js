@@ -15,83 +15,83 @@ const comunasSS = [
   {
     nombre: 'Occidente',
     comunas: [
-      'Pudahuel',
-      'Cerro Navia',
-      'Quinta Normal',
-      'Lo Prado',
-      'Renca',
-      'Melipilla',
       'Alhué',
-      'María Pinto',
-      'San Pedro',
+      'Cerro Navia',
       'Curacaví',
-      'Talagante',
-      'Peñaflor',
       'El Monte',
+      'Isla de Maipo',
+      'Lo Prado',
+      'Melipilla',
+      'María Pinto',
       'Padre Hurtado',
-      'Isla de Maipo'
+      'Pudahuel',
+      'Quinta Normal',
+      'San Pedro',
+      'Peñaflor',
+      'Renca',
+      'Talagante',
     ]
   },
   {
     nombre: 'Oriente',
     comunas: [
-      'Vitacura',
-      'Las Condes',
       'La Reina',
+      'Las Condes',
       'Lo Barnechea',
-      'Peñalolén',
       'Macul',
       'Ñuñoa',
-      'Providencia'
+      'Peñalolén',
+      'Providencia',
+      'Vitacura',
     ]
   },
   {
     nombre: 'Sur Oriente',
     comunas: [
-      'Puente Alto',
       'La Florida',
       'La Pintana',
+      'Pirque',
+      'Puente Alto',
       'San José de Maipo',
       'San Ramón',
-      'Pirque'
     ]
   },
   {
     nombre: 'Central',
     comunas: [
-      'Santiago',
-      'Estación Central',
       'Cerrillos',
+      'Estación Central',
+      'Maipú',
       'Pedro Aguirre Cerda', // PAC norte
-      'Maipú'
+      'Santiago',
     ]
   },
   {
     nombre: 'Norte',
     comunas: [
-      'Tiltil',
       'Colina',
-      'Lampa',
       'Conchalí',
       'Huechuraba',
       'Independencia',
+      'Lampa',
+      'Quilicura',
       'Recoleta',
-      'Quilicura'
+      'Tiltil',
     ]
   },
   {
     nombre: 'Sur',
     comunas: [
-      'San Joaquín',
-      'San Miguel',
-      'Lo Espejo',
+      'Buin',
+      'Calera de Tango',
+      'El Bosque',
       'La Cisterna',
       'La Granja', // La Granja Sur
-      'El Bosque',
+      'Lo Espejo',
+      'Paine',
       'San Bernardo',
-      'Calera de Tango',
-      'Buin',
-      'Paine'
+      'San Joaquín',
+      'San Miguel',
     ]
   }
 ]
@@ -135,9 +135,32 @@ const AppUCI = props => {
   }
 
   const clickEnMapa = e => {
-    console.log(e)
-    props.fijarSS(e.features[0].properties.servicio)
+    if (e.features.length > 0) {
+      props.fijarSS(e.features[0].properties.servicio)
+    }
   }
+
+  const textoComunas = useMemo(() => {
+    const ss = comunasSS.find(ss => ss.nombre === props.ss)
+    if (!ss) {
+      return null
+    }
+    let comunas = [...ss.comunas]
+    if (props.ss === 'Sur Oriente') {
+      comunas.push('La Granja')
+    }
+    else if (props.ss === 'Sur') {
+      comunas.push('Pedro Aguirre Cerda')
+    }
+    else if (props.ss === 'Oriente') {
+      comunas.push('Isla de Pascua')
+    }
+    comunas.sort()
+    const primerasComunas = comunas
+      .slice(0, -1)
+      .reduce((prev, c) => `${prev}, ${['La Granja', 'Pedro Aguirre Cerda'].includes(c) ? `parte de ${c}` : c}`)
+    return `${primerasComunas} y ${comunas.slice(-1)[0]}`
+  }, [props.ss])
 
   return (
     <div className="AppUCI">
@@ -178,6 +201,13 @@ const AppUCI = props => {
             />
           </Source>
         </ReactMapGL>
+      </div>
+      <div className="AppUCI__explicacion_comunas_ss">
+        {textoComunas &&
+          <>
+            El <span style={{ fontWeight: 'bold' }}>Servicio de Salud Metropolitano {props.ss}</span> abarca las comunas de {textoComunas}
+          </>
+        }
       </div>
     </div>
   )
