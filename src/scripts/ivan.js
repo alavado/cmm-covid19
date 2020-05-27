@@ -6,7 +6,7 @@ const urlIvan = 'https://raw.githubusercontent.com/ivanMSC/COVID19_Chile/master/
 
 const leerDesdeGitHubIvan = async () => {
   const { data } = await axios.get(urlIvan)
-  const [encabezados, ...datos] = data.split('\n')
+  const datos = data.split('\n').slice(1)
   let maximaFecha = moment('2020-03-01', 'YYYY-MM-DD')
   const datosComunas = datos
     .reduce((obj, fila) => {

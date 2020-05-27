@@ -81,21 +81,21 @@ export const procesarCSVComunas = (csv, seriesRegiones) => {
             ]
           }
         }
-        if (i === arr.length - 1) {
-          let fecha = fechasComunas[i].clone()
-          const ultimaFecha = moment(infoSeremis.ultimaFecha)
-          while (fecha.diff(ultimaFecha, 'days') < 0) {
-            secuencia = [
-              ...secuencia,
-              {
-                fecha: fecha.format('DD/MM'),
-                valor: (infoSeremis.datos[`${codigo}`] && infoSeremis.datos[`${codigo}`][fecha.format('DD/MM')]) || -1,
-                interpolado: false
-              }
-            ]
-            fecha.add(1, 'days')
-          }
-        }
+        // if (i === arr.length - 1) {
+        //   let fecha = fechasComunas[i].clone()
+        //   const ultimaFecha = moment(infoSeremis.ultimaFecha)
+        //   while (fecha.diff(ultimaFecha, 'days') < 0) {
+        //     secuencia = [
+        //       ...secuencia,
+        //       {
+        //         fecha: fecha.format('DD/MM'),
+        //         valor: (infoSeremis.datos[`${codigo}`] && infoSeremis.datos[`${codigo}`][fecha.format('DD/MM')]) || -1,
+        //         interpolado: false
+        //       }
+        //     ]
+        //     fecha.add(1, 'days')
+        //   }
+        // }
         return [...prev, ...secuencia]
       }, [])
     }
