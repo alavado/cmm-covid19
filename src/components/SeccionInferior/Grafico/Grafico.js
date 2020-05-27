@@ -167,7 +167,7 @@ const Grafico = () => {
             data: puntosRegion.map(({ fecha }) => {
               return cuarentenasComuna.some(({ inicio, fin }) => (
                 moment(fecha, 'DD/MM').diff(inicio, 'days') >= 0 && moment(fecha, 'DD/MM').diff(fin, 'days') < 0
-              )) ? maximo : 0
+              )) ? maximo : null
             }).slice(esDispositivoPequeño ? -diasDispositivoPequeño : 0),
             backgroundColor: pattern.draw('diagonal-right-left', 'rgba(255, 255, 255, 0.1)', '#212121', 7.5),
             barPercentage: 1.25
@@ -202,7 +202,7 @@ const Grafico = () => {
               position: 'right',
               ticks: {
                 maxTicksLimit: 7,
-                suggestedMin: 0,
+                min: 0,
                 max: maximo,
                 fontColor: 'rgba(255, 255, 255, 0.75)',
                 callback: item => {
