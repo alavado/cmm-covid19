@@ -2,6 +2,7 @@ import moment from 'moment/min/moment-with-locales'
 import demografiaRegiones from '../data/demografia/regiones.json'
 import demografiaComunas from '../data/demografia/comunas.json'
 import { obtenerDemograficosComuna } from './demograficos'
+import infoSeremis from '../data/contagios/seremi.json'
 
 const separarCSVEnFilas = csv => {
   let filas = csv.split('\n')
@@ -60,14 +61,39 @@ export const procesarCSVComunas = (csv, seriesRegiones) => {
           const diferenciaComuna = arr[i] - arr[i - 1]
           for (let j = indiceEnSerieRegional - 1; j > indiceAnteriorEnSerieRegional; j--) {
             const casosIntermedios = serieRegion[j].valor
+            const fecha = fechaInicial.clone().add(j, 'days').format('DD/MM')
+            let valor, interpolado
+            if (infoSeremis[`${codigo}`] && infoSeremis[`${codigo}`][fecha]) {
+              valor = infoSeremis[`${codigo}`][fecha]
+              interpolado = false
+            }
+            else {
+              valor = Math.round(arr[i - 1] + diferenciaComuna * (casosIntermedios - casosAnteriores) / diferenciaRegion)
+              interpolado = true
+            }
             secuencia = [
               {
-                fecha: fechaInicial.clone().add(j, 'days').format('DD/MM'),
-                valor: Math.round(arr[i - 1] + diferenciaComuna * (casosIntermedios - casosAnteriores) / diferenciaRegion),
-                interpolado: true
+                fecha,
+                valor,
+                interpolado
               },
               ...secuencia
             ]
+          }
+        }
+        if (i === arr.length - 1) {
+          let fecha = fechasComunas[i].clone()
+          const ultimaFecha = moment(infoSeremis.ultimaFecha)
+          while (fecha.diff(ultimaFecha, 'days') < 0) {
+            secuencia = [
+              ...secuencia,
+              {
+                fecha: fecha.format('DD/MM'),
+                valor: (infoSeremis.datos[`${codigo}`] && infoSeremis.datos[`${codigo}`][fecha.format('DD/MM')]) || -1,
+                interpolado: false
+              }
+            ]
+            fecha.add(1, 'days')
           }
         }
         return [...prev, ...secuencia]

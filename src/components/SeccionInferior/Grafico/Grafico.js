@@ -73,6 +73,7 @@ const Grafico = () => {
   const [maximo, setMaximo] = useState(0)
 
   const eliminarCola = esDispositivoPequeño ? -diasDispositivoPequeño : 0
+  console.log({dataset})
 
   useEffect(() => {
     let data = {
