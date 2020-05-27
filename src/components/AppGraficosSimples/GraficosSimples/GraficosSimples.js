@@ -196,7 +196,7 @@ const GraficosSimples = () => {
               borderColor: '#5E5E5E',
               pointRadius: 0,
               pointHitRadius: 10,
-              borderCapStyle: 'round'
+              borderCapStyle: 'butt'
             }]
           }}
           options={{

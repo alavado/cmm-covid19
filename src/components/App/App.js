@@ -28,6 +28,7 @@ const urlGeoJSONRegiones = 'https://raw.githubusercontent.com/alavado/cmm-covid1
 const urlGeoJSONComunas = 'https://raw.githubusercontent.com/alavado/cmm-covid19/master/src/data/geojsons/comunas.json'
 const urlMuertesRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/muertes.csv'
 const urlPCRRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/pcrs_region.csv'
+const urlPacientesUCI = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/pacientes_en_uci.csv'
 
 const App = () => {
 
@@ -43,6 +44,7 @@ const App = () => {
       const { data: geoJSONRegiones } = await axios.get(urlGeoJSONRegiones)
       const { data: datosMuertesRegiones } = await axios.get(urlMuertesRegiones)
       const { data: datosPCRRegiones } = await axios.get(urlPCRRegiones)
+      const { data: datosUCIRegiones } = await axios.get(urlPacientesUCI)
       setMensaje('Cargando datos comunales...')
       const { data: geoJSONComunas } = await axios.get(urlGeoJSONComunas)
       const { data: datosCSVComunas } = await axios.get(urlDatosComunas)
@@ -77,7 +79,7 @@ const App = () => {
 
       const [seriePCRChile, seriePCRRegiones] = procesarCSVRegiones(datosPCRRegiones)
       dispatch(agregarDataset(
-        'Total de pruebas PCR',
+        'Número de pruebas PCR',
         [0, 50, 100, 500, 1000, 5000, 10000],
         seriePCRChile,
         { series: seriePCRRegiones, geoJSON: geoJSONRegiones },
@@ -113,6 +115,14 @@ const App = () => {
         calcularNuevosCasosChile(serieChile, { dias: 7 }),
         { series: calcularNuevosCasos(seriesRegiones, { dias: 7 }), geoJSON: geoJSONRegiones },
         { series: calcularNuevosCasos(seriesComunas, { dias: 7 }), geoJSON: geoJSONComunasFormateado }
+      ))
+      const [serieUCIChile, serieUCIRegiones] = procesarCSVRegiones(datosUCIRegiones)
+      dispatch(agregarDataset(
+        'Número de pacientes en UCI',
+        [0, 5, 10, 50, 100],
+        serieUCIChile,
+        { series: serieUCIRegiones, geoJSON: geoJSONRegiones },
+        null
       ))
       const [serieMuertesChile, seriesMuertesRegiones] = procesarCSVRegiones(datosMuertesRegiones)
       dispatch(agregarDataset(

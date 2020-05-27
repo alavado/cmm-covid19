@@ -73,7 +73,10 @@ const Mapa = () => {
     longitude: 0,
     titulo: ''
   })
-  const [poligonoDestacado, setPoligonoDestacado] = useState(null)
+  const [poligonoDestacados, setPoligonosDestacados] = useState({
+    type: 'FeatureCollection',
+    features: []
+  })
   const codigoColor = useMemo(() => <CodigoColor />, [division])
   const rankingComunas = useMemo(() => <RankingComunas />, [])
   const mapa = useRef()
@@ -124,7 +127,10 @@ const Mapa = () => {
     if (division === 'comuna') {
       const poligono = geoJSON.features.find(f => Number(f.properties.COD_COMUNA) === Number(codigo))
       if (poligono) {
-        setPoligonoDestacado(poligono)
+        setPoligonosDestacados(poli => ({
+          ...poli,
+          features: [poligono]
+        }))
         const { latitude, longitude } = calcularPoloDeInaccesibilidad(poligono)
         if (division) {
           setViewport(v => ({
@@ -139,7 +145,10 @@ const Mapa = () => {
       }
     }
     else {
-      setPoligonoDestacado(null)
+      setPoligonosDestacados(poli => ({
+        ...poli,
+        features: []
+      }))
     }
   }, [division, codigo])
 
@@ -224,16 +233,44 @@ const Mapa = () => {
     })
   }, [division, codigo, viewport.zoom, indice])
 
+  const [shiftPresionado, setShiftPresionado] = useState(false)
+
+  useEffect(() => {
+    const shiftPresionado = document.addEventListener('keydown', e => {
+      if (e.keyCode === 16 && !shiftPresionado) {
+        setShiftPresionado(true)
+      }
+    })
+    const shiftLevantado = document.addEventListener('keyup', e => {
+      setShiftPresionado(false)
+    })
+    return () => {
+      document.removeEventListener('keydown', shiftPresionado)
+      document.removeEventListener('keyup', shiftLevantado)
+    }
+  }, [])
+
   const clickEnPoligono = e => {
     const featurePoligono = e.features && e.features.find(f => f.source === 'capa-datos-regiones')
     if (!featurePoligono) {
       return
     }
-    if (division !== 'comuna') {
-      history.push(`/region/${featurePoligono.properties.codregion}`)
+    if (shiftPresionado) {
+      setPoligonosDestacados(poli => ({
+        ...poli,
+        features: [
+          ...poli.features,
+          featurePoligono
+        ]
+      }))
     }
     else {
-      history.push(`/comuna/${featurePoligono.properties.COD_COMUNA}`)
+      if (division !== 'comuna') {
+        history.push(`/region/${featurePoligono.properties.codregion}`)
+      }
+      else {
+        history.push(`/comuna/${featurePoligono.properties.COD_COMUNA}`)
+      }
     }
   }
 
@@ -333,26 +370,24 @@ const Mapa = () => {
             />
           </Source>
         }
-        {poligonoDestacado &&
-          <Source id="capa-poligono-destacado" type="geojson" data={poligonoDestacado}>
-            <Layer
-              id="data-poligono-fill"
-              type="fill"
-              paint={{
-                'fill-color': 'rgb(255, 255, 255)',
-                'fill-opacity': .025
-              }}
-            />
-            <Layer
-              id="data-poligono-stroke"
-              type="line"
-              paint={{
-                'line-color': 'rgba(0, 0, 0, 0.75)',
-                'line-width': 2.5
-              }}
-            />
-          </Source>
-        }
+        <Source id="capa-poligono-destacado" type="geojson" data={poligonoDestacados}>
+          <Layer
+            id="data-poligono-fill"
+            type="fill"
+            paint={{
+              'fill-color': 'rgb(255, 255, 255)',
+              'fill-opacity': .025
+            }}
+          />
+          <Layer
+            id="data-poligono-stroke"
+            type="line"
+            paint={{
+              'line-color': 'rgba(0, 0, 0, 0.75)',
+              'line-width': 2.5
+            }}
+          />
+        </Source>
         {division === 'comuna' && labelsComunas}
         <div className="Mapa__contacto">
           <a href="https://twitter.com/alavado_desu" rel="noopener noreferrer" target="_blank">
