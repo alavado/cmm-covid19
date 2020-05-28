@@ -63,8 +63,8 @@ export const procesarCSVComunas = (csv, seriesRegiones) => {
             const casosIntermedios = serieRegion[j].valor
             const fecha = fechaInicial.clone().add(j, 'days').format('DD/MM')
             let valor, interpolado
-            if (infoSeremis[`${codigo}`] && infoSeremis[`${codigo}`][fecha]) {
-              valor = infoSeremis[`${codigo}`][fecha]
+            if (infoSeremis.datos[`${codigo}`] && infoSeremis.datos[`${codigo}`][fecha]) {
+              valor = infoSeremis.datos[`${codigo}`][fecha]
               interpolado = false
             }
             else {

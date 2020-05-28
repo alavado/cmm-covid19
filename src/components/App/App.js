@@ -21,6 +21,7 @@ import AppMapaCasos from '../AppMapaCasos'
 import AppGraficosSimples from '../AppGraficosSimples'
 import AppUCI from '../AppGraficosSimples/AppUCI'
 import { procesarCSVRegiones, procesarCSVComunas, calcularNuevosCasos, calcularNuevosCasosChile, formatearGeoJSONComunas } from '../../helpers/preprocesamiento'
+import AppMuchosGraficos from '../AppMuchosGraficos/AppMuchosGraficos'
 
 const urlDatosRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'
 const urlDatosComunas = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados_comunas.csv'
@@ -169,6 +170,7 @@ const App = () => {
         <Switch>
           <Route path="/uci" exact component={AppUCI} />
           <Route path="/casos" exact component={AppMapaCasos} />
+          <Route path="/graficos/todos" component={AppMuchosGraficos} />
           <Route path="/graficos/comuna/:comuna" component={AppGraficosSimples} />
           <Route path="/graficos" component={AppGraficosSimples} />
           <Route path="/vmi" component={AppGraficosSimples} />
