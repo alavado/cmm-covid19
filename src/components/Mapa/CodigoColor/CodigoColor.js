@@ -82,7 +82,7 @@ const CodigoColor = () => {
           onMouseOver={e => e.stopPropagation()}
           title="Ir a interfaz con gráficos sencillos por comuna"
         >
-          Ir a gráficos amigables
+          Ir a gráficos limpios
         </button>
       </div>
     </div>

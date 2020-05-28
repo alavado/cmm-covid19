@@ -10,6 +10,7 @@ const GraficosSimples = () => {
 
   const { series, geoJSONCuarentenas } = useSelector(state => state.series)
   const [annotation, setAnnotation] = useState({})
+  const [comunasExtra, setComunasExtra] = useState([])
   const { comuna } = useParams()
   const history = useHistory()
   const minimosCasos = 50
@@ -44,6 +45,7 @@ const GraficosSimples = () => {
   const fechas = datos
     .map(d => d.fecha)
     .slice(omitirPrimeros)
+  
   const valores = datos.map(d => d.valor)
     .reduce((prev, v, i, arr) => {
       let sum = 0
@@ -153,34 +155,92 @@ const GraficosSimples = () => {
     })
   }, [cuarentenasComuna, comuna])
 
+  const comunasConMasDe50Casos = useMemo(() => {
+    return serieComunas.datos
+      .filter(c => c.datos.slice(-1)[0].valor >= minimosCasos)
+      .sort((c1, c2) => c1.nombre.localeCompare(c2.nombre))
+  }, [serieComunas])
+
   return (
     <div className="GraficosSimples">
       <label className="AppGraficosSimples__label_selector">
         {`Comunas con más de ${minimosCasos} casos`}
-        <select
-          className="AppGraficosSimples__selector"
-          defaultValue={codigoComuna}
-          onChange={e => history.push(`/graficos/comuna/${e.target.value}`)}
-        >
-          {serieComunas.datos
-            .filter(c => c.datos.slice(-1)[0].valor >= minimosCasos)
-            .sort((c1, c2) => c1.nombre.localeCompare(c2.nombre))
-            .map(comuna => (
+        <div className="GraficosSimples__contenedor_selectores">
+          <select
+            className="AppGraficosSimples__selector"
+            defaultValue={codigoComuna}
+            onChange={e => history.push(`/graficos/comuna/${e.target.value}`)}
+          >
+            {comunasConMasDe50Casos.map(comuna => (
               <option key={`perez-${comuna.codigo}`} value={comuna.codigo}>
                 {comuna.nombre}
               </option>
-            ))
-          }
-        </select>
+            ))}
+          </select>
+          {comunasExtra.map((c, i) => (
+            <div style={{ display: 'flex', alignItems: 'center' }} key={`comuna-extra-${i}`}>
+              +
+              <select
+                className="AppGraficosSimples__selector"
+                value={comunasExtra[i]}
+                onChange={e => {
+                  setComunasExtra([
+                    ...comunasExtra.slice(0, i),
+                    Number(e.target.value),
+                    ...comunasExtra.slice(i + 1)
+                  ])}
+                }
+              >
+                {comunasConMasDe50Casos
+                  .filter(c => c.codigo !== Number(comuna))
+                  .map(comuna => (
+                    <option key={`perez-extra-${i}-${comuna.codigo}`} value={comuna.codigo}>
+                      {comuna.nombre}
+                    </option>
+                  )
+                )}
+              </select>
+            </div>
+          ))}
+        </div>
       </label>
       <div className="AppGraficosSimples__contenedor_encabezado">
         <div className="AppGraficosSimples__contenedor_encabezado_izquierda">
-          <h1 className="AppGraficosSimples__nombre_comuna">{serieComunas.datos.find(c => c.codigo === codigoComuna).nombre}</h1>
-          <h2 className="AppGraficosSimples__casos_totales">{datos.slice(-1)[0].valor} Casos Totales</h2>
+          <h1 className="AppGraficosSimples__nombre_comuna">
+            {serieComunas.datos.find(c => c.codigo === codigoComuna).nombre}
+            {comunasExtra.map((c, i) => (
+              <div style={{ display: 'flex' }} key={`extra-${i}`}>
+                {`+`}{c === null ?
+                  '________' :
+                  <div
+                    className="GraficosSimple__nombre_comuna_extra"
+                    onClick={() => setComunasExtra(comunasExtra.filter(codigo => c !== codigo))}
+                  >
+                    {comunasConMasDe50Casos.find(({ codigo }) => codigo === c).nombre}
+                  </div>
+                }
+              </div>
+            ))}
+            <button
+              className="AppGraficosSimples__boton_agregar_comuna"
+              title="Agregar comuna"
+              onClick={() => setComunasExtra([...comunasExtra, null ])}
+            >
+              +
+            </button>
+          </h1>
+          <h2
+            className="AppGraficosSimples__casos_totales"
+            title="Hasta el último informe epidemiológico del MINSAL"
+          >
+            {datos.slice(-1)[0].valor} Casos Totales
+          </h2>
         </div>
         <div>
         <div className="AppGraficosSimples__contenedor_encabezado_derecha">
-          <h1 className="AppGraficosSimples__nombre_comuna">Nuevos casos en los<br />últimos 7 días</h1>
+          <h1 className="AppGraficosSimples__nombre_comuna">
+            Nuevos casos en los<br />últimos 7 días
+          </h1>
         </div>
         </div>
       </div>
@@ -261,7 +321,7 @@ const GraficosSimples = () => {
       <Link className="AppGraficosSimples__ver_mapa" to={`/comuna/${codigoComuna}`}>
         <button>Ver esta comuna en el mapa</button>
       </Link>
-      <p className="AppGraficosSimples__aviso">Para estimar los nuevos casos en los días sin datos por comuna, los nuevos casos de cada región se reparten entre sus comunas siguiendo la misma proporción de aumento observada entre los dos informes más cercanos en el tiempo.</p>
+      <p className="AppGraficosSimples__aviso">Para interpolar los casos en los días sin datos por comuna, los casos de cada región se reparten entre sus comunas siguiendo la misma proporción de aumento observada entre el informe epidemiológico anterior y el informe epidemiológico posterior.</p>
     </div>
   )
 }

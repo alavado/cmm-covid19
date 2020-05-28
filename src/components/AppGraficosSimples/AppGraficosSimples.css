@@ -54,11 +54,13 @@
 }
 
 .AppGraficosSimples__nombre_comuna {
+  cursor: default;
   font-weight: bold;
   color: #6D6D6D;
   margin-top: 1em;
   font-size: 1.4em;
   animation: aparece-elemento-graficos-simples .25s .25s ease-in-out both;
+  display: flex;
 }
 
 .AppGraficosSimples__selector {
@@ -72,6 +74,7 @@
   color: #AAAAAA;
   margin-top: .8em;
   font-size: .9em;
+  cursor: help;
   animation: aparece-elemento-graficos-simples .25s .25s ease-in-out both;
 }
 

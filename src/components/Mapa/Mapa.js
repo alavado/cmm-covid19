@@ -255,7 +255,7 @@ const Mapa = () => {
     if (!featurePoligono) {
       return
     }
-    if (shiftPresionado) {
+    if (false && shiftPresionado) {
       setPoligonosDestacados(poli => ({
         ...poli,
         features: [

@@ -3,3 +3,22 @@
   flex-direction: column;
   width: 45em;
 }
+
+.AppGraficosSimples__boton_agregar_comuna {
+  display: none;
+  margin-left: .5em;
+}
+
+.AppGraficosSimples__nombre_comuna:hover .AppGraficosSimples__boton_agregar_comuna {
+  display: none;
+  cursor: pointer;
+}
+
+.GraficosSimples__contenedor_selectores {
+  display: flex;
+  align-items: center;
+}
+
+.GraficosSimple__nombre_comuna_extra:hover {
+  text-decoration: line-through;
+}
