@@ -35,6 +35,7 @@ const AppMuchosGraficos = () => {
   return (
     <div className="AppMuchosGraficos">
       <h1>Todos los gráficos</h1>
+      <p>Inspirado en <a href="https://www.endcoronavirus.org/countries#action" target="_blank" rel="noopener noreferer">EndCoronaVirus.org</a></p>
       {categorias.map(({ titulo, comunas, color }) => (
         <div className="AppMuchosGraficos__contenedor_categoria" key={titulo}>
           <h2 className="AppMuchosGraficos__titulo_categoria">{titulo}</h2>
@@ -91,7 +92,8 @@ const AppMuchosGraficos = () => {
                           },
                           ticks: {
                             suggestedMax: 10,
-                            display: false
+                            display: false,
+                            max: maximoComuna
                           },
                           scaleLabel: {
                             display: false

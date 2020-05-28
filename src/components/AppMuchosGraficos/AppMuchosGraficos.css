@@ -5,6 +5,11 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  padding: 2em 0;
+}
+
+.AppMuchosGraficos__contenedor_categoria {
+  margin-top: 2em;
 }
 
 .AppMuchosGraficos__contenedor_graficos {
@@ -23,13 +28,10 @@
   cursor: zoom-in;
 }
 
-.AppMuchosGraficos__contenedor_categoria {
-  margin-top: 5em;
-}
-
 .AppMuchosGraficos__titulo_categoria {
-  margin: 2em 0;
+  margin: 1.5em 0;
   text-align: center;
+  font-size: 1.5em;
 }
 
 .AppMuchosGraficos__nombre_comuna {
