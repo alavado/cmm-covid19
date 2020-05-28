@@ -22,3 +22,13 @@
 .GraficosSimple__nombre_comuna_extra:hover {
   text-decoration: line-through;
 }
+
+.GraficosSimples__botones {
+  display: flex;
+}
+
+@media (orientation: portrait) {
+  .GraficosSimples__botones {
+    flex-direction: column;
+  }
+}

@@ -318,9 +318,14 @@ const GraficosSimples = () => {
           }}
         />
       </div>
-      <Link className="AppGraficosSimples__ver_mapa" to={`/comuna/${codigoComuna}`}>
-        <button>Ver esta comuna en el mapa</button>
-      </Link>
+      <div className="GraficosSimples__botones">
+        {/* <Link className="AppGraficosSimples__ver_mapa" to={`/graficos/todos`}>
+          <button>Ver todos los gráficos</button>
+        </Link> */}
+        <Link className="AppGraficosSimples__ver_mapa" to={`/comuna/${codigoComuna}`}>
+          <button>Ver esta comuna en el mapa</button>
+        </Link>
+      </div>
       <p className="AppGraficosSimples__aviso">Para interpolar los casos en los días sin datos por comuna, los casos de cada región se reparten entre sus comunas siguiendo la misma proporción de aumento observada entre el informe epidemiológico anterior y el informe epidemiológico posterior.</p>
     </div>
   )

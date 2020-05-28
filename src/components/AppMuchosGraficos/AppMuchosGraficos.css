@@ -8,6 +8,11 @@
   padding: 2em 0;
 }
 
+.AppMuchosGraficos__titulo {
+  font-size: 2em;
+  margin-bottom: .5em;
+}
+
 .AppMuchosGraficos__contenedor_categoria {
   margin-top: 2em;
 }
@@ -32,10 +37,25 @@
   margin: 1.5em 0;
   text-align: center;
   font-size: 1.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: help;
+}
+
+.AppMuchosGraficos__titulo_categoria > span:last-child {
+  font-size: .6em;
+  margin-top: .5em;
 }
 
 .AppMuchosGraficos__nombre_comuna {
   font-size: .85em;
+}
+
+.AppMuchosGraficos__nuevos_casos_comuna {
+  margin-top: .25em;
+  font-size: .5em;
+  opacity: .75;
 }
 
 @media (orientation: landscape) and (max-width: 1000px) {
@@ -45,6 +65,9 @@
 }
 
 @media (orientation: portrait) {
+  .AppMuchosGraficos {
+    padding: 2em;
+  }
   .AppMuchosGraficos__contenedor_graficos {
     grid-template-columns: auto;
   }
