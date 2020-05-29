@@ -4,12 +4,14 @@ import { FaSearch, FaTimes } from 'react-icons/fa'
 import comunas from '../../../data/demografia/comunas.json'
 import { busqueda as busquedaLocal } from '../../../helpers/busqueda'
 import { Link, useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const Buscador = () => {
 
   const [comunasEncontradas, setComunasEncontradas] = useState([])
   const [busqueda, setBusqueda] = useState([])
   const history = useHistory()
+  const { datasets, indice } = useSelector(state => state.datasets)
 
   const filtrarComunas = e => {
     const terminoBusqueda = e.target.value
@@ -25,6 +27,10 @@ const Buscador = () => {
   const limpiarBusqueda = () => {
     setBusqueda('')
     setComunasEncontradas([])
+  }
+
+  if (!datasets[indice].comunas) {
+    return null
   }
 
   return (

@@ -2,6 +2,7 @@
   display: flex;
   justify-content: flex-end;
   margin-right: 1em;
+  animation: aparece-buscador .25s ease-in-out both;
 }
 
 .Buscador__label {
@@ -70,5 +71,14 @@
 @media (orientation: landscape) and (max-height: 600px) {
   .Buscador {
     display: none;
+  }
+}
+
+@keyframes aparece-buscador {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
