@@ -11,4 +11,4 @@ export default createStoreWithMiddleware(
   load({
     states: ['colores', 'comparacion']
   })
-)  
+)
