@@ -41,6 +41,10 @@
   text-decoration: underline;
 }
 
+.GraficosSimples__fuente {
+  margin-bottom: .5em;
+}
+
 @media (orientation: portrait) {
   .GraficosSimples__botones {
     flex-direction: column;

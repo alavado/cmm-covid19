@@ -4,6 +4,15 @@
   padding-bottom: 2em;
 }
 
+.AppGraficosSimples__titulo {
+  font-size: .8em;
+  margin-right: 2em;
+  opacity: .75;
+  display: flex;
+  align-items: center;
+  filter: saturate(0);
+}
+
 .AppGraficosSimples__contenedor {
   display: flex;
   flex-direction: column;
