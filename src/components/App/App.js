@@ -170,7 +170,7 @@ const App = () => {
         <Switch>
           <Route path="/uci" exact component={AppUCI} />
           <Route path="/casos" exact component={AppMapaCasos} />
-          <Route path="/graficos/todos" component={AppMuchosGraficos} />
+          <Route path="/graficos/todos" component={AppGraficosSimples} />
           <Route path="/graficos/comuna/:comuna" component={AppGraficosSimples} />
           <Route path="/graficos" component={AppGraficosSimples} />
           <Route path="/vmi" component={AppGraficosSimples} />

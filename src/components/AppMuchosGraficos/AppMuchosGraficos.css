@@ -1,7 +1,6 @@
 .AppMuchosGraficos {
   color: #212121;
   background-color: rgba(255, 255, 255, 1);
-  overflow-y: scroll;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -9,7 +8,7 @@
 }
 
 .AppMuchosGraficos__titulo {
-  font-size: 2em;
+  font-size: 1.75em;
   margin-bottom: .5em;
 }
 

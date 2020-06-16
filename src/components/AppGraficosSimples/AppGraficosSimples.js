@@ -3,7 +3,7 @@ import './AppGraficosSimples.css'
 import { NavLink, Switch, Route } from 'react-router-dom'
 import GraficosSimples from './GraficosSimples'
 import GraficosVMI from './GraficosVMI'
-import AppMuchosGraficos from '../AppMuchosGraficos'
+import AppMuchosGraficos from '../AppMuchosGraficos/AppMuchosGraficos'
 
 const AppGraficosSimples = () => {
 
@@ -14,6 +14,7 @@ const AppGraficosSimples = () => {
           to="/graficos"
           className="AppGraficosSimples__link_navegacion"
           activeClassName="AppGraficosSimples__link_navegacion--activo"
+          exact
         >
           Nuevos casos en los últimos 7 días
         </NavLink>
@@ -21,6 +22,7 @@ const AppGraficosSimples = () => {
           to="/graficos/todos"
           className="AppGraficosSimples__link_navegacion"
           activeClassName="AppGraficosSimples__link_navegacion--activo"
+          exact
         >
           Todos los gráficos
         </NavLink>
