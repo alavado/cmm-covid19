@@ -39,7 +39,7 @@ const AppMuchosGraficos = () => {
 
   return (
     <div className="AppMuchosGraficos">
-      <h1 className="AppMuchosGraficos__titulo">Todos los gráficos de comunas con más de 50 casos</h1>
+      <h1 className="AppMuchosGraficos__titulo">Nuevos casos en los últimos 7 días</h1>
       <p>De acuerdo con informes epidemiológicos MINSAL (más reciente: {comunas[0].serie.slice(-1)[0].fecha})</p>
       <p className="AppMuchosGraficos__inspiracion">
         Inspirado en <a href="https://www.endcoronavirus.org/countries#action" target="_blank" rel="noopener noreferrer">EndCoronaVirus.org</a>
