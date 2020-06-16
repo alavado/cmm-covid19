@@ -28,7 +28,7 @@ const procesarFilaVMI = fila => {
 }
   
 const filas = data.split('\n').slice(1, -1).map(d => d.trim())
-const fechas = filas[0].split(';').map(f => moment(f, 'DD-MMM').format('DD/MM'))
+const fechas = filas[0].split(';').map(f => moment(f, 'DD/MM').format('DD/MM'))
 const servicios = [
   {
     nombre: 'Central',
@@ -72,7 +72,8 @@ const GraficosVMI = () => {
       annotations: [
         ...fechas
         .map((f, i) => moment(f, 'DD/MM').date() === 1 ? i : -1)
-        .filter(i => i >= 0).map(i => ({
+        .filter(i => i >= 0)
+        .map(i => ({
           type: 'box',
           xScaleID: 'eje-x',
           yScaleID: 'eje-y',
@@ -82,7 +83,7 @@ const GraficosVMI = () => {
           yMax: serie.reduce((x, y) => Math.max(x, y)) * .03,
           borderWidth: 2,
           borderColor: '#C5C5C5',
-          backgroundColor: '#C5C5C5',
+          backgroundColor: '#C5C5C5'
         }))
       ]
     })

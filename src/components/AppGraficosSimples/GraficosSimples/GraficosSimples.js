@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { CASOS_COMUNALES_INTERPOLADOS, CASOS_COMUNALES } from '../../../redux/reducers/series'
 import moment from 'moment'
 import { FaExternalLinkAlt } from 'react-icons/fa'
+
 const GraficosSimples = () => {
 
   const { series, geoJSONCuarentenas } = useSelector(state => state.series)
