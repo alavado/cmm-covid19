@@ -48,7 +48,8 @@ const MiniReporte = () => {
     }
   }
   else {
-    datosExtra.casos = datasets[1].chile.find(d => d.fecha === dataset.chile[posicion].fecha).valor
+    const chileEnFecha = datasets[1].chile.find(d => d.fecha === dataset.chile[posicion].fecha)
+    datosExtra.casos = chileEnFecha ? chileEnFecha.valor : '-'
     datosExtra.poblacion = obtenerDemograficosRegion(CODIGO_CHILE).poblacion
     datosExtra.nombre = obtenerDemograficosRegion(CODIGO_CHILE).nombre
     datosExtra.diferencia = datasets[indice].chile[posicion].valor - datasets[indice].chile[Math.max(0, posicion - 1)].valor

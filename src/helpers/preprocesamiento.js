@@ -25,9 +25,9 @@ export const procesarCSVRegiones = csv => {
         codigo,
         nombre,
         serie: serie.map((valor, i) => {
-          serieChile[i].valor += valor
+          serieChile[i].valor += isNaN(valor) ? 0 : valor
           return {
-            valor,
+            valor: isNaN(valor) ? 0 : valor,
             fecha: fechas[i].format('DD/MM')
           }
         })
