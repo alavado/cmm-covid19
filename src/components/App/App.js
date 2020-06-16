@@ -21,7 +21,6 @@ import AppMapaCasos from '../AppMapaCasos'
 import AppGraficosSimples from '../AppGraficosSimples'
 import AppUCI from '../AppGraficosSimples/AppUCI'
 import { procesarCSVRegiones, procesarCSVComunas, calcularNuevosCasos, calcularNuevosCasosChile, formatearGeoJSONComunas } from '../../helpers/preprocesamiento'
-import AppMuchosGraficos from '../AppMuchosGraficos/AppMuchosGraficos'
 
 const urlDatosRegiones = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados.csv'
 const urlDatosComunas = 'https://raw.githubusercontent.com/jorgeperezrojas/covid19-data/master/csv/confirmados_comunas.csv'

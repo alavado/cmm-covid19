@@ -86,7 +86,7 @@ const GraficosVMI = () => {
         }))
       ]
     })
-  }, [seleccion])
+  }, [serie])
 
   return (
     <div className="GraficosVMI">

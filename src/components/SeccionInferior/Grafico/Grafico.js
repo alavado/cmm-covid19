@@ -25,42 +25,6 @@ const estiloLineaPrincipal = {
   fill: false
 }
 
-const estiloLineaChile = {
-  pointStrokeColorborderColor: '#3F51B5',
-  pointBorderColor: '#3F51B5',
-  pointBackgroundColor: '#3F51B5',
-  pointHoverBackgroundColor: '#3F51B5',
-  pointHoverBorderColor: '#3F51B5',
-  fillColor: '#3F51B5',
-  pointColor: '#3F51B5',
-  pointStrokeColor: '#3F51B5',
-  pointHighlightFill: '#3F51B5',
-  pointHighlightStroke: '#3F51B5',
-  borderColor: '#3F51B5',
-  borderWidth: 1.5,
-  pointRadius: esDispositivoPequeño ? .5 : 2,
-  lineTension: 0,
-  fill: false
-}
-
-const estiloLineaRegion = {
-  pointStrokeColorborderColor: '#039BE5',
-  pointBorderColor: '#039BE5',
-  pointBackgroundColor: '#039BE5',
-  pointHoverBackgroundColor: '#039BE5',
-  pointHoverBorderColor: '#039BE5',
-  fillColor: '#039BE5',
-  pointColor: '#039BE5',
-  pointStrokeColor: '#039BE5',
-  pointHighlightFill: '#039BE5',
-  pointHighlightStroke: '#039BE5',
-  borderColor: '#039BE5',
-  borderWidth: 1.5,
-  pointRadius: esDispositivoPequeño ? .5 : 2,
-  lineTension: .2,
-  fill: false
-}
-
 const Grafico = () => {
 
   const { escala } = useSelector(state => state.colores)

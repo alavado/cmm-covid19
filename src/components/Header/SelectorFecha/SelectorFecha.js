@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import './range.css'
 import './SelectorFecha.css'
-import { avanzarEnSerie, retrocederEnSerie, fijarPosicionSerie, fijarPosicionDatasets } from '../../../redux/actions'
+import { fijarPosicionDatasets } from '../../../redux/actions'
 import moment from 'moment/min/moment-with-locales'
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa'
 import { useParams } from 'react-router-dom'
@@ -10,7 +10,7 @@ moment.locale('es')
 
 const SelectorFecha = () => {
 
-  const { subserieSeleccionada: serie, posicion } = useSelector(state => state.series)
+  const { subserieSeleccionada: serie } = useSelector(state => state.series)
   const { rankingExpandido } = useSelector(state => state.ranking)
   const dispatch = useDispatch()
   const { division } = useParams()
