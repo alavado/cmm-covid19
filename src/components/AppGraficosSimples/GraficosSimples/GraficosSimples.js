@@ -6,6 +6,7 @@ import { useParams, useHistory, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { CASOS_COMUNALES_INTERPOLADOS, CASOS_COMUNALES } from '../../../redux/reducers/series'
 import moment from 'moment'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 const GraficosSimples = () => {
 
   const { series, geoJSONCuarentenas } = useSelector(state => state.series)
@@ -202,6 +203,9 @@ const GraficosSimples = () => {
               </select>
             </div>
           ))}
+          <Link className="GraficosSimples__ver_mapa" to={`/comuna/${codigoComuna}`}>
+            Ver esta comuna en el mapa <FaExternalLinkAlt className="GraficosSimples__icono_ver_mapa" />
+          </Link>
         </div>
       </label>
       <div className="AppGraficosSimples__contenedor_encabezado">
@@ -322,9 +326,6 @@ const GraficosSimples = () => {
         {/* <Link className="AppGraficosSimples__ver_mapa" to={`/graficos/todos`}>
           <button>Ver todos los gráficos</button>
         </Link> */}
-        <Link className="AppGraficosSimples__ver_mapa" to={`/comuna/${codigoComuna}`}>
-          <button>Ver esta comuna en el mapa</button>
-        </Link>
       </div>
       <p className="AppGraficosSimples__aviso">Para interpolar los casos en los días sin datos por comuna, los casos de cada región se reparten entre sus comunas siguiendo la misma proporción de aumento observada entre el informe epidemiológico anterior y el informe epidemiológico posterior.</p>
     </div>

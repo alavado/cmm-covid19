@@ -17,6 +17,7 @@
 .GraficosSimples__contenedor_selectores {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .GraficosSimple__nombre_comuna_extra:hover {
@@ -25,6 +26,19 @@
 
 .GraficosSimples__botones {
   display: flex;
+}
+
+.GraficosSimples__ver_mapa {
+  display: flex;
+  align-items: center;
+}
+
+.GraficosSimples__icono_ver_mapa {
+  margin-left: .5em;
+}
+
+.GraficosSimples__ver_mapa:hover {
+  text-decoration: underline;
 }
 
 @media (orientation: portrait) {
