@@ -34,18 +34,13 @@
 }
 
 .AppMuchosGraficos__titulo_categoria {
-  margin: 1.5em 0;
+  margin: 1em 0 2em 0;
   text-align: center;
   font-size: 1.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: help;
-}
-
-.AppMuchosGraficos__titulo_categoria > span:last-child {
-  font-size: .6em;
-  margin-top: .5em;
 }
 
 .AppMuchosGraficos__nombre_comuna {
@@ -56,6 +51,11 @@
   margin-top: .25em;
   font-size: .5em;
   opacity: .75;
+}
+
+.AppMuchosGraficos__inspiracion {
+  margin-top: 1em;
+  font-size: .75em;
 }
 
 @media (orientation: landscape) and (max-width: 1000px) {
