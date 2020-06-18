@@ -12,35 +12,35 @@ const AppMuchosGraficos = () => {
 
   const categorias = [
     {
-      titulo: 'Comunas con aumento de casos en los últimos 7 días',
-      explicacion: 'Más nuevos casos en los últimos 7 días que en los 7 días anteriores',
+      titulo: 'Comunas sin nuevos casos en los últimos 7 días',
+      explicacion: 'En los últimos 7 días no se registró ningún nuevo contagio',
       comunas: comunas
-        .filter(c => c.serie.slice(-1)[0].valor >= 10 && c.serie.slice(-1)[0].valor > c.serie.slice(-8)[0].valor)
-        .sort((c1, c2) => c1.serie.slice(-1)[0].valor > c2.serie.slice(-1)[0].valor ? -1 : 1),
-      color: '#F44336'
+        .filter(c => c.serie.slice(-1)[0].valor <= 0)
+        .sort((c1, c2) => c1.serie.slice(-1)[0] < c2.serie.slice(-1)[0] ? -1 : 1),
+      color: '#66BB6A'
     },
     {
       titulo: 'Comunas con disminución de nuevos casos en los últimos 7 días',
-      explicacion: 'Menos nuevos casos en los últimos 7 días que en los 7 días anteriores',
+      explicacion: 'Menos contagios en los últimos 7 días que en los 7 días anteriores',
       comunas: comunas
         .filter(c => c.serie.slice(-1)[0].valor >= 10 && c.serie.slice(-1)[0].valor < c.serie.slice(-8)[0].valor)
         .sort((c1, c2) => c1.serie.slice(-1)[0] < c2.serie.slice(-1)[0] ? -1 : 1),
       color: '#FFC107'
     },
     {
-      titulo: 'Comunas con menos de 10 nuevos casos en los últimos 7 días',
-      explicacion: 'Lo que dice',
+      titulo: 'Comunas con aumento de casos en los últimos 7 días',
+      explicacion: 'Más contagios en los últimos 7 días que en los 7 días anteriores',
       comunas: comunas
-        .filter(c => c.serie.slice(-1)[0].valor < 10)
-        .sort((c1, c2) => c1.serie.slice(-1)[0] < c2.serie.slice(-1)[0] ? -1 : 1),
-      color: '#66BB6A'
+        .filter(c => c.serie.slice(-1)[0].valor >= 0 && c.serie.slice(-1)[0].valor > c.serie.slice(-8)[0].valor)
+        .sort((c1, c2) => c1.serie.slice(-1)[0].valor > c2.serie.slice(-1)[0].valor ? -1 : 1),
+      color: '#F44336'
     }
   ]
 
   return (
     <div className="AppMuchosGraficos">
       <h1 className="AppMuchosGraficos__titulo">Nuevos casos en los últimos 7 días</h1>
-      <p>De acuerdo con informes epidemiológicos MINSAL (más reciente: {comunas[0].serie.slice(-1)[0].fecha})</p>
+      <p>Fuente: informes epidemiológicos MINSAL (último reporte: {comunas[0].serie.slice(-1)[0].fecha})</p>
       <p className="AppMuchosGraficos__inspiracion">
         Inspirado en <a href="https://www.endcoronavirus.org/countries#action" target="_blank" rel="noopener noreferrer">EndCoronaVirus.org</a>
       </p>
