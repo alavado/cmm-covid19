@@ -24,7 +24,7 @@ const AppMuchosGraficos = () => {
       explicacion: 'Menos contagios en los últimos 7 días que en los 7 días anteriores',
       comunas: comunas
         .filter(c => c.serie.slice(-1)[0].valor >= 10 && c.serie.slice(-1)[0].valor < c.serie.slice(-8)[0].valor)
-        .sort((c1, c2) => c1.serie.slice(-1)[0] < c2.serie.slice(-1)[0] ? -1 : 1),
+        .sort((c1, c2) => c1.serie.slice(-1)[0].valor > c2.serie.slice(-1)[0].valor ? -1 : 1),
       color: '#FFC107'
     },
     {
