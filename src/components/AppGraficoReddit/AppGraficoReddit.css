@@ -1,0 +1,6 @@
+.AppGraficoReddit {
+  min-height: 80vh;
+  flex: 1;
+  width: 100%;
+  padding-right: 2em;
+}

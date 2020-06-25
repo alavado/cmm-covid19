@@ -4,8 +4,8 @@ import { NavLink, Switch, Route } from 'react-router-dom'
 import GraficosSimples from './GraficosSimples'
 import GraficosVMI from './GraficosVMI'
 import AppMuchosGraficos from '../AppMuchosGraficos/AppMuchosGraficos'
+import AppGraficoReddit from '../AppGraficoReddit'
 import logo from '../../assets/logo.svg'
-import Mapa from '../Mapa'
 
 const AppGraficosSimples = () => {
 
@@ -21,7 +21,7 @@ const AppGraficosSimples = () => {
           className="AppGraficosSimples__link_navegacion"
           activeClassName="AppGraficosSimples__link_navegacion--activo"
         >
-          Nuevos casos en los últimos 7 días
+          Nuevos por comuna
         </NavLink>
         <NavLink
           to="/muchos_graficos"
@@ -29,19 +29,28 @@ const AppGraficosSimples = () => {
           activeClassName="AppGraficosSimples__link_navegacion--activo"
           exact
         >
-          Todos los gráficos
+          Todas las comunas
+        </NavLink>
+        <NavLink
+          to="/zonas_rm"
+          className="AppGraficosSimples__link_navegacion"
+          activeClassName="AppGraficosSimples__link_navegacion--activo"
+          exact
+        >
+          Zonas RBY RM
         </NavLink>
         <NavLink
           to="/vmi"
           className="AppGraficosSimples__link_navegacion"
           activeClassName="AppGraficosSimples__link_navegacion--activo"
         >
-          Ocupación de ventiladores en la RM
+          Ocupación ventiladores RM
         </NavLink>
       </nav>
       <div className="AppGraficosSimples__contenedor">
         <Switch>
           <Route path="/muchos_graficos" component={AppMuchosGraficos} />
+          <Route path="/zonas_rm" component={AppGraficoReddit} />
           <Route path="/graficos/comuna/:comuna" component={GraficosSimples} />
           <Route path="/graficos" component={GraficosSimples} />
           <Route path="/vmi" component={GraficosVMI} />

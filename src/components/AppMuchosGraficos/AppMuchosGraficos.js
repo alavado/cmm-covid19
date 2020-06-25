@@ -28,7 +28,7 @@ const AppMuchosGraficos = () => {
       color: '#FFC107'
     },
     {
-      titulo: 'Comunas con aumento de casos en los últimos 7 días',
+      titulo: 'Comunas con aumento de nuevos casos en los últimos 7 días',
       explicacion: 'Más contagios en los últimos 7 días que en los 7 días anteriores',
       comunas: comunas
         .filter(c => c.serie.slice(-1)[0].valor >= 0 && c.serie.slice(-1)[0].valor > c.serie.slice(-8)[0].valor)
