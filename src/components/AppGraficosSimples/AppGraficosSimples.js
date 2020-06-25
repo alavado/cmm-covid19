@@ -37,7 +37,7 @@ const AppGraficosSimples = () => {
           activeClassName="AppGraficosSimples__link_navegacion--activo"
           exact
         >
-          Zonas RBY RM
+          Por servicio salud RM
         </NavLink>
         <NavLink
           to="/vmi"

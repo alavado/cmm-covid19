@@ -1,61 +1,79 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import './GraficoRedditPrincipal.css'
 import { Line } from 'react-chartjs-2'
+import { useSelector } from 'react-redux'
 
 const GraficoRedditPrincipal = ({ labels, data }) => {
+
+  const { daltonicos } = useSelector(state => state.colores)
+
+  const colores = useMemo(() => {
+    if (daltonicos) {
+      return [
+        '#ffffcc',
+        '#c7e9b4',
+        '#7fcdbb',
+        '#41b6c4',
+        '#2c7fb8',
+        '#253494'
+      ]
+    }
+    else {
+      return [
+        '#fbb4ae',
+        '#b3cde3',
+        '#ccebc5',
+        '#decbe4',
+        '#fed9a6',
+        '#ffffcc'
+      ]
+    }
+  }, [daltonicos])
+
   return (
     <div className="GraficoRedditPrincipal">
-      <div className="AppGraficoReddit__contenedor_grafico_principal">
-        <Line
-          data={{
-            labels: labels,
-            datasets: [
-              {
-                label: 'Noroeste',
-                data: data.dataGrupoAmarillo,
-                backgroundColor: '#FFFFCC',
-                pointRadius: 0,
-                borderWidth: 1,
-                borderColor: 'rgba(0, 0, 0, 0.25)'
+      <Line
+        data={{
+          labels: labels.slice(25),
+          datasets: data.map(({ nombre }, i) => ({
+            label: nombre,
+            data: data
+              .slice(0, i + 1)
+              .map(d => d.serie.slice(25))
+              .reduce((prev, d) => d.map((v, j) => v + prev[j])),
+            backgroundColor: colores[i],
+            pointRadius: 0,
+            borderWidth: 1,
+            pointHitRadius: 10,
+            borderColor: 'rgba(0, 0, 0, 0.25)'
+          }))
+        }}
+        options={{
+          maintainAspectRatio: false,
+          legend: {
+            display: false,
+          },
+          scales: {
+            xAxes: [{
+              gridLines: {
+                display: false
               },
-              {
-                label: 'Noreste',
-                data: data.dataGrupoVerde.map((v, i) => v + data.dataGrupoAmarillo[i]),
-                backgroundColor: '#A1DAB4',
-                pointRadius: 0,
-                borderWidth: 1,
-                borderColor: 'rgba(0, 0, 0, 0.25)'
+              ticks: {
+                fontColor: 'black'
+              }
+            }],
+            yAxes: [{
+              gridLines: {
+                display: false
               },
-              {
-                label: 'Sur',
-                data: data.dataGrupoAzul.map((v, i) => v + data.dataGrupoAmarillo[i] + data.dataGrupoVerde[i]),
-                backgroundColor: '#225EA8',
-                pointRadius: 0,
-                borderWidth: 1,
-                borderColor: 'rgba(0, 0, 0, 0.25)'
+              ticks: {
+                fontColor: 'black'
               },
-            ]
-          }}
-          options={{
-            maintainAspectRatio: false,
-            legend: {
-              display: false,
-            },
-            scales: {
-              xAxes: [{
-                gridLines: {
-                  display: false
-                }
-              }],
-              yAxes: [{
-                gridLines: {
-                  display: false
-                }
-              }]
-            }
-          }}
-        />
-      </div>
+              position: 'right'
+            }]
+          }
+        }}
+      />
     </div>
   )
 }

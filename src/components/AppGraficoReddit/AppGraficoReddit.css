@@ -1,7 +1,7 @@
-.AppGraficoReddit__contenedor_grafico_principal {
-  min-height: 80vh;
-  flex: 1;
-  width: 100%;
-  padding-right: 2em;
-  margin-bottom: 2em;
+.AppGraficoReddit {
+  margin-right: 2em;
+}
+
+.AppGraficoReddit__titulo {
+  margin-bottom: .5em;
 }

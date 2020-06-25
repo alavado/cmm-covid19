@@ -11,7 +11,7 @@ const calcularPoloDeInaccesibilidad = puntos => {
   return { longitude: longitude, latitude: latitude }
 }
 
-const comunasSS = [
+export const comunasSS = [
   {
     nombre: 'Occidente',
     comunas: [
