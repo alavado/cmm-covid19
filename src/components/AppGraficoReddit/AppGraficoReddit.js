@@ -21,12 +21,14 @@ const AppGraficoReddit = () => {
 
   return (
     <div className="AppGraficoReddit">
-      <h1 className="AppGraficoReddit__titulo">Nuevos casos, ventana de 7 días</h1>
-      <MapaReddit geoJSON={geoJSON} />
-      <GraficoRedditPrincipal
-        data={data}
-        labels={dataset.comunas.series[0].serie.map(v => v.fecha)}
-      />
+      <h1 className="AppGraficoReddit__titulo">Nuevos casos por Servicio de Salud, ventana móvil de 7 días</h1>
+      <div className="AppGraficoReddit__contenedor">
+        <MapaReddit geoJSON={geoJSON} />
+        <GraficoRedditPrincipal
+          data={data}
+          labels={dataset.comunas.series[0].serie.map(v => v.fecha)}
+        />
+      </div>
     </div>
   )
 }

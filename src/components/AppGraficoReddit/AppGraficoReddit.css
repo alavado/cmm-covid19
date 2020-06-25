@@ -5,3 +5,7 @@
 .AppGraficoReddit__titulo {
   margin-bottom: .5em;
 }
+
+.AppGraficoReddit__contenedor {
+  position: relative;
+}
