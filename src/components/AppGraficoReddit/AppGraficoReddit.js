@@ -21,7 +21,10 @@ const AppGraficoReddit = () => {
 
   return (
     <div className="AppGraficoReddit">
-      <h1 className="AppGraficoReddit__titulo">Nuevos casos por Servicio de Salud, ventana móvil de 7 días</h1>
+      <h1 className="AppGraficoReddit__titulo">
+        Nuevos casos por Servicio de Salud, ventana móvil de 7 días<br />
+        Esta visualización está en desarrollo...
+      </h1>
       <div className="AppGraficoReddit__contenedor">
         <MapaReddit geoJSON={geoJSON} />
         <GraficoRedditPrincipal

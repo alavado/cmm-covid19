@@ -32,19 +32,19 @@ const AppGraficosSimples = () => {
           Todas las comunas
         </NavLink>
         <NavLink
-          to="/zonas_rm"
-          className="AppGraficosSimples__link_navegacion"
-          activeClassName="AppGraficosSimples__link_navegacion--activo"
-          exact
-        >
-          Por servicio salud RM
-        </NavLink>
-        <NavLink
           to="/vmi"
           className="AppGraficosSimples__link_navegacion"
           activeClassName="AppGraficosSimples__link_navegacion--activo"
         >
           Ocupación ventiladores RM
+        </NavLink>
+        <NavLink
+          to="/zonas_rm"
+          className="AppGraficosSimples__link_navegacion"
+          activeClassName="AppGraficosSimples__link_navegacion--activo"
+          exact
+        >
+          Casos por servicio salud RM
         </NavLink>
       </nav>
       <div className="AppGraficosSimples__contenedor">
