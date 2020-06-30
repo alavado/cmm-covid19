@@ -36,7 +36,7 @@ const AppGraficosSimples = () => {
           className="AppGraficosSimples__link_navegacion"
           activeClassName="AppGraficosSimples__link_navegacion--activo"
         >
-          Ocupación ventiladores RM
+          VMI RM
         </NavLink>
         <NavLink
           to="/zonas_rm"
@@ -44,7 +44,7 @@ const AppGraficosSimples = () => {
           activeClassName="AppGraficosSimples__link_navegacion--activo"
           exact
         >
-          Casos por servicio salud RM
+          Por servicio salud RM
         </NavLink>
       </nav>
       <div className="AppGraficosSimples__contenedor">

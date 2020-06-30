@@ -329,7 +329,7 @@ const GraficosSimples = () => {
         </Link> */}
       </div>
       <p className="AppGraficosSimples__aviso">
-        <div className="GraficosSimples__fuente">Fuente: informes epidemiológicos MINSAL (último reporte: {comunasConMasDe50Casos[0].datos.slice(-1)[0].fecha.format('D [de] MMMM')})</div>
+        <span className="GraficosSimples__fuente">Fuente: informes epidemiológicos MINSAL (último reporte: {comunasConMasDe50Casos[0].datos.slice(-1)[0].fecha.format('D [de] MMMM')})</span>
         Para interpolar los casos en los días sin datos por comuna,
         los casos de cada región se reparten entre sus comunas siguiendo
         la misma proporción de aumento observada entre el informe epidemiológico
