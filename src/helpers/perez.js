@@ -11,6 +11,7 @@ const formatearDatosRegion = csv => {
   return filas
     .slice(1)
     .map(fila => fila.split(','))
+    .filter(fila => demografiaRegiones.find(r => Number(r.codigo) === Number(fila[0])) !== undefined)
     .map(fila => {
       const codigo = Number(fila[0])
       const nombre = demografiaRegiones.find(r => Number(r.codigo) === codigo).nombre
@@ -46,6 +47,7 @@ const formatearDatosOriginalesRegiones = csv => {
   return filas
     .slice(1)
     .map(fila => fila.split(','))
+    .filter(fila => demografiaRegiones.find(r => Number(r.codigo) === Number(fila[0])) !== undefined)
     .map(fila => {
       const codigo = Number(fila[0])
       const nombre = demografiaRegiones.find(r => Number(r.codigo) === codigo).nombre

@@ -126,6 +126,9 @@ export const calcularNuevosCasos = (series, opciones = { redondear: true, dias: 
       let demografia = demografiaComunas.find(comuna => serie.codigo === Number(comuna.codigo))
       if (!demografia) {
         demografia = demografiaRegiones.find(region => serie.codigo === Number(region.codigo))
+        if (!demografia) {
+          return false
+        }
       }
       factor = opciones.habitantes / Math.max(1, Number(demografia.poblacion))
     }
@@ -139,7 +142,7 @@ export const calcularNuevosCasos = (series, opciones = { redondear: true, dias: 
           (factor * (Math.max(0, dato.valor - arr[Math.max(0, i - (dias ? dias : 1))].valor)))): 0
       }))
     }
-  })
+  }).filter(f => f)
 }
 
 export const formatearGeoJSONComunas = geoJSON => {
