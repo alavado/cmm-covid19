@@ -204,7 +204,7 @@ const GraficosVMI = () => {
         </div>
       </div>
       <p className="AppGraficosSimples__aviso">
-        Fuente: <a href="https://www.medicina-intensiva.cl/site/post.php?id=1000328&sec=9" rel="noreferer noopener">Encuesta diaria realidad nacional de la Sociedad Chilena de Medicina Intensiva (extraídos por Jorge Pérez, actualizado en esta página el 23 de junio).</a>
+        Fuente: <a href="https://www.medicina-intensiva.cl/site/post.php?id=1000328&sec=9" rel="noreferer noopener">Encuesta diaria realidad nacional de la Sociedad Chilena de Medicina Intensiva (extraídos por Jorge Pérez, actualizado en esta página el 30 de junio).</a>
       </p>
     </div>
   )
