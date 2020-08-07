@@ -7,15 +7,20 @@ import { Provider } from 'react-redux'
 import store from './redux/store'
 import { BrowserRouter as Router } from 'react-router-dom'
 
-ReactDOM.render(
-  <Router>
-    <Provider store={store}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </Provider>
-  </Router>,
-  document.getElementById('root')
-)
+if (window.location.pathname.indexOf('icovid') >= 0) {
+  window.location.href = 'https://icovid.netlify.app/'
+}
+else {
+  ReactDOM.render(
+    <Router>
+      <Provider store={store}>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </Provider>
+    </Router>,
+    document.getElementById('root')
+  )
+}
 
 serviceWorker.unregister()
