@@ -30,7 +30,7 @@
     "redux": "^4.0.5",
     "redux-localstorage-simple": "^2.2.0",
     "turf": "^3.0.14",
-    "xlsx": "^0.15.6"
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "react-scripts start",
